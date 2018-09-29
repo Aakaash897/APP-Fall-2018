@@ -1,5 +1,7 @@
 package col.cs.risk.helper;
 
+import java.util.Random;
+
 /**
  * 
  * @author Team
@@ -17,5 +19,17 @@ public class Utility {
 		//String path = System.getProperty("user.dir");
 		return "resources/risk/map/"+filename;
 	}
+	
+	public static String getImagePath(String filename) {
+		return "resources/risk/images/"+filename;
+	}
 
+	/**
+	 * 
+	 * @param num
+	 * @return returns the random number between 0 and num parameter
+	 */
+	public static int getRandomNumber(int num) {
+		return new Random().nextInt(num);
+	}
 }
