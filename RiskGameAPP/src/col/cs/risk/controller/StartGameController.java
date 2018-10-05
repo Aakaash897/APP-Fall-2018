@@ -135,8 +135,8 @@ public class StartGameController extends java.awt.Frame {
 	 * @param event
 	 */
 	public void constructMapButtonActionPerformed(ActionEvent event) {
-		System.out.println(" Construct Map button pressed ");
 		setVisible(false);
+		System.out.println(" Construct Map button pressed ");
 		new MapConstructionView(this).setVisible(true);
 	}
 

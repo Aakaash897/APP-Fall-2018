@@ -1,8 +1,6 @@
 package col.cs.risk.view;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;

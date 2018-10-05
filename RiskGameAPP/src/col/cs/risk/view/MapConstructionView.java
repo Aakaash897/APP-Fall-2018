@@ -22,8 +22,7 @@ import col.cs.risk.controller.StartGameController;
 
 /**
  * 
- * @author Team
- * New map construction or existing map modification screen
+ * @author Team New map construction or existing map modification screen
  *
  */
 public class MapConstructionView extends Frame {
@@ -51,6 +50,7 @@ public class MapConstructionView extends Frame {
 
 	/**
 	 * Constructor which initializes GameController
+	 * 
 	 * @param gameController
 	 */
 	public MapConstructionView(StartGameController gameController) {
@@ -91,7 +91,7 @@ public class MapConstructionView extends Frame {
 
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				startController.newMapButtonActionPerformed(event);				
+				startController.newMapButtonActionPerformed(event);
 			}
 		});
 
@@ -101,43 +101,27 @@ public class MapConstructionView extends Frame {
 
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				startController.modifyExistingMapButtonActionPerformed(event);				
+				startController.modifyExistingMapButtonActionPerformed(event);
 			}
 		});
 
 		GroupLayout groupLayout = new GroupLayout(constructJPanel);
 		constructJPanel.setLayout(groupLayout);
 
-		groupLayout.setHorizontalGroup(
-				groupLayout.createParallelGroup(Alignment.TRAILING)
-				.addGroup(groupLayout.createSequentialGroup()
-						.addContainerGap()
-						.addGap(200)
+		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+				.addGroup(groupLayout.createSequentialGroup().addContainerGap().addGap(200)
 						.addGroup(groupLayout.createParallelGroup(Alignment.CENTER)
-								.addComponent(settings, GroupLayout.DEFAULT_SIZE, 100, 500)
-								.addGap(100)
-								.addComponent(newMapButton, GroupLayout.DEFAULT_SIZE, 100, 500)
-								.addGap(100)
-								.addComponent(modifyExistingMapButton,GroupLayout.DEFAULT_SIZE, 100, 500)
-								.addGap(100))
-						.addGap(200)
-						.addContainerGap())
-				);
-		groupLayout.setVerticalGroup(
-				groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-						.addContainerGap()
-						.addPreferredGap(ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
-						.addComponent(settings)
-						.addGap(40)
-						.addPreferredGap(ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
-						.addComponent(newMapButton)
-						.addGap(50)
+								.addComponent(settings, GroupLayout.DEFAULT_SIZE, 100, 500).addGap(100)
+								.addComponent(newMapButton, GroupLayout.DEFAULT_SIZE, 100, 500).addGap(100)
+								.addComponent(modifyExistingMapButton, GroupLayout.DEFAULT_SIZE, 100, 500).addGap(100))
+						.addGap(200).addContainerGap()));
+		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup().addContainerGap()
+						.addPreferredGap(ComponentPlacement.RELATED, 40, Short.MAX_VALUE).addComponent(settings)
+						.addGap(40).addPreferredGap(ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+						.addComponent(newMapButton).addGap(50)
 						.addPreferredGap(ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
-						.addComponent(modifyExistingMapButton)
-						.addGap(100)
-						.addContainerGap())
-				);
+						.addComponent(modifyExistingMapButton).addGap(100).addContainerGap()));
 
 		add(constructJPanel, BorderLayout.CENTER);
 		pack();
