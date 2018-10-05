@@ -18,15 +18,14 @@ import col.cs.risk.view.HomePageViewLoader;
 
 /**
  * 
- * @author Team
- * Starts the game
+ * @author Team Starts the game
  *
  */
 public class StartGameController extends java.awt.Frame {
 
 	/** Serial version id */
 	private static final long serialVersionUID = 1137729697072494580L;
-	
+
 	/** Map construction/modification Page View */
 	private MapConstructionView mapConstructionView;
 
@@ -80,7 +79,7 @@ public class StartGameController extends java.awt.Frame {
 
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				startGameButtonActionPerformed(event);				
+				startGameButtonActionPerformed(event);
 			}
 		});
 
@@ -90,7 +89,7 @@ public class StartGameController extends java.awt.Frame {
 
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				constructMapButtonActionPerformed(event);				
+				constructMapButtonActionPerformed(event);
 			}
 		});
 
@@ -100,7 +99,7 @@ public class StartGameController extends java.awt.Frame {
 
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				loadExistingMapButtonActionPerformed(event);				
+				loadExistingMapButtonActionPerformed(event);
 			}
 		});
 
@@ -110,7 +109,7 @@ public class StartGameController extends java.awt.Frame {
 
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				exitButtonActionPerformed(event);				
+				exitButtonActionPerformed(event);
 			}
 		});
 
@@ -124,6 +123,7 @@ public class StartGameController extends java.awt.Frame {
 
 	/**
 	 * Action performed on pressing start game default button on home page
+	 * 
 	 * @param event
 	 */
 	public void startGameButtonActionPerformed(ActionEvent event) {
@@ -132,6 +132,7 @@ public class StartGameController extends java.awt.Frame {
 
 	/**
 	 * Action performed on pressing construct button on home page
+	 * 
 	 * @param event
 	 */
 	public void constructMapButtonActionPerformed(ActionEvent event) {
@@ -142,6 +143,7 @@ public class StartGameController extends java.awt.Frame {
 
 	/**
 	 * Action performed on pressing Load existing map button on home page
+	 * 
 	 * @param event
 	 */
 	public void loadExistingMapButtonActionPerformed(ActionEvent event) {
@@ -150,6 +152,7 @@ public class StartGameController extends java.awt.Frame {
 
 	/**
 	 * Action performed on pressing Exit button on home page
+	 * 
 	 * @param event
 	 */
 	public void exitButtonActionPerformed(ActionEvent event) {
@@ -159,6 +162,7 @@ public class StartGameController extends java.awt.Frame {
 
 	/**
 	 * Start/ entry of the game application
+	 * 
 	 * @param args
 	 */
 	public static void main(String args[]) {
@@ -278,20 +282,22 @@ public class StartGameController extends java.awt.Frame {
 
 	/**
 	 * Action performed on pressing New Map construction Button
+	 * 
 	 * @param event
 	 */
 	public void newMapButtonActionPerformed(ActionEvent event) {
 		System.out.println(" Construct New Map button pressed ");
 	}
-	
+
 	/**
 	 * Action performed on pressing Modify Existing Map Button
+	 * 
 	 * @param event
 	 */
 	public void modifyExistingMapButtonActionPerformed(ActionEvent event) {
 		System.out.println(" Modify Existing Map button pressed ");
 	}
-	
+
 	/**
 	 * @return the mapConstructionView
 	 */

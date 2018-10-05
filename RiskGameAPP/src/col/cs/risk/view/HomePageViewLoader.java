@@ -2,6 +2,7 @@ package col.cs.risk.view;
 
 import java.awt.BorderLayout;
 import javax.swing.GroupLayout;
+
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import col.cs.risk.controller.StartGameController;
