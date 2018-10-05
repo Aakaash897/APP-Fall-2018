@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import col.cs.risk.view.MapConstructionView;
 import col.cs.risk.controller.StartGameController;
 
 /**
