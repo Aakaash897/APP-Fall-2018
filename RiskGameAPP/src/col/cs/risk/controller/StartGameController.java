@@ -13,7 +13,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
+import col.cs.risk.view.MapConstructionView;
 import col.cs.risk.helper.Utility;
 import col.cs.risk.view.HomePageViewLoader;
 
@@ -27,6 +27,9 @@ public class StartGameController extends java.awt.Frame {
 
 	/** Serial version id */
 	private static final long serialVersionUID = 1137729697072494580L;
+	
+	/** Map construction/modification Page View */
+	private MapConstructionView mapConstructionView;
 
 	/** Initial game panel */
 	private JPanel startJPanel;
@@ -134,6 +137,8 @@ public class StartGameController extends java.awt.Frame {
 	 */
 	public void constructMapButtonActionPerformed(ActionEvent event) {
 		System.out.println(" Construct Map button pressed ");
+		setVisible(false);
+		new MapConstructionView(this).setVisible(true);
 	}
 
 	/**
@@ -272,4 +277,33 @@ public class StartGameController extends java.awt.Frame {
 		this.gameImage = gameImage;
 	}
 
+	/**
+	 * Action performed on pressing New Map construction Button
+	 * @param event
+	 */
+	public void newMapButtonActionPerformed(ActionEvent event) {
+		System.out.println(" Construct New Map button pressed ");
+	}
+	
+	/**
+	 * Action performed on pressing Modify Existing Map Button
+	 * @param event
+	 */
+	public void modifyExistingMapButtonActionPerformed(ActionEvent event) {
+		System.out.println(" Modify Existing Map button pressed ");
+	}
+	
+	/**
+	 * @return the mapConstructionView
+	 */
+	public MapConstructionView getMapConstructionView() {
+		return mapConstructionView;
+	}
+
+	/**
+	 * @param mapConstructionView the mapConstructionView to set
+	 */
+	public void setMapConstructionView(MapConstructionView mapConstructionView) {
+		this.mapConstructionView = mapConstructionView;
+	}
 }
