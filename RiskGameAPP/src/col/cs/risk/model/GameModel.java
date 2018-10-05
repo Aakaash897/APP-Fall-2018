@@ -22,7 +22,18 @@ import col.cs.risk.helper.Utility;
  */
 public class GameModel {
 
+	/** Default map string */
 	public StringBuilder baseMapString;
+	
+	/** Is map file modified */
+	public static boolean isBaseMapModified;
+	
+	/** modified game map data */
+	public static StringBuilder modifiedMapString;
+
+	/** name of the modified file */
+	public static String fileName = "World.map";
+	
 	public File mapInputFile;
 
 	public Vector<ContinentModel> continents = new Vector<>();
@@ -96,12 +107,17 @@ public class GameModel {
 	 * @return true if map file is valid else false.
 	 * 
 	 */
-	private boolean isValidMapFormat() {
-		return isTagsCorrect(baseMapString.toString())
-				&& isAllTerritoriesConnected(baseMapString.toString())
-				&& checkContinentsAreValid(baseMapString.toString());
+	public boolean isValidMapFormat() {
+		if(isBaseMapModified) {
+			return isTagsCorrect(modifiedMapString.toString())
+					&& isAllTerritoriesConnected(modifiedMapString.toString())
+					&& checkContinentsAreValid(modifiedMapString.toString());
+		} else {
+			return isTagsCorrect(baseMapString.toString())
+					&& isAllTerritoriesConnected(baseMapString.toString())
+					&& checkContinentsAreValid(baseMapString.toString());
+		}
 	}
-
 
 	/**
 	 * 
