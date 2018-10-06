@@ -25,6 +25,9 @@ public class GameModel {
 	/** Default map string */
 	public StringBuilder baseMapString;
 	
+	/** String for Map Selected */
+	public static String imageSelected = "World.jpg";
+	
 	/** Is map file modified */
 	public static boolean isBaseMapModified;
 	
@@ -34,12 +37,19 @@ public class GameModel {
 	/** name of the modified file */
 	public static String fileName = "World.map";
 	
+	/** File Object for input */
 	public File mapInputFile;
-
+	
+	/** Vector Object for continents */
 	public Vector<ContinentModel> continents = new Vector<>();
+	
+	/** Vector Object for territories */
 	public Vector<TerritoryModel> territories = new Vector<>();
-	public Vector<PlayerModel> players = new Vector<>();
+	
+	/** Vector Object for players */
+	public static Vector<PlayerModel> players = new Vector<>();
 
+	/** Boolean Object for validatingMap */
 	private boolean isGameMapValid;
 
 	/**
@@ -98,6 +108,10 @@ public class GameModel {
 			loadGameMap();
 		}
 	}
+	
+	
+	
+	
 
 	/**
 	 * It does 3 map validations, 

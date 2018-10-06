@@ -52,7 +52,16 @@ public class StartGameController{
 	 * @param event
 	 */
 	public void startGameButtonActionPerformed(ActionEvent event) {
+		setPlayers();
 		System.out.println(" Start Default Game button pressed ");
+	}
+	
+	/**
+	 * Player settings
+	 */
+	private void setPlayers() {
+		homePageViewLoader.setVisible(false);
+		new PlayerSettingsController();
 	}
 
 	/**
