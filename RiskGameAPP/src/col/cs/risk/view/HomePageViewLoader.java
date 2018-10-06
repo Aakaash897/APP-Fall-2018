@@ -8,15 +8,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import col.cs.risk.controller.StartGameController;
 import col.cs.risk.helper.Utility;
@@ -56,11 +59,18 @@ public class HomePageViewLoader extends Frame{
 	 * Game controller
 	 */
 	private StartGameController startController;
+	/**
+	* Utility Object
+	 */
+	private Utility utilityObj;
+	
 	
 	public HomePageViewLoader(StartGameController gameController) {
 		this.startController = gameController;
 		gameController.setHomePageViewLoader(this);
 		initComponents();
+		utilityObj=new Utility();
+		
 	}
 	
 	/**
@@ -200,5 +210,27 @@ public class HomePageViewLoader extends Frame{
 	 */
 	private void exitForm(java.awt.event.WindowEvent event) {
 		System.exit(0);
+	}
+
+	public void openFileChooser() {
+		File mapInputFile=null;
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+		FileNameExtensionFilter mapFileFilter = new FileNameExtensionFilter("Map Files", "map");
+		fileChooser.setFileFilter(mapFileFilter);
+		int result = fileChooser.showOpenDialog(null);
+
+		if (result == JFileChooser.APPROVE_OPTION) {
+			mapInputFile = fileChooser.getSelectedFile();
+			utilityObj.saveMapFilePath(mapInputFile.getAbsolutePath());
+			System.out.println("Selected file: " + utilityObj.getUsedMapFilePath());
+			
+		}
+		else if(result == JFileChooser.CANCEL_OPTION)
+		{
+			System.out.println("No File Choosen");
+		}
+		// TODO Auto-generated method stub
+		
 	}
 }

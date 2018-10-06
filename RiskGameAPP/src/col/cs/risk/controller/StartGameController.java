@@ -1,6 +1,12 @@
 package col.cs.risk.controller;
 
 import java.awt.event.ActionEvent;
+import java.io.File;
+
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import col.cs.risk.view.HomePageViewLoader;
 import col.cs.risk.view.MapConstructionView;
@@ -66,6 +72,7 @@ public class StartGameController{
 	 */
 	public void loadExistingMapButtonActionPerformed(ActionEvent event) {
 		System.out.println(" Load Existing Map button pressed ");
+		homePageViewLoader.openFileChooser();
 	}
 
 	/**

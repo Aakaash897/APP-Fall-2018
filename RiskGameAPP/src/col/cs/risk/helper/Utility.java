@@ -4,24 +4,33 @@ import java.util.Random;
 
 /**
  * 
- * @author Team
- * Utility is a list of supporting APIs
+ * @author Team Utility is a list of supporting APIs
  *
  */
 public class Utility {
-	
+	public String selectedMapFilePath;
+
 	/**
 	 * Gets the path of the map file
+	 * 
 	 * @param filename
 	 * @return path as string
 	 */
 	public static String getMapPath(String filename) {
-		//String path = System.getProperty("user.dir");
-		return "resources/risk/map/"+filename;
+		// String path = System.getProperty("user.dir");
+		return "resources/risk/map/" + filename;
 	}
-	
+
 	public static String getImagePath(String filename) {
-		return "resources/risk/images/"+filename;
+		return "resources/risk/images/" + filename;
+	}
+
+	public void saveMapFilePath(String selectedMapFilePath) {
+		this.selectedMapFilePath = selectedMapFilePath;
+	}
+
+	public String getUsedMapFilePath() {
+		return selectedMapFilePath;
 	}
 
 	/**
