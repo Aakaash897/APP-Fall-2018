@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import col.cs.risk.view.HomePageViewLoader;
+import col.cs.risk.view.LoadExistingMapView;
 import col.cs.risk.view.MapConstructionView;
 
 /**
@@ -22,6 +23,10 @@ public class StartGameController{
 	/** Game home Page View */
 	private HomePageViewLoader homePageViewLoader;
 	
+	/** Load Existing Map View */
+	private LoadExistingMapView loadingExistingMapView;
+	
+	
 	/** Map construction/modification Page View */
 	private MapConstructionView mapConstructionView;
 	
@@ -30,6 +35,7 @@ public class StartGameController{
 	 */
 	public StartGameController() {
 		new HomePageViewLoader(this).setVisible(true);
+		new LoadExistingMapView(this);
 	}
 
 	/**
@@ -37,6 +43,14 @@ public class StartGameController{
 	 */
 	public HomePageViewLoader getHomePageViewLoader() {
 		return homePageViewLoader;
+	}
+
+	public LoadExistingMapView getLoadingExistingMapView() {
+		return loadingExistingMapView;
+	}
+
+	public void setLoadingExistingMapView(LoadExistingMapView loadingExistingMapView) {
+		this.loadingExistingMapView = loadingExistingMapView;
 	}
 
 	/**
@@ -61,7 +75,7 @@ public class StartGameController{
 	 */
 	private void setPlayers() {
 		homePageViewLoader.setVisible(false);
-		new PlayerSettingsController();
+		//new PlayerSettingsController();
 	}
 
 	/**
@@ -81,7 +95,7 @@ public class StartGameController{
 	 */
 	public void loadExistingMapButtonActionPerformed(ActionEvent event) {
 		System.out.println(" Load Existing Map button pressed ");
-		homePageViewLoader.openFileChooser();
+		loadingExistingMapView.openFileChooser();
 	}
 
 	/**
@@ -107,6 +121,7 @@ public class StartGameController{
 	 */
 	public void modifyExistingMapButtonActionPerformed(ActionEvent event) {
 		System.out.println(" Modify Existing Map button pressed ");
+		loadingExistingMapView.showModificationView();
 	}
 
 	/**

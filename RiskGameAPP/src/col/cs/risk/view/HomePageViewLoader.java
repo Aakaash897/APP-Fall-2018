@@ -26,11 +26,10 @@ import col.cs.risk.helper.Utility;
 
 /**
  * 
- * @author Team
- * Loads the home page
+ * @author Team Loads the home page
  *
  */
-public class HomePageViewLoader extends Frame{
+public class HomePageViewLoader extends Frame {
 
 	/**
 	 * Serial version id
@@ -54,25 +53,23 @@ public class HomePageViewLoader extends Frame{
 
 	/** game image */
 	private JLabel gameImage;
-	
+
 	/**
 	 * Game controller
 	 */
 	private StartGameController startController;
+
 	/**
-	* Utility Object
+	 * Utility Object
 	 */
-	private Utility utilityObj;
-	
-	
+
 	public HomePageViewLoader(StartGameController gameController) {
 		this.startController = gameController;
 		gameController.setHomePageViewLoader(this);
 		initComponents();
-		utilityObj=new Utility();
-		
+
 	}
-	
+
 	/**
 	 * Initialize the components
 	 */
@@ -99,7 +96,7 @@ public class HomePageViewLoader extends Frame{
 
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				startController.startGameButtonActionPerformed(event);				
+				startController.startGameButtonActionPerformed(event);
 			}
 		});
 
@@ -109,7 +106,7 @@ public class HomePageViewLoader extends Frame{
 
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				startController.constructMapButtonActionPerformed(event);				
+				startController.constructMapButtonActionPerformed(event);
 			}
 		});
 
@@ -119,7 +116,7 @@ public class HomePageViewLoader extends Frame{
 
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				startController.loadExistingMapButtonActionPerformed(event);				
+				startController.loadExistingMapButtonActionPerformed(event);
 			}
 		});
 
@@ -129,67 +126,52 @@ public class HomePageViewLoader extends Frame{
 
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				startController.exitButtonActionPerformed(event);				
+				startController.exitButtonActionPerformed(event);
 			}
 		});
 
 		gameImage.setIcon(new ImageIcon(Utility.getImagePath("game_logo.jpg")));
 		gameImage.setName("gameImage");
-		
+
 		loadHomePage();
 
 	}
 
 	/**
 	 * 
-	 * @param startController 
-	 * Loads the Game home page
+	 * @param startController
+	 *            Loads the Game home page
 	 */
 	private void loadHomePage() {
-		
+
 		GroupLayout groupLayout = new GroupLayout(startJPanel);
 		startJPanel.setLayout(groupLayout);
 
-		groupLayout.setHorizontalGroup(
-				groupLayout.createParallelGroup(Alignment.TRAILING)
-				.addGroup(groupLayout.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createSequentialGroup()
-										.addComponent(gameImage)
-										.addContainerGap(10, Short.MAX_VALUE))
-								.addGroup(groupLayout.createSequentialGroup()
-										.addGap(100)
-										.addGroup(groupLayout.createParallelGroup(Alignment.CENTER)
-												.addComponent(startGameButton, GroupLayout.DEFAULT_SIZE, 100, 500)
-												.addGap(50)
-												.addComponent(constructMapButton,GroupLayout.DEFAULT_SIZE, 100, 500)
-												.addGap(50)
-												.addComponent(loadExistingMapButton,GroupLayout.DEFAULT_SIZE, 100, 500)
-												.addGap(50)
-												.addComponent(exitButton, GroupLayout.DEFAULT_SIZE, 100, 500)
-												.addGap(50)).addContainerGap())))
-				);
-		groupLayout.setVerticalGroup(
-				groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-						.addContainerGap()
-						.addComponent(gameImage)
-						.addPreferredGap(ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
-						.addComponent(startGameButton)
-						.addPreferredGap(ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
-						.addComponent(constructMapButton)
-						.addPreferredGap(ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
-						.addComponent(loadExistingMapButton)
-						.addPreferredGap(ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
-						.addComponent(exitButton)
-						.addContainerGap())
-				);
-		
+		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.TRAILING).addGroup(groupLayout
+				.createSequentialGroup().addContainerGap()
+				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup().addComponent(gameImage).addContainerGap(10,
+								Short.MAX_VALUE))
+						.addGroup(groupLayout.createSequentialGroup().addGap(100)
+								.addGroup(groupLayout.createParallelGroup(Alignment.CENTER)
+										.addComponent(startGameButton, GroupLayout.DEFAULT_SIZE, 100, 500).addGap(50)
+										.addComponent(constructMapButton, GroupLayout.DEFAULT_SIZE, 100, 500).addGap(50)
+										.addComponent(loadExistingMapButton, GroupLayout.DEFAULT_SIZE, 100, 500)
+										.addGap(50).addComponent(exitButton, GroupLayout.DEFAULT_SIZE, 100, 500)
+										.addGap(50))
+								.addContainerGap()))));
+		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
+				.createSequentialGroup().addContainerGap().addComponent(gameImage)
+				.addPreferredGap(ComponentPlacement.RELATED, 40, Short.MAX_VALUE).addComponent(startGameButton)
+				.addPreferredGap(ComponentPlacement.RELATED, 8, Short.MAX_VALUE).addComponent(constructMapButton)
+				.addPreferredGap(ComponentPlacement.RELATED, 8, Short.MAX_VALUE).addComponent(loadExistingMapButton)
+				.addPreferredGap(ComponentPlacement.RELATED, 8, Short.MAX_VALUE).addComponent(exitButton)
+				.addContainerGap()));
+
 		add(startJPanel, BorderLayout.CENTER);
 		pack();
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -202,35 +184,14 @@ public class HomePageViewLoader extends Frame{
 			super.setBackground(bgColor);
 		}
 	}
-	
+
 	/**
 	 * Exit the Application.
 	 *
-	 * @param event the event
+	 * @param event
+	 *            the event
 	 */
 	private void exitForm(java.awt.event.WindowEvent event) {
 		System.exit(0);
-	}
-
-	public void openFileChooser() {
-		File mapInputFile=null;
-		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-		FileNameExtensionFilter mapFileFilter = new FileNameExtensionFilter("Map Files", "map");
-		fileChooser.setFileFilter(mapFileFilter);
-		int result = fileChooser.showOpenDialog(null);
-
-		if (result == JFileChooser.APPROVE_OPTION) {
-			mapInputFile = fileChooser.getSelectedFile();
-			utilityObj.saveMapFilePath(mapInputFile.getAbsolutePath());
-			System.out.println("Selected file: " + utilityObj.getUsedMapFilePath());
-			
-		}
-		else if(result == JFileChooser.CANCEL_OPTION)
-		{
-			System.out.println("No File Choosen");
-		}
-		// TODO Auto-generated method stub
-		
 	}
 }

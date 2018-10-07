@@ -1,5 +1,9 @@
 package col.cs.risk.helper;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Random;
 
 /**
@@ -8,7 +12,8 @@ import java.util.Random;
  *
  */
 public class Utility {
-	public String selectedMapFilePath;
+	public static String selectedMapFilePath;
+	public static StringBuilder baseMapString;
 
 	/**
 	 * Gets the path of the map file
@@ -25,11 +30,11 @@ public class Utility {
 		return "resources/risk/images/" + filename;
 	}
 
-	public void saveMapFilePath(String selectedMapFilePath) {
-		this.selectedMapFilePath = selectedMapFilePath;
+	public static void saveMapFilePath(String mapFilePath) {
+		selectedMapFilePath = mapFilePath;
 	}
 
-	public String getUsedMapFilePath() {
+	public static String getUsedMapFilePath() {
 		return selectedMapFilePath;
 	}
 
@@ -40,5 +45,20 @@ public class Utility {
 	 */
 	public static int getRandomNumber(int num) {
 		return new Random().nextInt(num);
+	}
+	public static void saveMapString() {
+		baseMapString = new StringBuilder();
+		File file = new File(selectedMapFilePath);
+		BufferedReader buffReader;
+		try {
+			buffReader = new BufferedReader(new FileReader(file));
+			String line;
+			while((line = buffReader.readLine())!=null) {
+				baseMapString.append(line+"\n");
+			}
+			buffReader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
