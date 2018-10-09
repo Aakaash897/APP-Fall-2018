@@ -44,7 +44,7 @@ public class GameModel {
 	public Vector<ContinentModel> continents = new Vector<>();
 	
 	/** Vector Object for territories */
-	public Vector<TerritoryModel> territories = new Vector<>();
+	public Vector<TerritoryModel> Territories = new Vector<>();
 	
 	/** Vector Object for players */
 	public static Vector<PlayerModel> players = new Vector<>();
@@ -59,6 +59,25 @@ public class GameModel {
 		initializeMapAttributes();
 		validateAndLoadMap();
 
+	}
+
+	/**
+	 * Function that provides the territory object
+	 * 
+	 * @return The territory vector
+	 */
+	public Vector<TerritoryModel> getTerritories() {
+		return Territories;
+	}
+
+	/**
+	 * This FunctionSets the territory using the 
+	 * received the parameter
+	 * 
+	 * @param territories stores the territories in it's vector
+	 */
+	public void setTerritories(Vector<TerritoryModel> territories) {
+		Territories = territories;
 	}
 
 
@@ -240,7 +259,7 @@ public class GameModel {
 								if(continents.elementAt(i).getName().matches(str[3])) {
 									TerritoryModel territory = new TerritoryModel(id, name, x_pos, y_pos, 
 											continents.elementAt(i).getId(), continents.elementAt(i));
-									territories.addElement(territory);
+									Territories.addElement(territory);
 									continents.elementAt(i).addTerritory(territory);
 								}
 							}
@@ -260,16 +279,16 @@ public class GameModel {
 							Vector<Integer> adjacentTerritoryIDs = new Vector<>();
 							Vector<TerritoryModel> adjacentTerritories = new Vector<>();
 							for(int i=4;i<str.length;i++) {
-								for(int j=0;j<territories.size();j++) {
-									if(territories.elementAt(j).getName().matches(str[i])) {
-										adjacentTerritoryIDs.add(territories.elementAt(j).getId());
-										adjacentTerritories.add(territories.elementAt(j));
+								for(int j=0;j<Territories.size();j++) {
+									if(Territories.elementAt(j).getName().matches(str[i])) {
+										adjacentTerritoryIDs.add(Territories.elementAt(j).getId());
+										adjacentTerritories.add(Territories.elementAt(j));
 									}
 								}
 							}
-							for(int i=0;i<territories.size();i++) {
-								if(territories.elementAt(i).getName().matches(str[0])) {
-									territories.elementAt(i).setAdjacentTerritories(adjacentTerritories);
+							for(int i=0;i<Territories.size();i++) {
+								if(Territories.elementAt(i).getName().matches(str[0])) {
+									Territories.elementAt(i).setAdjacentTerritories(adjacentTerritories);
 								}
 							}
 						}
@@ -340,8 +359,8 @@ public class GameModel {
 	 * Prints all territories with its details
 	 */
 	public void printTerritories() {
-		for(int i=0;i<territories.size();i++) {
-			System.out.println(territories.get(i).printTerritory());
+		for(int i=0;i<Territories.size();i++) {
+			System.out.println(Territories.get(i).printTerritory());
 		}
 		System.out.println();
 	}

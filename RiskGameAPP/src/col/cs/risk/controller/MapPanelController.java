@@ -1,0 +1,204 @@
+package col.cs.risk.controller;
+
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.geom.Line2D;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+import javax.swing.JPanel;
+
+import col.cs.risk.helper.Utility;
+import col.cs.risk.model.GameModel;
+import col.cs.risk.model.PlayerModel;
+import col.cs.risk.model.TerritoryModel;
+
+/**
+ * 
+ * @author Team
+ * Game Map display controller
+ *
+ */
+public class MapPanelController extends JPanel {
+	
+	/** Serial id */
+	private static final long serialVersionUID = -8886545109650518679L;
+
+	/** Map Image */
+	private Image mapImage;
+	
+	/** Default map image filename */
+	private String mapImageName = "World.bmp";
+	
+	/**
+	 * Game Model instance
+	 */
+	private GameModel gameModel;
+	
+	/**
+	 * Controller without parameters
+	 */
+	public MapPanelController() {
+		try {
+			mapImage = ImageIO.read(new File(Utility.getImagePath(mapImageName)));
+			mapImage = mapImage.getScaledInstance(900, 500, Image.SCALE_SMOOTH);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Controller with GameModel Parameter
+	 * @param gameModel
+	 */
+	public MapPanelController(GameModel gameModel) {
+		this();
+		this.gameModel = gameModel;
+		repaint();
+	}
+	
+	/**
+	 * Loading the connected graph
+	 */
+	@Override
+	public void paintComponent(Graphics graphics) {
+		super.paintComponent(graphics);
+		
+		graphics.drawImage(mapImage, 10, 5, null);
+		graphics.setColor(Color.white);
+		
+		for(TerritoryModel territoryModel:gameModel.getTerritories()) {
+			graphics.drawArc(territoryModel.getX_pos(), 
+					territoryModel.getY_pos(), 30, 30, 0, 360);
+		}
+		
+		if(gameModel.getTerritories().size() > 0) {
+			connectAjdacentCountries(graphics);
+		}
+		
+		putPlayersAndArmies(graphics);
+		
+		graphics.setFont(new Font("Verdana", Font.BOLD, 15));
+		graphics.setColor(Color.black);
+	}
+
+	/**
+	 * Adding armies on territories
+	 * @param graphics
+	 */
+	private void putPlayersAndArmies(Graphics graphics) {
+		int alignment;
+		for(TerritoryModel territoryModel:gameModel.getTerritories()) {
+			PlayerModel playerModel = territoryModel.getPlayerModel();
+			if(territoryModel.getArmies() > 9) {
+				alignment = -3;
+			} else {
+				alignment = 0;
+			}
+			
+			if(playerModel == null) {
+				graphics.setColor(Color.white);
+			} else {
+				switch(playerModel.getId()) {
+					case 0: graphics.setColor(Color.red); break;
+					case 1: graphics.setColor(Color.blue); break;
+					case 2: graphics.setColor(Color.green); break;
+					case 3: graphics.setColor(Color.orange); break;
+					case 4: graphics.setColor(Color.pink); break;
+					case 5: graphics.setColor(Color.darkGray); break;
+				}
+			}
+			
+			graphics.fillArc(territoryModel.getX_pos(), territoryModel.getY_pos(),
+					30, 30, 0, 360);
+			graphics.setColor(Color.white);
+			graphics.drawString(territoryModel.getArmies() == 0 ? "" : Integer.toString(territoryModel.getArmies()),
+					territoryModel.getX_pos() + 10 + alignment, territoryModel.getY_pos() + 20);
+		}
+	}
+
+	/**
+	 * Connecting adjacent countries
+	 * @param graphics
+	 */
+	private void connectAjdacentCountries(Graphics graphics) {
+		for(TerritoryModel territoryModel:gameModel.getTerritories()) {
+			if(territoryModel.getAdjacentTerritories().size() > 0) {
+				for(TerritoryModel adjacentModel:territoryModel.getAdjacentTerritories()) {
+					connectCounties(territoryModel.getX_pos(), territoryModel.getY_pos(),
+							adjacentModel.getX_pos(), adjacentModel.getY_pos(), graphics);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Connecting counties by drawing a line
+	 * @param srcX_pos
+	 * @param srcY_pos
+	 * @param destX_pos
+	 * @param destY_pos
+	 * @param graphics
+	 */
+	private void connectCounties(int srcX_pos, int srcY_pos, int destX_pos, int destY_pos, Graphics graphics) {
+		Graphics2D graphics2D = (Graphics2D) graphics;
+		graphics2D.setColor(Color.black);
+		graphics2D.setStroke(new BasicStroke(2));
+		graphics2D.draw(new Line2D.Float(srcX_pos, srcY_pos, destX_pos, destY_pos));
+	}
+
+	/**
+	 * Refresh.
+	 */
+	public void refresh() {
+		repaint();
+	}
+	
+	/**
+	 * @return the mapImage
+	 */
+	public Image getMapImage() {
+		return mapImage;
+	}
+
+	/**
+	 * @param mapImage the mapImage to set
+	 */
+	public void setMapImage(Image mapImage) {
+		this.mapImage = mapImage;
+	}
+
+	/**
+	 * @return the gameModel
+	 */
+	public GameModel getGameModel() {
+		return gameModel;
+	}
+
+	/**
+	 * @param gameModel the gameModel to set
+	 */
+	public void setGameModel(GameModel gameModel) {
+		this.gameModel = gameModel;
+	}
+
+	/**
+	 * @return the mapImageName
+	 */
+	public String getMapImageName() {
+		return mapImageName;
+	}
+
+	/**
+	 * @param mapImageName the mapImageName to set
+	 */
+	public void setMapImageName(String mapImageName) {
+		this.mapImageName = mapImageName;
+	}
+	
+}

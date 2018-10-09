@@ -11,6 +11,8 @@ import java.util.stream.Collectors;
  */
 public class TerritoryModel {
 	private int id;
+	private int Armies;
+	private PlayerModel playermodel;
 	private String name;
 	private int x_pos;
 	private int y_pos;
@@ -53,6 +55,37 @@ public class TerritoryModel {
 			Vector<Integer> adjacentTerritoryIDs, Vector<TerritoryModel> adjacentTerritories) {
 		this(id, name, x_pos, y_pos, continentID, continent);
 		this.adjacentTerritories = adjacentTerritories;
+	}
+	
+	
+	/**
+	 * @return the Armies
+	 */
+	public int getArmies() {
+		return Armies;
+	}
+
+	/**
+	 * Sets the Armies
+	 * @param armies
+	 */
+	public void setArmies(int armies) {
+		Armies = armies;
+	}
+	
+	/**
+	 * @return the PlayerModel object
+	 */
+	public PlayerModel getPlayerModel() {
+		return playermodel;
+	}
+	
+	/**
+	 * Sets the PlayerModel Object
+	 * @param playermodel
+	 */
+	public void setPlayerModel(PlayerModel playermodel) {
+		this.playermodel = playermodel;
 	}
 
 	/**
