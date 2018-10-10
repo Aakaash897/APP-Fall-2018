@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import col.cs.risk.controller.PlayerSettingsController;
+import col.cs.risk.controller.StartGameController;
 
 /**
  * 
@@ -36,12 +37,20 @@ public class PlayerSettingsView extends Frame {
 
 	/** Player Controller */
 	private PlayerSettingsController playerSettingsController;
+	
+	/**
+	 * Default Constructor
+	 */
+	public PlayerSettingsView() {
+		setTitle("Player settings");
+	}
 
 	/**
 	 * Constructor
 	 * @param playerController 
 	 */
 	public PlayerSettingsView(PlayerSettingsController playerController) {
+		this();
 		this.playerSettingsController = playerController;
 		initComponents();
 		setLocationRelativeTo(null);
@@ -153,14 +162,14 @@ public class PlayerSettingsView extends Frame {
 	}
 
 	/**
-	 * Exit the Application.
+	 * Exit from Player setting screen.
 	 *
 	 * @param evt the event
 	 *            
 	 */
 	private void exitForm(WindowEvent evt) {
 		setVisible(false);
-		//System.exit(0);
+		new StartGameController();
 	}
 
 }

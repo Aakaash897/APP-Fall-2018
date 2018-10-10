@@ -1,21 +1,15 @@
 package col.cs.risk.controller;
 
 import java.awt.event.ActionEvent;
-import java.io.File;
 
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
+import col.cs.risk.view.ConstructNewMapView;
 import col.cs.risk.view.HomePageViewLoader;
 import col.cs.risk.view.LoadExistingMapView;
 import col.cs.risk.view.MapConstructionView;
 
 /**
- * 
- * @author Team
  * Starts the game
+ * @author Team
  *
  */
 public class StartGameController{
@@ -45,10 +39,18 @@ public class StartGameController{
 		return homePageViewLoader;
 	}
 
+	/**
+	 * Gets LoadExistingMapView instance
+	 * @return LoadExistingMapView instance
+	 */
 	public LoadExistingMapView getLoadingExistingMapView() {
 		return loadingExistingMapView;
 	}
 
+	/**
+	 * Sets LoadExistingMapView instance
+	 * @param loadingExistingMapView
+	 */
 	public void setLoadingExistingMapView(LoadExistingMapView loadingExistingMapView) {
 		this.loadingExistingMapView = loadingExistingMapView;
 	}
@@ -75,7 +77,7 @@ public class StartGameController{
 	 */
 	private void setPlayers() {
 		homePageViewLoader.setVisible(false);
-		//new PlayerSettingsController();
+		new PlayerSettingsController();
 	}
 
 	/**
@@ -113,6 +115,8 @@ public class StartGameController{
 	 */
 	public void newMapButtonActionPerformed(ActionEvent event) {
 		System.out.println(" Construct New Map button pressed ");
+		mapConstructionView.setVisible(false);
+		new ConstructNewMapView(this);
 	}
 
 	/**
@@ -139,7 +143,7 @@ public class StartGameController{
 	}
 
 	/**
-	 * Start/ entry of the game application
+	 * Start/Entry of the game application
 	 * @param args
 	 */
 	public static void main(String args[]) {

@@ -19,9 +19,8 @@ import col.cs.risk.model.PlayerModel;
 import col.cs.risk.model.TerritoryModel;
 
 /**
- * 
- * @author Team
  * Game Map display controller
+ * @author Team
  *
  */
 public class MapPanelController extends JPanel {
@@ -35,15 +34,16 @@ public class MapPanelController extends JPanel {
 	/** Default map image filename */
 	private String mapImageName = "World.bmp";
 	
-	/**
-	 * Game Model instance
-	 */
+	/** Game Model instance */
 	private GameModel gameModel;
 	
 	/**
 	 * Controller without parameters
 	 */
 	public MapPanelController() {
+		if(!GameModel.imageSelected.equals("")) {
+			mapImageName = GameModel.imageSelected;
+		}
 		try {
 			mapImage = ImageIO.read(new File(Utility.getImagePath(mapImageName)));
 			mapImage = mapImage.getScaledInstance(900, 500, Image.SCALE_SMOOTH);
@@ -63,18 +63,18 @@ public class MapPanelController extends JPanel {
 	}
 	
 	/**
-	 * Loading the connected graph
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void paintComponent(Graphics graphics) {
 		super.paintComponent(graphics);
 		
-		graphics.drawImage(mapImage, 10, 5, null);
+		graphics.drawImage(mapImage, 10, 7, null);
 		graphics.setColor(Color.white);
 		
 		for(TerritoryModel territoryModel:gameModel.getTerritories()) {
-			graphics.drawArc(territoryModel.getX_pos(), 
-					territoryModel.getY_pos(), 30, 30, 0, 360);
+			graphics.drawRect(territoryModel.getX_pos(), 
+					territoryModel.getY_pos(), 25, 25);
 		}
 		
 		if(gameModel.getTerritories().size() > 0) {
@@ -85,6 +85,7 @@ public class MapPanelController extends JPanel {
 		
 		graphics.setFont(new Font("Verdana", Font.BOLD, 15));
 		graphics.setColor(Color.black);
+		graphics.drawString("Current state: "+gameModel.getStateAsString(), 15, 530);
 	}
 
 	/**
@@ -114,11 +115,11 @@ public class MapPanelController extends JPanel {
 				}
 			}
 			
-			graphics.fillArc(territoryModel.getX_pos(), territoryModel.getY_pos(),
-					30, 30, 0, 360);
+			graphics.fillRect(territoryModel.getX_pos(), territoryModel.getY_pos(),
+					25, 25);
 			graphics.setColor(Color.white);
 			graphics.drawString(territoryModel.getArmies() == 0 ? "" : Integer.toString(territoryModel.getArmies()),
-					territoryModel.getX_pos() + 10 + alignment, territoryModel.getY_pos() + 20);
+					territoryModel.getX_pos() + 8 + alignment, territoryModel.getY_pos() + 18);
 		}
 	}
 

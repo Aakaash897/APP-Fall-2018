@@ -20,15 +20,13 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import col.cs.risk.controller.StartGameController;
 
 /**
- * 
- * @author Team New map construction or existing map modification screen
+ * New map construction or existing map modification screen
+ * @author Team 
  *
  */
 public class MapConstructionView extends Frame {
 
-	/**
-	 * Serial version id
-	 */
+	/** Serial version id */
 	private static final long serialVersionUID = -2566255237255639074L;
 
 	/** Initial game panel */
@@ -42,17 +40,22 @@ public class MapConstructionView extends Frame {
 	/** map construct button */
 	private JButton modifyExistingMapButton;
 
-	/**
-	 * Game controller
-	 */
+	/** Game controller */
 	private StartGameController startController;
+	
+	/**
+	 * Default Constructor
+	 */
+	public MapConstructionView() {
+		setTitle("Map contrusction options");
+	}
 
 	/**
 	 * Constructor which initializes GameController
-	 * 
 	 * @param gameController
 	 */
 	public MapConstructionView(StartGameController gameController) {
+		this();
 		this.startController = gameController;
 		gameController.setMapConstructionView(this);
 		initComponents();
@@ -129,11 +132,11 @@ public class MapConstructionView extends Frame {
 
 	/**
 	 * Exit the Application.
-	 *
 	 * @param event the event
 	 */
 	private void exitForm(java.awt.event.WindowEvent event) {
-		System.exit(0);
+		setVisible(false);
+		new StartGameController();
 	}
 
 }

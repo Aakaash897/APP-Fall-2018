@@ -8,16 +8,18 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Vector;
 
+import javax.swing.JPanel;
+
 import col.cs.risk.helper.Utility;
 
 /**
- * 
+ * GameModel class is to maintain game data such as continents, territories, players.
  * @author Team
- * 	GameModel class is to maintain game data such as continents, territories, players.
  *
  */
 public class GameModel {
@@ -25,97 +27,121 @@ public class GameModel {
 	/** Default map string */
 	public StringBuilder baseMapString;
 	
-	/** String for Map Selected */
-	public static String imageSelected = "World.jpg";
-	
-	/** Is map file modified */
-	public static boolean isBaseMapModified;
-	
 	/** modified game map data */
 	public static StringBuilder modifiedMapString;
 
-	/** name of the modified file */
-	public static String fileName = "World.map";
-	
-	/** File Object for input */
-	public File mapInputFile;
-	
-	/** Vector Object for continents */
-	public Vector<ContinentModel> continents = new Vector<>();
-	
-	/** Vector Object for territories */
-	public Vector<TerritoryModel> Territories = new Vector<>();
-	
-	/** Vector Object for players */
-	public static Vector<PlayerModel> players = new Vector<>();
+	/** game map data */
+	public File mapFileStream;
 
 	/** Boolean Object for validatingMap */
 	private boolean isGameMapValid;
 
+	/** stores if map file modified */
+	public static boolean isBaseMapModified;
+
+	/** name of the modified file */
+	public static String fileName = "World.map";
+
+	/** current state of the game */
+	private int state;
+
+	/** list of continents */
+	public Vector<ContinentModel> continents = new Vector<>();
+
+	/** list of countries */
+	public Vector<TerritoryModel> territories = new Vector<>();
+
+	/** list of players */
+	public static Vector<PlayerModel> players = new Vector<>();
+
+	/** current player */
+	public PlayerModel currentPlayer;
+	
+	/** map of no. of player to no. of army */
+	public HashMap<Integer, Integer> playerArmyMap;
+
+	/** String for Map Selected */
+	public static String imageSelected = "World.bmp";
+
+	/** Map panel */
+	private JPanel mainMapPanel;
+
+	/** Player panel */
+	private JPanel subMapPanel;
+
+	/** Territory from which armies to move */
+	private TerritoryModel moveArmiesFromTerritory;
+
+	/** Territory to which armies to move */
+	private TerritoryModel moveArmiesToTerritory;
+
+	/** No of armies to move from one territory to another */
+	private int noOfArmiesToMove;
+
 	/**
-	 * Constructor without parameter for initial verification and setup
+	 * Instance block to fill player and army details
+	 */
+	{
+		playerArmyMap = new HashMap<>();
+		playerArmyMap.put(2, 40);
+		playerArmyMap.put(3, 15);
+		playerArmyMap.put(4, 30);
+		playerArmyMap.put(5, 25);
+		playerArmyMap.put(6, 20);
+	}
+
+	/**
+	 * Default Constructor
 	 */
 	public GameModel() {
+		
+	}
+	
+	/**
+	 * Constructor with parameters for initial verification and setup
+	 * @param booleans
+	 */
+	public GameModel(Boolean ...booleans) {
+		state = Constants.INITIAL_RE_ENFORCEMENT_PHASE;
+		initCurrentPlayer();
 		initializeMapAttributes();
 		validateAndLoadMap();
-
+		distributeArmies();
+		assignTerritories();
 	}
-
-	/**
-	 * Function that provides the territory object
-	 * 
-	 * @return The territory vector
-	 */
-	public Vector<TerritoryModel> getTerritories() {
-		return Territories;
-	}
-
-	/**
-	 * This FunctionSets the territory using the 
-	 * received the parameter
-	 * 
-	 * @param territories stores the territories in it's vector
-	 */
-	public void setTerritories(Vector<TerritoryModel> territories) {
-		Territories = territories;
-	}
-
-
-	/**
-	 * @return the isValidGameMap
-	 */
-	public boolean isGameMapValid() {
-		return isGameMapValid;
-	}
-
-
-	/**
-	 * @param isValidGameMap the isValidGameMap to set
-	 */
-	public void setGameMapValid(boolean isValidGameMap) {
-		this.isGameMapValid = isValidGameMap;
-	}
-
-
-
+	
 	/**
 	 * Initializes the map attributes especially map file as text data
 	 * for further processing
 	 */
 	public void initializeMapAttributes() {
-		baseMapString = new StringBuilder();
-		File file = new File(Utility.getMapPath("World.map"));
+		if(isBaseMapModified) {
+			modifiedMapString = readFile(modifiedMapString, fileName);
+		} else {
+			baseMapString = readFile(baseMapString, "World.map");
+		}
+	}
+
+	/**
+	 * Reads the File
+	 * @param mapString
+	 * @param fileName
+	 */
+	private StringBuilder readFile(StringBuilder mapString, String fileName) {
+		mapString = new StringBuilder();
+		File file = new File(Utility.getMapPath(fileName));
 		BufferedReader buffReader;
 		try {
 			buffReader = new BufferedReader(new FileReader(file));
 			String line;
 			while((line = buffReader.readLine())!=null) {
-				baseMapString.append(line+"\n");
+				mapString.append(line+"\n");
 			}
 			buffReader.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return mapString;
 	}
 
 	/**
@@ -123,14 +149,10 @@ public class GameModel {
 	 */
 	private void validateAndLoadMap() {
 		if(isValidMapFormat()) {
-			setGameMapValid(true);
+			setMapValid(true);
 			loadGameMap();
 		}
 	}
-	
-	
-	
-	
 
 	/**
 	 * It does 3 map validations, 
@@ -153,7 +175,7 @@ public class GameModel {
 	}
 
 	/**
-	 * 
+	 * Checks if tags are valid
 	 * @param mapText Map file as string
 	 * @return true if all tags are correct
 	 * 
@@ -165,7 +187,7 @@ public class GameModel {
 	}
 
 	/**
-	 * 
+	 * Validates if territories are connected
 	 * @param mapText Map file as string
 	 * @return true if all territories are connected
 	 */
@@ -184,7 +206,7 @@ public class GameModel {
 	}
 
 	/**
-	 * 
+	 * Validates the whether territories belongs to the defined continents
 	 * @param mapText Map file as string
 	 * @return true if all territories belongs to the predefined continents.
 	 */
@@ -205,9 +227,7 @@ public class GameModel {
 			}
 			else if (!line.equals("") && !line.trim().equals("[Territories]")
 					&& isTerritory) {
-				//System.out.println(continentsList.stream().map(x->x.toString()).collect(Collectors.toList()));
-				//System.out.println(" line = "+line);
-				if (!continentsList.contains(line.split(",")[3]))
+				if (line.split(",").length > 3 && !continentsList.contains(line.split(",")[3]))
 					return false;
 			}
 		}
@@ -219,8 +239,12 @@ public class GameModel {
 	 */
 	public void loadGameMap() {
 		try {
-			mapInputFile = new File(Utility.getMapPath("World.map"));
-			Scanner scn = new Scanner(mapInputFile);
+			if(isBaseMapModified) {
+				mapFileStream = new File(Utility.getMapPath(fileName));
+			} else {
+				mapFileStream = new File(Utility.getMapPath("World.map"));
+			}
+			Scanner scn = new Scanner(mapFileStream);
 			String name;
 			int id, score, x_pos, y_pos;
 			boolean isContinentsDone = false;
@@ -258,8 +282,8 @@ public class GameModel {
 							for(int i=0;i<continents.size();i++) {
 								if(continents.elementAt(i).getName().matches(str[3])) {
 									TerritoryModel territory = new TerritoryModel(id, name, x_pos, y_pos, 
-											continents.elementAt(i).getId(), continents.elementAt(i));
-									Territories.addElement(territory);
+											continents.elementAt(i));
+									territories.addElement(territory);
 									continents.elementAt(i).addTerritory(territory);
 								}
 							}
@@ -268,7 +292,7 @@ public class GameModel {
 				}
 			}
 
-			scn = new Scanner(mapInputFile);
+			scn = new Scanner(mapFileStream);
 			while(scn.hasNextLine()) {
 				line = scn.nextLine();
 				if (line.equals("[Territories]")) {
@@ -279,16 +303,16 @@ public class GameModel {
 							Vector<Integer> adjacentTerritoryIDs = new Vector<>();
 							Vector<TerritoryModel> adjacentTerritories = new Vector<>();
 							for(int i=4;i<str.length;i++) {
-								for(int j=0;j<Territories.size();j++) {
-									if(Territories.elementAt(j).getName().matches(str[i])) {
-										adjacentTerritoryIDs.add(Territories.elementAt(j).getId());
-										adjacentTerritories.add(Territories.elementAt(j));
+								for(int j=0;j<territories.size();j++) {
+									if(territories.elementAt(j).getName().matches(str[i])) {
+										adjacentTerritoryIDs.add(territories.elementAt(j).getId());
+										adjacentTerritories.add(territories.elementAt(j));
 									}
 								}
 							}
-							for(int i=0;i<Territories.size();i++) {
-								if(Territories.elementAt(i).getName().matches(str[0])) {
-									Territories.elementAt(i).setAdjacentTerritories(adjacentTerritories);
+							for(int i=0;i<territories.size();i++) {
+								if(territories.elementAt(i).getName().matches(str[0])) {
+									territories.elementAt(i).setAdjacentTerritories(adjacentTerritories);
 								}
 							}
 						}
@@ -298,6 +322,249 @@ public class GameModel {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * Distribute armies between players
+	 */
+	private void distributeArmies() {
+		int armies = playerArmyMap.get(players.size());
+		for(PlayerModel playerModel:players) {
+			playerModel.addArmies(armies);
+		}
+	}
+
+	/**
+	 * Assign territories to players
+	 */
+	private void assignTerritories() {
+		TerritoryModel territoryModel;
+		while((territoryModel = getUnoccupiedTerritory()) != null) {
+			occupyTerritory(territoryModel, currentPlayer);
+			nextPlayer();
+		}
+	}
+
+	/**
+	 * Gets the unoccupied territory
+	 * @return unoccupied territory
+	 */
+	private TerritoryModel getUnoccupiedTerritory() {
+		for(TerritoryModel model:territories) {
+			if(!model.isOccupied()) {
+				return model;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Player occupies a territory
+	 * @param territoryModel
+	 * @param playerModel
+	 */
+	private void occupyTerritory(TerritoryModel territoryModel, PlayerModel playerModel) {
+		territoryModel.setPlayerModel(playerModel);
+		playerModel.addOccupiedTerritory(territoryModel);
+		territoryModel.addArmy();
+		playerModel.looseArmy();
+	}
+
+	/**
+	 * Add an army on a territory from an occupied player
+	 * @param territoryModel
+	 * @param playerModel
+	 */
+	private void addArmyOnOccupiedTerritory(TerritoryModel territoryModel, PlayerModel playerModel) {
+		territoryModel.addArmy();
+		playerModel.looseArmy();
+	}
+
+	/**
+	 * Changes the current player to next player
+	 */
+	public void nextPlayer() {
+		if(currentPlayer == players.lastElement()) {
+			currentPlayer = players.firstElement();
+		} else {
+			int playerNo = currentPlayer.getId();
+			currentPlayer = players.get(++playerNo);
+		}
+	}
+
+	/**
+	 * Add player to the existing player list
+	 * @param id player id
+	 * @param name player name
+	 */
+	public void addPlayer(int id, String name) {
+		players.add(new PlayerModel(id, name));
+	}
+
+	/**
+	 * Phase change notification
+	 */
+	public void notifyPhaseChange() {
+		if (this.mainMapPanel != null && this.subMapPanel != null) {
+			this.mainMapPanel.repaint();
+			this.subMapPanel.repaint();
+		}
+	}
+
+	/**
+	 * Game phase setup done for each player at the start of the turn
+	 * @param x_coordinate
+	 * @param y_coordinate
+	 */
+	public void gamePhasePlayerTurnSetup(int x_coordinate, int y_coordinate) {
+		TerritoryModel territoryModel = getMapLocation(x_coordinate, y_coordinate);
+		if(territoryModel!=null) {
+			System.out.println("selected territory name = "+territoryModel.getName()+" occupied by = "+territoryModel.getPlayerModel().getName());
+			switch(getState()) {
+			case Constants.INITIAL_RE_ENFORCEMENT_PHASE:
+				if(territoryModel.getPlayerModel().getId() == currentPlayer.getId()) {
+					addArmyOnOccupiedTerritory(territoryModel, currentPlayer);
+					nextPlayer();
+				}
+				int index = 0;
+				for(PlayerModel playerModel:players) {
+					if(playerModel.getArmies() == 0) {
+						index++;
+					}
+				}
+
+				if (index == players.size()) {
+					setState(Constants.START_TURN);
+					System.out.println("status " + getState());
+				}
+				break;
+			case Constants.RE_ENFORCEMENT_PHASE:
+				if(territoryModel.getPlayerModel().getId() == currentPlayer.getId()) {
+					addArmyOnOccupiedTerritory(territoryModel, currentPlayer);
+					if(currentPlayer.getArmies() == 0) {
+						setState(Constants.ACTIVE_TURN);
+					}
+				}  
+				break;
+			}
+		}
+	}
+
+	/**
+	 * Final modifications done by the current player
+	 * @param x_coordinate
+	 * @param y_coordinate
+	 * @return status to display on game screen
+	 */
+	public String gamePhaseActivePlayerFinalModification(int x_coordinate, int y_coordinate) {
+		TerritoryModel territoryModel = getMapLocation(x_coordinate, y_coordinate);
+		if(territoryModel != null) {
+			System.out.println(" territory model name = "+territoryModel.getName());
+			if (getState() == Constants.FORTIFICATION_PHASE || getState() == Constants.FORTIFYING_PHASE) {
+				return currentPlayer.fortify(this, territoryModel);
+			} 
+		}
+		return "";
+	}
+
+	/**
+	 * Move armies from one territory to other
+	 * @return true if moving successful
+	 */
+	public boolean moveArmies() {
+		if(moveArmiesFromTerritory.getArmies() > noOfArmiesToMove) {
+			moveArmiesToTerritory.addArmies(noOfArmiesToMove);
+			moveArmiesFromTerritory.looseArmies(noOfArmiesToMove);
+			noOfArmiesToMove = 0;
+			return true;
+		} 
+		return false;
+	}
+
+	/**
+	 * Add turn bonus to current player
+	 */
+	public void addTurnBonusToCurrentPlayer() {
+		int bonus = territoryBonus()+continentBonus();
+		currentPlayer.addArmies(bonus);
+	}
+
+	/**
+	 * API to calculate territory bonus for current player
+	 * @return no of armies as bonus
+	 */
+	public int territoryBonus() {
+		double bonus = 0;
+		if(currentPlayer.getOccupiedTerritories().size() < 9) {
+			bonus = 3;
+		} else {
+			bonus = Math.floor(currentPlayer.getOccupiedTerritories().size() / 3);
+		}
+		return (int) bonus;
+	}
+
+	/**
+	 * API to calculate continent bonus for current player
+	 * @return no of armies as bonus
+	 */
+	public int continentBonus() {
+		int bonus = 0;
+		for(ContinentModel continentModel:continents) {
+			if(continentModel.isContinentOccupiedBy(currentPlayer)) {
+				bonus += continentModel.getScore();
+			}
+		}
+		return bonus;
+	}
+
+	/**
+	 * To find out the territory location by coordinates
+	 * @param x_coordinate
+	 * @param y_coordinate
+	 * @return TerritoryModel corresponding to the co_odinates
+	 */
+	public TerritoryModel getMapLocation(int x_coordinate, int y_coordinate) {
+		TerritoryModel territoryModel = null;
+		int size = 30;
+		for(TerritoryModel territory:territories) {
+			if(Math.abs(territory.getX_pos()-x_coordinate) <= size || Math.abs(x_coordinate-territory.getX_pos()) <= size) {
+				if(Math.abs(territory.getY_pos()-y_coordinate) <= size || Math.abs(y_coordinate-territory.getY_pos()) <= size) {
+					territoryModel = territory;
+				}
+			}
+		}
+		return territoryModel;
+	}
+
+	/**
+	 * To get current state in a string format
+	 * @return current state as string
+	 */
+	public String getStateAsString() {
+		String stateString;
+		switch(getState()) {
+		case Constants.NEW_GAME :
+			stateString = Constants.NEW_GAME_MESSAGE;
+			break;
+		case Constants.INITIAL_RE_ENFORCEMENT_PHASE :
+			stateString = Constants.INITIAL_RE_ENFORCEMENT_PHASE_MESSAGE;
+			break;
+		case Constants.RE_ENFORCEMENT_PHASE :
+			stateString = Constants.REINFORCEMENT_PHASE_MESSAGE;
+			break;
+		case Constants.ATTACK_PHASE :
+			stateString = Constants.ATTACK_PHASE_MESSAGE;
+			break;
+		case Constants.FORTIFICATION_PHASE :
+		case Constants.FORTIFYING_PHASE:
+		case Constants.FORTIFY_PHASE:
+			stateString = Constants.FORTIFICATION_PHASE_MESSAGE;
+			break;
+		default :
+			stateString = "";
+			break;
+		}
+		return stateString;
 	}
 
 	/**
@@ -359,8 +626,8 @@ public class GameModel {
 	 * Prints all territories with its details
 	 */
 	public void printTerritories() {
-		for(int i=0;i<Territories.size();i++) {
-			System.out.println(Territories.get(i).printTerritory());
+		for(int i=0;i<territories.size();i++) {
+			System.out.println(territories.get(i).printTerritory());
 		}
 		System.out.println();
 	}
@@ -375,4 +642,227 @@ public class GameModel {
 		System.out.println();
 	}
 
+	/**
+	 * Set current player
+	 */
+	private void initCurrentPlayer() {
+		currentPlayer = players.firstElement();
+	}
+
+	/**
+	 * @return the isMapFileModified
+	 */
+	public boolean isMapFileModified() {
+		return isBaseMapModified;
+	}
+
+	/**
+	 * @return the fileName
+	 */
+	public String getFileName() {
+		return fileName;
+	}
+
+	/**
+	 * @return the gameState
+	 */
+	public int getState() {
+		return state;
+	}
+
+	/**
+	 * @param gameState the gameState to set
+	 */
+	public void setState(int gameState) {
+		this.state = gameState;
+	}
+
+	/**
+	 * @return the isValidGameMap
+	 */
+	public boolean isMapValid() {
+		return isGameMapValid;
+	}
+
+	/**
+	 * @param isValidGameMap the isValidGameMap to set
+	 */
+	public void setMapValid(boolean isValidGameMap) {
+		this.isGameMapValid = isValidGameMap;
+	}
+
+	/**
+	 * @return the baseMapString
+	 */
+	public StringBuilder getBaseMapString() {
+		return baseMapString;
+	}
+
+	/**
+	 * @param baseMapString the baseMapString to set
+	 */
+	public void setBaseMapString(StringBuilder baseMapString) {
+		this.baseMapString = baseMapString;
+	}
+
+	/**
+	 * @return the modifiedMapString
+	 */
+	public StringBuilder getModifiedMapString() {
+		return modifiedMapString;
+	}
+
+	/**
+	 * @return the mapFileStream
+	 */
+	public File getMapFileStream() {
+		return mapFileStream;
+	}
+
+	/**
+	 * @param mapFileStream the mapFileStream to set
+	 */
+	public void setMapFileStream(File mapFileStream) {
+		this.mapFileStream = mapFileStream;
+	}
+
+	/**
+	 * @return the continents
+	 */
+	public Vector<ContinentModel> getContinents() {
+		return continents;
+	}
+
+	/**
+	 * @param continents the continents to set
+	 */
+	public void setContinents(Vector<ContinentModel> continents) {
+		this.continents = continents;
+	}
+
+	/**
+	 * @return the territories
+	 */
+	public Vector<TerritoryModel> getTerritories() {
+		return territories;
+	}
+
+	/**
+	 * @param territories the territories to set
+	 */
+	public void setTerritories(Vector<TerritoryModel> territories) {
+		this.territories = territories;
+	}
+
+	/**
+	 * @return the players
+	 */
+	public static Vector<PlayerModel> getPlayers() {
+		return players;
+	}
+
+	/**
+	 * @param players the players to set
+	 */
+	public static void setPlayers(Vector<PlayerModel> players) {
+		GameModel.players = players;
+	}
+
+	/**
+	 * @return the currentPlayer
+	 */
+	public PlayerModel getCurrentPlayer() {
+		return currentPlayer;
+	}
+
+	/**
+	 * @param currentPlayer the currentPlayer to set
+	 */
+	public void setCurrentPlayer(PlayerModel currentPlayer) {
+		this.currentPlayer = currentPlayer;
+	}
+
+	/**
+	 * @return the imageSelected
+	 */
+	public static String getImageSelected() {
+		return imageSelected;
+	}
+
+	/**
+	 * @param imageSelected the imageSelected to set
+	 */
+	public static void setImageSelected(String imageSelected) {
+		GameModel.imageSelected = imageSelected;
+	}
+
+	/**
+	 * @return the mainMapPanel
+	 */
+	public JPanel getMainMapPanel() {
+		return mainMapPanel;
+	}
+
+	/**
+	 * @param mainMapPanel the mainMapPanel to set
+	 */
+	public void setMainMapPanel(JPanel mainMapPanel) {
+		this.mainMapPanel = mainMapPanel;
+	}
+
+	/**
+	 * @return the subMapPanel
+	 */
+	public JPanel getSubMapPanel() {
+		return subMapPanel;
+	}
+
+	/**
+	 * @param subMapPanel the subMapPanel to set
+	 */
+	public void setSubMapPanel(JPanel subMapPanel) {
+		this.subMapPanel = subMapPanel;
+	}
+
+	/**
+	 * @return the moveFromTerritory
+	 */
+	public TerritoryModel getMoveArmiesFromTerritory() {
+		return moveArmiesFromTerritory;
+	}
+
+	/**
+	 * @param moveFromTerritory the moveFromTerritory to set
+	 */
+	public void setMoveArmiesFromTerritory(TerritoryModel moveFromTerritory) {
+		this.moveArmiesFromTerritory = moveFromTerritory;
+	}
+
+	/**
+	 * @return the moveToTerritory
+	 */
+	public TerritoryModel getMoveArmiesToTerritory() {
+		return moveArmiesToTerritory;
+	}
+
+	/**
+	 * @param moveToTerritory the moveToTerritory to set
+	 */
+	public void setMoveArmiesToTerritory(TerritoryModel moveToTerritory) {
+		this.moveArmiesToTerritory = moveToTerritory;
+	}
+
+	/**
+	 * @return the noOfArmiesToMove
+	 */
+	public int getNoOfArmiesToMove() {
+		return noOfArmiesToMove;
+	}
+
+	/**
+	 * @param noOfArmiesToMove the noOfArmiesToMove to set
+	 */
+	public void setNoOfArmiesToMove(int noOfArmiesToMove) {
+		this.noOfArmiesToMove = noOfArmiesToMove;
+	}
 }

@@ -4,90 +4,81 @@ import java.util.Vector;
 import java.util.stream.Collectors;
 
 /**
- * 
- * @author Team
  * Territory details
+ * @author Team
  *
  */
 public class TerritoryModel {
+	
+	/** territory id */
 	private int id;
-	private int Armies;
-	private PlayerModel playermodel;
+	
+	/** territory name */
 	private String name;
+	
+	/** territory x position */
 	private int x_pos;
+	
+	/** territory y position */
 	private int y_pos;
-	private int continentID;
+	
+	/** continent it belongs to */
 	private ContinentModel continent;
+	
+	/** adjacent territories it connected to */
 	private Vector<TerritoryModel> adjacentTerritories;
+	
+	/** Player occupied this territory */
+	private PlayerModel playerModel;
+	
+	/** no of armies on this territory */
+	private int armies;
 
 	/**
-	 * 
-	 * @param id
-	 * @param name
-	 * @param x_pos
-	 * @param y_pos
-	 * @param continentID
-	 * @param continent
+	 * Constructor with five parameters
+	 * @param id territory id
+	 * @param name territory name
+	 * @param x_pos territory x position
+	 * @param y_pos territory y position
+	 * @param continent continent it belongs to
 	 */
-	public TerritoryModel(int id, String name, int x_pos, int y_pos, int continentID, ContinentModel continent) {
+	public TerritoryModel(int id, String name, int x_pos, int y_pos, ContinentModel continent) {
 		this.id = id;
 		this.name = name;
 		this.x_pos = x_pos;
 		this.y_pos = y_pos;
-		this.continentID = continentID;
 		this.continent = continent;
 		adjacentTerritories = new Vector<>();
 	}
 
 	/**
-	 * 
-	 * @param id
-	 * @param name
-	 * @param x_pos
-	 * @param y_pos
-	 * @param continentID
-	 * @param continent
-	 * @param adjacentTerritoryIDs
-	 * @param adjacentTerritories
+	 * Constructor with six parameters
+	 * @param id territory id
+	 * @param name territory name
+	 * @param x_pos territory x position
+	 * @param y_pos territory y position
+	 * @param continent continent it belongs to
+	 * @param adjacentTerritories list of adjacent territories
 	 */
 	public TerritoryModel(int id, String name, int x_pos, int y_pos, 
-			int continentID, ContinentModel continent, 
-			Vector<Integer> adjacentTerritoryIDs, Vector<TerritoryModel> adjacentTerritories) {
-		this(id, name, x_pos, y_pos, continentID, continent);
+			ContinentModel continent, 
+			Vector<TerritoryModel> adjacentTerritories) {
+		this(id, name, x_pos, y_pos, continent);
 		this.adjacentTerritories = adjacentTerritories;
 	}
-	
-	
-	/**
-	 * @return the Armies
-	 */
-	public int getArmies() {
-		return Armies;
-	}
 
 	/**
-	 * Sets the Armies
-	 * @param armies
+	 * Checks whether is territory occupied
+	 * @return boolean
 	 */
-	public void setArmies(int armies) {
-		Armies = armies;
+	public boolean isOccupied() {
+		boolean isOccupied = true;
+		if(playerModel == null) {
+			isOccupied = false;
+		}
+		return isOccupied;
 	}
 	
-	/**
-	 * @return the PlayerModel object
-	 */
-	public PlayerModel getPlayerModel() {
-		return playermodel;
-	}
-	
-	/**
-	 * Sets the PlayerModel Object
-	 * @param playermodel
-	 */
-	public void setPlayerModel(PlayerModel playermodel) {
-		this.playermodel = playermodel;
-	}
-
 	/**
 	 * @return the id
 	 */
@@ -145,20 +136,6 @@ public class TerritoryModel {
 	}
 
 	/**
-	 * @return the continentID
-	 */
-	public int getContinentID() {
-		return continentID;
-	}
-
-	/**
-	 * @param continentID the continentID to set
-	 */
-	public void setContinentID(int continentID) {
-		this.continentID = continentID;
-	}
-
-	/**
 	 * @return the continent
 	 */
 	public ContinentModel getContinent() {
@@ -186,9 +163,71 @@ public class TerritoryModel {
 		this.adjacentTerritories = adjacentTerritories;
 	}
 
+	/**
+	 * @return the playerModel
+	 */
+	public PlayerModel getPlayerModel() {
+		return playerModel;
+	}
+
+	/**
+	 * @param playerModel the playerModel to set
+	 */
+	public void setPlayerModel(PlayerModel playerModel) {
+		this.playerModel = playerModel;
+	}
+
+	/**
+	 * @return the armies
+	 */
+	public int getArmies() {
+		return armies;
+	}
+
+	/**
+	 * @param armies the armies to set
+	 */
+	public void setArmies(int armies) {
+		this.armies = armies;
+	}
+	
+	/**
+	 * 
+	 * @param armies
+	 */
+	public void addArmies(int armies) {
+		this.armies += armies;
+	}
+	
+	/**
+	 * 
+	 * @param armies
+	 */
+	public void looseArmies(int armies) {
+		this.armies -= armies;
+	}
+	
+	/**
+	 * add an army
+	 */
+	public void addArmy() {
+		armies++;
+	}
+	
+	/**
+	 * loose an army
+	 */
+	public void looseArmy() {
+		armies--;
+	}
+
+	/**
+	 * Print all territory details
+	 * @return territory details as string
+	 */
 	public String printTerritory() {
 		return "territory_id = "+this.id+" , t_name = "
-				+this.name+", t_continent_id = "+this.continentID + " Adjasent territory id = "
+				+this.name+", t_continent_id = "+continent.getId() + " Adjasent territory id = "
 				+adjacentTerritories.stream().map(x->x.toString()).collect(Collectors.toList())
 				+" name = "
 				+adjacentTerritories.stream().map(x->x.getName()).collect(Collectors.toList());

@@ -4,19 +4,26 @@ import java.util.Vector;
 import java.util.stream.Collectors;
 
 /**
- * 
- * @author Team
  * Continent details
+ * @author Team
  * 
  */
 public class ContinentModel {
+	
+	/** continent id */
 	private int id;
+	
+	/** continent name */
 	private String name;
+	
+	/** score of the continent */
 	private int score;
+	
+	/** territories belongs to this continent */
 	private Vector<TerritoryModel> territories;
 	
 	/**
-	 * 
+	 * Constructor with three parameters
 	 * @param id
 	 * @param name
 	 * @param score
@@ -28,17 +35,33 @@ public class ContinentModel {
 	}
 	
 	/**
-	 * 
+	 * Constructor with four parameters
 	 * @param id
 	 * @param name
 	 * @param score
 	 * @param territoryIDs
 	 * @param territories
 	 */
-	public ContinentModel(int id, String name, int score, Vector<Integer> territoryIDs,
+	public ContinentModel(int id, String name, int score,
 			Vector<TerritoryModel> territories) {
 		this(id, name, score);
 		this.territories = territories;
+	}
+	
+	/**
+	 * Validates the continent occupied status
+	 * @param playerModel
+	 * @return true if occupied else false
+	 */
+	public boolean isContinentOccupiedBy(PlayerModel playerModel) {
+		boolean isOccupied = true;
+		for(TerritoryModel territoryModel:territories) {
+			if(territoryModel.getPlayerModel().getId() != playerModel.getId()) {
+				isOccupied = false;
+				break;
+			}
+		}
+		return isOccupied;
 	}
 	
 	/**
@@ -98,7 +121,7 @@ public class ContinentModel {
 	}
 
 	/**
-	 * 
+	 * Adds territory to the list of occupied territory
 	 * @param territory add territory to the list
 	 */
 	public void addTerritory(TerritoryModel territory) {
@@ -109,8 +132,7 @@ public class ContinentModel {
 	}
 	
 	/**
-	 * 
-	 * @return Continent in string format
+	 * @return Continent details as string
 	 */
 	public String printContinent() {
 		return "id = "+this.id+", name = "+this.name+", score = "+this.score+", territories = "

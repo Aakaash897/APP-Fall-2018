@@ -26,7 +26,7 @@ public class PlayerSettingsController {
 	public PlayerSettingsView playerSettingsView;
 
 	/**
-	 * Constructor
+	 * Default Constructor which also initializes player settings view
 	 */
 	public PlayerSettingsController() {
 		new PlayerSettingsView(this).setVisible(true);
@@ -39,6 +39,7 @@ public class PlayerSettingsController {
 	public void finishActionPerformed(ActionEvent evt) {
 		setPlayers();
 		playerSettingsView.setVisible(false);
+		GameController.showGUI();
 	}
 	
 	/**
@@ -89,7 +90,7 @@ public class PlayerSettingsController {
 			GameModel.imageSelected="Europe.bmp";
 			break;
 		case "UserDefined":
-			GameModel.imageSelected="ABC_Map.bmp";
+			GameModel.imageSelected="blank.png";
 			break;
 		}
 	}

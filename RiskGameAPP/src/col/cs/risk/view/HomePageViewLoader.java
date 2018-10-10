@@ -2,38 +2,33 @@ package col.cs.risk.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Frame;
 import java.awt.IllegalComponentStateException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
 
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import col.cs.risk.controller.StartGameController;
 import col.cs.risk.helper.Utility;
 
 /**
- * 
- * @author Team Loads the home page
+ * Loads the home page
+ * @author Team 
  *
  */
-public class HomePageViewLoader extends Frame {
+public class HomePageViewLoader extends JFrame {
 
-	/**
-	 * Serial version id
-	 */
+	/** Serial version id */
 	private static final long serialVersionUID = 5937936098745280534L;
 
 	/** Initial game panel */
@@ -54,16 +49,22 @@ public class HomePageViewLoader extends Frame {
 	/** game image */
 	private JLabel gameImage;
 
-	/**
-	 * Game controller
-	 */
+	/** Game controller */
 	private StartGameController startController;
 
 	/**
-	 * Utility Object
+	 * Default Constructor
 	 */
-
+	public HomePageViewLoader() {
+		setTitle("Game home page");
+	}
+	
+	/**
+	 * Constructor with one parameter
+	 * @param gameController
+	 */
 	public HomePageViewLoader(StartGameController gameController) {
+		this();
 		this.startController = gameController;
 		gameController.setHomePageViewLoader(this);
 		initComponents();
@@ -138,9 +139,9 @@ public class HomePageViewLoader extends Frame {
 	}
 
 	/**
-	 * 
+	 * Loads the Game home page
 	 * @param startController
-	 *            Loads the Game home page
+	 *           
 	 */
 	private void loadHomePage() {
 
