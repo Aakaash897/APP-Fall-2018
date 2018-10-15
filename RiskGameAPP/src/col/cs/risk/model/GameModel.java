@@ -84,7 +84,7 @@ public class GameModel {
 	{
 		playerArmyMap = new HashMap<>();
 		playerArmyMap.put(2, 40);
-		playerArmyMap.put(3, 15);
+		playerArmyMap.put(3, 35);
 		playerArmyMap.put(4, 30);
 		playerArmyMap.put(5, 25);
 		playerArmyMap.put(6, 20);
@@ -227,7 +227,7 @@ public class GameModel {
 			}
 			else if (!line.equals("") && !line.trim().equals("[Territories]")
 					&& isTerritory) {
-				if (line.split(",").length > 3 && !continentsList.contains(line.split(",")[3]))
+				if (line.split(",").length < 4 || !continentsList.contains(line.split(",")[3]))
 					return false;
 			}
 		}
