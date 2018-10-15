@@ -7,8 +7,6 @@ import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileWriter;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -17,24 +15,35 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-/**
- * 
- * @author Team-25
- * Creates New Map
- *
- */
-import col.cs.risk.helper.Utility;
+import col.cs.risk.controller.StartGameController;
 
 public class ConstructNewMapView extends JFrame
 {
-    /** StringBuilder to add Contents to a File */
-	StringBuilder mapString;
+	/** StringBuilder to add Contents to a File */
+	//StringBuilder mapString;
 
-	private static JTextArea territories_txtArea;
+	/** To show error status */
+	private JTextArea errorStatus;
 
+	/** StartGameController instance */
+	private StartGameController startGameController;
+
+	/**
+	 * Constructor
+	 */
 	public ConstructNewMapView() {
-		/** Main Frame to create a Map */
-		new JFrame("Conquer Game");
+		setTitle("Conquer Game");
+	}
+
+	/**
+	 * Constructor
+	 * @param startGameController
+	 */
+	public ConstructNewMapView(StartGameController startGameController) {
+		this();
+		this.startGameController = startGameController;
+		startGameController.setConstructNewMapView(this);
+		setVisible(true);
 		createMap();
 	}
 
@@ -52,6 +61,16 @@ public class ConstructNewMapView extends JFrame
 		JComboBox year;
 		JButton create_btn;
 		JButton format_btn;
+
+		errorStatus = new JTextArea();
+		errorStatus.setName("errorStatus");
+		errorStatus.setEditable(false);
+		errorStatus.setVisible(false);
+		errorStatus.setBounds(400,600,600,28);
+		errorStatus.setBackground(Color.RED);
+		errorStatus.setWrapStyleWord(true);
+		errorStatus.setLineWrap(true);
+
 		/** ---------------------------------- Creating JFrame -------------------------------------------------------- */
 		/** Creating a frame using JFrame class	*/ 
 		setVisible(true);
@@ -147,33 +166,18 @@ public class ConstructNewMapView extends JFrame
 				String line = map_txtArea.getText();
 				String line1 = continents_txtArea.getText();
 				String line2 = territories_txtArea.getText();
-				mapString = new StringBuilder();
-				mapString.append("[Map]\n");
-				mapString.append(line+"\n\n");
-				mapString.append("[Continents]\n");
-				mapString.append(line1+"\n\n");
-				mapString.append("[Territories]\n");
-				mapString.append(line2+"\n\n");
-				try
-				{
-					FileWriter fw = new FileWriter(new File(Utility.getMapPath("currMap.map")));
-					fw.write(mapString.toString());
-					fw.close();
-				}
-				catch(Exception e)
-				{
-					e.printStackTrace();
-				}
-			}	
+				startGameController.actionPerformedOnMapCreateButton(line, line1, line2);
+			}
 		});
+
 		/**  Adding ActionListener on format button */
 		format_btn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent event){
 				format_action(event);
 			}	
 		});
-		/** Applying Global Font on all the Components */
 
+		/** Applying Global Font on all the Components */
 		map_lbl.setFont(f);
 		continent_lbl.setFont(f);
 		territories_lbl.setFont(f);
@@ -183,6 +187,7 @@ public class ConstructNewMapView extends JFrame
 		doc_lbl.setFont(f);
 		create_btn.setFont(f1);
 		format_btn.setFont(f1);
+		errorStatus.setFont(f);
 
 		/** Adding components to the container */ 
 
@@ -200,7 +205,19 @@ public class ConstructNewMapView extends JFrame
 		c.add(year);
 		c.add(create_btn);
 		c.add(format_btn);
+		c.add(errorStatus);
 	}
+
+	/**
+	 * Display error message
+	 * @param errorMessage
+	 */
+	public void setErrorStatus(String errorMessage) {
+		errorStatus.setText(errorMessage);
+		errorStatus.setVisible(true);
+		repaint();
+	}
+
 	/**
 	 * Loads a new Frame that has Map Format on pressing Format button on Create Map Frame
 	 * @param event
