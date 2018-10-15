@@ -70,8 +70,9 @@ public class PlayerSettingsView extends Frame {
 			}
 		});
 
-		Integer[] playersList = {3, 4, 5, 6};
+		Integer[] playersList = {2, 3, 4, 5, 6};
 		JComboBox<Integer> players = new JComboBox<>(playersList);
+		players.setSelectedItem(3);
 		players.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
