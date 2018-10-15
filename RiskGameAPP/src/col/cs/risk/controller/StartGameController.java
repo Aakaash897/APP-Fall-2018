@@ -27,7 +27,7 @@ public class StartGameController{
 	private HomePageViewLoader homePageViewLoader;
 	
 	/** Load Existing Map View */
-	private LoadExistingMapView loadingExistingMapView;
+	private LoadExistingMapController loadExistingMapController;
 	
 	/** Map construction/modification Page View */
 	private MapConstructionView mapConstructionView;
@@ -40,7 +40,7 @@ public class StartGameController{
 	 */
 	public StartGameController() {
 		new HomePageViewLoader(this).setVisible(true);
-		new LoadExistingMapView(this);
+		new LoadExistingMapController(this);
 	}
 	
 	/**
@@ -95,26 +95,26 @@ public class StartGameController{
 	}
 
 	/**
-	 * Gets LoadExistingMapView instance
-	 * @return LoadExistingMapView instance
-	 */
-	public LoadExistingMapView getLoadingExistingMapView() {
-		return loadingExistingMapView;
-	}
-
-	/**
-	 * Sets LoadExistingMapView instance
-	 * @param loadingExistingMapView
-	 */
-	public void setLoadingExistingMapView(LoadExistingMapView loadingExistingMapView) {
-		this.loadingExistingMapView = loadingExistingMapView;
-	}
-
-	/**
 	 * @param homePageViewLoader the homePageViewLoader to set
 	 */
 	public void setHomePageViewLoader(HomePageViewLoader homePageViewLoader) {
 		this.homePageViewLoader = homePageViewLoader;
+	}
+
+	/**
+	 * @return the LoadExistingMapViewContorller
+	 */
+	public LoadExistingMapController getLoadExistingMapController() {
+		return loadExistingMapController;
+	}
+
+
+	/**
+	 * Sets LoadExistingMapController instance
+	 * @param loadingExistingMapController
+	 */
+	public void setLoadExistingMapController(LoadExistingMapController loadExistingMapController) {
+		this.loadExistingMapController = loadExistingMapController;
 	}
 
 	/**
@@ -152,7 +152,7 @@ public class StartGameController{
 	 */
 	public void loadExistingMapButtonActionPerformed(ActionEvent event) {
 		System.out.println(" Load Existing Map button pressed ");
-		loadingExistingMapView.openFileChooser();
+		loadExistingMapController.openFileChooserFromView();
 	}
 
 	/**
@@ -180,7 +180,7 @@ public class StartGameController{
 	 */
 	public void modifyExistingMapButtonActionPerformed(ActionEvent event) {
 		System.out.println(" Modify Existing Map button pressed ");
-		loadingExistingMapView.showModificationView();
+		loadExistingMapController.showModificationView();
 	}
 
 	/**
