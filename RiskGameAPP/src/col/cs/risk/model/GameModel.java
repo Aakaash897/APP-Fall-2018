@@ -77,6 +77,9 @@ public class GameModel {
 
 	/** No of armies to move from one territory to another */
 	private int noOfArmiesToMove;
+	
+	/** list of unOccupied territories */
+	public Vector<TerritoryModel> unOccupiedTerritories;
 
 	/**
 	 * Instance block to fill player and army details
@@ -227,8 +230,10 @@ public class GameModel {
 			}
 			else if (!line.equals("") && !line.trim().equals("[Territories]")
 					&& isTerritory) {
-				if (line.split(",").length < 4 || !continentsList.contains(line.split(",")[3]))
-					return false;
+				if (line.split(",").length < 4 || !continentsList.contains(line.split(",")[3])) {
+					isContinentValid = false;
+					break;
+				}
 			}
 		}
 		return isContinentValid;
@@ -339,14 +344,17 @@ public class GameModel {
 	 */
 	private void assignTerritories() {
 		TerritoryModel territoryModel;
-		while((territoryModel = getUnoccupiedTerritory()) != null) {
+		if(unOccupiedTerritories == null || unOccupiedTerritories.size() == 0) {
+			unOccupiedTerritories = new Vector<>(territories);
+		}
+		while((territoryModel = getRandomUnoccupiedTerritory()) != null) {
 			occupyTerritory(territoryModel, currentPlayer);
 			nextPlayer();
 		}
 	}
 
 	/**
-	 * Gets the unoccupied territory
+	 * Gets the unoccupied territory in serial order
 	 * @return unoccupied territory
 	 */
 	private TerritoryModel getUnoccupiedTerritory() {
@@ -357,7 +365,24 @@ public class GameModel {
 		}
 		return null;
 	}
-
+	
+	/**
+	 * Gets the unOccupied territory randomly
+	 * @return TerritoryModel which is not occupied by any player else null
+	 */
+	private TerritoryModel getRandomUnoccupiedTerritory() {
+		TerritoryModel model = null;
+		while(unOccupiedTerritories.size()>0) {
+			int randomIndex = Utility.getRandomNumber(unOccupiedTerritories.size());
+			model = unOccupiedTerritories.get(randomIndex);
+			if(!model.isOccupied()) {
+				unOccupiedTerritories.remove(randomIndex);
+				break;
+			}
+		}
+		return model;
+	}
+	
 	/**
 	 * Player occupies a territory
 	 * @param territoryModel
@@ -570,10 +595,10 @@ public class GameModel {
 	/**
 	 * Writes data to file
 	 */
-	public void writeDataToFile() {
+	public void writeDataToFile(String fileName) {
 		String result = getMapContentToWrite();
 		try {
-			BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(Utility.getMapPath("output.map")));
+			BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(Utility.getMapPath(fileName)));
 			bufferedWriter.write(result);
 			bufferedWriter.close();
 		} catch (IOException e) {
@@ -591,7 +616,7 @@ public class GameModel {
 		StringBuilder result = new StringBuilder();
 		result.append("[Map]"+"\n");
 		result.append("author=Shwetha"+"\n");
-		result.append("image=output.bmp"+"\n");
+		result.append("image=currMap.jpg"+"\n");
 		result.append("wrap=no"+"\n");
 		result.append("scroll=horizontal"+"\n");
 		result.append("warn=yes"+"\n\n");

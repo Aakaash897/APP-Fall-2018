@@ -13,7 +13,6 @@ import col.cs.risk.helper.Utility;
 import col.cs.risk.model.GameModel;
 import col.cs.risk.view.ConstructNewMapView;
 import col.cs.risk.view.HomePageViewLoader;
-import col.cs.risk.view.LoadExistingMapView;
 import col.cs.risk.view.MapConstructionView;
 
 /**
@@ -46,7 +45,7 @@ public class StartGameController{
 	/**
 	 * Validates empty text
 	 * @param text
-	 * @return
+	 * @return true if empty text else false
 	 */
 	public boolean isEmptyDetails(String text) {
 		if(text.isEmpty() ) {
@@ -131,7 +130,7 @@ public class StartGameController{
 	/**
 	 * Player settings
 	 */
-	private void setPlayers() {
+	public void setPlayers() {
 		new PlayerSettingsController();
 	}
 
@@ -153,6 +152,8 @@ public class StartGameController{
 	public void loadExistingMapButtonActionPerformed(ActionEvent event) {
 		System.out.println(" Load Existing Map button pressed ");
 		loadExistingMapController.openFileChooserFromView();
+		homePageViewLoader.setVisible(false);
+		setPlayers();
 	}
 
 	/**
@@ -180,6 +181,7 @@ public class StartGameController{
 	 */
 	public void modifyExistingMapButtonActionPerformed(ActionEvent event) {
 		System.out.println(" Modify Existing Map button pressed ");
+		mapConstructionView.setVisible(false);
 		loadExistingMapController.showModificationView();
 	}
 
@@ -262,6 +264,7 @@ public class StartGameController{
 				GameModel.isBaseMapModified = true;
 				GameModel.modifiedMapString = mapString;
 				GameModel.fileName = "currMap.map";
+				GameModel.imageSelected="currMap.png";
 				setPlayers();
 			}
 			catch(Exception e)

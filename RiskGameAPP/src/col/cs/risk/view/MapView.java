@@ -157,7 +157,17 @@ public class MapView extends JFrame{
 			}
 		});
 		gameController.getMapSubPanelPlayer().add(endButton, new AbsoluteConstraints(835, 30, -1, 30));
-
+		
+		int mapHeight = gameController.getMapMainPanel().getImageHeight();
+		int gap;
+		if(mapHeight < 621) {
+			mapHeight += 30;
+			gap = 30;
+		} else {
+			mapHeight = 660;
+			gap = 20;
+		}
+		
 		GroupLayout layout = new GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
 		layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -165,9 +175,9 @@ public class MapView extends JFrame{
 				.addComponent(gameController.getMapSubPanelPlayer(), javax.swing.GroupLayout.DEFAULT_SIZE, 988, Short.MAX_VALUE));
 		layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 				.addGroup(layout.createSequentialGroup()
-						.addComponent(gameController.getMapMainPanel(), javax.swing.GroupLayout.PREFERRED_SIZE, 533,
+						.addComponent(gameController.getMapMainPanel(), javax.swing.GroupLayout.PREFERRED_SIZE, mapHeight,
 								javax.swing.GroupLayout.PREFERRED_SIZE)
-						.addGap(40)
+						.addGap(gap)
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 						.addComponent(gameController.getMapSubPanelPlayer(), javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)));
 		pack();

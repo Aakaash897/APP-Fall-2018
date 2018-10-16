@@ -4,10 +4,7 @@ import java.awt.Button;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -18,10 +15,12 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import col.cs.risk.controller.LoadExistingMapController;
-
 import col.cs.risk.helper.Utility;
+import col.cs.risk.model.GameModel;
 
 public class LoadExistingMapView {
+	
+	LoadExistingMapController loadExistingGameController;
 
 	/**
 	 * Constructor with parameters
@@ -31,7 +30,7 @@ public class LoadExistingMapView {
 	public LoadExistingMapView(LoadExistingMapController loadExistingGameController) {
 		// TODO Auto-generated constructor stub
 		loadExistingGameController.setLoadingExistingMapView(this);
-
+		this.loadExistingGameController = loadExistingGameController;
 	}
 
 	/**
@@ -40,23 +39,22 @@ public class LoadExistingMapView {
 	public void openFileChooser() {
 		File mapInputFile = null;
 		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+		fileChooser.setCurrentDirectory(new File(Utility.getResouceMapPath()));
 		FileNameExtensionFilter mapFileFilter = new FileNameExtensionFilter("Map Files", "map");
 		fileChooser.setFileFilter(mapFileFilter);
 		int result = fileChooser.showOpenDialog(null);
 
 		if (result == JFileChooser.APPROVE_OPTION) {
 			mapInputFile = fileChooser.getSelectedFile();
+			loadExistingGameController.setModelDetails(true, mapInputFile.getName());
 			Utility.saveMapFilePath(mapInputFile.getAbsolutePath());
 			Utility.saveMapString();
 
-			System.out.println("Map String" + Utility.baseMapString);
+			//System.out.println("Map String" + Utility.baseMapString);
 
 		} else if (result == JFileChooser.CANCEL_OPTION) {
 			System.out.println("No File Choosen");
 		}
-		// TODO Auto-generated method stub
-
 	}
 
 	/**
@@ -66,7 +64,6 @@ public class LoadExistingMapView {
 	 * 
 	 */
 	public void showModificationView(String choosenMapString) {
-		// TODO Auto-generated method stub
 		JFrame dataFrame = new JFrame("Main Data Show");
 		dataFrame.setLayout(new FlowLayout());
 		dataFrame.setSize(1200, 600);
@@ -82,9 +79,17 @@ public class LoadExistingMapView {
 		editPanel.add(scrollpane);
 		dataFrame.add(editPanel);
 		Button b1 = new Button("Save");
+		GameModel gameModel = new GameModel();
 		b1.addActionListener((new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String result = area.getText();
+				if(gameModel.isTagsCorrect(result) && gameModel.checkContinentsAreValid(result) 
+						&& gameModel.isAllTerritoriesConnected(result)) {
+					dataFrame.setVisible(false);
+					loadExistingGameController.actionPerformedOnSave(result);
+				} else {
+					//Show error message and do repaint
+				}
 				/**
 				 * try { BufferedWriter bufferedWriter = new BufferedWriter(new
 				 * FileWriter(choosenMapString)); bufferedWriter.write(result);
@@ -99,8 +104,13 @@ public class LoadExistingMapView {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-				System.exit(0);
+				dataFrame.setVisible(false);
+				if(gameModel.isTagsCorrect(area.getText()) && gameModel.checkContinentsAreValid(area.getText()) 
+						&& gameModel.isAllTerritoriesConnected(area.getText())) {
+					loadExistingGameController.actionPerformedOnCancel(area.getText());
+				} else {
+					loadExistingGameController.loadMapConstructionView();
+				}
 			}
 
 		});

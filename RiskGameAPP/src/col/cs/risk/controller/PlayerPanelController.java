@@ -40,7 +40,7 @@ public class PlayerPanelController extends JPanel {
 		GroupLayout layout = new GroupLayout(this);
 		this.setLayout(layout);
 		layout.setHorizontalGroup(
-				layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGap(0, 763, Short.MAX_VALUE));
+				layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGap(0, 700, Short.MAX_VALUE));
 		layout.setVerticalGroup(
 				layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGap(0, 100, Short.MAX_VALUE));		
 	}

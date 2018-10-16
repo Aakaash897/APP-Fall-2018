@@ -46,7 +46,6 @@ public class MapPanelController extends JPanel {
 		}
 		try {
 			mapImage = ImageIO.read(new File(Utility.getImagePath(mapImageName)));
-			mapImage = mapImage.getScaledInstance(900, 500, Image.SCALE_SMOOTH);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -85,7 +84,13 @@ public class MapPanelController extends JPanel {
 		
 		graphics.setFont(new Font("Verdana", Font.BOLD, 15));
 		graphics.setColor(Color.black);
-		graphics.drawString("Current state: "+gameModel.getStateAsString(), 15, 530);
+		int height = getImageHeight();
+		if(height < 621) {
+			height += 30;
+		} else {
+			height = 655;
+		}
+		graphics.drawString("Current state: "+gameModel.getStateAsString(), 10, height);
 	}
 
 	/**
@@ -200,6 +205,10 @@ public class MapPanelController extends JPanel {
 	 */
 	public void setMapImageName(String mapImageName) {
 		this.mapImageName = mapImageName;
+	}
+	
+	public int getImageHeight() {
+		return mapImage.getHeight(null);
 	}
 	
 }

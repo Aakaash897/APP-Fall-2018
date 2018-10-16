@@ -1,11 +1,14 @@
 package col.cs.risk.controller;
 
 import col.cs.risk.helper.Utility;
+import col.cs.risk.model.GameModel;
 import col.cs.risk.view.LoadExistingMapView;
 
 public class LoadExistingMapController {
 	/** Load Existing Map View */
 	private LoadExistingMapView loadingExistingMapView;
+	
+	private StartGameController startGameController;
 
 	/**
 	 * Constructor with parameters Intialize Load existing map view
@@ -13,8 +16,8 @@ public class LoadExistingMapController {
 	 * @param startGameController
 	 */
 	public LoadExistingMapController(StartGameController startGameController) {
-		// TODO Auto-generated constructor stub
 		startGameController.setLoadExistingMapController(this);
+		this.startGameController = startGameController;
 		new LoadExistingMapView(this);
 	}
 
@@ -40,16 +43,42 @@ public class LoadExistingMapController {
 	 * Open File Chooser for loading the map
 	 */
 	public void openFileChooserFromView() {
-		// TODO Auto-generated method stub
 		loadingExistingMapView.openFileChooser();
 
+	}
+	
+	public void setModelDetails(boolean isModified, String fileName) {
+		GameModel.isBaseMapModified = isModified;
+		GameModel.fileName = fileName;
+		if(fileName.equals("currMap.map")) {
+			GameModel.imageSelected = "currMap.png";
+		} else {
+			GameModel.imageSelected = fileName.replace(".map", ".bmp");
+		}
+	}
+	
+	public void actionPerformedOnSave(String result) {
+		String fileName = "currMap.map";
+		GameModel.fileName = fileName;
+		Utility.writeToFile(fileName, result);
+		startGameController.setPlayers();
+	}
+	
+	public void actionPerformedOnCancel(String result) {
+		String fileName = "currMap.map";
+		GameModel.fileName = fileName;
+		Utility.writeToFile(fileName, result);
+		startGameController.setPlayers();
+	}
+	
+	public void loadMapConstructionView() {
+		startGameController.getMapConstructionView().setVisible(true);
 	}
 
 	/**
 	 * Open File Chooser for loading and modification
 	 */
 	public void showModificationView() {
-		// TODO Auto-generated method stub
 		Utility.baseMapString = null;
 		loadingExistingMapView.openFileChooser();
 		if (Utility.baseMapString != null) {

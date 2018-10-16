@@ -81,7 +81,7 @@ public class PlayerSettingsView extends Frame {
 
 		});
 
-		String[] mapsList = {"World", "3D Cliff", "UserDefined", "India", "British Columbia", "Europe"};
+		String[] mapsList = {"World", "3D Cliff", "Mexico", "Texas", "Iceland", "India", "UserDefined"};
 		JComboBox<String> mapSelection = new JComboBox<>(mapsList);
 		mapSelection.addActionListener(new ActionListener() {
 			@Override

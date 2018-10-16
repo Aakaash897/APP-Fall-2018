@@ -74,23 +74,11 @@ public class PlayerSettingsController {
 		System.out.println(" Selected map = "+selectedMap);
 
 		switch(selectedMap) {
-		case "World": 
-			GameModel.imageSelected="World.bmp";
-			break;
-		case "3D Cliff": 
-			GameModel.imageSelected="3D Cliff.bmp";
-			break;
-		case "India": 
-			GameModel.imageSelected="India.bmp";
-			break;
-		case "British Columbia": 
-			GameModel.imageSelected="British Columbia.bmp";
-			break;
-		case "Europe": 
-			GameModel.imageSelected="Europe.bmp";
-			break;
 		case "UserDefined":
-			GameModel.imageSelected="blank.png";
+			GameModel.imageSelected = "currMap.png";
+			break;
+		default:
+			GameModel.imageSelected = selectedMap+".bmp";
 			break;
 		}
 	}
