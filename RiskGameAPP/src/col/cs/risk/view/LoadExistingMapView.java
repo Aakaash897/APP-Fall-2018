@@ -122,13 +122,6 @@ public class LoadExistingMapView {
 		});
 		dataFrame.add(b1);
 		dataFrame.add(b2);
-		/**
-		 * errorStatus = new JTextArea(); errorStatus.setName("errorStatus");
-		 * errorStatus.setEditable(false); errorStatus.setVisible(false);
-		 * errorStatus.setBounds(400,600,600,28); errorStatus.setBackground(Color.RED);
-		 * errorStatus.setWrapStyleWord(true); errorStatus.setLineWrap(true);
-		 * dataFrame.add(errorStatus); dataFrame.setVisible(true);
-		 */
 		dataFrame.setVisible(true);
 	}
 }

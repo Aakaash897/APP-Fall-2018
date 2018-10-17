@@ -43,8 +43,16 @@ public class LoadExistingMapController {
 	 * Open File Chooser for loading the map
 	 */
 	public void openFileChooserFromView() {
+		Utility.baseMapString = null;
 		loadingExistingMapView.openFileChooser();
-
+		if(Utility.baseMapString != null) 
+		{
+			startGameController.getHomePageViewLoader().setVisible(false);
+			startGameController.setPlayers();
+		}
+		else {
+			System.out.println("No File Choosen");
+		}
 	}
 	
 	public void setModelDetails(boolean isModified, String fileName) {
