@@ -17,6 +17,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import col.cs.risk.controller.LoadExistingMapController;
+import col.cs.risk.helper.MapException;
 import col.cs.risk.helper.Utility;
 import col.cs.risk.model.GameModel;
 
@@ -109,10 +110,15 @@ public class LoadExistingMapView {
 					Utility.showPopUp("Add continents which are present in the continent section");
 				} else if (!gameModel.isAllTerritoriesConnected(result)) {
 					Utility.showPopUp("Atleast add one adjacent country ");
-				} else {
-					dataFrame.setVisible(false);
-					loadExistingGameController.actionPerformedOnSave(result);
-				}
+				} else
+					try {
+						if(Utility.isConnectedMap(result)) {
+							dataFrame.setVisible(false);
+							loadExistingGameController.actionPerformedOnSave(result);
+						}
+					} catch (MapException ex) {
+						Utility.showPopUp(ex.getMessage());
+					}
 			}
 
 		}));
