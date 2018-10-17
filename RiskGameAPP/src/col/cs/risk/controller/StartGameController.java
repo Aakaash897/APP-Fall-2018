@@ -17,23 +17,24 @@ import col.cs.risk.view.MapConstructionView;
 
 /**
  * Starts the game
+ * 
  * @author Team
  *
  */
-public class StartGameController{
-	
+public class StartGameController {
+
 	/** Game home Page View */
 	private HomePageViewLoader homePageViewLoader;
-	
+
 	/** Load Existing Map View */
 	private LoadExistingMapController loadExistingMapController;
-	
+
 	/** Map construction/modification Page View */
 	private MapConstructionView mapConstructionView;
-	
+
 	/** Construct New map Page View */
 	private ConstructNewMapView constructNewMapView;
-	
+
 	/**
 	 * Starts the game page(Loads the home page) with multiple options
 	 */
@@ -41,27 +42,28 @@ public class StartGameController{
 		new HomePageViewLoader(this).setVisible(true);
 		new LoadExistingMapController(this);
 	}
-	
+
 	/**
 	 * Validates empty text
+	 * 
 	 * @param text
 	 * @return true if empty text else false
 	 */
 	public boolean isEmptyDetails(String text) {
-		if(text.isEmpty() ) {
+		if (text.isEmpty()) {
 			return true;
-		}
-		else {
-			String str = text.replaceAll("\\s+","");
-			if(str.isEmpty()) {
+		} else {
+			String str = text.replaceAll("\\s+", "");
+			if (str.isEmpty()) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Validates Single Line of text
+	 * 
 	 * @param text
 	 * @returns true if single line text else false
 	 */
@@ -70,16 +72,16 @@ public class StartGameController{
 		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 		int lineNo = 0;
 		try {
-			while(reader.readLine()!=null) {
+			while (reader.readLine() != null) {
 				lineNo++;
-				if(lineNo == 2) {
+				if (lineNo == 2) {
 					break;
 				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		if(lineNo > 1) {
+		if (lineNo > 1) {
 			return false;
 		} else {
 			return true;
@@ -94,7 +96,8 @@ public class StartGameController{
 	}
 
 	/**
-	 * @param homePageViewLoader the homePageViewLoader to set
+	 * @param homePageViewLoader
+	 *            the homePageViewLoader to set
 	 */
 	public void setHomePageViewLoader(HomePageViewLoader homePageViewLoader) {
 		this.homePageViewLoader = homePageViewLoader;
@@ -107,9 +110,9 @@ public class StartGameController{
 		return loadExistingMapController;
 	}
 
-
 	/**
 	 * Sets LoadExistingMapController instance
+	 * 
 	 * @param loadingExistingMapController
 	 */
 	public void setLoadExistingMapController(LoadExistingMapController loadExistingMapController) {
@@ -126,7 +129,7 @@ public class StartGameController{
 		setPlayers();
 		System.out.println(" Start Default Game button pressed ");
 	}
-	
+
 	/**
 	 * Player settings
 	 */
@@ -152,21 +155,24 @@ public class StartGameController{
 	public void loadExistingMapButtonActionPerformed(ActionEvent event) {
 		System.out.println(" Load Existing Map button pressed ");
 		loadExistingMapController.openFileChooserFromView();
-		homePageViewLoader.setVisible(false);
-		setPlayers();
+		/**
+		 * homePageViewLoader.setVisible(false); setPlayers();
+		 */
 	}
 
 	/**
 	 * Action performed on pressing Exit button on home page
+	 * 
 	 * @param event
 	 */
 	public void exitButtonActionPerformed(ActionEvent event) {
 		System.out.println(" Exit button pressed ");
 		System.exit(0);
 	}
-	
+
 	/**
 	 * Action performed on pressing New Map construction Button
+	 * 
 	 * @param event
 	 */
 	public void newMapButtonActionPerformed(ActionEvent event) {
@@ -177,6 +183,7 @@ public class StartGameController{
 
 	/**
 	 * Action performed on pressing Modify Existing Map Button
+	 * 
 	 * @param event
 	 */
 	public void modifyExistingMapButtonActionPerformed(ActionEvent event) {
@@ -193,7 +200,8 @@ public class StartGameController{
 	}
 
 	/**
-	 * @param mapConstructionView the mapConstructionView to set
+	 * @param mapConstructionView
+	 *            the mapConstructionView to set
 	 */
 	public void setMapConstructionView(MapConstructionView mapConstructionView) {
 		this.mapConstructionView = mapConstructionView;
@@ -207,7 +215,8 @@ public class StartGameController{
 	}
 
 	/**
-	 * @param constructNewMapView the constructNewMapView to set
+	 * @param constructNewMapView
+	 *            the constructNewMapView to set
 	 */
 	public void setConstructNewMapView(ConstructNewMapView constructNewMapView) {
 		this.constructNewMapView = constructNewMapView;
@@ -215,6 +224,7 @@ public class StartGameController{
 
 	/**
 	 * Start/Entry of the game application
+	 * 
 	 * @param args
 	 */
 	public static void main(String args[]) {
@@ -225,38 +235,41 @@ public class StartGameController{
 			}
 		});
 	}
-	
+
 	/**
 	 * Action performed on create button pressed on new map construction page
-	 * @param line Map section
-	 * @param line1 Continent section
-	 * @param line2 Country section
+	 * 
+	 * @param line
+	 *            Map section
+	 * @param line1
+	 *            Continent section
+	 * @param line2
+	 *            Country section
 	 */
 	public void actionPerformedOnMapCreateButton(String line, String line1, String line2) {
 		StringBuilder mapString = new StringBuilder();
 		mapString.append("[Map]\n");
-		mapString.append(line+"\n\n");
+		mapString.append(line + "\n\n");
 		mapString.append("[Continents]\n");
-		mapString.append(line1+"\n\n");
+		mapString.append(line1 + "\n\n");
 		mapString.append("[Territories]\n");
-		mapString.append(line2+"\n\n");
-		
+		mapString.append(line2 + "\n\n");
+
 		GameModel gameModel = new GameModel();
-		if(isEmptyDetails(line1)) {
-			constructNewMapView.setErrorStatus("Atleast add one continent ");
-		} else if(isEmptyDetails(line2)) {
-			constructNewMapView.setErrorStatus("Add countries in Territory section ");
-		} else if(!gameModel.checkContinentsAreValid(mapString.toString())) {
-			constructNewMapView.setErrorStatus("Add continents which are present in the continent section ");
-		} else if(isEmptyDetails(line1)) {
-			constructNewMapView.setErrorStatus("Add country details in country section");
-		} else if(isSingleLineText(line2)) {
-			constructNewMapView.setErrorStatus("Can't create connected map with a single country");
-		} else if(!gameModel.isAllTerritoriesConnected(mapString.toString())) {
-			constructNewMapView.setErrorStatus("Atleast add one adjacent country ");
+		if (isEmptyDetails(line1)) {
+			constructNewMapView.showErrorPopup("Atleast add one continent ");
+		} else if (isEmptyDetails(line2)) {
+			constructNewMapView.showErrorPopup("Add countries in Territory section ");
+		} else if (!gameModel.checkContinentsAreValid(mapString.toString())) {
+			constructNewMapView.showErrorPopup("Add continents which are present in the continent section ");
+		} else if (isEmptyDetails(line1)) {
+			constructNewMapView.showErrorPopup("Add country details in country section");
+		} else if (isSingleLineText(line2)) {
+			constructNewMapView.showErrorPopup("Can't create connected map with a single country");
+		} else if (!gameModel.isAllTerritoriesConnected(mapString.toString())) {
+			constructNewMapView.showErrorPopup("Atleast add one adjacent country ");
 		} else {
-			try
-			{
+			try {
 				FileWriter fw = new FileWriter(new File(Utility.getMapPath("currMap.map")));
 				fw.write(mapString.toString());
 				fw.close();
@@ -264,11 +277,9 @@ public class StartGameController{
 				GameModel.isBaseMapModified = true;
 				GameModel.modifiedMapString = mapString;
 				GameModel.fileName = "currMap.map";
-				GameModel.imageSelected="currMap.png";
+				GameModel.imageSelected = "currMap.png";
 				setPlayers();
-			}
-			catch(Exception e)
-			{
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}

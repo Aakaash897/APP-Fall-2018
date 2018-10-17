@@ -1,6 +1,7 @@
 package col.cs.risk.view;
 
 import java.awt.Button;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,20 +9,26 @@ import java.io.File;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import col.cs.risk.controller.GameController;
 import col.cs.risk.controller.LoadExistingMapController;
 import col.cs.risk.helper.Utility;
 import col.cs.risk.model.GameModel;
 
 public class LoadExistingMapView {
-	
+
 	LoadExistingMapController loadExistingGameController;
 
+	/** To show error status */
+	/**
+	 * private JTextArea errorStatus;
+	 */
 	/**
 	 * Constructor with parameters
 	 * 
@@ -49,8 +56,6 @@ public class LoadExistingMapView {
 			loadExistingGameController.setModelDetails(true, mapInputFile.getName());
 			Utility.saveMapFilePath(mapInputFile.getAbsolutePath());
 			Utility.saveMapString();
-
-			//System.out.println("Map String" + Utility.baseMapString);
 
 		} else if (result == JFileChooser.CANCEL_OPTION) {
 			System.out.println("No File Choosen");
@@ -81,23 +86,24 @@ public class LoadExistingMapView {
 		Button b1 = new Button("Save");
 		GameModel gameModel = new GameModel();
 		b1.addActionListener((new ActionListener() {
+
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				String result = area.getText();
-				if(gameModel.isTagsCorrect(result) && gameModel.checkContinentsAreValid(result) 
-						&& gameModel.isAllTerritoriesConnected(result)) {
+				if (loadExistingGameController.startGameController.isEmptyDetails(result)) {
+					Utility.showPopUp("File Should not be empty");
+				} else if (!gameModel.isTagsCorrect(result)) {
+					Utility.showPopUp("All Tags Should be there");
+				} else if (gameModel.checkContinentsAreValid(result)) {
+					Utility.showPopUp("Add continents which are present in the continent section");
+				} else if (gameModel.isAllTerritoriesConnected(result)) {
+					Utility.showPopUp("Atleast add one adjacent country ");
+				} else {
 					dataFrame.setVisible(false);
 					loadExistingGameController.actionPerformedOnSave(result);
-				} else {
-					//Show error message and do repaint
 				}
-				/**
-				 * try { BufferedWriter bufferedWriter = new BufferedWriter(new
-				 * FileWriter(choosenMapString)); bufferedWriter.write(result);
-				 * bufferedWriter.close(); } catch (IOException ex) { ex.printStackTrace(); }
-				 * 
-				 */
-
 			}
+
 		}));
 		Button b2 = new Button("Cancel");
 		b2.addActionListener(new ActionListener() {
@@ -105,7 +111,7 @@ public class LoadExistingMapView {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				dataFrame.setVisible(false);
-				if(gameModel.isTagsCorrect(area.getText()) && gameModel.checkContinentsAreValid(area.getText()) 
+				if (gameModel.isTagsCorrect(area.getText()) && gameModel.checkContinentsAreValid(area.getText())
 						&& gameModel.isAllTerritoriesConnected(area.getText())) {
 					loadExistingGameController.actionPerformedOnCancel(area.getText());
 				} else {
@@ -116,8 +122,13 @@ public class LoadExistingMapView {
 		});
 		dataFrame.add(b1);
 		dataFrame.add(b2);
+		/**
+		 * errorStatus = new JTextArea(); errorStatus.setName("errorStatus");
+		 * errorStatus.setEditable(false); errorStatus.setVisible(false);
+		 * errorStatus.setBounds(400,600,600,28); errorStatus.setBackground(Color.RED);
+		 * errorStatus.setWrapStyleWord(true); errorStatus.setLineWrap(true);
+		 * dataFrame.add(errorStatus); dataFrame.setVisible(true);
+		 */
 		dataFrame.setVisible(true);
-
 	}
-
 }

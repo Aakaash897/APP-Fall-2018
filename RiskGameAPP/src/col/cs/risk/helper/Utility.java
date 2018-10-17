@@ -8,6 +8,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Random;
 
+import javax.swing.JOptionPane;
+
 /**
  * Utility is a list of supporting APIs
  * @author Team 
@@ -112,5 +114,11 @@ public class Utility {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static void showPopUp(String errorMessage) {
+		// TODO Auto-generated method stub
+		JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+		
 	}
 }

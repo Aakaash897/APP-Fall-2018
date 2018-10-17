@@ -8,7 +8,7 @@ public class LoadExistingMapController {
 	/** Load Existing Map View */
 	private LoadExistingMapView loadingExistingMapView;
 	
-	private StartGameController startGameController;
+	public StartGameController startGameController;
 
 	/**
 	 * Constructor with parameters Intialize Load existing map view
@@ -83,6 +83,9 @@ public class LoadExistingMapController {
 		loadingExistingMapView.openFileChooser();
 		if (Utility.baseMapString != null) {
 			loadingExistingMapView.showModificationView(Utility.baseMapString.toString());
+		}
+		else {
+			System.out.println("No File Choosen");
 		}
 
 	}
