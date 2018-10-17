@@ -1,28 +1,30 @@
 package col.cs.risk.view;
 
 import java.awt.Button;
-import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import col.cs.risk.controller.GameController;
 import col.cs.risk.controller.LoadExistingMapController;
 import col.cs.risk.helper.Utility;
 import col.cs.risk.model.GameModel;
 
 public class LoadExistingMapView {
 
+	/**
+	 * LoadExistingMapController instance
+	 */
 	LoadExistingMapController loadExistingGameController;
 
 	/** To show error status */
@@ -35,7 +37,6 @@ public class LoadExistingMapView {
 	 * @param loadExistingGameController
 	 */
 	public LoadExistingMapView(LoadExistingMapController loadExistingGameController) {
-		// TODO Auto-generated constructor stub
 		loadExistingGameController.setLoadingExistingMapView(this);
 		this.loadExistingGameController = loadExistingGameController;
 	}
@@ -44,6 +45,11 @@ public class LoadExistingMapView {
 	 * Opens File Picker
 	 */
 	public void openFileChooser() {
+		try {
+			Thread.sleep(120);
+		} catch (InterruptedException e) {
+			//do nothing
+		}
 		File mapInputFile = null;
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setCurrentDirectory(new File(Utility.getResouceMapPath()));
@@ -72,7 +78,12 @@ public class LoadExistingMapView {
 		JFrame dataFrame = new JFrame("Main Data Show");
 		dataFrame.setLayout(new FlowLayout());
 		dataFrame.setSize(1200, 600);
-		dataFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		dataFrame.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent event) {
+				dataFrame.setVisible(false);
+				loadExistingGameController.exitModificaitonView();
+			}
+		});
 		JPanel editPanel = new JPanel();
 		JTextArea area = new JTextArea(17, 68);
 		area.setLineWrap(true);
@@ -94,9 +105,9 @@ public class LoadExistingMapView {
 					Utility.showPopUp("File Should not be empty");
 				} else if (!gameModel.isTagsCorrect(result)) {
 					Utility.showPopUp("All Tags Should be there");
-				} else if (gameModel.checkContinentsAreValid(result)) {
+				} else if (!gameModel.checkContinentsAreValid(result)) {
 					Utility.showPopUp("Add continents which are present in the continent section");
-				} else if (gameModel.isAllTerritoriesConnected(result)) {
+				} else if (!gameModel.isAllTerritoriesConnected(result)) {
 					Utility.showPopUp("Atleast add one adjacent country ");
 				} else {
 					dataFrame.setVisible(false);

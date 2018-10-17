@@ -5,9 +5,11 @@ import col.cs.risk.model.GameModel;
 import col.cs.risk.view.LoadExistingMapView;
 
 public class LoadExistingMapController {
+	
 	/** Load Existing Map View */
 	private LoadExistingMapView loadingExistingMapView;
 	
+	/** StartGameController instance */
 	public StartGameController startGameController;
 
 	/**
@@ -43,18 +45,21 @@ public class LoadExistingMapController {
 	 * Open File Chooser for loading the map
 	 */
 	public void openFileChooserFromView() {
+		System.out.println("LoadExistingMapController.openFileChooserFromView()");
 		Utility.baseMapString = null;
 		loadingExistingMapView.openFileChooser();
 		if(Utility.baseMapString != null) 
 		{
-			startGameController.getHomePageViewLoader().setVisible(false);
+			startGameController.setHomePageVisiblility(false);
 			startGameController.setPlayers();
-		}
-		else {
-			System.out.println("No File Choosen");
 		}
 	}
 	
+	/**
+	 * Set modified map details in game model
+	 * @param isModified
+	 * @param fileName
+	 */
 	public void setModelDetails(boolean isModified, String fileName) {
 		GameModel.isBaseMapModified = isModified;
 		GameModel.fileName = fileName;
@@ -65,6 +70,10 @@ public class LoadExistingMapController {
 		}
 	}
 	
+	/**
+	 * Action performed on save
+	 * @param result
+	 */
 	public void actionPerformedOnSave(String result) {
 		String fileName = "currMap.map";
 		GameModel.fileName = fileName;
@@ -72,13 +81,20 @@ public class LoadExistingMapController {
 		startGameController.setPlayers();
 	}
 	
+	/**
+	 * Action performed on cancel
+	 * @param result
+	 */
 	public void actionPerformedOnCancel(String result) {
 		String fileName = "currMap.map";
 		GameModel.fileName = fileName;
 		Utility.writeToFile(fileName, result);
-		startGameController.setPlayers();
+		exitModificaitonView();
 	}
 	
+	/**
+	 * Loading map construction view page
+	 */
 	public void loadMapConstructionView() {
 		startGameController.getMapConstructionView().setVisible(true);
 	}
@@ -90,12 +106,16 @@ public class LoadExistingMapController {
 		Utility.baseMapString = null;
 		loadingExistingMapView.openFileChooser();
 		if (Utility.baseMapString != null) {
+			startGameController.getMapConstructionView().setVisible(false);
 			loadingExistingMapView.showModificationView(Utility.baseMapString.toString());
 		}
-		else {
-			System.out.println("No File Choosen");
-		}
+	}
 
+	/**
+	 * Exiting map modification view
+	 */
+	public void exitModificaitonView() {
+		startGameController.getMapConstructionView().setVisible(true);
 	}
 
 }

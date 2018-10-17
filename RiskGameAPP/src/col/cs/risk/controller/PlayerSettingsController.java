@@ -24,11 +24,15 @@ public class PlayerSettingsController {
 	
 	/** player settings view instance */
 	public PlayerSettingsView playerSettingsView;
+	
+	/** Start game Controller instance */
+	private StartGameController startGameController;
 
 	/**
 	 * Default Constructor which also initializes player settings view
 	 */
-	public PlayerSettingsController() {
+	public PlayerSettingsController(StartGameController startGameController) {
+		this.startGameController = startGameController;
 		new PlayerSettingsView(this).setVisible(true);
 	}
 
@@ -123,6 +127,20 @@ public class PlayerSettingsController {
 	 */
 	public static void setSelectedMap(String selectedMap) {
 		PlayerSettingsController.selectedMap = selectedMap;
+	}
+
+	/**
+	 * @return the startGameController
+	 */
+	public StartGameController getStartGameController() {
+		return startGameController;
+	}
+
+	/**
+	 * @param startGameController the startGameController to set
+	 */
+	public void setStartGameController(StartGameController startGameController) {
+		this.startGameController = startGameController;
 	}
 
 }

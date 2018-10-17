@@ -7,6 +7,7 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JTextField;
 
+import col.cs.risk.helper.MapException;
 import col.cs.risk.model.Constants;
 import col.cs.risk.model.GameModel;
 import col.cs.risk.view.MapView;
@@ -41,19 +42,24 @@ public class GameController implements MouseListener {
 	 * @param booleans
 	 */
 	public GameController(Boolean ...booleans) {
-		gameModel = new GameModel(false);
-		initComponents();
-		new MapView(this).setVisible(true);
-		gameModel.setMainMapPanel(mapMainPanel);
-		gameModel.setSubMapPanel(mapSubPanelPlayer);
-		mapView.setTitle("Risk Conquest Game");
-		mapView.setLocationRelativeTo(null);
-		mapView.setResizable(false);
-		if(gameModel.getState() == Constants.INITIAL_RE_ENFORCEMENT_PHASE) {
-			mapView.getStatusLabel().setText(Constants.RE_ENFORCEMENT_MESSAGE);
+		try {
+			gameModel = new GameModel(false);
+			initComponents();
+			new MapView(this).setVisible(true);
+			gameModel.setMainMapPanel(mapMainPanel);
+			gameModel.setSubMapPanel(mapSubPanelPlayer);
+			mapView.setTitle("Risk Conquest Game");
+			mapView.setLocationRelativeTo(null);
+			mapView.setResizable(false);
+			if(gameModel.getState() == Constants.INITIAL_RE_ENFORCEMENT_PHASE) {
+				mapView.getStatusLabel().setText(Constants.RE_ENFORCEMENT_MESSAGE);
+			}
+			mapMainPanel.repaint();
+			mapMainPanel.addMouseListener(this);
+		} catch (MapException ex) {
+			System.out.println(ex.getMessage());
+			ex.clearHistory();
 		}
-		mapMainPanel.repaint();
-		mapMainPanel.addMouseListener(this);
 	}
 	
 	/**

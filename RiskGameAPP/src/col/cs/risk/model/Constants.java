@@ -33,5 +33,7 @@ public class Constants {
 	public static final String REINFORCE_MESSAGE = "Reinforce";
 	public static final String FORTIFY_MESSAGE = "Fortify";
 	public static final String SELECT_THE_ACTION_MESSAGE = "Click on the action you want to do";
+	public static final String NOT_A_CONNECTED_MAP_MESSAGE = "Not a connected map invalid country exists: ";
+	public static final String NOT_COMPLETE_CONNECTED_MAP_MESSAGE = "Not a completely connected map";
 
 }

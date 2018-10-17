@@ -2,13 +2,20 @@ package col.cs.risk.helper;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.Random;
 
 import javax.swing.JOptionPane;
+
+import col.cs.risk.model.Constants;
 
 /**
  * Utility is a list of supporting APIs
@@ -18,7 +25,7 @@ import javax.swing.JOptionPane;
 public class Utility {
 	/** Selected file path */
 	public static String selectedMapFilePath;
-	
+
 	/** Map string */
 	public static StringBuilder baseMapString;
 
@@ -85,6 +92,9 @@ public class Utility {
 		return new Random().nextInt(num);
 	}
 
+	/**
+	 * Saving the modified map content
+	 */
 	public static void saveMapString() {
 		baseMapString = new StringBuilder();
 		File file = new File(selectedMapFilePath);
@@ -116,9 +126,74 @@ public class Utility {
 		}
 	}
 
+	/**
+	 * Message pop up to show error message
+	 * @param errorMessage
+	 */
 	public static void showPopUp(String errorMessage) {
-		// TODO Auto-generated method stub
 		JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
-		
+	}
+
+	/**
+	 * Checks is all territories are connected
+	 * @param result
+	 * @returns true if connected
+	 * @throws MapException
+	 */
+	public static boolean isConnectedMap(String result) throws MapException {
+		try {
+			InputStream is = new ByteArrayInputStream(result.getBytes());
+			BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+			String line;
+			HashMap<String, Integer> territoryNames = new HashMap<String, Integer>();
+
+			while ((line=reader.readLine()) != null) {
+				if (line.equals("[Territories]")) {
+					while ((line=reader.readLine()) != null) {
+						if(!line.matches("")) {
+							String[] str = line.split(",");
+							territoryNames.put(str[0].trim(),0);
+						}
+					}
+					break;
+				}
+			}
+			is = new ByteArrayInputStream(result.getBytes());
+			reader = new BufferedReader(new InputStreamReader(is));
+			while ((line=reader.readLine()) != null) {
+				if (line.equals("[Territories]")) {
+					while ((line=reader.readLine()) != null) {
+						if(!line.matches("")) {
+							String[] str = line.split(",");
+							int adjacents = 0;
+							for(int i=4;i<str.length;i++) {
+								boolean isValidTerritory = false;
+								for( Entry<String, Integer> territory : territoryNames.entrySet()) {
+									if(!str[0].trim().equalsIgnoreCase(str[i].trim()) && 
+											territory.getKey().equalsIgnoreCase(str[i].trim())) {
+										isValidTerritory = true;
+										adjacents++;
+										break;
+									}
+								}
+								if(!isValidTerritory) {
+									throw new MapException(Constants.NOT_A_CONNECTED_MAP_MESSAGE + str[i]);
+								}
+							}
+							territoryNames.put(str[0].trim(), adjacents);
+						}
+					}
+					break;
+				}
+			}
+			for( Entry<String, Integer> territory : territoryNames.entrySet()) {
+				if(territory.getValue() == 0){
+					throw new MapException(Constants.NOT_A_CONNECTED_MAP_MESSAGE + territory.getKey());
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return true;
 	}
 }

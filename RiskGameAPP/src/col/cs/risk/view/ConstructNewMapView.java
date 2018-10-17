@@ -7,6 +7,8 @@ import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -19,8 +21,6 @@ import col.cs.risk.controller.StartGameController;
 import col.cs.risk.helper.Utility;
 
 public class ConstructNewMapView extends JFrame {
-	/** StringBuilder to add Contents to a File */
-	// StringBuilder mapString;
 
 	/** StartGameController instance */
 	private StartGameController startGameController;
@@ -66,7 +66,11 @@ public class ConstructNewMapView extends JFrame {
 		setVisible(true);
 		setLayout(new BorderLayout());
 		setBounds(200, 100, 1400, 900);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent event) {
+				exitForm(event);
+			}
+		});
 		setResizable(true);
 
 		/** setting background color of Frame */
@@ -218,7 +222,6 @@ public class ConstructNewMapView extends JFrame {
 	 * @param event
 	 */
 	private static void format_action(ActionEvent event) {
-		// TODO Auto-generated method stub
 
 		JFrame secondFrame = new JFrame("Format to create Map");
 		secondFrame.setSize(900, 900);
@@ -240,12 +243,20 @@ public class ConstructNewMapView extends JFrame {
 				+ "<br />" + "" + "</html>";
 		;
 		JLabel content_lbl = new JLabel(text);
-		// content_lbl.setBounds(10,10,100,50);
 		/** applying font on heading Label */
 		heading_lbl.setFont(f);
 		secondFrame.add(heading_lbl);
 		content_lbl.setFont(f);
 		secondFrame.add(content_lbl);
+	}
+	
+	/**
+	 * Exit from current screen.
+	 * @param event the event
+	 */
+	private void exitForm(java.awt.event.WindowEvent event) {
+		setVisible(false);
+		startGameController.exitNewMapConstructionView();
 	}
 
 }

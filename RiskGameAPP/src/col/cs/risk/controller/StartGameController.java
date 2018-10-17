@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import col.cs.risk.helper.MapException;
 import col.cs.risk.helper.Utility;
 import col.cs.risk.model.GameModel;
 import col.cs.risk.view.ConstructNewMapView;
@@ -134,7 +135,7 @@ public class StartGameController {
 	 * Player settings
 	 */
 	public void setPlayers() {
-		new PlayerSettingsController();
+		new PlayerSettingsController(this);
 	}
 
 	/**
@@ -155,9 +156,6 @@ public class StartGameController {
 	public void loadExistingMapButtonActionPerformed(ActionEvent event) {
 		System.out.println(" Load Existing Map button pressed ");
 		loadExistingMapController.openFileChooserFromView();
-		/**
-		 * homePageViewLoader.setVisible(false); setPlayers();
-		 */
 	}
 
 	/**
@@ -188,7 +186,6 @@ public class StartGameController {
 	 */
 	public void modifyExistingMapButtonActionPerformed(ActionEvent event) {
 		System.out.println(" Modify Existing Map button pressed ");
-		mapConstructionView.setVisible(false);
 		loadExistingMapController.showModificationView();
 	}
 
@@ -268,20 +265,47 @@ public class StartGameController {
 			constructNewMapView.showErrorPopup("Can't create connected map with a single country");
 		} else if (!gameModel.isAllTerritoriesConnected(mapString.toString())) {
 			constructNewMapView.showErrorPopup("Atleast add one adjacent country ");
-		} else {
+		} else
 			try {
-				FileWriter fw = new FileWriter(new File(Utility.getMapPath("currMap.map")));
-				fw.write(mapString.toString());
-				fw.close();
-				constructNewMapView.setVisible(false);
-				GameModel.isBaseMapModified = true;
-				GameModel.modifiedMapString = mapString;
-				GameModel.fileName = "currMap.map";
-				GameModel.imageSelected = "currMap.png";
-				setPlayers();
-			} catch (Exception e) {
-				e.printStackTrace();
+				if(Utility.isConnectedMap(mapString.toString())) { 
+					try {
+						FileWriter fw = new FileWriter(new File(Utility.getMapPath("currMap.map")));
+						fw.write(mapString.toString());
+						fw.close();
+						constructNewMapView.setVisible(false);
+						GameModel.isBaseMapModified = true;
+						GameModel.modifiedMapString = mapString;
+						GameModel.fileName = "currMap.map";
+						GameModel.imageSelected = "currMap.png";
+						setPlayers();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			} catch (MapException ex) {
+				constructNewMapView.showErrorPopup(ex.getMessage());
 			}
-		}
+	}
+	
+	/**
+	 * Set home page view visibility
+	 * @param visible
+	 */
+	public void setHomePageVisiblility(boolean visible) {
+		homePageViewLoader.setVisible(visible);
+	}
+	
+	/**
+	 * Action to taken on map construction view window exit 
+	 */
+	public void exitMapConstructionView() {
+		setHomePageVisiblility(true);
+	}
+	
+	/**
+	 * Action to taken on new map construction view window exit 
+	 */
+	public void exitNewMapConstructionView() {
+		mapConstructionView.setVisible(true);
 	}
 }

@@ -9,12 +9,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Vector;
 
 import javax.swing.JPanel;
 
+import col.cs.risk.helper.MapException;
 import col.cs.risk.helper.Utility;
 
 /**
@@ -26,7 +28,7 @@ public class GameModel {
 
 	/** Default map string */
 	public StringBuilder baseMapString;
-	
+
 	/** modified game map data */
 	public static StringBuilder modifiedMapString;
 
@@ -56,7 +58,7 @@ public class GameModel {
 
 	/** current player */
 	public PlayerModel currentPlayer;
-	
+
 	/** map of no. of player to no. of army */
 	public HashMap<Integer, Integer> playerArmyMap;
 
@@ -77,7 +79,7 @@ public class GameModel {
 
 	/** No of armies to move from one territory to another */
 	private int noOfArmiesToMove;
-	
+
 	/** list of unOccupied territories */
 	public Vector<TerritoryModel> unOccupiedTerritories;
 
@@ -97,14 +99,15 @@ public class GameModel {
 	 * Default Constructor
 	 */
 	public GameModel() {
-		
+
 	}
-	
+
 	/**
 	 * Constructor with parameters for initial verification and setup
 	 * @param booleans
+	 * @throws MapException
 	 */
-	public GameModel(Boolean ...booleans) {
+	public GameModel(Boolean ...booleans) throws MapException {
 		state = Constants.INITIAL_RE_ENFORCEMENT_PHASE;
 		initCurrentPlayer();
 		initializeMapAttributes();
@@ -112,7 +115,7 @@ public class GameModel {
 		distributeArmies();
 		assignTerritories();
 	}
-	
+
 	/**
 	 * Initializes the map attributes especially map file as text data
 	 * for further processing
@@ -149,8 +152,9 @@ public class GameModel {
 
 	/**
 	 * Validates and loads the map
+	 * @throws MapException 
 	 */
-	private void validateAndLoadMap() {
+	private void validateAndLoadMap() throws MapException {
 		if(isValidMapFormat()) {
 			setMapValid(true);
 			loadGameMap();
@@ -241,8 +245,9 @@ public class GameModel {
 
 	/**
 	 * Loads the map to the map model such as continents and territories
+	 * @throws MapException 
 	 */
-	public void loadGameMap() {
+	public void loadGameMap() throws MapException {
 		try {
 			if(isBaseMapModified) {
 				mapFileStream = new File(Utility.getMapPath(fileName));
@@ -261,7 +266,7 @@ public class GameModel {
 					id = 0;
 					do {
 						if(line.split("=").length > 1) {
-							name = line.split("=")[0];
+							name = line.split("=")[0].trim();
 							score = Integer.parseInt(line.split("=")[1].trim());
 
 							continents.add(new ContinentModel(id++, name, score));
@@ -280,12 +285,12 @@ public class GameModel {
 						if(!line.matches("")) {
 							String[] str = line.split(",");
 							id = index++;
-							name = str[0];
+							name = str[0].trim();
 							x_pos = Integer.parseInt(str[1].trim());
 							y_pos = Integer.parseInt(str[2].trim());
 
 							for(int i=0;i<continents.size();i++) {
-								if(continents.elementAt(i).getName().matches(str[3])) {
+								if(continents.elementAt(i).getName().equalsIgnoreCase(str[3].trim())) {
 									TerritoryModel territory = new TerritoryModel(id, name, x_pos, y_pos, 
 											continents.elementAt(i));
 									territories.addElement(territory);
@@ -305,18 +310,23 @@ public class GameModel {
 						line = scn.nextLine();
 						if(!line.matches("")) {
 							String[] str = line.split(",");
-							Vector<Integer> adjacentTerritoryIDs = new Vector<>();
 							Vector<TerritoryModel> adjacentTerritories = new Vector<>();
 							for(int i=4;i<str.length;i++) {
+								boolean isValidTerritory = false;
 								for(int j=0;j<territories.size();j++) {
-									if(territories.elementAt(j).getName().matches(str[i])) {
-										adjacentTerritoryIDs.add(territories.elementAt(j).getId());
+									if(territories.elementAt(j).getName().equalsIgnoreCase(str[i].trim())
+											&& !str[0].trim().equalsIgnoreCase(str[i].trim())) {
 										adjacentTerritories.add(territories.elementAt(j));
+										isValidTerritory = true;
+										break;
 									}
+								}
+								if(!isValidTerritory) {
+									throw new MapException(Constants.NOT_A_CONNECTED_MAP_MESSAGE + str[i]);
 								}
 							}
 							for(int i=0;i<territories.size();i++) {
-								if(territories.elementAt(i).getName().matches(str[0])) {
+								if(territories.elementAt(i).getName().equalsIgnoreCase(str[0].trim())) {
 									territories.elementAt(i).setAdjacentTerritories(adjacentTerritories);
 								}
 							}
@@ -324,9 +334,81 @@ public class GameModel {
 					} while(scn.hasNextLine());
 				}
 			}
+
+			for(TerritoryModel territoryModel:territories) {
+				if(territoryModel.getAdjacentTerritories().size() == 0) {
+					throw new MapException(Constants.NOT_A_CONNECTED_MAP_MESSAGE + territoryModel.getName());
+				}
+			}
+
+			isCompleteConnectionExist();
+
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * API to check for complete connection i.e completely connected map
+	 * @return true if connected
+	 * @throws MapException
+	 */
+	private boolean isCompleteConnectionExist() throws MapException {
+		TerritoryModel territoryModel = territories.get(0);
+		HashSet<Integer> territoryIds = new HashSet<>();
+		territoryIds.add(territoryModel.getId());
+		territoryIds = isCompleteConnectedMap(territoryModel,territoryIds);
+		if(territoryIds.size() < territories.size()) {
+			throw new MapException(Constants.NOT_COMPLETE_CONNECTED_MAP_MESSAGE);
+		}
+		return true;
+	}
+
+	/**
+	 * Recursively traversing through the territories to reach all possible territories
+	 * @param territoryModel
+	 * @param territoryIds
+	 * @return set of traversed territory ids
+	 */
+	public HashSet<Integer> isCompleteConnectedMap(TerritoryModel territoryModel, HashSet<Integer> territoryIds){
+		if(!isFinished(territoryIds)) {
+			if(!territoryIds.contains(new Integer(territoryModel.getId()))) {
+				territoryIds.add(territoryModel.getId());
+			}
+			for(TerritoryModel territory:territoryModel.getAdjacentTerritories()) {
+				if(isFinished(territoryIds)) {
+					break;
+				}
+				territoryIds = processTerritory(territoryIds, territory);
+			}
+		}
+		return territoryIds;
+	}
+	
+	/**
+	 * Is traversal trough all territories done
+	 * @param territoryIds
+	 * @return true if all countries are traversed
+	 */
+	private boolean isFinished(HashSet<Integer> territoryIds) {
+		if(territories.size() == territoryIds.size() || territoryIds.size() > territories.size()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * If the territory is not processed it will process and to list of traversed territories
+	 * @param territoryIds
+	 * @param territory
+	 * @return set of processed territories
+	 */
+	private HashSet<Integer> processTerritory(HashSet<Integer> territoryIds, TerritoryModel territory) {
+		if(!territoryIds.contains(territory.getId())) {
+			territoryIds = isCompleteConnectedMap(territory,territoryIds);
+		}
+		return territoryIds;
 	}
 
 	/**
@@ -365,7 +447,7 @@ public class GameModel {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Gets the unOccupied territory randomly
 	 * @return TerritoryModel which is not occupied by any player else null
@@ -382,7 +464,7 @@ public class GameModel {
 		}
 		return model;
 	}
-	
+
 	/**
 	 * Player occupies a territory
 	 * @param territoryModel

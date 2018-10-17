@@ -3,19 +3,20 @@ package col.cs.risk.view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SwingConstants;
 
 import col.cs.risk.controller.StartGameController;
 
@@ -24,7 +25,7 @@ import col.cs.risk.controller.StartGameController;
  * @author Team 
  *
  */
-public class MapConstructionView extends Frame {
+public class MapConstructionView extends JFrame {
 
 	/** Serial version id */
 	private static final long serialVersionUID = -2566255237255639074L;
@@ -41,7 +42,7 @@ public class MapConstructionView extends Frame {
 	private JButton modifyExistingMapButton;
 
 	/** Game controller */
-	private StartGameController startController;
+	private StartGameController startGameController;
 	
 	/**
 	 * Default Constructor
@@ -56,7 +57,7 @@ public class MapConstructionView extends Frame {
 	 */
 	public MapConstructionView(StartGameController gameController) {
 		this();
-		this.startController = gameController;
+		this.startGameController = gameController;
 		gameController.setMapConstructionView(this);
 		initComponents();
 	}
@@ -93,7 +94,7 @@ public class MapConstructionView extends Frame {
 
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				startController.newMapButtonActionPerformed(event);
+				startGameController.newMapButtonActionPerformed(event);
 			}
 		});
 
@@ -103,7 +104,7 @@ public class MapConstructionView extends Frame {
 
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				startController.modifyExistingMapButtonActionPerformed(event);
+				startGameController.modifyExistingMapButtonActionPerformed(event);
 			}
 		});
 
@@ -131,12 +132,12 @@ public class MapConstructionView extends Frame {
 	}
 
 	/**
-	 * Exit the Application.
+	 * Exit from current screen.
 	 * @param event the event
 	 */
 	private void exitForm(java.awt.event.WindowEvent event) {
 		setVisible(false);
-		new StartGameController();
+		startGameController.exitMapConstructionView();
 	}
 
 }
