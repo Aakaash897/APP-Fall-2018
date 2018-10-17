@@ -2,7 +2,6 @@ package col.cs.risk.view;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -11,12 +10,12 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import col.cs.risk.controller.PlayerSettingsController;
-import col.cs.risk.controller.StartGameController;
 
 /**
  * 
@@ -24,7 +23,7 @@ import col.cs.risk.controller.StartGameController;
  * Player settings screen
  *
  */
-public class PlayerSettingsView extends Frame {
+public class PlayerSettingsView extends JFrame {
 
 	/** Serial version id */
 	private static final long serialVersionUID = 1L;
@@ -81,15 +80,6 @@ public class PlayerSettingsView extends Frame {
 
 		});
 
-		String[] mapsList = {"World", "3D Cliff", "Mexico", "Texas", "Iceland", "India", "UserDefined"};
-		JComboBox<String> mapSelection = new JComboBox<>(mapsList);
-		mapSelection.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent event) {
-				playerSettingsController.mapSelectionActionPerformed(event);
-			}
-
-		});
 		playerPanel.setBackground(new java.awt.Color(1, 1, 1));
 		playerPanel.setName("playerPanel");
 
@@ -114,9 +104,6 @@ public class PlayerSettingsView extends Frame {
 		playerSelection.setName("playerSelection");
 		playerSelection.setForeground(new Color(254, 254, 254));
 
-		JLabel chooseMapLabel = new JLabel("Choose Map");
-		chooseMapLabel.setForeground(Color.WHITE);
-		
 		GroupLayout playerLayout = new javax.swing.GroupLayout(playerPanel);
 		playerLayout
 		.setHorizontalGroup(playerLayout.createParallelGroup(Alignment.LEADING)
@@ -129,10 +116,7 @@ public class PlayerSettingsView extends Frame {
 						.addComponent(players, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
 								GroupLayout.PREFERRED_SIZE)
 						.addContainerGap(243, Short.MAX_VALUE))
-				.addGroup(playerLayout.createSequentialGroup().addGap(61).addComponent(chooseMapLabel).addGap(52)
-						.addComponent(mapSelection, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-								GroupLayout.PREFERRED_SIZE)
-						.addContainerGap())
+				
 				.addGroup(playerLayout.createSequentialGroup().addContainerGap(443, Short.MAX_VALUE)
 						.addComponent(finish, GroupLayout.PREFERRED_SIZE, 124,
 								GroupLayout.PREFERRED_SIZE)
@@ -151,10 +135,6 @@ public class PlayerSettingsView extends Frame {
 										GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
 										GroupLayout.PREFERRED_SIZE))
 						.addContainerGap() .addGap(50)
-						.addGroup(playerLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(chooseMapLabel).addComponent(mapSelection,
-										GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE))
 						.addGap(37).addComponent(finish).addGap(29).addContainerGap()));
 
 		playerPanel.setLayout(playerLayout);
@@ -170,7 +150,7 @@ public class PlayerSettingsView extends Frame {
 	 */
 	private void exitForm(WindowEvent evt) {
 		setVisible(false);
-		new StartGameController();
+		playerSettingsController.getStartGameController().setHomePageVisiblility(true);
 	}
 
 }
