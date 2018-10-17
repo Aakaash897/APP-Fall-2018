@@ -130,7 +130,7 @@ public class GameModel {
 	 * @param mapString
 	 * @param fileName
 	 */
-	private StringBuilder readFile(StringBuilder mapString, String fileName) {
+	public StringBuilder readFile(StringBuilder mapString, String fileName) {
 		mapString = new StringBuilder();
 		File file = new File(Utility.getMapPath(fileName));
 		BufferedReader buffReader;

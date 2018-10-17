@@ -3,10 +3,16 @@ package test.col.cs.risk.model;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import col.cs.risk.helper.Utility;
 import col.cs.risk.model.GameModel;
 
 /**
@@ -16,10 +22,10 @@ import col.cs.risk.model.GameModel;
  */
 public class GameModelTest {
 	
-	/** Game Model instance */
+	// Game Model instance
 	GameModel gameModel;
 	
-	/** Map String to test*/
+	// Map String to test
 	StringBuilder mapString;
 	
 	/**
@@ -78,6 +84,17 @@ public class GameModelTest {
 		
 		assertTrue(gameModel.checkContinentsAreValid(mapString.toString()));
 		assertFalse(gameModel.checkContinentsAreValid(invalidMapString));
+	}
+	
+	/**
+	 * Test case to check that whether all countries belong to the defined set of continents in map file
+	 */
+	@Test
+	public void testreadFile() {
+		String fileName = "currMap.map";
+		mapString = gameModel.readFile(mapString, fileName);
+		
+		assertTrue(mapString.length() > 0 ? true : false);
 	}
 
 }

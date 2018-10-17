@@ -16,7 +16,10 @@ import col.cs.risk.controller.StartGameController;
  */
 public class StartGameControllerTest {
 	
-	StartGameController startGameController;	
+	// StartGameController instance
+	StartGameController startGameController;
+	
+	// Strings used for testing
 	String empty, alphabets, numbers, space;
 
 	/**
