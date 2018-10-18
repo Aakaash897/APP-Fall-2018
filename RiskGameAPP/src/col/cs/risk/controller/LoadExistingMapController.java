@@ -4,11 +4,17 @@ import col.cs.risk.helper.Utility;
 import col.cs.risk.model.GameModel;
 import col.cs.risk.view.LoadExistingMapView;
 
+/**
+ * Load Existing Map controller
+ * 
+ * @author Team
+ *
+ */
 public class LoadExistingMapController {
-	
+
 	/** Load Existing Map View */
 	private LoadExistingMapView loadingExistingMapView;
-	
+
 	/** StartGameController instance */
 	public StartGameController startGameController;
 
@@ -48,30 +54,31 @@ public class LoadExistingMapController {
 		System.out.println("LoadExistingMapController.openFileChooserFromView()");
 		Utility.baseMapString = null;
 		loadingExistingMapView.openFileChooser();
-		if(Utility.baseMapString != null) 
-		{
+		if (Utility.baseMapString != null) {
 			startGameController.setHomePageVisiblility(false);
 			startGameController.setPlayers();
 		}
 	}
-	
+
 	/**
 	 * Set modified map details in game model
+	 * 
 	 * @param isModified
 	 * @param fileName
 	 */
 	public void setModelDetails(boolean isModified, String fileName) {
 		GameModel.isBaseMapModified = isModified;
 		GameModel.fileName = fileName;
-		if(fileName.equals("currMap.map")) {
+		if (fileName.equals("currMap.map")) {
 			GameModel.imageSelected = "currMap.png";
 		} else {
 			GameModel.imageSelected = fileName.replace(".map", ".bmp");
 		}
 	}
-	
+
 	/**
 	 * Action performed on save
+	 * 
 	 * @param result
 	 */
 	public void actionPerformedOnSave(String result) {
@@ -80,9 +87,10 @@ public class LoadExistingMapController {
 		Utility.writeToFile(fileName, result);
 		startGameController.setPlayers();
 	}
-	
+
 	/**
 	 * Action performed on cancel
+	 * 
 	 * @param result
 	 */
 	public void actionPerformedOnCancel(String result) {
@@ -91,7 +99,7 @@ public class LoadExistingMapController {
 		Utility.writeToFile(fileName, result);
 		exitModificaitonView();
 	}
-	
+
 	/**
 	 * Loading map construction view page
 	 */

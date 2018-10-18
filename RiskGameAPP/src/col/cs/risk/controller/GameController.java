@@ -14,6 +14,7 @@ import col.cs.risk.view.MapView;
 
 /**
  * Game Model Controller
+ * 
  * @author Team
  *
  */
@@ -39,9 +40,10 @@ public class GameController implements MouseListener {
 
 	/**
 	 * Constructor with parameters
+	 * 
 	 * @param booleans
 	 */
-	public GameController(Boolean ...booleans) {
+	public GameController(Boolean... booleans) {
 		try {
 			gameModel = new GameModel(false);
 			initComponents();
@@ -51,7 +53,7 @@ public class GameController implements MouseListener {
 			mapView.setTitle("Risk Conquest Game");
 			mapView.setLocationRelativeTo(null);
 			mapView.setResizable(false);
-			if(gameModel.getState() == Constants.INITIAL_RE_ENFORCEMENT_PHASE) {
+			if (gameModel.getState() == Constants.INITIAL_RE_ENFORCEMENT_PHASE) {
 				mapView.getStatusLabel().setText(Constants.RE_ENFORCEMENT_MESSAGE);
 			}
 			mapMainPanel.repaint();
@@ -61,7 +63,7 @@ public class GameController implements MouseListener {
 			ex.clearHistory();
 		}
 	}
-	
+
 	/**
 	 * Initialize components
 	 */
@@ -72,6 +74,7 @@ public class GameController implements MouseListener {
 
 	/**
 	 * Action performed on attack button press
+	 * 
 	 * @param evt
 	 */
 	public void attackButtonActionPerformed(ActionEvent evt) {
@@ -83,6 +86,7 @@ public class GameController implements MouseListener {
 
 	/**
 	 * Action performed on fortify button press
+	 * 
 	 * @param evt
 	 */
 	public void fortifyButtonActionPerformed(ActionEvent evt) {
@@ -97,13 +101,14 @@ public class GameController implements MouseListener {
 
 	/**
 	 * Action performed on user entered value to move armies on fortification phase
+	 * 
 	 * @param event
 	 */
 	public void userEnteredDataActionPerformed(ActionEvent event) {
 		JTextField txtField = (JTextField) event.getSource();
 		try {
 			int armies = Integer.parseInt(txtField.getText());
-			if(gameModel.getMoveArmiesFromTerritory().getArmies() <= armies) {
+			if (gameModel.getMoveArmiesFromTerritory().getArmies() <= armies) {
 				mapView.getStatusLabel().setText(Constants.MIN_ONE_ARMY_MESSAGE);
 			} else {
 				gameModel.setNoOfArmiesToMove(armies);
@@ -119,11 +124,12 @@ public class GameController implements MouseListener {
 
 	/**
 	 * Action performed on end button press
+	 * 
 	 * @param evt
 	 */
 	public void endButtonActionPerformed(ActionEvent evt) {
-		System.out.println(" end button pressed state = "+gameModel.getState());
-		switch(gameModel.getState()) {
+		System.out.println(" end button pressed state = " + gameModel.getState());
+		switch (gameModel.getState()) {
 		case Constants.ATTACK_PHASE:
 		case Constants.RE_ENFORCEMENT_PHASE:
 			validatePlayerTurn();
@@ -144,10 +150,10 @@ public class GameController implements MouseListener {
 	 */
 	private void validatePlayerTurn() {
 		currentRoundCompletedPlayersCount++;
-		if(currentRoundCompletedPlayersCount == GameModel.getPlayers().size()) {
+		if (currentRoundCompletedPlayersCount == GameModel.getPlayers().size()) {
 			noOfRoundsCompleted++;
 			currentRoundCompletedPlayersCount = 0;
-			if(noOfRoundsCompleted > 2) {
+			if (noOfRoundsCompleted > 2) {
 				mapView.getStatusLabel().setText(Constants.GAME_OVER_MESSAGE);
 				mapView.getAttackButton().setVisible(false);
 				mapView.getFortifyButton().setVisible(false);
@@ -166,8 +172,8 @@ public class GameController implements MouseListener {
 	 */
 	private void changeTurn() {
 		gameModel.nextPlayer();
-		System.out.println(" noOfRoundsCompleted = "+noOfRoundsCompleted);
-		if(isFirstRound()) {
+		System.out.println(" noOfRoundsCompleted = " + noOfRoundsCompleted);
+		if (isFirstRound()) {
 			gameModel.setState(Constants.ATTACK_PHASE);
 			mapView.getAttackButton().setVisible(false);
 			mapView.getFortifyButton().setVisible(true);
@@ -179,9 +185,10 @@ public class GameController implements MouseListener {
 		}
 		gameModel.notifyPhaseChange();
 	}
-	
+
 	/**
 	 * Checks whether its the first round
+	 * 
 	 * @return true if yes
 	 */
 	private boolean isFirstRound() {
@@ -201,34 +208,36 @@ public class GameController implements MouseListener {
 
 	/**
 	 * Action performed on mouse click on the map
-	 * {@inheritDoc}
+	 * 
+	 * @param event
+	 *            {@inheritDoc}
 	 *
 	 */
 	@Override
 	public void mouseClicked(MouseEvent event) {
 		System.out.println("\n\n\n------------------");
-		System.out.println("Mouse clicked status = "+gameModel.getState()+", "+gameModel.getStateAsString());
+		System.out.println("Mouse clicked status = " + gameModel.getState() + ", " + gameModel.getStateAsString());
 		int x_coordinate = event.getX();
 		int y_coordinate = event.getY();
-		switch(gameModel.getState()) {
+		switch (gameModel.getState()) {
 		case Constants.INITIAL_RE_ENFORCEMENT_PHASE:
 		case Constants.RE_ENFORCEMENT_PHASE:
-			if(gameModel.getCurrentPlayer().getArmies() > 0) {
+			if (gameModel.getCurrentPlayer().getArmies() > 0) {
 				gameModel.gamePhasePlayerTurnSetup(x_coordinate, y_coordinate);
-			} 
+			}
 			break;
-		case Constants.FORTIFICATION_PHASE:	
+		case Constants.FORTIFICATION_PHASE:
 			String str = gameModel.gamePhaseActivePlayerFinalModification(x_coordinate, y_coordinate);
-			if(!str.isEmpty()) {
+			if (!str.isEmpty()) {
 				mapView.getStatusLabel().setText(str);
 			}
 			break;
 		case Constants.FORTIFYING_PHASE:
 			str = gameModel.gamePhaseActivePlayerFinalModification(x_coordinate, y_coordinate);
-			if(!str.isEmpty()) {
+			if (!str.isEmpty()) {
 				mapView.getStatusLabel().setText(str);
 			}
-			if(gameModel.getState() == Constants.FORTIFY_PHASE) {
+			if (gameModel.getState() == Constants.FORTIFY_PHASE) {
 				mapView.getUserEntered().setText("");
 				mapView.getUserEntered().setVisible(true);
 				mapView.getUserEntered().setEditable(true);
@@ -237,14 +246,14 @@ public class GameController implements MouseListener {
 			break;
 		}
 
-		if(gameModel.getState() == Constants.START_TURN) {
+		if (gameModel.getState() == Constants.START_TURN) {
 			handleStartTurn();
 		}
-		
-		if(gameModel.getState() == Constants.ACTIVE_TURN) {
+
+		if (gameModel.getState() == Constants.ACTIVE_TURN) {
 			handleActiveTurn();
 		}
-		
+
 		mapMainPanel.repaint();
 		mapSubPanelPlayer.repaint();
 	}
@@ -258,7 +267,7 @@ public class GameController implements MouseListener {
 		mapView.getEndButton().setVisible(true);
 		mapView.getAttackButton().setVisible(false);
 	}
-	
+
 	/**
 	 * Handle active turn state
 	 */
@@ -269,12 +278,12 @@ public class GameController implements MouseListener {
 		mapView.getEndButton().setVisible(true);
 		gameModel.setState(Constants.RE_ENFORCEMENT_PHASE);
 	}
-	
+
 	/**
 	 * Handle start turn state of player or before reinforcement
 	 */
 	private void handleStartTurn() {
-		if(isFirstRound()) {
+		if (isFirstRound()) {
 			gameModel.setState(Constants.ATTACK_PHASE);
 			handleAttack();
 		} else {
@@ -282,14 +291,14 @@ public class GameController implements MouseListener {
 			gameModel.notifyPhaseChange();
 		}
 	}
-	
+
 	/**
 	 * Handle reinforcement state
 	 */
 	private void handleReinforcement() {
 		gameModel.setState(Constants.RE_ENFORCEMENT_PHASE);
 		gameModel.addTurnBonusToCurrentPlayer();
-		if(gameModel.getCurrentPlayer().getArmies() == 0) {
+		if (gameModel.getCurrentPlayer().getArmies() == 0) {
 			mapView.getStatusLabel().setText(Constants.SELECT_THE_ACTION_MESSAGE);
 			mapView.getAttackButton().setVisible(true);
 			mapView.getFortifyButton().setVisible(true);
@@ -321,7 +330,7 @@ public class GameController implements MouseListener {
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -339,7 +348,7 @@ public class GameController implements MouseListener {
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	/**
 	 * @return the mapMainPanel
 	 */
@@ -348,7 +357,8 @@ public class GameController implements MouseListener {
 	}
 
 	/**
-	 * @param mapMainPanel the mapMainPanel to set
+	 * @param mapMainPanel
+	 *            the mapMainPanel to set
 	 */
 	public void setMapMainPanel(MapPanelController mapMainPanel) {
 		this.mapMainPanel = mapMainPanel;
@@ -362,7 +372,8 @@ public class GameController implements MouseListener {
 	}
 
 	/**
-	 * @param mapSubPanelPlayer the mapSubPanelPlayer to set
+	 * @param mapSubPanelPlayer
+	 *            the mapSubPanelPlayer to set
 	 */
 	public void setMapSubPanelPlayer(PlayerPanelController mapSubPanelPlayer) {
 		this.mapSubPanelPlayer = mapSubPanelPlayer;
@@ -376,7 +387,8 @@ public class GameController implements MouseListener {
 	}
 
 	/**
-	 * @param mapView the mapView to set
+	 * @param mapView
+	 *            the mapView to set
 	 */
 	public void setMapView(MapView mapView) {
 		this.mapView = mapView;

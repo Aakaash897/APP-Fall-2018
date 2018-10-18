@@ -20,28 +20,29 @@ import col.cs.risk.model.TerritoryModel;
 
 /**
  * Game Map display controller
+ * 
  * @author Team
  *
  */
 public class MapPanelController extends JPanel {
-	
+
 	/** Serial id */
 	private static final long serialVersionUID = -8886545109650518679L;
 
 	/** Map Image */
 	private Image mapImage;
-	
+
 	/** Default map image filename */
 	private String mapImageName = "World.bmp";
-	
+
 	/** Game Model instance */
 	private GameModel gameModel;
-	
+
 	/**
 	 * Controller without parameters
 	 */
 	public MapPanelController() {
-		if(!GameModel.imageSelected.equals("")) {
+		if (!GameModel.imageSelected.equals("")) {
 			mapImageName = GameModel.imageSelected;
 		}
 		try {
@@ -50,9 +51,10 @@ public class MapPanelController extends JPanel {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Controller with GameModel Parameter
+	 * 
 	 * @param gameModel
 	 */
 	public MapPanelController(GameModel gameModel) {
@@ -60,68 +62,79 @@ public class MapPanelController extends JPanel {
 		this.gameModel = gameModel;
 		repaint();
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void paintComponent(Graphics graphics) {
 		super.paintComponent(graphics);
-		
+
 		graphics.drawImage(mapImage, 10, 7, null);
 		graphics.setColor(Color.white);
-		
-		for(TerritoryModel territoryModel:gameModel.getTerritories()) {
-			graphics.drawRect(territoryModel.getX_pos(), 
-					territoryModel.getY_pos(), 25, 25);
+
+		for (TerritoryModel territoryModel : gameModel.getTerritories()) {
+			graphics.drawRect(territoryModel.getX_pos(), territoryModel.getY_pos(), 25, 25);
 		}
-		
-		if(gameModel.getTerritories().size() > 0) {
+
+		if (gameModel.getTerritories().size() > 0) {
 			connectAjdacentCountries(graphics);
 		}
-		
+
 		putPlayersAndArmies(graphics);
-		
+
 		graphics.setFont(new Font("Verdana", Font.BOLD, 15));
 		graphics.setColor(Color.black);
 		int height = getImageHeight();
-		if(height < 621) {
+		if (height < 621) {
 			height += 30;
 		} else {
 			height = 655;
 		}
-		graphics.drawString("Current state: "+gameModel.getStateAsString(), 10, height);
+		graphics.drawString("Current state: " + gameModel.getStateAsString(), 10, height);
 	}
 
 	/**
 	 * Adding armies on territories
+	 * 
 	 * @param graphics
 	 */
 	private void putPlayersAndArmies(Graphics graphics) {
 		int alignment;
-		for(TerritoryModel territoryModel:gameModel.getTerritories()) {
+		for (TerritoryModel territoryModel : gameModel.getTerritories()) {
 			PlayerModel playerModel = territoryModel.getPlayerModel();
-			if(territoryModel.getArmies() > 9) {
+			if (territoryModel.getArmies() > 9) {
 				alignment = -3;
 			} else {
 				alignment = 0;
 			}
-			
-			if(playerModel == null) {
+
+			if (playerModel == null) {
 				graphics.setColor(Color.white);
 			} else {
-				switch(playerModel.getId()) {
-					case 0: graphics.setColor(Color.red); break;
-					case 1: graphics.setColor(Color.blue); break;
-					case 2: graphics.setColor(Color.green); break;
-					case 3: graphics.setColor(Color.orange); break;
-					case 4: graphics.setColor(Color.pink); break;
-					case 5: graphics.setColor(Color.darkGray); break;
+				switch (playerModel.getId()) {
+				case 0:
+					graphics.setColor(Color.red);
+					break;
+				case 1:
+					graphics.setColor(Color.blue);
+					break;
+				case 2:
+					graphics.setColor(Color.green);
+					break;
+				case 3:
+					graphics.setColor(Color.orange);
+					break;
+				case 4:
+					graphics.setColor(Color.pink);
+					break;
+				case 5:
+					graphics.setColor(Color.darkGray);
+					break;
 				}
 			}
-			
-			graphics.fillRect(territoryModel.getX_pos(), territoryModel.getY_pos(),
-					25, 25);
+
+			graphics.fillRect(territoryModel.getX_pos(), territoryModel.getY_pos(), 25, 25);
 			graphics.setColor(Color.white);
 			graphics.drawString(territoryModel.getArmies() == 0 ? "" : Integer.toString(territoryModel.getArmies()),
 					territoryModel.getX_pos() + 8 + alignment, territoryModel.getY_pos() + 18);
@@ -130,14 +143,15 @@ public class MapPanelController extends JPanel {
 
 	/**
 	 * Connecting adjacent countries
+	 * 
 	 * @param graphics
 	 */
 	private void connectAjdacentCountries(Graphics graphics) {
-		for(TerritoryModel territoryModel:gameModel.getTerritories()) {
-			if(territoryModel.getAdjacentTerritories().size() > 0) {
-				for(TerritoryModel adjacentModel:territoryModel.getAdjacentTerritories()) {
-					connectCounties(territoryModel.getX_pos(), territoryModel.getY_pos(),
-							adjacentModel.getX_pos(), adjacentModel.getY_pos(), graphics);
+		for (TerritoryModel territoryModel : gameModel.getTerritories()) {
+			if (territoryModel.getAdjacentTerritories().size() > 0) {
+				for (TerritoryModel adjacentModel : territoryModel.getAdjacentTerritories()) {
+					connectCounties(territoryModel.getX_pos(), territoryModel.getY_pos(), adjacentModel.getX_pos(),
+							adjacentModel.getY_pos(), graphics);
 				}
 			}
 		}
@@ -145,6 +159,7 @@ public class MapPanelController extends JPanel {
 
 	/**
 	 * Connecting counties by drawing a line
+	 * 
 	 * @param srcX_pos
 	 * @param srcY_pos
 	 * @param destX_pos
@@ -159,12 +174,12 @@ public class MapPanelController extends JPanel {
 	}
 
 	/**
-	 * Refresh.
+	 * Refresh and repaint the display
 	 */
 	public void refresh() {
 		repaint();
 	}
-	
+
 	/**
 	 * @return the mapImage
 	 */
@@ -173,7 +188,8 @@ public class MapPanelController extends JPanel {
 	}
 
 	/**
-	 * @param mapImage the mapImage to set
+	 * @param mapImage
+	 *            the mapImage to set
 	 */
 	public void setMapImage(Image mapImage) {
 		this.mapImage = mapImage;
@@ -187,7 +203,8 @@ public class MapPanelController extends JPanel {
 	}
 
 	/**
-	 * @param gameModel the gameModel to set
+	 * @param gameModel
+	 *            the gameModel to set
 	 */
 	public void setGameModel(GameModel gameModel) {
 		this.gameModel = gameModel;
@@ -201,14 +218,19 @@ public class MapPanelController extends JPanel {
 	}
 
 	/**
-	 * @param mapImageName the mapImageName to set
+	 * @param mapImageName
+	 *            the mapImageName to set
 	 */
 	public void setMapImageName(String mapImageName) {
 		this.mapImageName = mapImageName;
 	}
-	
+
+	/**
+	 * 
+	 * @return Height of MapImage
+	 */
 	public int getImageHeight() {
 		return mapImage.getHeight(null);
 	}
-	
+
 }

@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import col.cs.risk.model.ContinentModel;
 import col.cs.risk.model.GameModel;
+import col.cs.risk.model.PlayerModel;
 import col.cs.risk.model.TerritoryModel;
 
 /**
@@ -140,4 +141,21 @@ public class GameModelTest {
 		assertEquals(6, model2.getArmies());
 	}
 
+	/**
+	 * Test case to test if the player changes turn wise
+	 */
+
+	@Test
+	public void testNextPlayer() {
+		PlayerModel playerModel = new PlayerModel(1, "name");
+		gameModel.setCurrentPlayer(playerModel);
+		Vector<PlayerModel> playerVector = new Vector<>();
+		for (int i = 1; i < 5; i++) {
+			PlayerModel tempPlayerModel = new PlayerModel(1, "name");
+			playerVector.add(tempPlayerModel);
+
+		}
+		gameModel.setPlayers(playerVector);
+		assertTrue(gameModel.getCurrentPlayer() == playerModel ? true : false);
+	}
 }

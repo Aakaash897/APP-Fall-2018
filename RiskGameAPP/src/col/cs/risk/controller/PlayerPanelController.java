@@ -12,6 +12,7 @@ import col.cs.risk.model.PlayerModel;
 
 /**
  * Control display of player panel while playing
+ * 
  * @author Team
  *
  */
@@ -25,6 +26,7 @@ public class PlayerPanelController extends JPanel {
 
 	/** 
 	 * Constructor with parameters
+	 * Initialize the components
 	 * @param gameModel
 	 */
 	public PlayerPanelController(GameModel gameModel) {

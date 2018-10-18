@@ -132,7 +132,7 @@ public class StartGameController {
 	}
 
 	/**
-	 * Player settings
+	 * Intialize the player settings controller
 	 */
 	public void setPlayers() {
 		new PlayerSettingsController(this);
@@ -267,7 +267,7 @@ public class StartGameController {
 			constructNewMapView.showErrorPopup("Atleast add one adjacent country ");
 		} else
 			try {
-				if(Utility.isConnectedMap(mapString.toString())) { 
+				if (Utility.isConnectedMap(mapString.toString())) {
 					try {
 						FileWriter fw = new FileWriter(new File(Utility.getMapPath("currMap.map")));
 						fw.write(mapString.toString());
@@ -286,24 +286,25 @@ public class StartGameController {
 				constructNewMapView.showErrorPopup(ex.getMessage());
 			}
 	}
-	
+
 	/**
 	 * Set home page view visibility
+	 * 
 	 * @param visible
 	 */
 	public void setHomePageVisiblility(boolean visible) {
 		homePageViewLoader.setVisible(visible);
 	}
-	
+
 	/**
-	 * Action to taken on map construction view window exit 
+	 * Action to taken on map construction view window exit
 	 */
 	public void exitMapConstructionView() {
 		setHomePageVisiblility(true);
 	}
-	
+
 	/**
-	 * Action to taken on new map construction view window exit 
+	 * Action to taken on new map construction view window exit
 	 */
 	public void exitNewMapConstructionView() {
 		mapConstructionView.setVisible(true);
