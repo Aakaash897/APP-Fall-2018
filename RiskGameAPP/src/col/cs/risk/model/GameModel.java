@@ -353,7 +353,7 @@ public class GameModel {
 	 * @return true if connected
 	 * @throws MapException
 	 */
-	private boolean isCompleteConnectionExist() throws MapException {
+	public boolean isCompleteConnectionExist() throws MapException {
 		TerritoryModel territoryModel = territories.get(0);
 		HashSet<Integer> territoryIds = new HashSet<>();
 		territoryIds.add(territoryModel.getId());
@@ -578,7 +578,7 @@ public class GameModel {
 	 * Move armies from one territory to other
 	 * @return true if moving successful
 	 */
-	public boolean moveArmies() {
+	public Boolean moveArmies() {
 		if(moveArmiesFromTerritory.getArmies() > noOfArmiesToMove) {
 			moveArmiesToTerritory.addArmies(noOfArmiesToMove);
 			moveArmiesFromTerritory.looseArmies(noOfArmiesToMove);
