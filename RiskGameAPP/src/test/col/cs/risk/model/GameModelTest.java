@@ -1,5 +1,6 @@
 package test.col.cs.risk.model;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -104,8 +105,9 @@ public class GameModelTest {
 	@Test
 	public void testaddPlayer() {
 		int size = GameModel.getPlayers().size();
-		gameModel.addPlayer(-1, "playerName");
-		assertTrue(GameModel.getPlayers().size() > size ? true : false);
+		gameModel.addPlayer(101, "playerName");
+		// size increase by one
+		assertTrue(GameModel.getPlayers().size() == (size + 1) ? true : false);
 		assertFalse(GameModel.getPlayers().size() <= size ? true : false);
 	}
 
@@ -114,10 +116,10 @@ public class GameModelTest {
 	 */
 	@Test
 	public void testmoveArmies() {
-		TerritoryModel model1 = new TerritoryModel(-1, "name1", -1, -1, new ContinentModel(-1, "name1", -1));
+		TerritoryModel model1 = new TerritoryModel(201, "tname1", 10, 20, new ContinentModel(301, "cname1", 2));
 		model1.setArmies(5);
-		TerritoryModel model2 = new TerritoryModel(-1, "name2", -1, -1, new ContinentModel(-1, "name2", -1));
-		model1.setArmies(5);
+		TerritoryModel model2 = new TerritoryModel(202, "tname2", 30, 40, new ContinentModel(302, "cname2", 3));
+		model2.setArmies(5);
 		Vector<TerritoryModel> vector = new Vector<>();
 		vector.add(model1);
 		vector.add(model2);
@@ -125,9 +127,17 @@ public class GameModelTest {
 		gameModel.setMoveArmiesFromTerritory(model1);
 		gameModel.setMoveArmiesToTerritory(model2);
 		gameModel.setNoOfArmiesToMove(1);
+
+		// moved armies successfully
 		assertTrue(gameModel.moveArmies());
+		assertEquals(4, model1.getArmies());
+		assertEquals(6, model2.getArmies());
+
+		// armies not moved
 		gameModel.setNoOfArmiesToMove(8);
 		assertFalse(gameModel.moveArmies());
-
+		assertEquals(4, model1.getArmies());
+		assertEquals(6, model2.getArmies());
 	}
+
 }
