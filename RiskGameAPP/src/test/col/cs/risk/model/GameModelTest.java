@@ -24,8 +24,6 @@ public class GameModelTest {
 	// Game Model instance
 	GameModel gameModel;
 
-	//
-
 	// Map String to test
 	StringBuilder mapString;
 
