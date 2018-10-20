@@ -54,7 +54,7 @@ public class UtilityTest {
 	 */
 	@Test
 	public void testwriteDataToFile() throws IOException {
-		StringBuilder MapString = new StringBuilder();
+		StringBuilder mapString = new StringBuilder();
 		String fileName = "currMap.map";
 		StringBuilder result = new StringBuilder();
 		result.append("hi how are you\n");
@@ -65,10 +65,10 @@ public class UtilityTest {
 		BufferedReader buffReader = new BufferedReader(new FileReader(Utility.getMapPath(fileName)));
 		String line;
 		while((line = buffReader.readLine())!=null) {
-			MapString.append(line);
-			MapString.append("\n");
+			mapString.append(line);
+			mapString.append("\n");
 		}
 		buffReader.close();
-		assertEquals(result.toString(),MapString.toString());
+		assertEquals(result.toString(),mapString.toString());
 	}
 }

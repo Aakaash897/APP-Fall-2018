@@ -3,8 +3,10 @@ package col.cs.risk.model;
 import java.util.Vector;
 
 /**
- * Player details
- * @author Team
+ * This class maintain the player details as well as implement the methods
+ * related to player like occupyTerritory and do fortification etc.
+ * 
+ * @author Team25
  *
  */
 public class PlayerModel {
@@ -26,8 +28,11 @@ public class PlayerModel {
 
 	/**
 	 * Constructor with parameters
-	 * @param id player id
-	 * @param name player name
+	 * 
+	 * @param id
+	 *            player id
+	 * @param name
+	 *            player name
 	 */
 	public PlayerModel(int id, String name) {
 		this.id = id;
@@ -37,12 +42,13 @@ public class PlayerModel {
 
 	/**
 	 * Constructor with parameters
+	 * 
 	 * @param id
 	 * @param name
 	 * @param occupiedTerritories
 	 */
 	public PlayerModel(int id, String name, Vector<TerritoryModel> occupiedTerritories) {
-		this(id,name);
+		this(id, name);
 		this.occupiedTerritories = occupiedTerritories;
 	}
 
@@ -54,7 +60,8 @@ public class PlayerModel {
 	}
 
 	/**
-	 * @param id the id to set
+	 * @param id
+	 *            the id to set
 	 */
 	public void setId(int id) {
 		this.id = id;
@@ -68,7 +75,8 @@ public class PlayerModel {
 	}
 
 	/**
-	 * @param name the name to set
+	 * @param name
+	 *            the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -82,7 +90,8 @@ public class PlayerModel {
 	}
 
 	/**
-	 * @param occupiedTerritories the occupiedTerritories to set
+	 * @param occupiedTerritories
+	 *            the occupiedTerritories to set
 	 */
 	public void setOccupiedTerritories(Vector<TerritoryModel> occupiedTerritories) {
 		this.occupiedTerritories = occupiedTerritories;
@@ -96,7 +105,8 @@ public class PlayerModel {
 	}
 
 	/**
-	 * @param armies the armies to set
+	 * @param armies
+	 *            the armies to set
 	 */
 	public void setArmies(int armies) {
 		this.armies = armies;
@@ -104,7 +114,8 @@ public class PlayerModel {
 
 	/**
 	 * 
-	 * @param armies, add passed armies to the existing armies
+	 * @param armies,
+	 *            add passed armies to the existing armies
 	 */
 	public void addArmies(int armies) {
 		this.armies += armies;
@@ -112,7 +123,8 @@ public class PlayerModel {
 
 	/**
 	 * 
-	 * @param armies, subtract passed armies from existing armies
+	 * @param armies,
+	 *            subtract passed armies from existing armies
 	 */
 	public void looseArmies(int armies) {
 		this.armies -= armies;
@@ -134,10 +146,11 @@ public class PlayerModel {
 
 	/**
 	 * Add territory to the list of occupied territory
+	 * 
 	 * @param territoryModel
 	 */
 	public void addOccupiedTerritory(TerritoryModel territoryModel) {
-		if(occupiedTerritories == null) {
+		if (occupiedTerritories == null) {
 			occupiedTerritories = new Vector<>();
 		}
 		occupiedTerritories.add(territoryModel);
@@ -151,7 +164,8 @@ public class PlayerModel {
 	}
 
 	/**
-	 * @param isFortified the isFortified to set
+	 * @param isFortified
+	 *            the isFortified to set
 	 */
 	public void setFortified(boolean isFortified) {
 		this.isFortified = isFortified;
@@ -159,6 +173,7 @@ public class PlayerModel {
 
 	/**
 	 * Action on fortification phase for the current player
+	 * 
 	 * @param gameModel
 	 * @param territoryModel
 	 * @return status as string to display
@@ -168,11 +183,11 @@ public class PlayerModel {
 		switch (gameModel.getState()) {
 		case Constants.FORTIFICATION_PHASE:
 			if (territoryModel.getPlayerModel().getId() == gameModel.getCurrentPlayer().getId()) {
-				if(territoryModel.getArmies() > 1) {
+				if (territoryModel.getArmies() > 1) {
 					gameModel.setState(Constants.FORTIFYING_PHASE);
 					gameModel.setMoveArmiesFromTerritory(territoryModel);
 					gameModel.notifyPhaseChange();
-					str = Constants.MOVE_TO+gameModel.getMoveArmiesFromTerritory().getName();
+					str = Constants.MOVE_TO + gameModel.getMoveArmiesFromTerritory().getName();
 				} else {
 					str = Constants.MIN_TWO_ARMY_MESSAGE;
 				}
@@ -181,14 +196,14 @@ public class PlayerModel {
 			}
 			break;
 		case Constants.FORTIFYING_PHASE:
-			if (territoryModel.getPlayerModel().getId() == gameModel.getCurrentPlayer().getId() 
-			&& gameModel.getMoveArmiesFromTerritory().getAdjacentTerritories().contains(territoryModel)) {
+			if (territoryModel.getPlayerModel().getId() == gameModel.getCurrentPlayer().getId()
+					&& gameModel.getMoveArmiesFromTerritory().getAdjacentTerritories().contains(territoryModel)) {
 				gameModel.setState(Constants.FORTIFY_PHASE);
 				gameModel.setMoveArmiesToTerritory(territoryModel);
 				gameModel.notifyPhaseChange();
 				str = Constants.ARMIES_TO_MOVE;
 			} else {
-				str = Constants.MOVE_TO+gameModel.getMoveArmiesFromTerritory().getName();
+				str = Constants.MOVE_TO + gameModel.getMoveArmiesFromTerritory().getName();
 			}
 			break;
 

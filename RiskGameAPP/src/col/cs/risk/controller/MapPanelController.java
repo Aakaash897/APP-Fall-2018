@@ -19,9 +19,10 @@ import col.cs.risk.model.PlayerModel;
 import col.cs.risk.model.TerritoryModel;
 
 /**
- * Game Map display controller
+ * MapPanelcontroller This class handles the graphical representation of the
+ * map. It draws the connection b/w the territories.
  * 
- * @author Team
+ * @author Team25
  *
  */
 public class MapPanelController extends JPanel {

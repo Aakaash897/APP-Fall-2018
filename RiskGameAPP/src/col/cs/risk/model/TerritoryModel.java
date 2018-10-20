@@ -4,12 +4,15 @@ import java.util.Vector;
 import java.util.stream.Collectors;
 
 /**
- * Territory details
- * @author Team
+ * This class keeps record of the territory details as well as getter and setter
+ * methods for the territory and as well as the methods for printing the
+ * territory list and to check if the territoty isoccupied or not.
+ * 
+ * @author Team25
  *
  */
 public class TerritoryModel {
-	
+
 	/** territory id */
 	private int id;
 	
@@ -219,6 +222,17 @@ public class TerritoryModel {
 	 */
 	public void looseArmy() {
 		armies--;
+	}
+	
+	/**
+	 * Add a territory to the list of existing adjacent territories
+	 * @param territoryModel
+	 */
+	public void addAdjacentTerritory(TerritoryModel territoryModel) {
+		if(adjacentTerritories == null) {
+			adjacentTerritories = new Vector<>();
+		}
+		adjacentTerritories.add(territoryModel);
 	}
 
 	/**

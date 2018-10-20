@@ -5,6 +5,7 @@ import col.cs.risk.model.GameModel;
 
 /**
  * Used to throw invalid map exception i.e map is not connected
+ * 
  * @author Team
  *
  */

@@ -21,8 +21,10 @@ import javax.swing.SwingConstants;
 import col.cs.risk.controller.StartGameController;
 
 /**
- * New map construction or existing map modification screen
- * @author Team 
+ * It handles the view of new map construction or existing map modification
+ * screen. It corresponds to the action performed by user on this screen.
+ * 
+ * @author Team25
  *
  */
 public class MapConstructionView extends JFrame {
@@ -43,7 +45,7 @@ public class MapConstructionView extends JFrame {
 
 	/** Game controller */
 	private StartGameController startGameController;
-	
+
 	/**
 	 * Default Constructor
 	 */
@@ -53,6 +55,7 @@ public class MapConstructionView extends JFrame {
 
 	/**
 	 * Constructor which initializes GameController
+	 * 
 	 * @param gameController
 	 */
 	public MapConstructionView(StartGameController gameController) {
@@ -133,7 +136,9 @@ public class MapConstructionView extends JFrame {
 
 	/**
 	 * Exit from current screen.
-	 * @param event the event
+	 * 
+	 * @param event
+	 *            the event
 	 */
 	private void exitForm(java.awt.event.WindowEvent event) {
 		setVisible(false);

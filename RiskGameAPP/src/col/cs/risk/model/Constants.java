@@ -1,8 +1,9 @@
 package col.cs.risk.model;
 
 /**
- * List of Constants defined
- * @author Team
+ * Constants These are the constants that are used in the game.
+ * 
+ * @author Team25
  *
  */
 public class Constants {
@@ -35,5 +36,7 @@ public class Constants {
 	public static final String SELECT_THE_ACTION_MESSAGE = "Click on the action you want to do";
 	public static final String NOT_A_CONNECTED_MAP_MESSAGE = "Not a connected map invalid country exists: ";
 	public static final String NOT_COMPLETE_CONNECTED_MAP_MESSAGE = "Not a completely connected map";
+	public static final String INVALID_MAP_MESSAGE = "Invalid map, check the format";
+	public static final String INVALID_PLAYER_NO_SELECTION_MESSAGE = "Invalid number of players selected";
 
 }

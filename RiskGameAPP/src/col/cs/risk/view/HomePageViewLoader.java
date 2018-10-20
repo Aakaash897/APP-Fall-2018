@@ -22,8 +22,10 @@ import col.cs.risk.controller.StartGameController;
 import col.cs.risk.helper.Utility;
 
 /**
- * Loads the home page
- * @author Team 
+ * Loads the Start page of the Game. It responses to the action corrosponds on
+ * the click of the user. This loads the main screen of the game.
+ * 
+ * @author Team25
  *
  */
 public class HomePageViewLoader extends JFrame {
@@ -58,9 +60,10 @@ public class HomePageViewLoader extends JFrame {
 	public HomePageViewLoader() {
 		setTitle("Game home page");
 	}
-	
+
 	/**
 	 * Constructor with one parameter
+	 * 
 	 * @param gameController
 	 */
 	public HomePageViewLoader(StartGameController gameController) {
@@ -140,8 +143,9 @@ public class HomePageViewLoader extends JFrame {
 
 	/**
 	 * Loads the Game home page
+	 * 
 	 * @param startController
-	 *           
+	 * 
 	 */
 	private void loadHomePage() {
 

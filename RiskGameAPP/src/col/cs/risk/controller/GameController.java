@@ -13,9 +13,13 @@ import col.cs.risk.model.GameModel;
 import col.cs.risk.view.MapView;
 
 /**
- * Game Model Controller
+ * Game Controller
  * 
- * @author Team
+ * Main Driver of the controller. This includes all the phases of game. This
+ * class handles the main game functionality like changePlayerTurn,
+ * handleAttack, endGame etc.
+ * 
+ * @author Team25
  *
  */
 public class GameController implements MouseListener {

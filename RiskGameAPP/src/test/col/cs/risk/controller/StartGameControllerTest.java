@@ -10,7 +10,7 @@ import org.junit.Test;
 import col.cs.risk.controller.StartGameController;
 
 /**
- * Test cases for StartGameController
+ * Test cases for StartGameController class
  * @author Team
  *
  */

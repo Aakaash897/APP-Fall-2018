@@ -22,18 +22,20 @@ import col.cs.risk.controller.GameController;
 import col.cs.risk.model.Constants;
 
 /**
- * Display of map and player details
- * @author Team
+ * This class handles the display of map and also shows the player details this
+ * shows the main game play screen.
+ * 
+ * @author Team25
  *
  */
-public class MapView extends JFrame{
+public class MapView extends JFrame {
 
 	/** serial version id */
 	private static final long serialVersionUID = 3468501561814767862L;
 
 	/** status label */
 	private JLabel statusLabel;
-	
+
 	/** attack button */
 	private JButton attackButton;
 
@@ -42,7 +44,7 @@ public class MapView extends JFrame{
 
 	/** Field to take user input for moving armies during fortification */
 	private JTextField userEntered;
-	
+
 	/** end button */
 	private JButton endButton;
 
@@ -55,9 +57,10 @@ public class MapView extends JFrame{
 	public MapView() {
 		setTitle("Risk Conquest Game");
 	}
-	
+
 	/**
 	 * Constructor with GameController parameter
+	 * 
 	 * @param gameController
 	 */
 	public MapView(GameController gameController) {
@@ -78,8 +81,7 @@ public class MapView extends JFrame{
 		userEntered = new JTextField();
 
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		ResourceMap resourceMap = Application.getInstance()
-				.getContext().getResourceMap(GameController.class);
+		ResourceMap resourceMap = Application.getInstance().getContext().getResourceMap(GameController.class);
 
 		setTitle(resourceMap.getString("Form.title"));
 		setBackground(resourceMap.getColor("Form.background"));
@@ -91,49 +93,51 @@ public class MapView extends JFrame{
 		gameController.getMapMainPanel().setName("mapMainPanel");
 		gameController.getMapMainPanel().setLayout(null);
 
-		gameController.getMapSubPanelPlayer().setBackground(resourceMap.getColor("mapSubPanelPlayer.background")); 
+		gameController.getMapSubPanelPlayer().setBackground(resourceMap.getColor("mapSubPanelPlayer.background"));
 		gameController.getMapSubPanelPlayer().setBorder(null);
-		gameController.getMapSubPanelPlayer().setForeground(resourceMap.getColor("mapSubPanelPlayer.foreground")); 
+		gameController.getMapSubPanelPlayer().setForeground(resourceMap.getColor("mapSubPanelPlayer.foreground"));
 		gameController.getMapSubPanelPlayer().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		gameController.getMapSubPanelPlayer().setName("mapSubPanelPlayer");
 		gameController.getMapSubPanelPlayer().setLayout(new AbsoluteLayout());
 
-		statusLabel.setFont(resourceMap.getFont("statusLabel.font")); 
+		statusLabel.setFont(resourceMap.getFont("statusLabel.font"));
 		statusLabel.setForeground(resourceMap.getColor("statusLabel.foreground"));
-		statusLabel.setText(Constants.REINFORCE_MESSAGE); 
+		statusLabel.setText(Constants.REINFORCE_MESSAGE);
 		statusLabel.setForeground(Color.WHITE);
 		statusLabel.setFont(new Font("Airal", Font.PLAIN, 14));
-		statusLabel.setName("statusLabel"); 
+		statusLabel.setName("statusLabel");
 		gameController.getMapSubPanelPlayer().add(statusLabel, new AbsoluteConstraints(122, 70, 610, -1));
-		
+
 		attackButton.setVisible(false);
-		attackButton.setFont(resourceMap.getFont("attackButton.font")); 
-		attackButton.setText(Constants.ATTACK_PHASE_MESSAGE); 
-		attackButton.setName(Constants.ATTACK_PHASE_MESSAGE); 
+		attackButton.setFont(resourceMap.getFont("attackButton.font"));
+		attackButton.setText(Constants.ATTACK_PHASE_MESSAGE);
+		attackButton.setName(Constants.ATTACK_PHASE_MESSAGE);
 		attackButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
 				gameController.attackButtonActionPerformed(evt);
-				
+
 			}
 		});
-		gameController.getMapSubPanelPlayer().add(attackButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(635, 30, 90, 30));
+		gameController.getMapSubPanelPlayer().add(attackButton,
+				new org.netbeans.lib.awtextra.AbsoluteConstraints(635, 30, 90, 30));
 
 		fortifyButton.setVisible(false);
-		fortifyButton.setFont(resourceMap.getFont("fortifyButton.font")); 
-		fortifyButton.setText(Constants.FORTIFY_MESSAGE); 
-		fortifyButton.setName(Constants.FORTIFY_MESSAGE); 
+		fortifyButton.setFont(resourceMap.getFont("fortifyButton.font"));
+		fortifyButton.setText(Constants.FORTIFY_MESSAGE);
+		fortifyButton.setName(Constants.FORTIFY_MESSAGE);
 		fortifyButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
 				gameController.fortifyButtonActionPerformed(evt);
 			}
 		});
-		gameController.getMapSubPanelPlayer().add(fortifyButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(735, 30, 90, 30));
+		gameController.getMapSubPanelPlayer().add(fortifyButton,
+				new org.netbeans.lib.awtextra.AbsoluteConstraints(735, 30, 90, 30));
 
 		userEntered.setVisible(false);
-		userEntered.setFont(resourceMap.getFont("userEntered.font")); 
-		userEntered.setText(""); 
+		userEntered.setFont(resourceMap.getFont("userEntered.font"));
+		userEntered.setText("");
 		userEntered.setName("userEntered");
 		userEntered.setEditable(false);
 		userEntered.setBackground(Color.white);
@@ -145,11 +149,11 @@ public class MapView extends JFrame{
 			}
 		});
 		gameController.getMapSubPanelPlayer().add(userEntered, new AbsoluteConstraints(735, 27, 90, 30));
-		
+
 		endButton.setVisible(false);
 		endButton.setFont(resourceMap.getFont("EndButton.font"));
-		endButton.setText("End"); 
-		endButton.setName("EndButton"); 
+		endButton.setText("End");
+		endButton.setName("EndButton");
 		endButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
@@ -157,32 +161,34 @@ public class MapView extends JFrame{
 			}
 		});
 		gameController.getMapSubPanelPlayer().add(endButton, new AbsoluteConstraints(835, 30, -1, 30));
-		
+
 		int mapHeight = gameController.getMapMainPanel().getImageHeight();
 		int gap;
-		if(mapHeight < 621) {
+		if (mapHeight < 621) {
 			mapHeight += 30;
 			gap = 30;
 		} else {
 			mapHeight = 660;
 			gap = 20;
 		}
-		
+
 		GroupLayout layout = new GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
 		layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addComponent(gameController.getMapMainPanel(), javax.swing.GroupLayout.DEFAULT_SIZE, 988, Short.MAX_VALUE)
-				.addComponent(gameController.getMapSubPanelPlayer(), javax.swing.GroupLayout.DEFAULT_SIZE, 988, Short.MAX_VALUE));
+				.addComponent(gameController.getMapMainPanel(), javax.swing.GroupLayout.DEFAULT_SIZE, 988,
+						Short.MAX_VALUE)
+				.addComponent(gameController.getMapSubPanelPlayer(), javax.swing.GroupLayout.DEFAULT_SIZE, 988,
+						Short.MAX_VALUE));
 		layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 				.addGroup(layout.createSequentialGroup()
-						.addComponent(gameController.getMapMainPanel(), javax.swing.GroupLayout.PREFERRED_SIZE, mapHeight,
-								javax.swing.GroupLayout.PREFERRED_SIZE)
-						.addGap(gap)
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addComponent(gameController.getMapSubPanelPlayer(), javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)));
+						.addComponent(gameController.getMapMainPanel(), javax.swing.GroupLayout.PREFERRED_SIZE,
+								mapHeight, javax.swing.GroupLayout.PREFERRED_SIZE)
+						.addGap(gap).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+						.addComponent(gameController.getMapSubPanelPlayer(), javax.swing.GroupLayout.DEFAULT_SIZE, 131,
+								Short.MAX_VALUE)));
 		pack();
 	}
-	
+
 	/**
 	 * Exiting from the application
 	 */
@@ -198,7 +204,8 @@ public class MapView extends JFrame{
 	}
 
 	/**
-	 * @param statusLabel the statusLabel to set
+	 * @param statusLabel
+	 *            the statusLabel to set
 	 */
 	public void setStatusLabel(JLabel statusLabel) {
 		this.statusLabel = statusLabel;
@@ -212,7 +219,8 @@ public class MapView extends JFrame{
 	}
 
 	/**
-	 * @param endButton the endButton to set
+	 * @param endButton
+	 *            the endButton to set
 	 */
 	public void setEndButton(JButton endButton) {
 		this.endButton = endButton;
@@ -226,7 +234,8 @@ public class MapView extends JFrame{
 	}
 
 	/**
-	 * @param fortifyButton the fortifyButton to set
+	 * @param fortifyButton
+	 *            the fortifyButton to set
 	 */
 	public void setFortifyButton(JButton fortifyButton) {
 		this.fortifyButton = fortifyButton;
@@ -240,7 +249,8 @@ public class MapView extends JFrame{
 	}
 
 	/**
-	 * @param userEntered the userEntered to set
+	 * @param userEntered
+	 *            the userEntered to set
 	 */
 	public void setUserEntered(JTextField userEntered) {
 		this.userEntered = userEntered;
@@ -254,7 +264,8 @@ public class MapView extends JFrame{
 	}
 
 	/**
-	 * @param attackButton the attackButton to set
+	 * @param attackButton
+	 *            the attackButton to set
 	 */
 	public void setAttackButton(JButton attackButton) {
 		this.attackButton = attackButton;

@@ -18,8 +18,11 @@ import javax.swing.JOptionPane;
 import col.cs.risk.model.Constants;
 
 /**
- * Utility is a list of supporting APIs
- * @author Team 
+ * Utility is a list of supporting APIs.This class contains all the helping
+ * variables and methods that are used multiple times These are all static
+ * methods
+ * 
+ * @author Team
  *
  */
 public class Utility {
@@ -41,6 +44,7 @@ public class Utility {
 
 	/**
 	 * Gets the path of the Application
+	 * 
 	 * @return path string
 	 */
 	public static String getApplicationPath() {
@@ -49,6 +53,7 @@ public class Utility {
 
 	/**
 	 * Gets the path of the map files(text)
+	 * 
 	 * @return path string
 	 */
 	public static String getResouceMapPath() {
@@ -60,6 +65,7 @@ public class Utility {
 
 	/**
 	 * Gets the image path
+	 * 
 	 * @param filename
 	 * @return
 	 */
@@ -69,6 +75,7 @@ public class Utility {
 
 	/**
 	 * Save path
+	 * 
 	 * @param mapFilePath
 	 */
 	public static void saveMapFilePath(String mapFilePath) {
@@ -77,6 +84,7 @@ public class Utility {
 
 	/**
 	 * GetSavedPath
+	 * 
 	 * @return path string
 	 */
 	public static String getUsedMapFilePath() {
@@ -85,6 +93,7 @@ public class Utility {
 
 	/**
 	 * Generates the random number
+	 * 
 	 * @param num
 	 * @return returns the random number between 0 and num parameter
 	 */
@@ -102,8 +111,8 @@ public class Utility {
 		try {
 			buffReader = new BufferedReader(new FileReader(file));
 			String line;
-			while((line = buffReader.readLine())!=null) {
-				baseMapString.append(line+"\n");
+			while ((line = buffReader.readLine()) != null) {
+				baseMapString.append(line + "\n");
 			}
 			buffReader.close();
 		} catch (IOException e) {
@@ -113,8 +122,11 @@ public class Utility {
 
 	/**
 	 * Write content to file
-	 * @param fileName name of the file to write
-	 * @param result String content to write
+	 * 
+	 * @param fileName
+	 *            name of the file to write
+	 * @param result
+	 *            String content to write
 	 */
 	public static void writeToFile(String fileName, String result) {
 		try {
@@ -128,6 +140,7 @@ public class Utility {
 
 	/**
 	 * Message pop up to show error message
+	 * 
 	 * @param errorMessage
 	 */
 	public static void showPopUp(String errorMessage) {
@@ -136,6 +149,7 @@ public class Utility {
 
 	/**
 	 * Checks is all territories are connected
+	 * 
 	 * @param result
 	 * @returns true if connected
 	 * @throws MapException
@@ -147,12 +161,12 @@ public class Utility {
 			String line;
 			HashMap<String, Integer> territoryNames = new HashMap<String, Integer>();
 
-			while ((line=reader.readLine()) != null) {
+			while ((line = reader.readLine()) != null) {
 				if (line.equals("[Territories]")) {
-					while ((line=reader.readLine()) != null) {
-						if(!line.matches("")) {
+					while ((line = reader.readLine()) != null) {
+						if (!line.matches("")) {
 							String[] str = line.split(",");
-							territoryNames.put(str[0].trim(),0);
+							territoryNames.put(str[0].trim(), 0);
 						}
 					}
 					break;
@@ -160,23 +174,23 @@ public class Utility {
 			}
 			is = new ByteArrayInputStream(result.getBytes());
 			reader = new BufferedReader(new InputStreamReader(is));
-			while ((line=reader.readLine()) != null) {
+			while ((line = reader.readLine()) != null) {
 				if (line.equals("[Territories]")) {
-					while ((line=reader.readLine()) != null) {
-						if(!line.matches("")) {
+					while ((line = reader.readLine()) != null) {
+						if (!line.matches("")) {
 							String[] str = line.split(",");
 							int adjacents = 0;
-							for(int i=4;i<str.length;i++) {
+							for (int i = 4; i < str.length; i++) {
 								boolean isValidTerritory = false;
-								for( Entry<String, Integer> territory : territoryNames.entrySet()) {
-									if(!str[0].trim().equalsIgnoreCase(str[i].trim()) && 
-											territory.getKey().equalsIgnoreCase(str[i].trim())) {
+								for (Entry<String, Integer> territory : territoryNames.entrySet()) {
+									if (!str[0].trim().equalsIgnoreCase(str[i].trim())
+											&& territory.getKey().equalsIgnoreCase(str[i].trim())) {
 										isValidTerritory = true;
 										adjacents++;
 										break;
 									}
 								}
-								if(!isValidTerritory) {
+								if (!isValidTerritory) {
 									throw new MapException(Constants.NOT_A_CONNECTED_MAP_MESSAGE + str[i]);
 								}
 							}
@@ -186,8 +200,8 @@ public class Utility {
 					break;
 				}
 			}
-			for( Entry<String, Integer> territory : territoryNames.entrySet()) {
-				if(territory.getValue() == 0){
+			for (Entry<String, Integer> territory : territoryNames.entrySet()) {
+				if (territory.getValue() == 0) {
 					throw new MapException(Constants.NOT_A_CONNECTED_MAP_MESSAGE + territory.getKey());
 				}
 			}

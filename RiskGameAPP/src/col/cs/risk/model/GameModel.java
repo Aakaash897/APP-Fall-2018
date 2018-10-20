@@ -20,8 +20,11 @@ import col.cs.risk.helper.MapException;
 import col.cs.risk.helper.Utility;
 
 /**
- * GameModel class is to maintain game data such as continents, territories, players.
- * @author Team
+ * GameModel class is to maintain game data such as continents, territories,
+ * players. It handles the important map validations such as valid continents,
+ * adjacent territories etc.
+ * 
+ * @author Team25
  *
  */
 public class GameModel {
@@ -158,6 +161,19 @@ public class GameModel {
 		if(isValidMapFormat()) {
 			setMapValid(true);
 			loadGameMap();
+		} else {
+			throw new MapException(Constants.INVALID_MAP_MESSAGE);
+		}
+		validatePlayerTerritoriesSize();
+	}
+
+	/**
+	 * Validating number of players should be less than number of territories 
+	 * @throws MapException
+	 */
+	private void validatePlayerTerritoriesSize() throws MapException {
+		if(territories.size() < players.size()) {
+			throw new MapException(Constants.INVALID_PLAYER_NO_SELECTION_MESSAGE);
 		}
 	}
 
@@ -625,14 +641,14 @@ public class GameModel {
 	}
 
 	/**
-	 * To find out the territory location by coordinates
+	 * To find out the territory location by coordinates (+/- 20)
 	 * @param x_coordinate
 	 * @param y_coordinate
 	 * @return TerritoryModel corresponding to the co_odinates
 	 */
 	public TerritoryModel getMapLocation(int x_coordinate, int y_coordinate) {
 		TerritoryModel territoryModel = null;
-		int size = 30;
+		int size = 20;
 		for(TerritoryModel territory:territories) {
 			if(Math.abs(territory.getX_pos()-x_coordinate) <= size || Math.abs(x_coordinate-territory.getX_pos()) <= size) {
 				if(Math.abs(territory.getY_pos()-y_coordinate) <= size || Math.abs(y_coordinate-territory.getY_pos()) <= size) {

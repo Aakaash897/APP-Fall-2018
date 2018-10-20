@@ -25,9 +25,9 @@ import col.cs.risk.model.TerritoryModel;
  */
 public class GameModelTest {
 
-	/** Gmae model instance */
+	/** Game model instance */
 	GameModel gameModel;
-	
+
 	/** Map file contents as String */
 	StringBuilder mapString;
 
@@ -101,7 +101,7 @@ public class GameModelTest {
 
 		assertTrue(mapString.length() > 0 ? true : false);
 	}
-	
+
 	/**
 	 * Test case to check that whether player is added
 	 */
@@ -159,7 +159,7 @@ public class GameModelTest {
 		gameModel.setPlayers(playerVector);
 		assertTrue(gameModel.getCurrentPlayer() == playerModel ? true : false);
 	}
-	
+
 	/**
 	 * Test case for calculating territory bonus
 	 */
@@ -178,7 +178,7 @@ public class GameModelTest {
 		TerritoryModel tmodel10 = new TerritoryModel(204, "tname10", 30, 40, new ContinentModel(302, "cname2", 5));
 		TerritoryModel tmodel11 = new TerritoryModel(205, "tname11", 30, 40, new ContinentModel(301, "cname1", 3));
 		TerritoryModel tmodel12 = new TerritoryModel(206, "tname12", 30, 40, new ContinentModel(302, "cname2", 5));
-		Vector<TerritoryModel> territories=new Vector<>();
+		Vector<TerritoryModel> territories = new Vector<>();
 		territories.add(tmodel1);
 		territories.add(tmodel2);
 		territories.add(tmodel3);
@@ -191,21 +191,21 @@ public class GameModelTest {
 		territories.add(tmodel10);
 		territories.add(tmodel11);
 		territories.add(tmodel12);
-		PlayerModel playerModel=new PlayerModel(101,"player1");
+		PlayerModel playerModel = new PlayerModel(101, "player1");
 		gameModel.setCurrentPlayer(playerModel);
 		playerModel.setOccupiedTerritories(territories);
 
-		assertEquals(4,gameModel.territoryBonus());
-		
+		assertEquals(4, gameModel.territoryBonus());
+
 		territories.remove(0);
 		territories.remove(0);
 		territories.remove(0);
-		assertEquals(3,gameModel.territoryBonus());
-		
+		assertEquals(3, gameModel.territoryBonus());
+
 		territories.remove(0);
-		assertEquals(3,gameModel.territoryBonus());
+		assertEquals(3, gameModel.territoryBonus());
 	}
-	
+
 	/**
 	 * Test case for complete connection of game map
 	 */
@@ -216,7 +216,7 @@ public class GameModelTest {
 		TerritoryModel model2 = new TerritoryModel(2, "T2", 10, 20, continent);
 		TerritoryModel model3 = new TerritoryModel(3, "T3", 20, 10, continent);
 		TerritoryModel model4 = new TerritoryModel(4, "T4", 20, 20, continent);
-		
+
 		model1.addAdjacentTerritory(model2);
 		model2.addAdjacentTerritory(model3);
 		model3.addAdjacentTerritory(model4);
@@ -228,79 +228,79 @@ public class GameModelTest {
 		territories.add(model3);
 		territories.add(model4);
 		gameModel.setTerritories(territories);
-		
+
 		try {
 			boolean isValid = gameModel.isCompleteConnectionExist();
 			assertTrue(isValid);
 		} catch (MapException e) {
 			e.printStackTrace();
 		}
-		
+
 		model1.addAdjacentTerritory(model2);
 		model2.addAdjacentTerritory(model1);
 		model3.addAdjacentTerritory(model4);
 		model4.addAdjacentTerritory(model3);
-		
+
 		territories.removeAllElements();
 		territories.add(model1);
 		territories.add(model2);
 		territories.add(model3);
 		territories.add(model4);
 		gameModel.setTerritories(territories);
-		
+
 		try {
 			gameModel.isCompleteConnectionExist();
 		} catch (MapException ex) {
 			assertEquals(Constants.NOT_COMPLETE_CONNECTED_MAP_MESSAGE, ex.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Calculating turn bonus for a current player
 	 */
 	@Test
 	public void testTurnBonus() {
 		PlayerModel playerModel = new PlayerModel(1, "P1");
-		
+
 		ContinentModel continent = new ContinentModel(1, "C1", 2);
 		Vector<ContinentModel> continents = new Vector<>();
 		continents.add(continent);
-		
+
 		TerritoryModel model1 = new TerritoryModel(1, "T1", 10, 10, continent);
 		TerritoryModel model2 = new TerritoryModel(2, "T2", 10, 20, continent);
 		TerritoryModel model3 = new TerritoryModel(3, "T3", 20, 10, continent);
 		TerritoryModel model4 = new TerritoryModel(4, "T4", 20, 20, continent);
-		
+
 		Vector<TerritoryModel> territories = new Vector<>();
 		territories.add(model1);
 		territories.add(model2);
 		territories.add(model3);
 		territories.add(model4);
-		
+
 		model1.setPlayerModel(playerModel);
 		model2.setPlayerModel(playerModel);
 		model3.setPlayerModel(playerModel);
 		model4.setPlayerModel(playerModel);
-		
+
 		continent.setTerritories(territories);
 		playerModel.setOccupiedTerritories(territories);
 		gameModel.setTerritories(territories);
 		gameModel.setCurrentPlayer(playerModel);
 		gameModel.setContinents(continents);
-		
+
 		gameModel.addTurnBonusToCurrentPlayer();
-		
+
 		// 2+3 (2- continent bonus and 3 territory bonus)
 		assertEquals(5, playerModel.getArmies());
-		
+
 		playerModel.setArmies(0);
 		PlayerModel playerModel1 = new PlayerModel(2, "P2");
 		model4.setPlayerModel(playerModel1);
-		
+
 		gameModel.addTurnBonusToCurrentPlayer();
-		
+
 		// 3 (0- continent bonus and 3 territory bonus)
 		assertEquals(3, playerModel.getArmies());
-		
+
 	}
 }

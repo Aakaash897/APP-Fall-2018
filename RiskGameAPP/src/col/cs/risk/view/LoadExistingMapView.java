@@ -1,6 +1,7 @@
 package col.cs.risk.view;
 
 import java.awt.Button;
+
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,6 +22,14 @@ import col.cs.risk.helper.MapException;
 import col.cs.risk.helper.Utility;
 import col.cs.risk.model.GameModel;
 
+/**
+ * Shows the view of existing map that is choosen by the user. It opens the file
+ * picker for the user to choose the existing map file and it responses to the
+ * action corrosponds on the click on the save or cancel button by the user.
+ * 
+ * @author Team
+ *
+ */
 public class LoadExistingMapView {
 
 	/**
@@ -28,10 +37,6 @@ public class LoadExistingMapView {
 	 */
 	LoadExistingMapController loadExistingGameController;
 
-	/** To show error status */
-	/**
-	 * private JTextArea errorStatus;
-	 */
 	/**
 	 * Constructor with parameters
 	 * 
@@ -43,13 +48,13 @@ public class LoadExistingMapView {
 	}
 
 	/**
-	 * Opens File Picker
+	 * Opens File Picker that allows userto choose the existing map file.
 	 */
 	public void openFileChooser() {
 		try {
 			Thread.sleep(120);
 		} catch (InterruptedException e) {
-			//do nothing
+			// do nothing
 		}
 		File mapInputFile = null;
 		JFileChooser fileChooser = new JFileChooser();
@@ -112,7 +117,7 @@ public class LoadExistingMapView {
 					Utility.showPopUp("Atleast add one adjacent country ");
 				} else
 					try {
-						if(Utility.isConnectedMap(result)) {
+						if (Utility.isConnectedMap(result)) {
 							dataFrame.setVisible(false);
 							loadExistingGameController.actionPerformedOnSave(result);
 						}

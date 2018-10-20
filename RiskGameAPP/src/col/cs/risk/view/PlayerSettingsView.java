@@ -18,9 +18,9 @@ import javax.swing.SwingConstants;
 import col.cs.risk.controller.PlayerSettingsController;
 
 /**
+ * It handles the display of player settings screen.
+ * @author Team25
  * 
- * @author Team
- * Player settings screen
  *
  */
 public class PlayerSettingsView extends JFrame {

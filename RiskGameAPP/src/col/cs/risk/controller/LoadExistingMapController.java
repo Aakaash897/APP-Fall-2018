@@ -5,9 +5,10 @@ import col.cs.risk.model.GameModel;
 import col.cs.risk.view.LoadExistingMapView;
 
 /**
- * Load Existing Map controller
+ * LoadExistingMapController This class handles the loading of the existing map.
+ * This class handles all the actions
  * 
- * @author Team
+ * @author Team25
  *
  */
 public class LoadExistingMapController {

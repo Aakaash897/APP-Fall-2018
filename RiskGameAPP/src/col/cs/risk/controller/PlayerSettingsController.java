@@ -10,15 +10,16 @@ import col.cs.risk.model.PlayerModel;
 import col.cs.risk.view.PlayerSettingsView;
 
 /**
- * Player settings Controller
+ * PlayerSettingsController It controls the no of players playing the game. It
+ * performs actions corrosponding to the no of players selected.
  * 
- * @author Team
+ * @author Team25
  *
  */
 public class PlayerSettingsController {
 
 	/** no of players */
-	public static int noOfPlayers = 3;
+	public int noOfPlayers = 3;
 
 	/** selected map either World, India, Europe etc */
 	public static String selectedMap; 
@@ -65,7 +66,7 @@ public class PlayerSettingsController {
 		for(int i=0;i<noOfPlayers;i++) {
 			players.add(new PlayerModel(i, "Player_"+(i+1)));
 		}
-		GameModel.players.addAll(players);
+		GameModel.players = players;
 	}
 	
 	/**
@@ -105,15 +106,15 @@ public class PlayerSettingsController {
 	/**
 	 * @return the noOfPlayers
 	 */
-	public static int getNoOfPlayers() {
+	public int getNoOfPlayers() {
 		return noOfPlayers;
 	}
 
 	/**
 	 * @param noOfPlayers the noOfPlayers to set
 	 */
-	public static void setNoOfPlayers(int noOfPlayers) {
-		PlayerSettingsController.noOfPlayers = noOfPlayers;
+	public void setNoOfPlayers(int noOfPlayers) {
+		this.noOfPlayers = noOfPlayers;
 	}
 
 	/**

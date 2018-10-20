@@ -17,9 +17,10 @@ import col.cs.risk.view.HomePageViewLoader;
 import col.cs.risk.view.MapConstructionView;
 
 /**
- * Starts the game
+ * StartGameController It handles the starting of the game Loads the home page
+ * view of the game.
  * 
- * @author Team
+ * @author Team25
  *
  */
 public class StartGameController {
