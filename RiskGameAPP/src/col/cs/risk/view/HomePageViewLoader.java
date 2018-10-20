@@ -62,7 +62,7 @@ public class HomePageViewLoader extends JFrame {
 	}
 
 	/**
-	 * Constructor with one parameter
+	 * Constructor to initialize the components needed for the JPanel
 	 * 
 	 * @param gameController
 	 */
@@ -75,7 +75,7 @@ public class HomePageViewLoader extends JFrame {
 	}
 
 	/**
-	 * Initialize the components
+	 * Initialize the components of JFrame
 	 */
 	public void initComponents() {
 		startJPanel = new JPanel();

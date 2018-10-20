@@ -45,7 +45,7 @@ public class PlayerSettingsView extends JFrame {
 	}
 
 	/**
-	 * Constructor
+	 * Constructor to initialize components for this class and start the JPanel
 	 * @param playerController 
 	 */
 	public PlayerSettingsView(PlayerSettingsController playerController) {
@@ -57,7 +57,8 @@ public class PlayerSettingsView extends JFrame {
 	}
 
 	/**
-	 * Initialize components
+	 * Initialize components relating to the playerSettingsview which allows
+	 * the user to choose from the options on the screen
 	 */
 	private void initComponents() {
 		playerPanel = new JPanel();

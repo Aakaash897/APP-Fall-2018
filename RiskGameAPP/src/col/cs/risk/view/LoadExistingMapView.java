@@ -23,9 +23,9 @@ import col.cs.risk.helper.Utility;
 import col.cs.risk.model.GameModel;
 
 /**
- * Shows the view of existing map that is choosen by the user. It opens the file
- * picker for the user to choose the existing map file and it responses to the
- * action corrosponds on the click on the save or cancel button by the user.
+ * Shows the view of existing map that is chosen by the user. It opens the file
+ * picker for the user to choose the existing map file and it responds to the
+ * corresponding action for save or cancel button by the user.
  * 
  * @author Team
  *

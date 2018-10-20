@@ -3,7 +3,7 @@ package col.cs.risk.model;
 import java.util.Vector;
 
 /**
- * This class maintain the player details as well as implement the methods
+ * This class maintains the player details as well as implements the methods
  * related to player like occupyTerritory and do fortification etc.
  * 
  * @author Team25

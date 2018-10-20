@@ -18,7 +18,8 @@ import col.cs.risk.model.PlayerModel;
 import col.cs.risk.model.TerritoryModel;
 
 /**
- * Test cases for Game Model
+ * Test cases for Game Model methods regarding the map attributes
+ * such as the connectivity, validation and player assignment.
  * 
  * @author Team25
  *
@@ -60,7 +61,7 @@ public class GameModelTest {
 	 * Test case to check whether all tags are correct in map file
 	 */
 	@Test
-	public void testisTagsCorrect() {
+	public void testIsTagsCorrect() {
 		String invalidMapString = (mapString.toString()).replace("Territories", "Hi");
 
 		assertTrue(gameModel.isTagsCorrect(mapString.toString()));
@@ -71,7 +72,7 @@ public class GameModelTest {
 	 * Test case to check whether all territories are connected in a map file
 	 */
 	@Test
-	public void testisAllTerritoriesConnected() {
+	public void testIsAllTerritoriesConnected() {
 		String invalidMapString = (mapString.toString()).substring(0, mapString.length() - 7);
 
 		assertTrue(gameModel.isAllTerritoriesConnected(mapString.toString()));
@@ -83,7 +84,7 @@ public class GameModelTest {
 	 * continents in map file
 	 */
 	@Test
-	public void testcheckContinentsAreValid() {
+	public void testCheckContinentsAreValid() {
 		String invalidMapString = (mapString.toString()).replaceFirst("South America", "Hi");
 
 		assertTrue(gameModel.checkContinentsAreValid(mapString.toString()));
@@ -95,7 +96,7 @@ public class GameModelTest {
 	 * continents in map file
 	 */
 	@Test
-	public void testreadFile() {
+	public void testReadFile() {
 		String fileName = "currMap.map";
 		mapString = gameModel.readFile(mapString, fileName);
 
@@ -106,7 +107,7 @@ public class GameModelTest {
 	 * Test case to check that whether player is added
 	 */
 	@Test
-	public void testaddPlayer() {
+	public void testAddPlayer() {
 		int size = GameModel.getPlayers().size();
 		gameModel.addPlayer(101, "playerName");
 		// size increase by one
@@ -118,7 +119,7 @@ public class GameModelTest {
 	 * Test case to test if the armies have been moved
 	 */
 	@Test
-	public void testmoveArmies() {
+	public void testMoveArmies() {
 		TerritoryModel model1 = new TerritoryModel(201, "tname1", 10, 20, new ContinentModel(301, "cname1", 2));
 		model1.setArmies(5);
 		TerritoryModel model2 = new TerritoryModel(202, "tname2", 30, 40, new ContinentModel(302, "cname2", 3));
@@ -148,23 +149,41 @@ public class GameModelTest {
 	 */
 	@Test
 	public void testNextPlayer() {
-		PlayerModel playerModel = new PlayerModel(1, "name");
-		gameModel.setCurrentPlayer(playerModel);
 		Vector<PlayerModel> playerVector = new Vector<>();
-		for (int i = 1; i < 5; i++) {
-			PlayerModel tempPlayerModel = new PlayerModel(1, "name");
+		for (int i = 0; i < 5; i++) {
+			PlayerModel tempPlayerModel = new PlayerModel(i, "name"+i);
 			playerVector.add(tempPlayerModel);
-
 		}
-		gameModel.setPlayers(playerVector);
-		assertTrue(gameModel.getCurrentPlayer() == playerModel ? true : false);
+		GameModel.players = playerVector;
+		//Setting first player as current player
+		gameModel.setCurrentPlayer(playerVector.elementAt(0));
+
+		//changing the player
+		gameModel.nextPlayer();
+		assertTrue(gameModel.getCurrentPlayer() == playerVector.get(1) ? true : false);
+
+		//changing the player
+		gameModel.nextPlayer();
+		assertTrue(gameModel.getCurrentPlayer() == playerVector.get(2) ? true : false);
+		
+		//changing the player
+		gameModel.nextPlayer();
+		assertTrue(gameModel.getCurrentPlayer() == playerVector.get(3) ? true : false);
+
+		//changing the player
+		gameModel.nextPlayer();
+		assertTrue(gameModel.getCurrentPlayer() == playerVector.get(4) ? true : false);
+		
+		//changing the player
+		gameModel.nextPlayer();
+		assertTrue(gameModel.getCurrentPlayer() == playerVector.get(0) ? true : false);
 	}
 
 	/**
 	 * Test case for calculating territory bonus
 	 */
 	@Test
-	public void testterritoryBonus() {
+	public void testTerritoryBonus() {
 
 		TerritoryModel tmodel1 = new TerritoryModel(201, "tname1", 10, 20, new ContinentModel(301, "cname1", 3));
 		TerritoryModel tmodel2 = new TerritoryModel(202, "tname2", 30, 40, new ContinentModel(302, "cname2", 5));

@@ -196,14 +196,14 @@ public class MapView extends JFrame {
 		System.exit(0);
 	}
 
-	/**
+	/**Returns the statusLabel
 	 * @return the statusLabel
 	 */
 	public JLabel getStatusLabel() {
 		return statusLabel;
 	}
 
-	/**
+	/**Sets the statusLabel for this class
 	 * @param statusLabel
 	 *            the statusLabel to set
 	 */
@@ -211,14 +211,14 @@ public class MapView extends JFrame {
 		this.statusLabel = statusLabel;
 	}
 
-	/**
+	/**Provides the the endButton to close the application
 	 * @return the endButton
 	 */
 	public JButton getEndButton() {
 		return endButton;
 	}
 
-	/**
+	/**Sets the endButton
 	 * @param endButton
 	 *            the endButton to set
 	 */
@@ -226,7 +226,7 @@ public class MapView extends JFrame {
 		this.endButton = endButton;
 	}
 
-	/**
+	/**Returns the fortifyButton
 	 * @return the fortifyButton
 	 */
 	public JButton getFortifyButton() {

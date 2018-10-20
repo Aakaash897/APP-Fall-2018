@@ -22,7 +22,7 @@ import col.cs.risk.model.Constants;
  * variables and methods that are used multiple times These are all static
  * methods
  * 
- * @author Team
+ * @author Team25
  *
  */
 public class Utility {

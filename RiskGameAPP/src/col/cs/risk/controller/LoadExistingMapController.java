@@ -5,7 +5,7 @@ import col.cs.risk.model.GameModel;
 import col.cs.risk.view.LoadExistingMapView;
 
 /**
- * LoadExistingMapController This class handles the loading of the existing map.
+ * LoadExistingMapController class handles the loading of the existing map.
  * This class handles all the actions
  * 
  * @author Team25

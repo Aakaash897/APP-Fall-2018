@@ -1,50 +1,41 @@
 [Map]
-image=Mexico.bmp
-wrap=no
+author=Sid6.7
+image=iceland.bmp
+wrap=yes
 scroll=none
-author=Terry Lobert
+warn=yes
 
 [Continents]
-North West=4
-South East=4
-East=4
-South West=5
-West=6
+Reyjavik Farthing=2
+Sudurnes Farthing=1
+Sudurland Farthing=4
+Austurland Farthing=2
+Estya Farthing=5
+Vestya Farthing=2
+Vestfirdir Farthing=4
+Vesturland Farthing=3
 
 [Territories]
-Baja California Sur,150,240,North West,Baja California,Nayarit
-Baja California,70,85,North West,Baja California Sur,Sonora
-Sonora,185,130,North West,Baja California,Chihuahua,Sinaloa
-Sinaloa,245,245,North West,Sonora,Chihuahua,Durango,Nayarit
-Durango,315,255,North West,Sinaloa,Chihuahua,Coahuila De Zaragoza,Zacatecas,Nayarit
-Coahuila De Zaragoza,375,195,North West,Chihuahua,Durango,Zacatecas,Nuevo Leon
-Chihuahua,280,155,North West,Sonora,Coahuila De Zaragoza,Durango,Sinaloa
-
-Yucatan,715,355,South East,Quintana Roo,Campeche,Tamaulipas
-Quintana Roo,730,395,South East,Yucatan,Campeche
-Campeche,690,415,South East,Yucatan,Quintana Roo,Tabasco
-Tabasco,625,435,South East,Campeche,Veracruz-Llave,Chiapas
-Chiapas,635,475,South East,Tabasco,Oaxaca,Veracruz-Llave
-Oaxaca,525,475,South East,Chiapas,Veracruz-Llave,Puebla,Guerrero
-
-Tamaulipas,465,300,East,Yucatan,Nuevo Leon,San Luis Potosi,Veracruz-Llave
-Nuevo Leon,435,225,East,Coahuila De Zaragoza,Zacatecas,San Luis Potosi,Tamaulipas
-San Luis Potosi,425,330,East,Nuevo Leon,Tamaulipas,Veracruz-Llave,Hidalgo,Queretaro,Guanajuato,Zacatecas
-Veracruz-Llave,525,415,East,Tabasco,Chiapas,Oaxaca,Puebla,Hidalgo,San luis Potosi,Tamaulipas
-
-Michoacan De Ocampo,395,410,South West,Colima,Jalisco,Guanajuato,Queretaro,Estado De Mexico,Guerrero
-Guerrero,445,460,South West,Michoacan De Ocampo,Estado De Mexico,Morelos,Puebla,Oaxaca
-Estado De Mexico,440,410,South West,Michoacan De Ocampo,Queretaro,Hidalgo,Tlaxcala,Puebla,Morelos,Distrito Federal,Guerrero
-Queretaro,440,370,South West,San Luis Potosi,Hidalgo,Estado De Mexico,Michoacan De Ocampo,Guanajuato
-Hidalgo,460,380,South West,San Luis Potosi,Veracruz-Llave,Puebla,Tlaxcala,Estado De Mexico,Queretaro
-Distrito Federal,458,410,South West,Estado De Mexico,Morelos
-Morelos,460,425,South West,Estado De Mexico,Distrito Federal,Puebla,Guerrero
-Tlaxcala,485,405,South West,Hidalgo,Puebla,Estado De Mexico
-Puebla,490,425,South West,Tlaxcala,Hidalgo,Veracruz-Llave,Oaxaca,Guerrero,Morelos,Estado De Mexico
-
-Colima,340,415,West,Jalisco,Michoacan De Ocampo
-Jalisco,345,385,West,Nayarit,Zacatecas,Aguascalientes,Guanajuato,Michoacan De Ocampo,Colima
-Nayarit,315,345,West,Sinaloa,Durango,Zacatecas,Jalisco,Baja California Sur
-Aguascalientes,375,338,West,Zacatecas,Jalisco
-Zacatecas,365,300,West,Coahuila De Zaragoza,Nuevo Leon,San Luis Potosi,Jalisco,Aguascalientes,Nayarit,Durango,Guanajuato
-Guanajuato,405,370,West,San Luis Potosi,Queretaro,Michoacan De Ocampo,Jalisco,Zacatecas
+Reykjavik,182,373,Reyjavik Farthing,Selfoss,Borgames,Hafnafjordur
+Hafnafjordur,172,398,Reyjavik Farthing,Keflavikfur,Selfoss,Reykjavik
+Keflavikfur,126,416,Sudurnes Farthing,Hafnafjordur,Selfoss,Vestmanneayjar
+Borgames,197,344,Vesturland Farthing,Selfoss,Blonduos,Reykjavik,Stykkisholmur,Holmavik
+Stykkisholmur,102,303,Vesturland Farthing,Borgames,Budardalur,Holmavik
+Budardalur,150,265,Vesturland Farthing,Stykkisholmur,Holmavik,Patreksfjordur
+Bolungarvik,111,124,Vestfirdir Farthing,Isfjordur,Holmavik
+Holmavik,154,179,Vestfirdir Farthing,Blonduos,Borgames,Stykkisholmur,Budardalur,Patreksfjordur,Isfjordur,Bolungarvik
+Isfjordur,95,181,Vestfirdir Farthing,Patreksfjordur,Holmavik,Bolungarvik
+Patreksfjordur,74,230,Vestfirdir Farthing,Budardalur,Isfjordur,Holmavik
+Blonduos,239,275,Vestya Farthing,Selfoss,Saudarkroker,Borgames,Holmavik
+Saudarkroker,297,238,Vestya Farthing,Akureyri,Olafsfjordur,Sijlufjodor,Blonduos
+Sijlufjodor,309,153,Estya Farthing,Olafsfjordur,Saudarkroker
+Olafsfjordur,319,181,Estya Farthing,Akureyri,Sijlufjodor,Saudarkroker
+Akureyri,359,232,Estya Farthing,Selfoss,Husavik,Saudarkroker,Olafsfjordur
+Husavik,412,227,Estya Farthing,Selfoss,Hvolsvollur,Saydisfjordur,Akureyri
+Saydisfjordur,494,242,Estya Farthing,Territory17,Husavik
+Territory17,527,297,Austurland Farthing,Hofn,Saydisfjordur
+Hofn,444,383,Austurland Farthing,Vik,Territory17
+Vik,331,427,Sudurland Farthing,Vestmanneayjar,Hofn,Hvolsvollur
+Hvolsvollur,286,404,Sudurland Farthing,Vestmanneayjar,Vik,Selfoss,Husavik
+Selfoss,251,371,Sudurland Farthing,Vestmanneayjar,Keflavikfur,Hvolsvollur,Borgames,Reykjavik,Hafnafjordur,Blonduos,Akureyri,Husavik
+Vestmanneayjar,220,485,Sudurland Farthing,Vik,Hvolsvollur,Selfoss,Keflavikfur

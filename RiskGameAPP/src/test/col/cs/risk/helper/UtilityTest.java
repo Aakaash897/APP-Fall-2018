@@ -25,7 +25,7 @@ public class UtilityTest {
 	 * Test case for testing whether the adjacent countries are valid countries to connect
 	 */
 	@Test
-	public void testisConnectedMap() {
+	public void testIsConnectedMap() {
 		StringBuilder result = new StringBuilder();
 		result.append("[Territories]\n");
 		result.append("India,20,20,Asia,China\n");
@@ -53,7 +53,7 @@ public class UtilityTest {
 	 * @throws IOException 
 	 */
 	@Test
-	public void testwriteDataToFile() throws IOException {
+	public void testWriteDataToFile() throws IOException {
 		StringBuilder mapString = new StringBuilder();
 		String fileName = "currMap.map";
 		StringBuilder result = new StringBuilder();

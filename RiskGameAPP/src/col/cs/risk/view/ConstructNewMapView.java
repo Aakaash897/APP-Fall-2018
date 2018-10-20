@@ -25,9 +25,8 @@ import col.cs.risk.controller.StartGameController;
 import col.cs.risk.helper.Utility;
 
 /**
- * This File Deal with the creation of the new map from the scratch and it
- * allows the user to insert map info, add continent, add territories and add
- * adjacent territories in it.
+ * This class Deals with the creation of the new map from the scratch and it
+ * allows the user to insert map info such as continent, territories and adjacent territories in it.
  * 
  * @author Team25
  *

@@ -20,8 +20,8 @@ import col.cs.risk.helper.MapException;
 import col.cs.risk.helper.Utility;
 
 /**
- * GameModel class is to maintain game data such as continents, territories,
- * players. It handles the important map validations such as valid continents,
+ * GameModel class is to maintain game data such as continents, territories and
+ * players. It also handles the important map validations such as valid continents,
  * adjacent territories etc.
  * 
  * @author Team25

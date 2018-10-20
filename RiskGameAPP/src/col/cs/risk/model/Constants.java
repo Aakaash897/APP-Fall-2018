@@ -1,7 +1,8 @@
 package col.cs.risk.model;
 
 /**
- * Constants These are the constants that are used in the game.
+ * This class contains the list of Strings with declared values
+ * that are used throughout the system.
  * 
  * @author Team25
  *

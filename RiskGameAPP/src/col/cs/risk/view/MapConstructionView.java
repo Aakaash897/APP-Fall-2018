@@ -21,7 +21,7 @@ import javax.swing.SwingConstants;
 import col.cs.risk.controller.StartGameController;
 
 /**
- * It handles the view of new map construction or existing map modification
+ * It handles the view of new map construction and existing map modification
  * screen. It corresponds to the action performed by user on this screen.
  * 
  * @author Team25

@@ -16,11 +16,20 @@ import col.cs.risk.controller.StartGameController;
  */
 public class StartGameControllerTest {
 	
-	// StartGameController instance
+	/** Instance for the StarGameController class	 */
 	StartGameController startGameController;
 	
-	// Strings used for testing
-	String empty, alphabets, numbers, space;
+	/** String for handling empty or null case */
+	String empty; 
+	
+	/** String to store alphabets	 */
+	String alphabets;
+	
+	/** String to store numeric data	 */
+	String numbers;
+	
+	/** String to store white and newLine characters */
+	String space;
 
 	/**
 	 * Initialization before every test case
@@ -50,7 +59,7 @@ public class StartGameControllerTest {
 	 * Test case to check whether all tags are correct in map file
 	 */
 	@Test
-	public void testisEmptyDetails() {
+	public void testIsEmptyDetails() {
 		assertTrue(startGameController.isEmptyDetails(empty));
 		assertFalse(startGameController.isEmptyDetails(alphabets));
 		assertFalse(startGameController.isEmptyDetails(numbers));
@@ -61,7 +70,7 @@ public class StartGameControllerTest {
 	 * Test case to check whether all tags are correct in map file
 	 */
 	@Test
-	public void testisSingleLineText() {
+	public void testIsSingleLineText() {
 		assertTrue(startGameController.isSingleLineText(empty));
 		assertFalse(startGameController.isSingleLineText(alphabets));
 		assertFalse(startGameController.isSingleLineText(numbers));

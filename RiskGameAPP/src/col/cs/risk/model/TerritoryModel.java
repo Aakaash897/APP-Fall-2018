@@ -4,9 +4,9 @@ import java.util.Vector;
 import java.util.stream.Collectors;
 
 /**
- * This class keeps record of the territory details as well as getter and setter
- * methods for the territory and as well as the methods for printing the
- * territory list and to check if the territoty isoccupied or not.
+ * This class keeps record of the territory details as well as maintains getter and setter
+ * methods for the territory and the methods for printing the
+ * territory list and to check if the territory is occupied or not.
  * 
  * @author Team25
  *

@@ -4,8 +4,8 @@ import java.util.Vector;
 import java.util.stream.Collectors;
 
 /**
- * Continent details This Class Contains the getter setters for data of the
- * continents This Class also contains some methods to verify the territory
+ * Continent Class Contains the getter setters for data of the
+ * continents. This Class also contains some methods to verify the territory
  * occupation, addTerritoryetc.
  * 
  * @author Team25
