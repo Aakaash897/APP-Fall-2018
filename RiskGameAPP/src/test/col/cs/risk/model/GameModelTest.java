@@ -10,6 +10,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import col.cs.risk.helper.MapException;
+import col.cs.risk.model.Constants;
 import col.cs.risk.model.ContinentModel;
 import col.cs.risk.model.GameModel;
 import col.cs.risk.model.PlayerModel;
@@ -18,15 +20,15 @@ import col.cs.risk.model.TerritoryModel;
 /**
  * Test cases for Game Model
  * 
- * @author Team
+ * @author Team25
  *
  */
 public class GameModelTest {
 
-	// Game Model instance
+	/** Gmae model instance */
 	GameModel gameModel;
-
-	// Map String to test
+	
+	/** Map file contents as String */
 	StringBuilder mapString;
 
 	/**
@@ -99,7 +101,7 @@ public class GameModelTest {
 
 		assertTrue(mapString.length() > 0 ? true : false);
 	}
-
+	
 	/**
 	 * Test case to check that whether player is added
 	 */
@@ -144,7 +146,6 @@ public class GameModelTest {
 	/**
 	 * Test case to test if the player changes turn wise
 	 */
-
 	@Test
 	public void testNextPlayer() {
 		PlayerModel playerModel = new PlayerModel(1, "name");
@@ -157,5 +158,149 @@ public class GameModelTest {
 		}
 		gameModel.setPlayers(playerVector);
 		assertTrue(gameModel.getCurrentPlayer() == playerModel ? true : false);
+	}
+	
+	/**
+	 * Test case for calculating territory bonus
+	 */
+	@Test
+	public void testterritoryBonus() {
+
+		TerritoryModel tmodel1 = new TerritoryModel(201, "tname1", 10, 20, new ContinentModel(301, "cname1", 3));
+		TerritoryModel tmodel2 = new TerritoryModel(202, "tname2", 30, 40, new ContinentModel(302, "cname2", 5));
+		TerritoryModel tmodel3 = new TerritoryModel(203, "tname3", 30, 40, new ContinentModel(301, "cname1", 3));
+		TerritoryModel tmodel4 = new TerritoryModel(204, "tname4", 30, 40, new ContinentModel(302, "cname2", 5));
+		TerritoryModel tmodel5 = new TerritoryModel(205, "tname5", 30, 40, new ContinentModel(301, "cname1", 3));
+		TerritoryModel tmodel6 = new TerritoryModel(206, "tname6", 30, 40, new ContinentModel(302, "cname2", 5));
+		TerritoryModel tmodel7 = new TerritoryModel(201, "tname7", 10, 20, new ContinentModel(301, "cname1", 3));
+		TerritoryModel tmodel8 = new TerritoryModel(202, "tname8", 30, 40, new ContinentModel(302, "cname2", 5));
+		TerritoryModel tmodel9 = new TerritoryModel(203, "tname9", 30, 40, new ContinentModel(301, "cname1", 3));
+		TerritoryModel tmodel10 = new TerritoryModel(204, "tname10", 30, 40, new ContinentModel(302, "cname2", 5));
+		TerritoryModel tmodel11 = new TerritoryModel(205, "tname11", 30, 40, new ContinentModel(301, "cname1", 3));
+		TerritoryModel tmodel12 = new TerritoryModel(206, "tname12", 30, 40, new ContinentModel(302, "cname2", 5));
+		Vector<TerritoryModel> territories=new Vector<>();
+		territories.add(tmodel1);
+		territories.add(tmodel2);
+		territories.add(tmodel3);
+		territories.add(tmodel4);
+		territories.add(tmodel5);
+		territories.add(tmodel6);
+		territories.add(tmodel7);
+		territories.add(tmodel8);
+		territories.add(tmodel9);
+		territories.add(tmodel10);
+		territories.add(tmodel11);
+		territories.add(tmodel12);
+		PlayerModel playerModel=new PlayerModel(101,"player1");
+		gameModel.setCurrentPlayer(playerModel);
+		playerModel.setOccupiedTerritories(territories);
+
+		assertEquals(4,gameModel.territoryBonus());
+		
+		territories.remove(0);
+		territories.remove(0);
+		territories.remove(0);
+		assertEquals(3,gameModel.territoryBonus());
+		
+		territories.remove(0);
+		assertEquals(3,gameModel.territoryBonus());
+	}
+	
+	/**
+	 * Test case for complete connection of game map
+	 */
+	@Test
+	public void testIsCompleteConnectionExist() {
+		ContinentModel continent = new ContinentModel(1, "C1", 2);
+		TerritoryModel model1 = new TerritoryModel(1, "T1", 10, 10, continent);
+		TerritoryModel model2 = new TerritoryModel(2, "T2", 10, 20, continent);
+		TerritoryModel model3 = new TerritoryModel(3, "T3", 20, 10, continent);
+		TerritoryModel model4 = new TerritoryModel(4, "T4", 20, 20, continent);
+		
+		model1.addAdjacentTerritory(model2);
+		model2.addAdjacentTerritory(model3);
+		model3.addAdjacentTerritory(model4);
+		model4.addAdjacentTerritory(model1);
+		
+		Vector<TerritoryModel> territories = new Vector<>();
+		territories.add(model1);
+		territories.add(model2);
+		territories.add(model3);
+		territories.add(model4);
+		gameModel.setTerritories(territories);
+		
+		try {
+			boolean isValid = gameModel.isCompleteConnectionExist();
+			assertTrue(isValid);
+		} catch (MapException e) {
+			e.printStackTrace();
+		}
+		
+		model1.addAdjacentTerritory(model2);
+		model2.addAdjacentTerritory(model1);
+		model3.addAdjacentTerritory(model4);
+		model4.addAdjacentTerritory(model3);
+		
+		territories.removeAllElements();
+		territories.add(model1);
+		territories.add(model2);
+		territories.add(model3);
+		territories.add(model4);
+		gameModel.setTerritories(territories);
+		
+		try {
+			gameModel.isCompleteConnectionExist();
+		} catch (MapException ex) {
+			assertEquals(Constants.NOT_COMPLETE_CONNECTED_MAP_MESSAGE, ex.getMessage());
+		}
+	}
+	
+	/**
+	 * Calculating turn bonus for a current player
+	 */
+	@Test
+	public void testTurnBonus() {
+		PlayerModel playerModel = new PlayerModel(1, "P1");
+		
+		ContinentModel continent = new ContinentModel(1, "C1", 2);
+		Vector<ContinentModel> continents = new Vector<>();
+		continents.add(continent);
+		
+		TerritoryModel model1 = new TerritoryModel(1, "T1", 10, 10, continent);
+		TerritoryModel model2 = new TerritoryModel(2, "T2", 10, 20, continent);
+		TerritoryModel model3 = new TerritoryModel(3, "T3", 20, 10, continent);
+		TerritoryModel model4 = new TerritoryModel(4, "T4", 20, 20, continent);
+		
+		Vector<TerritoryModel> territories = new Vector<>();
+		territories.add(model1);
+		territories.add(model2);
+		territories.add(model3);
+		territories.add(model4);
+		
+		model1.setPlayerModel(playerModel);
+		model2.setPlayerModel(playerModel);
+		model3.setPlayerModel(playerModel);
+		model4.setPlayerModel(playerModel);
+		
+		continent.setTerritories(territories);
+		playerModel.setOccupiedTerritories(territories);
+		gameModel.setTerritories(territories);
+		gameModel.setCurrentPlayer(playerModel);
+		gameModel.setContinents(continents);
+		
+		gameModel.addTurnBonusToCurrentPlayer();
+		
+		// 2+3 (2- continent bonus and 3 territory bonus)
+		assertEquals(5, playerModel.getArmies());
+		
+		playerModel.setArmies(0);
+		PlayerModel playerModel1 = new PlayerModel(2, "P2");
+		model4.setPlayerModel(playerModel1);
+		
+		gameModel.addTurnBonusToCurrentPlayer();
+		
+		// 3 (0- continent bonus and 3 territory bonus)
+		assertEquals(3, playerModel.getArmies());
+		
 	}
 }
