@@ -26,10 +26,14 @@ import col.cs.risk.model.TerritoryModel;
  */
 public class GameModelTest {
 
-	/** Game model instance */
+	/** 
+	 * Game model instance
+	 */
 	GameModel gameModel;
 
-	/** Map file contents as String */
+	/**
+	 *  Map file contents as String
+	 */
 	StringBuilder mapString;
 
 	/**
