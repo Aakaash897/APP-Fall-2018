@@ -10,25 +10,37 @@ import org.junit.Test;
 import col.cs.risk.controller.StartGameController;
 
 /**
- * Test cases for StartGameController class
- * @author Team
+ * This class Start Game Controller test the basic
+ * cases related to map file before testing the game phases.
+ * 
+ * @author Team25
  *
  */
 public class StartGameControllerTest {
 	
-	/** Instance for the StarGameController class	 */
+	/**
+	 * Instance for the StarGameController class
+	 */
 	StartGameController startGameController;
 	
-	/** String for handling empty or null case */
+	/** 
+	 * String for handling empty or null case
+	 */
 	String empty; 
 	
-	/** String to store alphabets	 */
+	/** 
+	 * String to store the alphabets
+	 */
 	String alphabets;
 	
-	/** String to store numeric data	 */
+	/**
+	 *  String to store the numeric data
+	 */
 	String numbers;
 	
-	/** String to store white and newLine characters */
+	/** 
+	 * String to store white and newLine characters
+	 */
 	String space;
 
 	/**
