@@ -4,28 +4,29 @@ import col.cs.risk.controller.StartGameController;
 import col.cs.risk.model.GameModel;
 
 /**
- * Used to throw invalid map exception i.e map is not connected
+ * The class Map exception is used to throw invalid map exception
+ * i.e., if any errors in map like it is not connected
  * 
- * @author Team
+ * @author Team25
  *
  */
-public class MapException extends Exception{
+public class MapException extends Exception {
 
 	/**
-	 * serial version id
+	 * Serial version id
 	 */
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Constructor
-	 * @param errorMessage
+	 * Constructor of the class
+	 * @param errorMessage : Message passed using this
 	 */
 	public MapException(String errorMessage) {
 		super(errorMessage);
 	}
 	
 	/**
-	 * Clears the history such as players and map details
+	 * Clears the history such as players and all map details
 	 */
 	public void clearHistory() {
 		GameModel.players.removeAllElements();
