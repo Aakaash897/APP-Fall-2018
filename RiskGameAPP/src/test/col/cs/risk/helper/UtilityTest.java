@@ -14,8 +14,9 @@ import col.cs.risk.helper.Utility;
 import col.cs.risk.model.Constants;
 
 /**
- * Test class for testing Utility class methods i.e static methods that are 
+ * Utility Test class for testing Utility class methods i.e., static methods that are 
  * commonly used across the project.
+ * 
  * @author Team25
  *
  */
