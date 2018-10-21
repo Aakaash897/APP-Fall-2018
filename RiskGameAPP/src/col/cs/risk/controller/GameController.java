@@ -15,8 +15,8 @@ import col.cs.risk.view.MapView;
 /**
  * Game Controller
  * 
- * Main Driver of the controller. This includes all the phases of game. This
- * class handles the main game functionality like changePlayerTurn,
+ * This is the Main Driver of the controller. This includes all the phases of game. This
+ * class handles the main game functionalities like changePlayerTurn,
  * handleAttack, endGame etc.
  * 
  * @author Team25
@@ -43,7 +43,8 @@ public class GameController implements MouseListener {
 	private int noOfRoundsCompleted;
 
 	/**
-	 * Constructor with parameters
+	 * Constructor to initialize the 
+	 * Jpanel
 	 * 
 	 * @param booleans
 	 */
@@ -200,7 +201,7 @@ public class GameController implements MouseListener {
 	}
 
 	/**
-	 * Launch the game controller
+	 * Launch the game controller class
 	 */
 	public static void showGUI() {
 		EventQueue.invokeLater(new Runnable() {
@@ -263,7 +264,8 @@ public class GameController implements MouseListener {
 	}
 
 	/**
-	 * Handle attack state
+	 * This function sets the console output upon
+	 * entering the Attack Phase
 	 */
 	private void handleAttack() {
 		mapView.getStatusLabel().setText("Attack Phase is not yet implemented, do fortification or end your turn");
@@ -273,7 +275,8 @@ public class GameController implements MouseListener {
 	}
 
 	/**
-	 * Handle active turn state
+	 * Handle active turn state of
+	 * the risk game
 	 */
 	private void handleActiveTurn() {
 		mapView.getStatusLabel().setText(Constants.SELECT_THE_ACTION_MESSAGE);
@@ -297,7 +300,8 @@ public class GameController implements MouseListener {
 	}
 
 	/**
-	 * Handle reinforcement state
+	 * Handles the reinforcement state
+	 * of the game
 	 */
 	private void handleReinforcement() {
 		gameModel.setState(Constants.RE_ENFORCEMENT_PHASE);
