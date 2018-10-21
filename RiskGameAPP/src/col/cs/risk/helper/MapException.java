@@ -5,7 +5,7 @@ import col.cs.risk.model.GameModel;
 
 /**
  * The class Map exception is used to throw invalid map exception
- * i.e., if any errors in map like it is not connected
+ * i.e., if any errors in map like it is not connected.
  * 
  * @author Team25
  *
