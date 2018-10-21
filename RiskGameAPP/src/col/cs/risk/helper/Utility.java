@@ -18,25 +18,30 @@ import javax.swing.JOptionPane;
 import col.cs.risk.model.Constants;
 
 /**
- * Utility is a list of supporting APIs.This class contains all the helping
- * variables and methods that are used multiple times These are all static
- * methods
+ * This Utility class is a list of supporting APIs.
+ * This class contains all the helping variables and methods that are used multiple times in the whole project.
+ * These are all static methods.
  * 
  * @author Team25
  *
  */
 public class Utility {
-	/** Selected file path */
+	
+	/**
+	 * Selected file path of the map
+	 */
 	public static String selectedMapFilePath;
 
-	/** Map string */
+	/** 
+	 * Map string having the whole map in the string format
+	 */
 	public static StringBuilder baseMapString;
 
 	/**
-	 * Gets the path of the map file
+	 * Retrieves the path of the map file
 	 * 
-	 * @param filename
-	 * @return path as string
+	 * @param filename : Name of the map file
+	 * @return String that has the complete path
 	 */
 	public static String getMapPath(String filename) {
 		return "resources/risk/map/" + filename;
@@ -64,17 +69,17 @@ public class Utility {
 	}
 
 	/**
-	 * Gets the image path
+	 * Retrieves the image path
 	 * 
-	 * @param filename
-	 * @return
+	 * @param filename of the image
+	 * @return String having the full path of the image
 	 */
 	public static String getImagePath(String filename) {
 		return "resources/risk/images/" + filename;
 	}
 
 	/**
-	 * Save path
+	 * Save path of the map file
 	 * 
 	 * @param mapFilePath
 	 */
@@ -83,9 +88,9 @@ public class Utility {
 	}
 
 	/**
-	 * GetSavedPath
+	 * Current used map file
 	 * 
-	 * @return path string
+	 * @return path string path of the current map file
 	 */
 	public static String getUsedMapFilePath() {
 		return selectedMapFilePath;
@@ -121,7 +126,7 @@ public class Utility {
 	}
 
 	/**
-	 * Write content to file
+	 * Write the content to file
 	 * 
 	 * @param fileName
 	 *            name of the file to write
@@ -141,14 +146,14 @@ public class Utility {
 	/**
 	 * Message pop up to show error message
 	 * 
-	 * @param errorMessage
+	 * @param errorMessage : Contains the actual message to be shown
 	 */
 	public static void showPopUp(String errorMessage) {
 		JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
 	}
 
 	/**
-	 * Checks is all territories are connected
+	 * Checks if is all territories are connected
 	 * 
 	 * @param result
 	 * @returns true if connected
