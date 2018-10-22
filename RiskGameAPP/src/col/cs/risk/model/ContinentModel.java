@@ -28,9 +28,9 @@ public class ContinentModel {
 	/**
 	 * Constructor with three parameters
 	 * 
-	 * @param id
-	 * @param name
-	 * @param score
+	 * @param id It contains the Continent Identification Number
+	 * @param name It contains the Continent Name
+	 * @param score It contains the Score for Continent to allocate player upon Conquer
 	 */
 	public ContinentModel(int id, String name, int score) {
 		this.id = id;
@@ -41,11 +41,10 @@ public class ContinentModel {
 	/**
 	 * Constructor with four parameters
 	 * 
-	 * @param id
-	 * @param name
-	 * @param score
-	 * @param territoryIDs
-	 * @param territories
+	 * @param id It contains the Continent Identification Number
+	 * @param name It contains the Continent Name
+	 * @param score It contains the Score for Continent to allocate player upon Conquer
+	 * @param territories It is a vector that holds the information of the territories
 	 */
 	public ContinentModel(int id, String name, int score, Vector<TerritoryModel> territories) {
 		this(id, name, score);
@@ -55,7 +54,7 @@ public class ContinentModel {
 	/**
 	 * Validates the continent occupied status
 	 * 
-	 * @param playerModel
+	 * @param playerModel It is an Reference of Player Model that holds Player's Details
 	 * @return true if occupied else false
 	 */
 	public boolean isContinentOccupiedBy(PlayerModel playerModel) {
