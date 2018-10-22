@@ -43,9 +43,9 @@ public class PlayerModel {
 	/**
 	 * Constructor with parameters
 	 * 
-	 * @param id
-	 * @param name
-	 * @param occupiedTerritories
+	 * @param id It holds the player id
+	 * @param name It hold the player name
+	 * @param occupiedTerritories It is a vector that holds the list of occupied territories
 	 */
 	public PlayerModel(int id, String name, Vector<TerritoryModel> occupiedTerritories) {
 		this(id, name);
@@ -175,7 +175,7 @@ public class PlayerModel {
 	 * Action on fortification phase for the current player
 	 * 
 	 * @param gameModel
-	 * @param territoryModel
+	 * @param territoryModel It is an instance of TerritoryModel that holds territories details
 	 * @return status as string to display
 	 */
 	public String fortify(GameModel gameModel, TerritoryModel territoryModel) {
