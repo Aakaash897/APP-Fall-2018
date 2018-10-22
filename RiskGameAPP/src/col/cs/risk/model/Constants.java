@@ -8,7 +8,7 @@ package col.cs.risk.model;
  *
  */
 public class Constants {
-	
+	// All the Constants are declared and initialized here
 	public static final int NEW_GAME = 1;
 	public static final int INITIAL_RE_ENFORCEMENT_PHASE = 2;
 	public static final int RE_ENFORCEMENT_PHASE = 3;
