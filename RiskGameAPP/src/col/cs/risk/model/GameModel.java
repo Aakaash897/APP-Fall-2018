@@ -133,8 +133,8 @@ public class GameModel {
 
 	/**
 	 * Reads the File
-	 * @param mapString
-	 * @param fileName
+	 * @param mapString It is a StringBuilder reference that holds the data of file 
+	 * @param fileName It is a String that holds the name of file
 	 */
 	public StringBuilder readFile(StringBuilder mapString, String fileName) {
 		mapString = new StringBuilder();
@@ -382,9 +382,9 @@ public class GameModel {
 
 	/**
 	 * Recursively traversing through the territories to reach all possible territories
-	 * @param territoryModel
-	 * @param territoryIds
-	 * @return set of traversed territory ids
+	 * @param territoryModel It is an instance of TerritoryModel that holds territories details
+	 * @param territoryIds It is an set that stores the territories id's
+	 * @return set of traversed territory id's
 	 */
 	public HashSet<Integer> isCompleteConnectedMap(TerritoryModel territoryModel, HashSet<Integer> territoryIds){
 		if(!isFinished(territoryIds)) {
@@ -403,7 +403,7 @@ public class GameModel {
 	
 	/**
 	 * Is traversal trough all territories done
-	 * @param territoryIds
+	 * @param territoryIds It is an set that stores the territories id's
 	 * @return true if all countries are traversed
 	 */
 	private boolean isFinished(HashSet<Integer> territoryIds) {
@@ -416,8 +416,8 @@ public class GameModel {
 
 	/**
 	 * If the territory is not processed it will process and to list of traversed territories
-	 * @param territoryIds
-	 * @param territory
+	 * @param territoryIds It is an set that stores the territories id's
+	 * @param territory It is an instance of TerritoryModel that holds territories details
 	 * @return set of processed territories
 	 */
 	private HashSet<Integer> processTerritory(HashSet<Integer> territoryIds, TerritoryModel territory) {
@@ -483,8 +483,8 @@ public class GameModel {
 
 	/**
 	 * Player occupies a territory
-	 * @param territoryModel
-	 * @param playerModel
+	 * @param territoryModel It is an instance of TerritoryModel that holds territories details
+	 * @param playerModel It is an instance of PlayerModel that holds players details
 	 */
 	private void occupyTerritory(TerritoryModel territoryModel, PlayerModel playerModel) {
 		territoryModel.setPlayerModel(playerModel);
@@ -495,8 +495,8 @@ public class GameModel {
 
 	/**
 	 * Add an army on a territory from an occupied player
-	 * @param territoryModel
-	 * @param playerModel
+	 * @param territoryModel It is an instance of TerritoryModel that holds territories details
+	 * @param playerModel It is an instance of PlayerModel that holds players details
 	 */
 	private void addArmyOnOccupiedTerritory(TerritoryModel territoryModel, PlayerModel playerModel) {
 		territoryModel.addArmy();
@@ -536,8 +536,8 @@ public class GameModel {
 
 	/**
 	 * Game phase setup done for each player at the start of the turn
-	 * @param x_coordinate
-	 * @param y_coordinate
+	 * @param x_coordinate It stores X_coordinate of map
+	 * @param y_coordinate It stores y_coordinate of map
 	 */
 	public void gamePhasePlayerTurnSetup(int x_coordinate, int y_coordinate) {
 		TerritoryModel territoryModel = getMapLocation(x_coordinate, y_coordinate);
@@ -575,8 +575,8 @@ public class GameModel {
 
 	/**
 	 * Final modifications done by the current player
-	 * @param x_coordinate
-	 * @param y_coordinate
+	 * @param x_coordinate It stores X_coordinate of map
+	 * @param y_coordinate It stores Y_coordinate of map
 	 * @return status to display on game screen
 	 */
 	public String gamePhaseActivePlayerFinalModification(int x_coordinate, int y_coordinate) {
@@ -642,8 +642,8 @@ public class GameModel {
 
 	/**
 	 * To find out the territory location by coordinates (+/- 20)
-	 * @param x_coordinate
-	 * @param y_coordinate
+	 * @param x_coordinate It stores X_coordinate of map
+	 * @param y_coordinate It stores Y_coordinate of map
 	 * @return TerritoryModel corresponding to the co_odinates
 	 */
 	public TerritoryModel getMapLocation(int x_coordinate, int y_coordinate) {
