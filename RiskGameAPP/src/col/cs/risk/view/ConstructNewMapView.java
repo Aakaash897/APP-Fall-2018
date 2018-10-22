@@ -37,14 +37,14 @@ public class ConstructNewMapView extends JFrame {
 	private StartGameController startGameController;
 
 	/**
-	 * Constructor
+	 * Constructor with no params
 	 */
 	public ConstructNewMapView() {
 		setTitle("Conquer Game");
 	}
 
 	/**
-	 * Constructor
+	 * This constructor initializes the creation of map View 
 	 * 
 	 * @param startGameController
 	 */
@@ -277,7 +277,7 @@ public class ConstructNewMapView extends JFrame {
 	/**
 	 * Get all countries list
 	 * 
-	 * @return
+	 * @return countries array of string type
 	 */
 	public String[] getAllCountries() {
 		String[] countries = new String[Locale.getISOCountries().length];
@@ -292,7 +292,7 @@ public class ConstructNewMapView extends JFrame {
 	/**
 	 * Gets the selected string from the list
 	 * 
-	 * @param is
+	 * @param is of ItemSelectable type
 	 * @return
 	 */
 	static private String selectedString(ItemSelectable is) {
