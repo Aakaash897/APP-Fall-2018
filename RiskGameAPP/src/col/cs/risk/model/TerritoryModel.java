@@ -41,8 +41,8 @@ public class TerritoryModel {
 	 * Constructor with five parameters
 	 * @param id territory id
 	 * @param name territory name
-	 * @param x_pos territory x position
-	 * @param y_pos territory y position
+	 * @param x_pos It holds territory x position
+	 * @param y_pos It holds territory y position
 	 * @param continent continent it belongs to
 	 */
 	public TerritoryModel(int id, String name, int x_pos, int y_pos, ContinentModel continent) {
@@ -56,11 +56,11 @@ public class TerritoryModel {
 
 	/**
 	 * Constructor with six parameters
-	 * @param id territory id
-	 * @param name territory name
-	 * @param x_pos territory x position
-	 * @param y_pos territory y position
-	 * @param continent continent it belongs to
+	 * @param id It holds territory id
+	 * @param name It holds territory name
+	 * @param x_pos It holds territory x position
+	 * @param y_pos It holds territory y position
+	 * @param continent It holds continent it belongs to
 	 * @param adjacentTerritories list of adjacent territories
 	 */
 	public TerritoryModel(int id, String name, int x_pos, int y_pos, 
@@ -226,7 +226,7 @@ public class TerritoryModel {
 	
 	/**
 	 * Add a territory to the list of existing adjacent territories
-	 * @param territoryModel
+	 * @param territoryModel It is an instance of TerritoryModel that holds territories details
 	 */
 	public void addAdjacentTerritory(TerritoryModel territoryModel) {
 		if(adjacentTerritories == null) {
