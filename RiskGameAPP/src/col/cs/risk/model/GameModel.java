@@ -33,7 +33,7 @@ public class GameModel {
 	public StringBuilder baseMapString;
 
 	/** modified game map data */
-	public static StringBuilder modifiedMapString;
+	public StringBuilder modifiedMapString;
 
 	/** game map data */
 	public File mapFileStream;
@@ -92,7 +92,7 @@ public class GameModel {
 	{
 		playerArmyMap = new HashMap<>();
 		playerArmyMap.put(2, 40);
-		playerArmyMap.put(3, 15);
+		playerArmyMap.put(3, 35);
 		playerArmyMap.put(4, 30);
 		playerArmyMap.put(5, 25);
 		playerArmyMap.put(6, 20);
@@ -246,13 +246,23 @@ public class GameModel {
 				isTerritory = true;
 
 			else if (isContinent && !isTerritory) {
-				continentsList.add(line.split("=")[0]);
+				continentsList.add(line.split("=")[0].trim());
 			}
 			else if (!line.equals("") && !line.trim().equals("[Territories]")
 					&& isTerritory) {
-				if (line.split(",").length < 4 || !continentsList.contains(line.split(",")[3])) {
+				if (line.split(",").length < 4) {
 					isContinentValid = false;
-					break;
+				} else if(!continentsList.contains(line.split(",")[3].trim())) {
+					boolean isFound = false;
+					for(String continent:continentsList) {
+						if(continent.equalsIgnoreCase(line.split(",")[3].trim())) {
+							isFound = true;
+							break;
+						}
+					}
+					if(!isFound) {
+						isContinentValid = false;
+					}
 				}
 			}
 		}
@@ -277,6 +287,7 @@ public class GameModel {
 			String line;
 			while (scn.hasNextLine()) {
 				line = scn.nextLine();
+				//Continents section
 				if (line.equals("[Continents]")) {
 					line = scn.nextLine();
 					id = 0;
@@ -284,7 +295,7 @@ public class GameModel {
 						if(line.split("=").length > 1) {
 							name = line.split("=")[0].trim();
 							score = Integer.parseInt(line.split("=")[1].trim());
-
+							//Adding new continent to the list of all continents 
 							continents.add(new ContinentModel(id++, name, score));
 						}
 						line = scn.nextLine();
@@ -294,6 +305,7 @@ public class GameModel {
 					} while(!isContinentsDone);
 				}
 
+				//Territories section
 				if (line.equals("[Territories]")) {
 					int index = 0;
 					do {
@@ -306,6 +318,7 @@ public class GameModel {
 							y_pos = Integer.parseInt(str[2].trim());
 
 							for(int i=0;i<continents.size();i++) {
+								//Adding new territory to the list of all territories
 								if(continents.elementAt(i).getName().equalsIgnoreCase(str[3].trim())) {
 									TerritoryModel territory = new TerritoryModel(id, name, x_pos, y_pos, 
 											continents.elementAt(i));
@@ -319,6 +332,7 @@ public class GameModel {
 			}
 
 			scn = new Scanner(mapFileStream);
+			//Adds the adjacent territories to each territory
 			while(scn.hasNextLine()) {
 				line = scn.nextLine();
 				if (line.equals("[Territories]")) {
@@ -356,7 +370,7 @@ public class GameModel {
 					throw new MapException(Constants.NOT_A_CONNECTED_MAP_MESSAGE + territoryModel.getName());
 				}
 			}
-
+			scn.close();
 			isCompleteConnectionExist();
 
 		} catch (FileNotFoundException e) {
@@ -442,7 +456,7 @@ public class GameModel {
 	 */
 	private void assignTerritories() {
 		TerritoryModel territoryModel;
-		if(unOccupiedTerritories == null || unOccupiedTerritories.size() == 0) {
+		if(unOccupiedTerritories == null || unOccupiedTerritories.size() == Constants.ZERO) {
 			unOccupiedTerritories = new Vector<>(territories);
 		}
 		while((territoryModel = getRandomUnoccupiedTerritory()) != null) {
@@ -470,7 +484,7 @@ public class GameModel {
 	 */
 	private TerritoryModel getRandomUnoccupiedTerritory() {
 		TerritoryModel model = null;
-		while(unOccupiedTerritories.size()>0) {
+		while(unOccupiedTerritories.size() > Constants.ZERO) {
 			int randomIndex = Utility.getRandomNumber(unOccupiedTerritories.size());
 			model = unOccupiedTerritories.get(randomIndex);
 			if(!model.isOccupied()) {
@@ -507,7 +521,7 @@ public class GameModel {
 	 * Changes the current player to next player
 	 */
 	public void nextPlayer() {
-		if(currentPlayer == players.lastElement()) {
+		if(currentPlayer.getId() == players.lastElement().getId()) {
 			currentPlayer = players.firstElement();
 		} else {
 			int playerNo = currentPlayer.getId();
@@ -551,20 +565,19 @@ public class GameModel {
 				}
 				int index = 0;
 				for(PlayerModel playerModel:players) {
-					if(playerModel.getArmies() == 0) {
+					if(playerModel.getArmies() == Constants.ZERO) {
 						index++;
 					}
 				}
 
 				if (index == players.size()) {
 					setState(Constants.START_TURN);
-					System.out.println("status " + getState());
 				}
 				break;
 			case Constants.RE_ENFORCEMENT_PHASE:
 				if(territoryModel.getPlayerModel().getId() == currentPlayer.getId()) {
 					addArmyOnOccupiedTerritory(territoryModel, currentPlayer);
-					if(currentPlayer.getArmies() == 0) {
+					if(currentPlayer.getArmies() == Constants.ZERO) {
 						setState(Constants.ACTIVE_TURN);
 					}
 				}  
@@ -595,13 +608,13 @@ public class GameModel {
 	 * @return true if moving successful
 	 */
 	public Boolean moveArmies() {
+		boolean isMoved = false;
 		if(moveArmiesFromTerritory.getArmies() > noOfArmiesToMove) {
 			moveArmiesToTerritory.addArmies(noOfArmiesToMove);
 			moveArmiesFromTerritory.looseArmies(noOfArmiesToMove);
-			noOfArmiesToMove = 0;
-			return true;
+			isMoved = true;
 		} 
-		return false;
+		return isMoved;
 	}
 
 	/**
@@ -617,11 +630,11 @@ public class GameModel {
 	 * @return no of armies as bonus
 	 */
 	public int territoryBonus() {
-		double bonus = 0;
-		if(currentPlayer.getOccupiedTerritories().size() < 9) {
-			bonus = 3;
+		double bonus = Constants.ZERO;
+		if(currentPlayer.getOccupiedTerritories().size() < Constants.NINE) {
+			bonus = Constants.THREE;
 		} else {
-			bonus = Math.floor(currentPlayer.getOccupiedTerritories().size() / 3);
+			bonus = Math.floor(currentPlayer.getOccupiedTerritories().size() / Constants.THREE);
 		}
 		return (int) bonus;
 	}
@@ -631,7 +644,7 @@ public class GameModel {
 	 * @return no of armies as bonus
 	 */
 	public int continentBonus() {
-		int bonus = 0;
+		int bonus = Constants.ZERO;
 		for(ContinentModel continentModel:continents) {
 			if(continentModel.isContinentOccupiedBy(currentPlayer)) {
 				bonus += continentModel.getScore();
@@ -648,7 +661,7 @@ public class GameModel {
 	 */
 	public TerritoryModel getMapLocation(int x_coordinate, int y_coordinate) {
 		TerritoryModel territoryModel = null;
-		int size = 20;
+		int size = Constants.TWENTY;
 		for(TerritoryModel territory:territories) {
 			if(Math.abs(territory.getX_pos()-x_coordinate) <= size || Math.abs(x_coordinate-territory.getX_pos()) <= size) {
 				if(Math.abs(territory.getY_pos()-y_coordinate) <= size || Math.abs(y_coordinate-territory.getY_pos()) <= size) {

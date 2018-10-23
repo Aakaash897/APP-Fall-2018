@@ -212,5 +212,4 @@ public class PlayerModel {
 		}
 		return str;
 	}
-
 }
