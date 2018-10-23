@@ -39,5 +39,11 @@ public class Constants {
 	public static final String NOT_COMPLETE_CONNECTED_MAP_MESSAGE = "Not a completely connected map";
 	public static final String INVALID_MAP_MESSAGE = "Invalid map, check the format";
 	public static final String INVALID_PLAYER_NO_SELECTION_MESSAGE = "Invalid number of players selected";
+	public static final int ZERO = 0;
+	public static final int ONE = 1;
+	public static final int TWO = 2;
+	public static final int THREE = 3;
+	public static final int NINE = 9;
+	public static final int TWENTY = 20;
 
 }
