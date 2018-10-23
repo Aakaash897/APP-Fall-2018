@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 
 import col.cs.risk.helper.MapException;
 import col.cs.risk.helper.Utility;
+import col.cs.risk.model.Constants;
 import col.cs.risk.model.GameModel;
 import col.cs.risk.view.ConstructNewMapView;
 import col.cs.risk.view.HomePageViewLoader;
@@ -76,14 +77,14 @@ public class StartGameController {
 		try {
 			while (reader.readLine() != null) {
 				lineNo++;
-				if (lineNo == 2) {
+				if (lineNo == Constants.TWO) {
 					break;
 				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		if (lineNo > 1) {
+		if (lineNo > Constants.ONE) {
 			return false;
 		} else {
 			return true;
@@ -133,7 +134,7 @@ public class StartGameController {
 	}
 
 	/**
-	 * Intialize the player settings controller
+	 * Initialize the player settings controller
 	 */
 	public void setPlayers() {
 		new PlayerSettingsController(this);
@@ -275,7 +276,6 @@ public class StartGameController {
 						fw.close();
 						constructNewMapView.setVisible(false);
 						GameModel.isBaseMapModified = true;
-						GameModel.modifiedMapString = mapString;
 						GameModel.fileName = "currMap.map";
 						GameModel.imageSelected = "currMap.png";
 						setPlayers();

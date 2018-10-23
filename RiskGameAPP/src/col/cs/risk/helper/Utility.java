@@ -166,6 +166,7 @@ public class Utility {
 			String line;
 			HashMap<String, Integer> territoryNames = new HashMap<String, Integer>();
 
+			//Add all territories to a list
 			while ((line = reader.readLine()) != null) {
 				if (line.equals("[Territories]")) {
 					while ((line = reader.readLine()) != null) {
@@ -187,6 +188,7 @@ public class Utility {
 							int adjacents = 0;
 							for (int i = 4; i < str.length; i++) {
 								boolean isValidTerritory = false;
+								//Check each adjacent territory is present in the list of territroies
 								for (Entry<String, Integer> territory : territoryNames.entrySet()) {
 									if (!str[0].trim().equalsIgnoreCase(str[i].trim())
 											&& territory.getKey().equalsIgnoreCase(str[i].trim())) {

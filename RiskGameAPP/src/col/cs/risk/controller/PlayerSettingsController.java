@@ -11,7 +11,7 @@ import col.cs.risk.view.PlayerSettingsView;
 
 /**
  * PlayerSettingsController It controls the no of players playing the game. It
- * performs actions corrosponding to the no of players selected.
+ * performs actions corresponding to the no of players selected.
  * 
  * @author Team25
  *
