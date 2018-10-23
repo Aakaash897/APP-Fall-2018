@@ -66,6 +66,8 @@ public class GameController implements MouseListener {
 		} catch (MapException ex) {
 			System.out.println(ex.getMessage());
 			ex.clearHistory();
+		} catch (Exception ex) {
+			System.out.println("Exception: "+ex.getMessage());
 		}
 	}
 
@@ -117,7 +119,11 @@ public class GameController implements MouseListener {
 				mapView.getStatusLabel().setText(Constants.MIN_ONE_ARMY_MESSAGE);
 			} else {
 				gameModel.setNoOfArmiesToMove(armies);
-				gameModel.moveArmies();
+				if(gameModel.moveArmies()) {
+					gameModel.setNoOfArmiesToMove(Constants.ZERO);
+					gameModel.setMoveArmiesFromTerritory(null);
+					gameModel.setMoveArmiesToTerritory(null);
+				}
 				validatePlayerTurn();
 			}
 		} catch (NumberFormatException exception) {
@@ -142,7 +148,7 @@ public class GameController implements MouseListener {
 		case Constants.FORTIFICATION_PHASE:
 		case Constants.FORTIFYING_PHASE:
 		case Constants.FORTIFY_PHASE:
-			gameModel.setNoOfArmiesToMove(0);
+			gameModel.setNoOfArmiesToMove(Constants.ZERO);
 			gameModel.setMoveArmiesFromTerritory(null);
 			gameModel.setMoveArmiesToTerritory(null);
 			validatePlayerTurn();
@@ -157,8 +163,8 @@ public class GameController implements MouseListener {
 		currentRoundCompletedPlayersCount++;
 		if (currentRoundCompletedPlayersCount == GameModel.getPlayers().size()) {
 			noOfRoundsCompleted++;
-			currentRoundCompletedPlayersCount = 0;
-			if (noOfRoundsCompleted > 2) {
+			currentRoundCompletedPlayersCount = Constants.ZERO;
+			if (noOfRoundsCompleted > Constants.TWO) {
 				mapView.getStatusLabel().setText(Constants.GAME_OVER_MESSAGE);
 				mapView.getAttackButton().setVisible(false);
 				mapView.getFortifyButton().setVisible(false);
@@ -197,7 +203,7 @@ public class GameController implements MouseListener {
 	 * @return true if yes
 	 */
 	private boolean isFirstRound() {
-		return noOfRoundsCompleted == 0 ? true : false;
+		return noOfRoundsCompleted == Constants.ZERO ? true : false;
 	}
 
 	/**
@@ -227,7 +233,7 @@ public class GameController implements MouseListener {
 		switch (gameModel.getState()) {
 		case Constants.INITIAL_RE_ENFORCEMENT_PHASE:
 		case Constants.RE_ENFORCEMENT_PHASE:
-			if (gameModel.getCurrentPlayer().getArmies() > 0) {
+			if (gameModel.getCurrentPlayer().getArmies() > Constants.ZERO) {
 				gameModel.gamePhasePlayerTurnSetup(x_coordinate, y_coordinate);
 			}
 			break;
@@ -258,7 +264,6 @@ public class GameController implements MouseListener {
 		if (gameModel.getState() == Constants.ACTIVE_TURN) {
 			handleActiveTurn();
 		}
-
 		mapMainPanel.repaint();
 		mapSubPanelPlayer.repaint();
 	}
@@ -306,7 +311,7 @@ public class GameController implements MouseListener {
 	private void handleReinforcement() {
 		gameModel.setState(Constants.RE_ENFORCEMENT_PHASE);
 		gameModel.addTurnBonusToCurrentPlayer();
-		if (gameModel.getCurrentPlayer().getArmies() == 0) {
+		if (gameModel.getCurrentPlayer().getArmies() == Constants.ZERO) {
 			mapView.getStatusLabel().setText(Constants.SELECT_THE_ACTION_MESSAGE);
 			mapView.getAttackButton().setVisible(true);
 			mapView.getFortifyButton().setVisible(true);
