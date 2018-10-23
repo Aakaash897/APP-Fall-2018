@@ -33,11 +33,14 @@ import col.cs.risk.helper.Utility;
  */
 public class ConstructNewMapView extends JFrame {
 
+	/** Serial version id */
+	private static final long serialVersionUID = 1L;
+	
 	/** StartGameController instance */
 	private StartGameController startGameController;
 
 	/**
-	 * Constructor with no params
+	 * Constructor with no parameters
 	 */
 	public ConstructNewMapView() {
 		setTitle("Conquer Game");

@@ -78,7 +78,6 @@ public class PlayerSettingsView extends JFrame {
 			public void actionPerformed(ActionEvent event) {
 				playerSettingsController.noOfPlayersActionPerformed(event);
 			}
-
 		});
 
 		playerPanel.setBackground(new java.awt.Color(1, 1, 1));

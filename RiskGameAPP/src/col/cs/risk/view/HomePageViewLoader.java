@@ -71,7 +71,6 @@ public class HomePageViewLoader extends JFrame {
 		this.startController = gameController;
 		gameController.setHomePageViewLoader(this);
 		initComponents();
-
 	}
 
 	/**
@@ -138,7 +137,6 @@ public class HomePageViewLoader extends JFrame {
 		gameImage.setName("gameImage");
 
 		loadHomePage();
-
 	}
 
 	/**
