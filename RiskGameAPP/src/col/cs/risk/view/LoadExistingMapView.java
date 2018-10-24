@@ -27,7 +27,7 @@ import col.cs.risk.model.GameModel;
  * picker for the user to choose the existing map file and it responds to the
  * corresponding action for save or cancel button by the user.
  * 
- * @author Team
+ * @author Team25
  *
  */
 public class LoadExistingMapView {
@@ -48,7 +48,8 @@ public class LoadExistingMapView {
 	}
 
 	/**
-	 * Opens File Picker that allows userto choose the existing map file.
+	 * Opens File Picker that allows user to choose the existing map file. it saves
+	 * the path of user choosen map file in the helper class.
 	 */
 	public void openFileChooser() {
 		try {
@@ -75,9 +76,11 @@ public class LoadExistingMapView {
 	}
 
 	/**
-	 * Open picked map for modification
+	 * It gets the saved map file path that was picked by the user and open the view
+	 * for the modification of the map. in this user can do edit the map, save the
+	 * edited map, or cancel the modification process.
 	 * 
-	 * @param mapString
+	 * @param choosenMapString
 	 * 
 	 */
 	public void showModificationView(String choosenMapString) {
@@ -91,15 +94,18 @@ public class LoadExistingMapView {
 			}
 		});
 		JPanel editPanel = new JPanel();
+		/* Text Area to Show the map text */
 		JTextArea area = new JTextArea(17, 68);
 		area.setLineWrap(true);
 		area.setText(choosenMapString);
+		
 		JScrollPane scrollpane = new JScrollPane();
 		scrollpane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollpane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollpane.getViewport().add(area);
 		editPanel.add(scrollpane);
 		dataFrame.add(editPanel);
+		/** Save Map button */
 		Button b1 = new Button("Save");
 		GameModel gameModel = new GameModel();
 		b1.addActionListener((new ActionListener() {
@@ -127,6 +133,7 @@ public class LoadExistingMapView {
 			}
 
 		}));
+		/** Cancel Map Modification button */
 		Button b2 = new Button("Cancel");
 		b2.addActionListener(new ActionListener() {
 
