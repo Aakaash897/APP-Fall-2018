@@ -54,7 +54,10 @@ public class MapConstructionView extends JFrame {
 	}
 
 	/**
-	 * Constructor which initializes GameController
+	 * This Constructor initializes GameController class and it initializes the view
+	 * which allows user to do two actions i.e. Construct new map and modify the
+	 * existing map view . it handles the operations corresponds to user actions.
+	 * 
 	 * 
 	 * @param gameController
 	 */
