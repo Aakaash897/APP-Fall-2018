@@ -1,6 +1,7 @@
 package col.cs.risk.controller;
 
 import col.cs.risk.helper.Utility;
+import col.cs.risk.model.Constants;
 import col.cs.risk.model.GameModel;
 import col.cs.risk.view.LoadExistingMapView;
 
@@ -70,8 +71,8 @@ public class LoadExistingMapController {
 	public void setModelDetails(boolean isModified, String fileName) {
 		GameModel.isBaseMapModified = isModified;
 		GameModel.fileName = fileName;
-		if (fileName.equals("currMap.map")) {
-			GameModel.imageSelected = "currMap.png";
+		if (fileName.equals(Constants.DEFAULT_MODIFIED_MAP_FILE_NAME)) {
+			GameModel.imageSelected = Constants.DEFAULT_MODIFIED_MAP_IMAGE_FILE_NAME;
 		} else {
 			GameModel.imageSelected = fileName.replace(".map", ".bmp");
 		}
@@ -83,7 +84,7 @@ public class LoadExistingMapController {
 	 * @param result
 	 */
 	public void actionPerformedOnSave(String result) {
-		String fileName = "currMap.map";
+		String fileName = Constants.DEFAULT_MODIFIED_MAP_FILE_NAME;
 		GameModel.fileName = fileName;
 		Utility.writeToFile(fileName, result);
 		startGameController.setPlayers();
@@ -95,7 +96,7 @@ public class LoadExistingMapController {
 	 * @param result
 	 */
 	public void actionPerformedOnCancel(String result) {
-		String fileName = "currMap.map";
+		String fileName = Constants.DEFAULT_MODIFIED_MAP_FILE_NAME;
 		GameModel.fileName = fileName;
 		Utility.writeToFile(fileName, result);
 		exitModificaitonView();

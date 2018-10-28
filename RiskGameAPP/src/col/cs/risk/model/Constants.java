@@ -19,6 +19,8 @@ public class Constants {
 	public static final int FORTIFYING_PHASE = 8;
 	public static final int FORTIFY_PHASE = 9;
 	public static final int ATTACK_PHASE = 10;
+	public static final int ATTACKING_PHASE = 11;
+	public static final int ATTACK_FIGHT_PHASE = 12;
 	public static final String RE_ENFORCEMENT_MESSAGE = "Place an army on a territory you occupy";
 	public static final String MOVE_FROM = "Select a country of yours to move armies from";
 	public static final String MIN_TWO_ARMY_MESSAGE = "Your occupied country should have minimum 2 army";
@@ -39,11 +41,15 @@ public class Constants {
 	public static final String NOT_COMPLETE_CONNECTED_MAP_MESSAGE = "Not a completely connected map";
 	public static final String INVALID_MAP_MESSAGE = "Invalid map, check the format";
 	public static final String INVALID_PLAYER_NO_SELECTION_MESSAGE = "Invalid number of players selected";
+	public static final String ATTACK_COUNTRY_SELECT_MESSAGE = "Select a territory of yours to attack from";
 	public static final int ZERO = 0;
 	public static final int ONE = 1;
 	public static final int TWO = 2;
 	public static final int THREE = 3;
 	public static final int NINE = 9;
 	public static final int TWENTY = 20;
+	public static final String DEFAULT_MAP_FILE_NAME = "World.map";
+	public static final String DEFAULT_MODIFIED_MAP_FILE_NAME = "currMap.map";
+	public static final String DEFAULT_MODIFIED_MAP_IMAGE_FILE_NAME = "currMap.png";
 
 }

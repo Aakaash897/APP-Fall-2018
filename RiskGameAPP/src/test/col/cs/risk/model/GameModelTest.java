@@ -101,7 +101,7 @@ public class GameModelTest {
 	 */
 	@Test
 	public void testReadFile() {
-		String fileName = "currMap.map";
+		String fileName = Constants.DEFAULT_MODIFIED_MAP_FILE_NAME;
 		mapString = gameModel.readFile(mapString, fileName);
 
 		assertTrue(mapString.length() > 0 ? true : false);

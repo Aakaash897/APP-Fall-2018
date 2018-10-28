@@ -1,6 +1,7 @@
 package col.cs.risk.helper;
 
 import col.cs.risk.controller.StartGameController;
+import col.cs.risk.model.Constants;
 import col.cs.risk.model.GameModel;
 
 /**
@@ -32,7 +33,7 @@ public class MapException extends Exception {
 		GameModel.players.removeAllElements();
 		GameModel.players.removeAllElements();
 		GameModel.isBaseMapModified = false;
-		GameModel.fileName = "World.map";
+		GameModel.fileName = Constants.DEFAULT_MAP_FILE_NAME;
 		new StartGameController();
 		Utility.showPopUp(getMessage());
 	}

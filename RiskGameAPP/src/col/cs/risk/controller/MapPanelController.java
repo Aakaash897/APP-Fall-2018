@@ -113,26 +113,7 @@ public class MapPanelController extends JPanel {
 			if (playerModel == null) {
 				graphics.setColor(Color.white);
 			} else {
-				switch (playerModel.getId()) {
-				case 0:
-					graphics.setColor(Color.red);
-					break;
-				case 1:
-					graphics.setColor(Color.blue);
-					break;
-				case 2:
-					graphics.setColor(Color.green);
-					break;
-				case 3:
-					graphics.setColor(Color.orange);
-					break;
-				case 4:
-					graphics.setColor(Color.pink);
-					break;
-				case 5:
-					graphics.setColor(Color.darkGray);
-					break;
-				}
+				graphics.setColor(Utility.getColor(playerModel.getId()));
 			}
 
 			graphics.fillRect(territoryModel.getX_pos(), territoryModel.getY_pos(), 25, 25);

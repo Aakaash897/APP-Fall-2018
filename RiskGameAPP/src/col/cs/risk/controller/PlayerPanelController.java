@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import javax.swing.GroupLayout;
 import javax.swing.JPanel;
 
+import col.cs.risk.helper.Utility;
 import col.cs.risk.model.GameModel;
 import col.cs.risk.model.PlayerModel;
 
@@ -79,26 +80,7 @@ public class PlayerPanelController extends JPanel {
 				width = 75;
 			}
 
-			switch (gameModel.getCurrentPlayer().getId()) {
-			case 0:
-				graphics.setColor(Color.red);
-				break;
-			case 1:
-				graphics.setColor(Color.blue);
-				break;
-			case 2:
-				graphics.setColor(Color.green);
-				break;
-			case 3:
-				graphics.setColor(Color.orange);
-				break;
-			case 4:
-				graphics.setColor(Color.pink);
-				break;
-			case 5:
-				graphics.setColor(Color.darkGray);
-				break;
-			}
+			graphics.setColor(Utility.getColor(gameModel.getCurrentPlayer().getId()));
 
 			graphics.fillRect(position + (playerModel.getId() * 75), 63, width, 35);
 			gameModel.nextPlayer();

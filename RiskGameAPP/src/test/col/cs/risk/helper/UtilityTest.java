@@ -56,7 +56,7 @@ public class UtilityTest {
 	@Test
 	public void testWriteDataToFile() throws IOException {
 		StringBuilder mapString = new StringBuilder();
-		String fileName = "currMap.map";
+		String fileName = Constants.DEFAULT_MODIFIED_MAP_FILE_NAME;
 		StringBuilder result = new StringBuilder();
 		result.append("hi how are you\n");
 		result.append("I am goog\n");

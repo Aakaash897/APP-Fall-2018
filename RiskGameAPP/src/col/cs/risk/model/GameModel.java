@@ -45,7 +45,7 @@ public class GameModel {
 	public static boolean isBaseMapModified;
 
 	/** name of the modified file */
-	public static String fileName = "World.map";
+	public static String fileName = Constants.DEFAULT_MAP_FILE_NAME;
 
 	/** current state of the game */
 	private int state;
@@ -127,7 +127,7 @@ public class GameModel {
 		if(isBaseMapModified) {
 			modifiedMapString = readFile(modifiedMapString, fileName);
 		} else {
-			baseMapString = readFile(baseMapString, "World.map");
+			baseMapString = readFile(baseMapString, Constants.DEFAULT_MAP_FILE_NAME);
 		}
 	}
 
@@ -278,7 +278,7 @@ public class GameModel {
 			if(isBaseMapModified) {
 				mapFileStream = new File(Utility.getMapPath(fileName));
 			} else {
-				mapFileStream = new File(Utility.getMapPath("World.map"));
+				mapFileStream = new File(Utility.getMapPath(Constants.DEFAULT_MAP_FILE_NAME));
 			}
 			Scanner scn = new Scanner(mapFileStream);
 			String name;

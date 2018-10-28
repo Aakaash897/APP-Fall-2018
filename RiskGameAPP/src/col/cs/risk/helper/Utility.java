@@ -1,5 +1,6 @@
 package col.cs.risk.helper;
 
+import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
@@ -27,6 +28,9 @@ import col.cs.risk.model.Constants;
  */
 public class Utility {
 	
+	/** Player and color combination */
+	private static HashMap<Integer, Color> playerColor = new HashMap<>();
+	
 	/**
 	 * Selected file path of the map
 	 */
@@ -36,6 +40,16 @@ public class Utility {
 	 * Map string having the whole map in the string format
 	 */
 	public static StringBuilder baseMapString;
+	
+	/** static block to initialize player color map */
+	static {
+		playerColor.put(0, Color.red);
+		playerColor.put(1, Color.blue);
+		playerColor.put(2, Color.green);
+		playerColor.put(3, Color.orange);
+		playerColor.put(4, Color.pink);
+		playerColor.put(5, Color.darkGray);
+	}
 
 	/**
 	 * Retrieves the path of the map file
@@ -216,5 +230,9 @@ public class Utility {
 			e.printStackTrace();
 		}
 		return true;
+	}
+	
+	public static Color getColor(int id) {
+		return playerColor.get(id);
 	}
 }
