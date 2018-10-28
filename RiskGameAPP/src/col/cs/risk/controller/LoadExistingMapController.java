@@ -20,7 +20,7 @@ public class LoadExistingMapController {
 	public StartGameController startGameController;
 
 	/**
-	 * Constructor with parameters Intialize Load existing map view
+	 * Constructor with parameters Initialize Load existing map view
 	 * 
 	 * @param startGameController
 	 */

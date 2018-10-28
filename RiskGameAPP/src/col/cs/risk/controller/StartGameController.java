@@ -70,7 +70,7 @@ public class StartGameController {
 	 * @param text
 	 * @returns true if single line text else false
 	 */
-	public boolean isSingleLineText(String text) {
+	public boolean isMapContainsSingleCountry(String text) {
 		InputStream is = new ByteArrayInputStream(text.getBytes());
 		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 		int lineNo = 0;
@@ -259,13 +259,13 @@ public class StartGameController {
 			constructNewMapView.showErrorPopup("Atleast add one continent ");
 		} else if (isEmptyDetails(line2)) {
 			constructNewMapView.showErrorPopup("Add countries in Territory section ");
-		} else if (!gameModel.checkContinentsAreValid(mapString.toString())) {
+		} else if (!gameModel.isContinentInTerrirotiesValid(mapString.toString())) {
 			constructNewMapView.showErrorPopup("Add continents which are present in the continent section ");
 		} else if (isEmptyDetails(line1)) {
 			constructNewMapView.showErrorPopup("Add country details in country section");
-		} else if (isSingleLineText(line2)) {
+		} else if (isMapContainsSingleCountry(line2)) {
 			constructNewMapView.showErrorPopup("Can't create connected map with a single country");
-		} else if (!gameModel.isAllTerritoriesConnected(mapString.toString())) {
+		} else if (!gameModel.isAllTerritoriesHaveAdjacents(mapString.toString())) {
 			constructNewMapView.showErrorPopup("Atleast add one adjacent country ");
 		} else
 			try {

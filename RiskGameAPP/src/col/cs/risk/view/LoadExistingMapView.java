@@ -117,9 +117,9 @@ public class LoadExistingMapView {
 					Utility.showPopUp("File Should not be empty");
 				} else if (!gameModel.isTagsCorrect(result)) {
 					Utility.showPopUp("All Tags Should be there");
-				} else if (!gameModel.checkContinentsAreValid(result)) {
+				} else if (!gameModel.isContinentInTerrirotiesValid(result)) {
 					Utility.showPopUp("Add continents which are present in the continent section");
-				} else if (!gameModel.isAllTerritoriesConnected(result)) {
+				} else if (!gameModel.isAllTerritoriesHaveAdjacents(result)) {
 					Utility.showPopUp("Atleast add one adjacent country ");
 				} else
 					try {
@@ -140,8 +140,8 @@ public class LoadExistingMapView {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				dataFrame.setVisible(false);
-				if (gameModel.isTagsCorrect(area.getText()) && gameModel.checkContinentsAreValid(area.getText())
-						&& gameModel.isAllTerritoriesConnected(area.getText())) {
+				if (gameModel.isTagsCorrect(area.getText()) && gameModel.isContinentInTerrirotiesValid(area.getText())
+						&& gameModel.isAllTerritoriesHaveAdjacents(area.getText())) {
 					loadExistingGameController.actionPerformedOnCancel(area.getText());
 				} else {
 					loadExistingGameController.loadMapConstructionView();

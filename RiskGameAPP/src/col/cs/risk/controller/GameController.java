@@ -3,7 +3,6 @@ package col.cs.risk.controller;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.JTextField;
 
@@ -22,7 +21,7 @@ import col.cs.risk.view.MapView;
  * @author Team25
  *
  */
-public class GameController implements MouseListener {
+public class GameController {
 
 	/** Game model instance */
 	private GameModel gameModel;
@@ -62,7 +61,6 @@ public class GameController implements MouseListener {
 				mapView.getStatusLabel().setText(Constants.RE_ENFORCEMENT_MESSAGE);
 			}
 			mapMainPanel.repaint();
-			mapMainPanel.addMouseListener(this);
 		} catch (MapException ex) {
 			System.out.println(ex.getMessage());
 			ex.clearHistory();
@@ -221,10 +219,8 @@ public class GameController implements MouseListener {
 	 * Action performed on mouse click on the map
 	 * 
 	 * @param event
-	 *            {@inheritDoc}
 	 *
 	 */
-	@Override
 	public void mouseClicked(MouseEvent event) {
 		System.out.println("\n\n\n------------------");
 		System.out.println("Mouse clicked status = " + gameModel.getState() + ", " + gameModel.getStateAsString());
@@ -324,42 +320,6 @@ public class GameController implements MouseListener {
 			mapView.getEndButton().setVisible(false);
 			mapView.getUserEntered().setVisible(false);
 		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 
 	/**

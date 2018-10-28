@@ -188,12 +188,12 @@ public class GameModel {
 	public boolean isValidMapFormat() {
 		if(isBaseMapModified) {
 			return isTagsCorrect(modifiedMapString.toString())
-					&& isAllTerritoriesConnected(modifiedMapString.toString())
-					&& checkContinentsAreValid(modifiedMapString.toString());
+					&& isAllTerritoriesHaveAdjacents(modifiedMapString.toString())
+					&& isContinentInTerrirotiesValid(modifiedMapString.toString());
 		} else {
 			return isTagsCorrect(baseMapString.toString())
-					&& isAllTerritoriesConnected(baseMapString.toString())
-					&& checkContinentsAreValid(baseMapString.toString());
+					&& isAllTerritoriesHaveAdjacents(baseMapString.toString())
+					&& isContinentInTerrirotiesValid(baseMapString.toString());
 		}
 	}
 
@@ -214,7 +214,7 @@ public class GameModel {
 	 * @param mapText Map file as string
 	 * @return true if all territories are connected
 	 */
-	public Boolean isAllTerritoriesConnected(String mapText) {
+	public Boolean isAllTerritoriesHaveAdjacents(String mapText) {
 		Boolean isTerritory = false;
 		Boolean isConnected = true;
 		for (String line : mapText.split("\n")) {
@@ -233,7 +233,7 @@ public class GameModel {
 	 * @param mapText Map file as string
 	 * @return true if all territories belongs to the predefined continents.
 	 */
-	public Boolean checkContinentsAreValid(String mapText) {
+	public Boolean isContinentInTerrirotiesValid(String mapText) {
 		Boolean isContinent = false;
 		Boolean isTerritory = false;
 		Boolean isContinentValid = true;
@@ -554,7 +554,7 @@ public class GameModel {
 	 * @param y_coordinate It stores y_coordinate of map
 	 */
 	public void gamePhasePlayerTurnSetup(int x_coordinate, int y_coordinate) {
-		TerritoryModel territoryModel = getMapLocation(x_coordinate, y_coordinate);
+		TerritoryModel territoryModel = getTerritoryFromMapLocation(x_coordinate, y_coordinate);
 		if(territoryModel!=null) {
 			System.out.println("selected territory name = "+territoryModel.getName()+" occupied by = "+territoryModel.getPlayerModel().getName());
 			switch(getState()) {
@@ -593,7 +593,7 @@ public class GameModel {
 	 * @return status to display on game screen
 	 */
 	public String gamePhaseActivePlayerFinalModification(int x_coordinate, int y_coordinate) {
-		TerritoryModel territoryModel = getMapLocation(x_coordinate, y_coordinate);
+		TerritoryModel territoryModel = getTerritoryFromMapLocation(x_coordinate, y_coordinate);
 		if(territoryModel != null) {
 			System.out.println(" territory model name = "+territoryModel.getName());
 			if (getState() == Constants.FORTIFICATION_PHASE || getState() == Constants.FORTIFYING_PHASE) {
@@ -659,7 +659,7 @@ public class GameModel {
 	 * @param y_coordinate It stores Y_coordinate of map
 	 * @return TerritoryModel corresponding to the co_odinates
 	 */
-	public TerritoryModel getMapLocation(int x_coordinate, int y_coordinate) {
+	public TerritoryModel getTerritoryFromMapLocation(int x_coordinate, int y_coordinate) {
 		TerritoryModel territoryModel = null;
 		int size = Constants.TWENTY;
 		for(TerritoryModel territory:territories) {

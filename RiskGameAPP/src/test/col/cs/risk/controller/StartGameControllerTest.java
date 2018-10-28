@@ -83,10 +83,10 @@ public class StartGameControllerTest {
 	 */
 	@Test
 	public void testIsSingleLineText() {
-		assertTrue(startGameController.isSingleLineText(empty));
-		assertFalse(startGameController.isSingleLineText(alphabets));
-		assertFalse(startGameController.isSingleLineText(numbers));
-		assertTrue(startGameController.isSingleLineText(space));
+		assertTrue(startGameController.isMapContainsSingleCountry(empty));
+		assertFalse(startGameController.isMapContainsSingleCountry(alphabets));
+		assertFalse(startGameController.isMapContainsSingleCountry(numbers));
+		assertTrue(startGameController.isMapContainsSingleCountry(space));
 	}
 
 }

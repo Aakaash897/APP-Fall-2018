@@ -79,8 +79,8 @@ public class GameModelTest {
 	public void testIsAllTerritoriesConnected() {
 		String invalidMapString = (mapString.toString()).substring(0, mapString.length() - 7);
 
-		assertTrue(gameModel.isAllTerritoriesConnected(mapString.toString()));
-		assertFalse(gameModel.isAllTerritoriesConnected(invalidMapString));
+		assertTrue(gameModel.isAllTerritoriesHaveAdjacents(mapString.toString()));
+		assertFalse(gameModel.isAllTerritoriesHaveAdjacents(invalidMapString));
 	}
 
 	/**
@@ -91,8 +91,8 @@ public class GameModelTest {
 	public void testCheckContinentsAreValid() {
 		String invalidMapString = (mapString.toString()).replaceFirst("South America", "Hi");
 
-		assertTrue(gameModel.checkContinentsAreValid(mapString.toString()));
-		assertFalse(gameModel.checkContinentsAreValid(invalidMapString));
+		assertTrue(gameModel.isContinentInTerrirotiesValid(mapString.toString()));
+		assertFalse(gameModel.isContinentInTerrirotiesValid(invalidMapString));
 	}
 
 	/**
@@ -325,5 +325,26 @@ public class GameModelTest {
 		// 3 (0- continent bonus and 3 territory bonus)
 		assertEquals(3, playerModel.getArmies());
 
+	}
+	
+	/**
+	 * Test case for getting territory from selected coordinates
+	 */
+	@Test
+	public void testGetTerritoryFromMapLocation() {
+		ContinentModel continent = new ContinentModel(1, "C1", 2);
+		TerritoryModel territory1 = new TerritoryModel(1, "T1", 10, 20, continent);
+		TerritoryModel territory2 = new TerritoryModel(2, "T2", 50, 70, continent);
+		TerritoryModel territory3 = new TerritoryModel(3, "T3", 100, 100, continent);
+		
+		Vector<TerritoryModel> territorries = new Vector<>();
+		territorries.add(territory1);
+		territorries.add(territory2);
+		territorries.add(territory3);
+		
+		gameModel.setTerritories(territorries);
+		
+		assertEquals(territory2, gameModel.getTerritoryFromMapLocation(50, 70));
+		assertEquals(territory2.getName(), gameModel.getTerritoryFromMapLocation(50, 70).getName());
 	}
 }

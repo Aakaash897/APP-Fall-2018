@@ -5,6 +5,8 @@ import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -28,7 +30,7 @@ import col.cs.risk.model.Constants;
  * @author Team25
  *
  */
-public class MapView extends JFrame {
+public class MapView extends JFrame implements MouseListener {
 
 	/** serial version id */
 	private static final long serialVersionUID = 3468501561814767862L;
@@ -69,6 +71,7 @@ public class MapView extends JFrame {
 		this.gameController = gameController;
 		gameController.setMapView(this);
 		showMap();
+		gameController.getMapMainPanel().addMouseListener(this);
 	}
 
 	/**
@@ -280,6 +283,38 @@ public class MapView extends JFrame {
 	 */
 	public void setAttackButton(JButton attackButton) {
 		this.attackButton = attackButton;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void mouseClicked(MouseEvent event) {
+		gameController.mouseClicked(event);
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
