@@ -40,7 +40,10 @@ public class GameController {
 
 	/** No of rounds/turns completed */
 	private int noOfRoundsCompleted;
-
+	
+	/** Maximum number of rounds allowed per game */
+	private static int MAXIMUM_NO_OF_ROUNDS_ALLOWED = Constants.THREE;
+	
 	/**
 	 * Constructor to initialize the 
 	 * Jpanel
@@ -162,7 +165,7 @@ public class GameController {
 		if (currentRoundCompletedPlayersCount == GameModel.getPlayers().size()) {
 			noOfRoundsCompleted++;
 			currentRoundCompletedPlayersCount = Constants.ZERO;
-			if (noOfRoundsCompleted > Constants.TWO) {
+			if (noOfRoundsCompleted >= MAXIMUM_NO_OF_ROUNDS_ALLOWED) {
 				mapView.getStatusLabel().setText(Constants.GAME_OVER_MESSAGE);
 				mapView.getAttackButton().setVisible(false);
 				mapView.getFortifyButton().setVisible(false);
@@ -306,7 +309,7 @@ public class GameController {
 	 */
 	private void handleReinforcement() {
 		gameModel.setState(Constants.RE_ENFORCEMENT_PHASE);
-		gameModel.addTurnBonusToCurrentPlayer();
+		gameModel.getCurrentPlayer().addTurnBonus(gameModel);
 		if (gameModel.getCurrentPlayer().getArmies() == Constants.ZERO) {
 			mapView.getStatusLabel().setText(Constants.SELECT_THE_ACTION_MESSAGE);
 			mapView.getAttackButton().setVisible(true);

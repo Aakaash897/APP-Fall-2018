@@ -618,28 +618,6 @@ public class GameModel {
 	}
 
 	/**
-	 * Add turn bonus to current player
-	 */
-	public void addTurnBonusToCurrentPlayer() {
-		int bonus = territoryBonus()+continentBonus();
-		currentPlayer.addArmies(bonus);
-	}
-
-	/**
-	 * API to calculate territory bonus for current player
-	 * @return no of armies as bonus
-	 */
-	public int territoryBonus() {
-		double bonus = Constants.ZERO;
-		if(currentPlayer.getOccupiedTerritories().size() < Constants.NINE) {
-			bonus = Constants.THREE;
-		} else {
-			bonus = Math.floor(currentPlayer.getOccupiedTerritories().size() / Constants.THREE);
-		}
-		return (int) bonus;
-	}
-
-	/**
 	 * API to calculate continent bonus for current player
 	 * @return no of armies as bonus
 	 */

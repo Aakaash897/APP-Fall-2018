@@ -172,6 +172,28 @@ public class PlayerModel {
 	}
 
 	/**
+	 * Add turn bonus to current player
+	 */
+	public void addTurnBonus(GameModel gameModel) {
+		int bonus = territoryBonus()+gameModel.continentBonus();
+		addArmies(bonus);
+	}
+	
+	/**
+	 * API to calculate territory bonus for current player
+	 * @return no of armies as bonus
+	 */
+	public int territoryBonus() {
+		double bonus = Constants.ZERO;
+		if(getOccupiedTerritories().size() < Constants.NINE) {
+			bonus = Constants.THREE;
+		} else {
+			bonus = Math.floor(getOccupiedTerritories().size() / Constants.THREE);
+		}
+		return (int) bonus;
+	}
+	
+	/**
 	 * Action on fortification phase for the current player
 	 * 
 	 * @param gameModel

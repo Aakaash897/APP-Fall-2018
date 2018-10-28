@@ -13,7 +13,8 @@ import test.col.cs.risk.helper.UtilityTest;
  * @author Team25
  */
 @RunWith(Suite.class)
-@SuiteClasses({StartGameControllerTest.class, GameModelTest.class, UtilityTest.class})
+@SuiteClasses({StartGameControllerTest.class, GameModelTest.class, UtilityTest.class,
+	PlayerModelTest.class})
 public class TestSuitRisk {
 
 }
