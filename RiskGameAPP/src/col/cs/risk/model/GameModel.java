@@ -85,7 +85,7 @@ public class GameModel {
 
 	/** list of unOccupied territories */
 	public Vector<TerritoryModel> unOccupiedTerritories;
-
+	
 	/**
 	 * Instance block to fill player and army details
 	 */
@@ -592,13 +592,15 @@ public class GameModel {
 	 * @param y_coordinate It stores Y_coordinate of map
 	 * @return status to display on game screen
 	 */
-	public String gamePhaseActivePlayerFinalModification(int x_coordinate, int y_coordinate) {
+	public String gamePhaseActivePlayerActions(int x_coordinate, int y_coordinate) {
 		TerritoryModel territoryModel = getTerritoryFromMapLocation(x_coordinate, y_coordinate);
 		if(territoryModel != null) {
 			System.out.println(" territory model name = "+territoryModel.getName());
 			if (getState() == Constants.FORTIFICATION_PHASE || getState() == Constants.FORTIFYING_PHASE) {
 				return currentPlayer.fortify(this, territoryModel);
-			} 
+			} else if(getState() == Constants.ATTACK_PHASE || getState() == Constants.ATTACKING_PHASE) {
+				return currentPlayer.attack(this, territoryModel);
+			}
 		}
 		return "";
 	}
@@ -667,6 +669,9 @@ public class GameModel {
 			stateString = Constants.REINFORCEMENT_PHASE_MESSAGE;
 			break;
 		case Constants.ATTACK_PHASE :
+		case Constants.ATTACKING_PHASE:
+		case Constants.ATTACK_FIGHT_PHASE:
+		case Constants.CAPTURE:
 			stateString = Constants.ATTACK_PHASE_MESSAGE;
 			break;
 		case Constants.FORTIFICATION_PHASE :
@@ -679,6 +684,17 @@ public class GameModel {
 			break;
 		}
 		return stateString;
+	}
+	
+	public boolean isWon() {
+		boolean isWon = true;
+		for(TerritoryModel territory:territories) {
+			if(territory.getPlayerModel().getId() != currentPlayer.getId()) {
+				isWon = false;
+				break;
+			}
+		}
+		return isWon;
 	}
 
 	/**
