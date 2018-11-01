@@ -274,7 +274,7 @@ public class ConstructNewMapView extends JFrame {
 	 * @param errorMessage
 	 */
 	public void showErrorPopup(String errorMessage) {
-		Utility.showPopUp(errorMessage);
+		Utility.showMessagePopUp(errorMessage);
 	}
 
 	/**

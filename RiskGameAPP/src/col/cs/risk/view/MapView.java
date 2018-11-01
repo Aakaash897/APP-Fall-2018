@@ -9,9 +9,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.GroupLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
@@ -21,6 +23,7 @@ import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
 
 import col.cs.risk.controller.GameController;
+import col.cs.risk.helper.Utility;
 import col.cs.risk.model.Constants;
 
 /**
@@ -61,7 +64,7 @@ public class MapView extends JFrame implements MouseListener {
 	}
 
 	/**
-	 * Constructor with GameController parameter This intialize the main mapview of
+	 * Constructor with GameController parameter This initialize the main mapview of
 	 * the game
 	 * 
 	 * @param gameController
@@ -193,6 +196,80 @@ public class MapView extends JFrame implements MouseListener {
 		pack();
 	}
 
+	/**
+	 * Update the map details on map view
+	 */
+	public void updateMapPanel() {
+		gameController.getMapMainPanel().repaint();
+	}
+	
+	/**
+	 * Update the player details on player view
+	 */
+	public void updatePlayerPanel() {
+		gameController.getMapSubPanelPlayer().repaint();
+	}
+	
+	/**
+	 * Update both player and map details on view
+	 */
+	public void updateMapView() {
+		gameController.getMapMainPanel().repaint();
+		gameController.getMapSubPanelPlayer().repaint();
+	}
+	
+	/**
+	 * Show option to the players to select the no. of armies fight or dice to roll
+	 * @param message
+	 * @param maximumNo
+	 * @param image
+	 * @param player
+	 * @return integer of the selected option
+	 */
+	public int showOptionPopup(String message, int maximumNo, String image, String player) {
+		ImageIcon icon = new ImageIcon(Utility.getImagePath(image));
+		Integer[] options = new Integer[maximumNo];
+		for(int i=0;i<maximumNo;i++) {
+			options[i] = i+1;
+		}
+		int noOfDice = JOptionPane.showOptionDialog(null, player+", select the number of armies(dice) to fight",
+				message,
+                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, icon, options, options[0]);
+		return noOfDice+1;
+	}
+	
+	/** 
+	 * Once the attacker captures the defending country option given to user to select the no. of armies to move. 
+	 * @param maximumNo
+	 * @return no. of armies to move
+	 */
+	public int showInputDialogPopup(int maximumNo) {
+		Integer[] options = new Integer[maximumNo];
+		for(int i=0;i<maximumNo;i++) {
+			options[i] = i+1;
+		}
+		Object value = JOptionPane.showInputDialog(null, "Select the no. of armies to move to the captured country", 
+        		"Move armies", JOptionPane.QUESTION_MESSAGE, null, options, options[options.length-1]);
+        int selectedNoOfArmiesToMove = options[options.length-1];
+        if(value != null) {
+        	selectedNoOfArmiesToMove = (Integer) value;
+        }
+        return selectedNoOfArmiesToMove;
+	}
+	
+	/**
+	 * Option given for user to select/reject the request(action - all out mode)
+	 * @param message
+	 * @param options
+	 * @return
+	 */
+	public String showOptionPopup(String message, String[] options) {
+		int selection = JOptionPane.showOptionDialog(null, message,
+				"Selection popup",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+		return options[selection];
+	}
+	
 	/**
 	 * Exiting from the application
 	 */

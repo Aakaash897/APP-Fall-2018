@@ -114,13 +114,13 @@ public class LoadExistingMapView {
 			public void actionPerformed(ActionEvent e) {
 				String result = area.getText();
 				if (loadExistingGameController.startGameController.isEmptyDetails(result)) {
-					Utility.showPopUp("File Should not be empty");
+					Utility.showMessagePopUp("File Should not be empty");
 				} else if (!gameModel.isTagsCorrect(result)) {
-					Utility.showPopUp("All Tags Should be there");
+					Utility.showMessagePopUp("All Tags Should be there");
 				} else if (!gameModel.isContinentInTerrirotiesValid(result)) {
-					Utility.showPopUp("Add continents which are present in the continent section");
+					Utility.showMessagePopUp("Add continents which are present in the continent section");
 				} else if (!gameModel.isAllTerritoriesHaveAdjacents(result)) {
-					Utility.showPopUp("Atleast add one adjacent country ");
+					Utility.showMessagePopUp("Atleast add one adjacent country ");
 				} else
 					try {
 						if (Utility.isConnectedMap(result)) {
@@ -128,7 +128,7 @@ public class LoadExistingMapView {
 							loadExistingGameController.actionPerformedOnSave(result);
 						}
 					} catch (MapException ex) {
-						Utility.showPopUp(ex.getMessage());
+						Utility.showMessagePopUp(ex.getMessage());
 					}
 			}
 
