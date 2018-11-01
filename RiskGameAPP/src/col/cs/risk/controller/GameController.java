@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JTextField;
 
 import col.cs.risk.helper.MapException;
+import col.cs.risk.helper.Utility;
 import col.cs.risk.model.Constants;
 import col.cs.risk.model.GameModel;
 import col.cs.risk.view.MapView;
@@ -40,10 +41,10 @@ public class GameController {
 
 	/** No of rounds/turns completed */
 	private int noOfRoundsCompleted;
-	
+
 	/** Maximum number of rounds allowed per game */
-	private static int MAXIMUM_NO_OF_ROUNDS_ALLOWED = Constants.THREE;
-	
+	private static int MAXIMUM_NO_OF_ROUNDS_ALLOWED = Constants.SIX;
+
 	/**
 	 * Constructor to initialize the 
 	 * Jpanel
@@ -88,7 +89,11 @@ public class GameController {
 	public void attackButtonActionPerformed(ActionEvent evt) {
 		gameModel.setState(Constants.ATTACK_PHASE);
 		mapView.getAttackButton().setVisible(false);
-		mapView.getStatusLabel().setText("Attack Phase is not yet implemented, do fortification or end your turn");
+		if(gameModel.getCurrentPlayer().canAttack()) {
+			mapView.getStatusLabel().setText(Constants.ATTACK_COUNTRY_SELECT_MESSAGE);
+		} else {
+			mapView.getStatusLabel().setText(Constants.CANNOT_ATTACK_MESSAGE+Constants.SELECT_THE_ACTION_MESSAGE);
+		}
 		gameModel.notifyPhaseChange();
 	}
 
@@ -160,17 +165,13 @@ public class GameController {
 	/**
 	 * Validating the player turn
 	 */
-	private void validatePlayerTurn() {
+	public void validatePlayerTurn() {
 		currentRoundCompletedPlayersCount++;
 		if (currentRoundCompletedPlayersCount == GameModel.getPlayers().size()) {
 			noOfRoundsCompleted++;
 			currentRoundCompletedPlayersCount = Constants.ZERO;
 			if (noOfRoundsCompleted >= MAXIMUM_NO_OF_ROUNDS_ALLOWED) {
-				mapView.getStatusLabel().setText(Constants.GAME_OVER_MESSAGE);
-				mapView.getAttackButton().setVisible(false);
-				mapView.getFortifyButton().setVisible(false);
-				mapView.getEndButton().setVisible(false);
-				mapSubPanelPlayer.repaint();
+				gameOver(Constants.GAME_OVER_MESSAGE);
 			} else {
 				changeTurn();
 			}
@@ -186,12 +187,7 @@ public class GameController {
 		gameModel.nextPlayer();
 		System.out.println(" noOfRoundsCompleted = " + noOfRoundsCompleted);
 		if (isFirstRound()) {
-			gameModel.setState(Constants.ATTACK_PHASE);
-			mapView.getAttackButton().setVisible(false);
-			mapView.getFortifyButton().setVisible(true);
-			mapView.getEndButton().setVisible(true);
-			mapView.getUserEntered().setVisible(false);
-			mapView.getStatusLabel().setText("Attack Phase is not yet implemented, do fortification or end your turn");
+			handleAttack();
 		} else {
 			handleReinforcement();
 		}
@@ -205,6 +201,15 @@ public class GameController {
 	 */
 	private boolean isFirstRound() {
 		return noOfRoundsCompleted == Constants.ZERO ? true : false;
+	}
+
+	public void gameOver(String message) {
+		mapView.getStatusLabel().setText(message);
+		mapView.getAttackButton().setVisible(false);
+		mapView.getFortifyButton().setVisible(false);
+		mapView.getEndButton().setVisible(false);
+		mapSubPanelPlayer.repaint();
+		Utility.showMessagePopUp(message, "Information");
 	}
 
 	/**
@@ -237,13 +242,8 @@ public class GameController {
 			}
 			break;
 		case Constants.FORTIFICATION_PHASE:
-			String str = gameModel.gamePhaseActivePlayerFinalModification(x_coordinate, y_coordinate);
-			if (!str.isEmpty()) {
-				mapView.getStatusLabel().setText(str);
-			}
-			break;
 		case Constants.FORTIFYING_PHASE:
-			str = gameModel.gamePhaseActivePlayerFinalModification(x_coordinate, y_coordinate);
+			String str = gameModel.gamePhaseActivePlayerActions(x_coordinate, y_coordinate);
 			if (!str.isEmpty()) {
 				mapView.getStatusLabel().setText(str);
 			}
@@ -254,6 +254,17 @@ public class GameController {
 				mapView.getEndButton().setVisible(true);
 			}
 			break;
+		case Constants.ATTACK_PHASE:
+		case Constants.ATTACKING_PHASE:
+			str = gameModel.gamePhaseActivePlayerActions(x_coordinate, y_coordinate);
+			if (!str.isEmpty()) {
+				mapView.getStatusLabel().setText(str);
+			}
+			break;
+		}
+
+		if(gameModel.getState() == Constants.ATTACK_FIGHT_PHASE) {
+			gameModel.getCurrentPlayer().startBattle(gameModel, mapView, this);
 		}
 
 		if (gameModel.getState() == Constants.START_TURN) {
@@ -271,31 +282,37 @@ public class GameController {
 	 * This function sets the console output upon
 	 * entering the Attack Phase
 	 */
-	private void handleAttack() {
-		mapView.getStatusLabel().setText("Attack Phase is not yet implemented, do fortification or end your turn");
+	public void handleAttack() {
+		gameModel.setState(Constants.ATTACK_PHASE);
+		if(gameModel.getCurrentPlayer().canAttack()) {
+			mapView.getStatusLabel().setText(Constants.ATTACK_COUNTRY_SELECT_MESSAGE);
+		} else {
+			mapView.getStatusLabel().setText(Constants.CANNOT_ATTACK_MESSAGE+Constants.SELECT_THE_ACTION_MESSAGE);
+		}
 		mapView.getFortifyButton().setVisible(true);
 		mapView.getEndButton().setVisible(true);
 		mapView.getAttackButton().setVisible(false);
+		mapView.getUserEntered().setVisible(false);
 	}
 
 	/**
 	 * Handle active turn state of
-	 * the risk game
+	 * the risk game i.e once all the player armies are placed on the territories
+	 * but still it will be in reinforcement phase still next user action
 	 */
 	private void handleActiveTurn() {
+		gameModel.setState(Constants.RE_ENFORCEMENT_PHASE);
 		mapView.getStatusLabel().setText(Constants.SELECT_THE_ACTION_MESSAGE);
 		mapView.getAttackButton().setVisible(true);
 		mapView.getFortifyButton().setVisible(true);
 		mapView.getEndButton().setVisible(true);
-		gameModel.setState(Constants.RE_ENFORCEMENT_PHASE);
 	}
 
 	/**
-	 * Handle start turn state of player or before reinforcement
+	 * Handle start turn state of player or before reinforcement i.e after fortification
 	 */
 	private void handleStartTurn() {
 		if (isFirstRound()) {
-			gameModel.setState(Constants.ATTACK_PHASE);
 			handleAttack();
 		} else {
 			handleReinforcement();
@@ -308,20 +325,24 @@ public class GameController {
 	 * of the game
 	 */
 	private void handleReinforcement() {
-		gameModel.setState(Constants.RE_ENFORCEMENT_PHASE);
-		gameModel.getCurrentPlayer().addTurnBonus(gameModel);
-		if (gameModel.getCurrentPlayer().getArmies() == Constants.ZERO) {
-			mapView.getStatusLabel().setText(Constants.SELECT_THE_ACTION_MESSAGE);
-			mapView.getAttackButton().setVisible(true);
-			mapView.getFortifyButton().setVisible(true);
-			mapView.getEndButton().setVisible(true);
-			mapView.getUserEntered().setVisible(false);
+		if(gameModel.getCurrentPlayer().getOccupiedTerritories().isEmpty()) {
+			validatePlayerTurn();
 		} else {
-			mapView.getStatusLabel().setText(Constants.RE_ENFORCEMENT_MESSAGE);
-			mapView.getAttackButton().setVisible(false);
-			mapView.getFortifyButton().setVisible(false);
-			mapView.getEndButton().setVisible(false);
-			mapView.getUserEntered().setVisible(false);
+			gameModel.setState(Constants.RE_ENFORCEMENT_PHASE);
+			gameModel.getCurrentPlayer().addTurnBonus(gameModel);
+			if (gameModel.getCurrentPlayer().getArmies() == Constants.ZERO) {
+				mapView.getStatusLabel().setText(Constants.SELECT_THE_ACTION_MESSAGE);
+				mapView.getAttackButton().setVisible(true);
+				mapView.getFortifyButton().setVisible(true);
+				mapView.getEndButton().setVisible(true);
+				mapView.getUserEntered().setVisible(false);
+			} else {
+				mapView.getStatusLabel().setText(Constants.RE_ENFORCEMENT_MESSAGE);
+				mapView.getAttackButton().setVisible(false);
+				mapView.getFortifyButton().setVisible(false);
+				mapView.getEndButton().setVisible(false);
+				mapView.getUserEntered().setVisible(false);
+			}
 		}
 	}
 

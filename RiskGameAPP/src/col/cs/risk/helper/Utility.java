@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Random;
 
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import col.cs.risk.model.Constants;
@@ -91,6 +92,16 @@ public class Utility {
 	public static String getImagePath(String filename) {
 		return "resources/risk/images/" + filename;
 	}
+	
+	/**
+	 * Retrieves the dice path
+	 * 
+	 * @param filename of the dice
+	 * @return String having the full path of the dice
+	 */
+	public static String getDicePath(String filename) {
+		return "resources/risk/dice/" + filename;
+	}
 
 	/**
 	 * Save path of the map file
@@ -162,9 +173,24 @@ public class Utility {
 	 * 
 	 * @param errorMessage : Contains the actual message to be shown
 	 */
-	public static void showPopUp(String errorMessage) {
+	public static void showMessagePopUp(String errorMessage) {
 		JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
 	}
+	
+	/**
+	 * Message pop up to show error message
+	 * 
+	 * @param message : Contains the actual message to be shown
+	 */
+	public static void showMessagePopUp(String message, String title) {
+		JOptionPane.showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
+	}
+	
+	public static String replacePartInMessage(String message, String origin, String replace) {
+		message = message.replace(origin, replace);
+		return message;
+	}
+	
 
 	/**
 	 * Checks if is all territories are connected
