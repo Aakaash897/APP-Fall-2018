@@ -119,8 +119,8 @@ public class GameModel {
 		initCurrentPlayer();
 		initializeMapAttributes();
 		validateAndLoadMap();
-		distributeArmies();
 		assignCardToEachTerritory();
+		distributeArmies();
 		assignTerritories();
 	}
 

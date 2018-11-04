@@ -46,6 +46,9 @@ public class MapView extends JFrame implements MouseListener {
 
 	/** fortify button */
 	private JButton fortifyButton;
+	
+	/** card exchange Button	 */
+	private JButton cardButton;
 
 	/** Field to take user input for moving armies during fortification */
 	private JTextField userEntered;
@@ -84,6 +87,7 @@ public class MapView extends JFrame implements MouseListener {
 		statusLabel = new JLabel();
 		attackButton = new JButton();
 		fortifyButton = new JButton();
+		cardButton = new JButton();
 		endButton = new JButton();
 		userEntered = new JTextField();
 
@@ -141,6 +145,17 @@ public class MapView extends JFrame implements MouseListener {
 		});
 		gameController.getMapSubPanelPlayer().add(fortifyButton,
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(735, 30, 90, 30));
+		
+		cardButton.setVisible(true);
+		cardButton.setFont(resourceMap.getFont("CardButton.font")); 
+		cardButton.setText("Card"); 
+		cardButton.setName("CardButton"); 
+		cardButton.addMouseListener(new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent evt) {
+				//CardButtonMouseClicked(evt);
+			}
+		});
+		gameController.getMapSubPanelPlayer().add(cardButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(799, 25, 220, 25));
 
 		userEntered.setVisible(false);
 		userEntered.setFont(resourceMap.getFont("userEntered.font"));
