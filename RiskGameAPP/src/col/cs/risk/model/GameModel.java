@@ -116,7 +116,14 @@ public class GameModel {
 		initializeMapAttributes();
 		validateAndLoadMap();
 		distributeArmies();
+		assignCardToEachTerritory();
 		assignTerritories();
+	}
+
+	private void assignCardToEachTerritory() {
+		
+		// TODO Auto-generated method stub
+		
 	}
 
 	/**
