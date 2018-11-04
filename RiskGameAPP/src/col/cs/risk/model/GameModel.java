@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.Vector;
 
@@ -18,6 +19,7 @@ import javax.swing.JPanel;
 
 import col.cs.risk.helper.MapException;
 import col.cs.risk.helper.Utility;
+import col.cs.risk.model.CardModel;
 
 /**
  * GameModel class is to maintain game data such as continents, territories and
@@ -55,6 +57,8 @@ public class GameModel {
 
 	/** list of countries */
 	public Vector<TerritoryModel> territories = new Vector<>();
+	
+	public Vector<CardModel> totCards = new Vector<>();
 
 	/** list of players */
 	public static Vector<PlayerModel> players = new Vector<>();
@@ -120,9 +124,23 @@ public class GameModel {
 		assignTerritories();
 	}
 
+	
+	
+	/**
+	 * Function to Initialize the number of cards and add them
+	 * to the CardModel Vector. Includes the WildCard also.
+	 * 
+	 */
 	private void assignCardToEachTerritory() {
 		
-		// TODO Auto-generated method stub
+		for (int position = 0; position < territories.size(); position++)
+			totCards.add(new CardModel(position, position % 3));
+		
+		Random wildCard = new Random();
+		
+		if (totCards.size() > 0)
+			for (int wildCardCount = 1; wildCardCount <= 2; wildCardCount++)
+				totCards.add(new CardModel(wildCard.nextInt(totCards.size()), -1));
 		
 	}
 
