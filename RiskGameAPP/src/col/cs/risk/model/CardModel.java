@@ -23,5 +23,32 @@ public class CardModel {
 		this.cardType = cardType;
 		this.territory = territory;
 	}
+	
+	/**
+	 * Instantiates a new risk card model.
+	 *
+	 * @param territoryNumber Denotes the ID of the Territory
+	 *            
+	 * @param cardType Indicates the Type of Card
+	 *           
+	 */
+	public CardModel(int territoryNumber, int cardType) {
+		this.territory = territoryNumber;
+		switch (cardType) {
+		case 0:
+			this.cardType = "INFANTRY";
+			break;
+		case 1:
+			this.cardType = "CAVALRY";
+			break;
+		case 2:
+			this.cardType = "ARTILLERY";
+			break;
+		default:
+			this.cardType = "WILD";
+			break;
+		}
+
+	}
 
 }
