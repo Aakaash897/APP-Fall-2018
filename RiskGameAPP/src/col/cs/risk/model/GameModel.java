@@ -20,6 +20,13 @@ import javax.swing.JPanel;
 import col.cs.risk.helper.MapException;
 import col.cs.risk.helper.Utility;
 import col.cs.risk.model.CardModel;
+import col.cs.risk.model.phase.AttackPhaseModel;
+import col.cs.risk.model.phase.EndPhaseModel;
+import col.cs.risk.model.phase.FortificationPhaseModel;
+import col.cs.risk.model.phase.GamePhase;
+import col.cs.risk.model.phase.ReEnforcementPhaseModel;
+import col.cs.risk.model.phase.StartPhaseModel;
+import col.cs.risk.view.PhaseView;
 
 /**
  * GameModel class is to maintain game data such as continents, territories and
@@ -57,7 +64,7 @@ public class GameModel {
 
 	/** list of countries */
 	public Vector<TerritoryModel> territories = new Vector<>();
-	
+
 	public Vector<CardModel> totCards = new Vector<>();
 
 	/** list of players */
@@ -89,7 +96,23 @@ public class GameModel {
 
 	/** list of unOccupied territories */
 	public Vector<TerritoryModel> unOccupiedTerritories;
+
+	private PhaseView phaseView;
+
+	private StartPhaseModel startPhaseModel;
+
+	private ReEnforcementPhaseModel reInforcementPhaseModel;
 	
+	private AttackPhaseModel attackPhaseModel;
+
+	private FortificationPhaseModel fortificationPhaseModel;
+
+	private EndPhaseModel endPhaseModel;
+	
+	private TerritoryModel selectedTerritory;
+	
+	private int previousState;
+
 	/**
 	 * Instance block to fill player and army details
 	 */
@@ -124,24 +147,24 @@ public class GameModel {
 		assignTerritories();
 	}
 
-	
-	
+
+
 	/**
 	 * Function to Initialize the number of cards and add them
 	 * to the CardModel Vector. Includes the WildCard also.
 	 * 
 	 */
 	private void assignCardToEachTerritory() {
-		
+
 		for (int position = 0; position < territories.size(); position++)
 			totCards.add(new CardModel(position, position % 3));
-		
+
 		Random wildCard = new Random();
-		
+
 		if (totCards.size() > 0)
 			for (int wildCardCount = 1; wildCardCount <= 2; wildCardCount++)
 				totCards.add(new CardModel(wildCard.nextInt(totCards.size()), -1));
-		
+
 	}
 
 	/**
@@ -439,7 +462,7 @@ public class GameModel {
 		}
 		return territoryIds;
 	}
-	
+
 	/**
 	 * Is traversal trough all territories done
 	 * @param territoryIds It is an set that stores the territories id's
@@ -572,6 +595,53 @@ public class GameModel {
 			this.subMapPanel.repaint();
 		}
 	}
+	
+	public void notifyPhaseChanging(String... values) {
+		if(previousState == 0) {
+			previousState = getState();
+		}
+		GamePhase gamePhase = null;
+		boolean clear = (previousState == getState()) ? false : true;
+		switch (getState()) {
+		case Constants.NEW_GAME:
+		case Constants.INITIAL_RE_ENFORCEMENT_PHASE:
+			gamePhase = startPhaseModel;
+			break;
+		case Constants.RE_ENFORCEMENT_PHASE:
+			gamePhase = reInforcementPhaseModel;
+			break;
+		case Constants.ATTACK_PHASE:	
+		case Constants.ATTACKING_PHASE:
+		case Constants.ATTACK_FIGHT_PHASE:
+		case Constants.CAPTURE:
+			gamePhase = attackPhaseModel;
+			clear = (previousState == Constants.ATTACK_PHASE ||
+					previousState == Constants.ATTACKING_PHASE || previousState == Constants.ATTACK_FIGHT_PHASE 
+					|| previousState == Constants.CAPTURE) ? false : true;
+			break;
+		case Constants.FORTIFICATION_PHASE:	
+		case Constants.FORTIFYING_PHASE:
+		case Constants.FORTIFY_PHASE:
+			gamePhase = fortificationPhaseModel;
+			clear = (previousState == Constants.FORTIFICATION_PHASE ||
+					previousState == Constants.FORTIFYING_PHASE ||  
+					previousState == Constants.FORTIFY_PHASE) ? false : true;
+			break;
+		case Constants.END_PHASE:
+			gamePhase = endPhaseModel;
+			break;
+		default:
+			break;
+		}	
+		if(gamePhase != null) {
+			if(values != null && values.length > 0) {
+				gamePhase.setMessage(values[0]);
+			}
+			gamePhase.setGameModel(this);
+			gamePhase.isChanged(clear);
+		}
+		previousState = getState();
+	}
 
 	/**
 	 * Game phase setup done for each player at the start of the turn
@@ -587,6 +657,8 @@ public class GameModel {
 				if(territoryModel.getPlayerModel().getId() == currentPlayer.getId()) {
 					addArmyOnOccupiedTerritory(territoryModel, currentPlayer);
 					nextPlayer();
+					notifyPhaseChanging();
+					selectedTerritory = null;
 				}
 				int index = 0;
 				for(PlayerModel playerModel:players) {
@@ -594,7 +666,6 @@ public class GameModel {
 						index++;
 					}
 				}
-
 				if (index == players.size()) {
 					setState(Constants.START_TURN);
 				}
@@ -602,6 +673,7 @@ public class GameModel {
 			case Constants.RE_ENFORCEMENT_PHASE:
 				if(territoryModel.getPlayerModel().getId() == currentPlayer.getId()) {
 					addArmyOnOccupiedTerritory(territoryModel, currentPlayer);
+					notifyPhaseChanging();
 					if(currentPlayer.getArmies() == Constants.ZERO) {
 						setState(Constants.ACTIVE_TURN);
 					}
@@ -674,6 +746,7 @@ public class GameModel {
 				}
 			}
 		}
+		selectedTerritory = territoryModel;
 		return territoryModel;
 	}
 
@@ -704,13 +777,16 @@ public class GameModel {
 		case Constants.FORTIFY_PHASE:
 			stateString = Constants.FORTIFICATION_PHASE_MESSAGE;
 			break;
+		case Constants.END_PHASE:
+			stateString = Constants.END_PHASE_MESSAGE;
+			break;
 		default :
 			stateString = "";
 			break;
 		}
 		return stateString;
 	}
-	
+
 	public boolean isWon() {
 		boolean isWon = true;
 		for(TerritoryModel territory:territories) {
@@ -1019,5 +1095,117 @@ public class GameModel {
 	 */
 	public void setNoOfArmiesToMove(int noOfArmiesToMove) {
 		this.noOfArmiesToMove = noOfArmiesToMove;
+	}
+
+	/**
+	 * @return the phaseView
+	 */
+	public PhaseView getPhaseView() {
+		return phaseView;
+	}
+
+	/**
+	 * @param phaseView the phaseView to set
+	 */
+	public void setPhaseView(PhaseView phaseView) {
+		this.phaseView = phaseView;
+	}
+
+	/**
+	 * @return the startPhaseModel
+	 */
+	public StartPhaseModel getStartPhaseModel() {
+		return startPhaseModel;
+	}
+
+	/**
+	 * @param startPhaseModel the startPhaseModel to set
+	 */
+	public void setStartPhaseModel(StartPhaseModel startPhaseModel) {
+		this.startPhaseModel = startPhaseModel;
+	}
+
+	/**
+	 * @return the reInforcementPhaseModel
+	 */
+	public ReEnforcementPhaseModel getReInforcementPhaseModel() {
+		return reInforcementPhaseModel;
+	}
+
+	/**
+	 * @param reInforcementPhaseModel the reInforcementPhaseModel to set
+	 */
+	public void setReInforcementPhaseModel(ReEnforcementPhaseModel reInforcementPhaseModel) {
+		this.reInforcementPhaseModel = reInforcementPhaseModel;
+	}
+
+	/**
+	 * @return the fortificationPhaseModel
+	 */
+	public FortificationPhaseModel getFortificationPhaseModel() {
+		return fortificationPhaseModel;
+	}
+
+	/**
+	 * @param fortificationPhaseModel the fortificationPhaseModel to set
+	 */
+	public void setFortificationPhaseModel(FortificationPhaseModel fortificationPhaseModel) {
+		this.fortificationPhaseModel = fortificationPhaseModel;
+	}
+
+	/**
+	 * @return the endPhaseModel
+	 */
+	public EndPhaseModel getEndPhaseModel() {
+		return endPhaseModel;
+	}
+
+	/**
+	 * @param endPhaseModel the endPhaseModel to set
+	 */
+	public void setEndPhaseModel(EndPhaseModel endPhaseModel) {
+		this.endPhaseModel = endPhaseModel;
+	}
+	
+	/**
+	 * @return the attackPhaseModel
+	 */
+	public AttackPhaseModel getAttackPhaseModel() {
+		return attackPhaseModel;
+	}
+
+	/**
+	 * @param attackPhaseModel the attackPhaseModel to set
+	 */
+	public void setAttackPhaseModel(AttackPhaseModel attackPhaseModel) {
+		this.attackPhaseModel = attackPhaseModel;
+	}
+
+	/**
+	 * @return the selectedTerritory
+	 */
+	public TerritoryModel getSelectedTerritory() {
+		return selectedTerritory;
+	}
+
+	/**
+	 * @param selectedTerritory the selectedTerritory to set
+	 */
+	public void setSelectedTerritory(TerritoryModel selectedTerritory) {
+		this.selectedTerritory = selectedTerritory;
+	}
+
+	/**
+	 * @return the previousState
+	 */
+	public int getPreviousState() {
+		return previousState;
+	}
+
+	/**
+	 * @param previousState the previousState to set
+	 */
+	public void setPreviousState(int previousState) {
+		this.previousState = previousState;
 	}
 }

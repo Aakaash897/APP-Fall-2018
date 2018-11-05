@@ -27,11 +27,14 @@ public class Constants {
 	public static final String MIN_TWO_ARMY_MESSAGE = "Your occupied country should have minimum 2 army";
 	public static final String MOVE_TO = "Select a country of yours to move armies to, which should be an adjusant to ";
 	public static final String ARMIES_TO_MOVE = "Enter the no. of armies to move, in text box & press enter";
-	public static final String INITIAL_RE_ENFORCEMENT_PHASE_MESSAGE = "Initial Reinforcement";
-	public static final String ATTACK_PHASE_MESSAGE = "Attack";
-	public static final String REINFORCEMENT_PHASE_MESSAGE = "Reinforcement";
-	public static final String FORTIFICATION_PHASE_MESSAGE = "Fortification";
+	public static final String INITIAL_RE_ENFORCEMENT_PHASE_MESSAGE = "Initial Reinforcement phase";
+	public static final String START_PHASE_MESSAGE = "Start phase";
+	public static final String INITIAL_REINFORCEMENT_PHASE_MESSAGE = "Initial reinforcement phase";
+	public static final String ATTACK_PHASE_MESSAGE = "Attack phase";
+	public static final String REINFORCEMENT_PHASE_MESSAGE = "Reinforcement phase";
+	public static final String FORTIFICATION_PHASE_MESSAGE = "Fortification phase";
 	public static final String NEW_GAME_MESSAGE = "New Game";
+	public static final String END_PHASE_MESSAGE = "End phase";
 	public static final String MIN_ONE_ARMY_MESSAGE = "Minimum one army should be left on a owned territory";
 	public static final String VALID_DIGIT_MESSAGE = "Enter a valid digit";
 	public static final String GAME_OVER_MESSAGE = "Game over, no winner";
@@ -50,7 +53,7 @@ public class Constants {
 	public static final String CAPTURING_MESSAGE = "Capturing a country";
 	public static final String LOST_BATTLE_MESSAGE = "Lost battle";
 	public static final String AUTOMATIC_OR_ALL_OUT_MODE = "Automatic or all out mode during attack";
-	public static final String LOST_ARMIES_MESSAGE = "A lost B armies";
+	public static final String LOST_ARMIES_MESSAGE = "A lost B army/armies";
 	public static final String BOTH_LOST_ARMIES_MESSAGE = "Both players lost one army each";
 	public static final String CANNOT_ATTACK_MESSAGE = "Can't attack, ";
 	public static final String OK = "OK";

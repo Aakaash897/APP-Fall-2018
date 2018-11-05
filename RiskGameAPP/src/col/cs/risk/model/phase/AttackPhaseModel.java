@@ -1,0 +1,107 @@
+package col.cs.risk.model.phase;
+
+import java.util.Observable;
+
+import col.cs.risk.model.Constants;
+import col.cs.risk.model.GameModel;
+
+public class AttackPhaseModel extends Observable implements GamePhase {
+	
+	/** game model */
+	private GameModel gameModel;
+
+	/** instance of this class */
+	private static AttackPhaseModel attackPhaseModel;
+	
+	private StringBuilder stringBuilder;
+	
+	/**
+	 * 
+	 * @return s instance of AttackPhaseModel
+	 */
+	public static AttackPhaseModel getInstance() {
+		if(attackPhaseModel == null) {
+			attackPhaseModel = new AttackPhaseModel();
+		}
+		return attackPhaseModel;
+	}
+	
+
+	@Override
+	public void isChanged(boolean isStart) {
+		if(isStart) {
+			stringBuilder = null;
+		}
+		setChanged();
+		notifyObservers(this);
+	}
+
+	@Override
+	public String getTitle() {
+		return Constants.ATTACK_PHASE_MESSAGE;
+	}
+
+	@Override
+	public void setGameModel(GameModel gameModel) {
+		this.gameModel = gameModel;		
+	}
+	
+	private String basicMessage() {
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("\n*************" + getTitle() + "*************\n\n");
+		stringBuilder.append("Current player: ");
+		stringBuilder.append(gameModel.getCurrentPlayer().getName());
+		stringBuilder.append("\n\n");
+		stringBuilder.append("Information:\n\n");
+		return stringBuilder.toString();
+	}
+
+	@Override
+	public String getContent() {
+		if(stringBuilder == null) {
+			System.out.println(" initializing attack phase string");
+			stringBuilder = new StringBuilder();
+			stringBuilder.append(basicMessage());
+		}
+		System.out.println("AttackPhaseModel.getContent() state = "+gameModel.getState());
+		switch (gameModel.getState()) {
+		case Constants.ATTACK_PHASE:
+			if(gameModel.getCurrentPlayer().getAttackingTerritory() != null) {
+				stringBuilder.append("Attacking territory: ");
+				stringBuilder.append(gameModel.getCurrentPlayer().getAttackingTerritory().getName());
+				stringBuilder.append(" \n");
+			}
+			break;
+		case Constants.ATTACKING_PHASE:
+			if(gameModel.getCurrentPlayer().getDefendingTerritory() != null) {
+				stringBuilder.append("Defending territory: ");
+				stringBuilder.append(gameModel.getCurrentPlayer().getDefendingTerritory().getName());
+				stringBuilder.append(" \n");
+			}
+			break;
+		case Constants.ATTACK_FIGHT_PHASE:
+			if(gameModel.getCurrentPlayer().getGameController() != null) {
+				stringBuilder.append(gameModel.getCurrentPlayer().getGameController().getMapView().getStatusLabel().getText());
+				stringBuilder.append("\n");
+			}
+			break;
+		case Constants.CAPTURE:
+			if(gameModel.getCurrentPlayer().getDefendingTerritory().getArmies() == 0) {
+				stringBuilder.append("Capturing defending territory\n");
+			} else if(gameModel.getCurrentPlayer().getAttackingTerritory().getArmies() == 1) {
+				stringBuilder.append("Lost the battle\n");
+			}
+			break;
+		default:
+			break;
+		}
+		stringBuilder.append("\n");
+		return stringBuilder.toString();
+	}
+
+
+	@Override
+	public void setMessage(String message) {
+		// TODO Auto-generated method stub
+	}
+}

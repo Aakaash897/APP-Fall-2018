@@ -309,8 +309,9 @@ public class PlayerModel {
 		case Constants.FORTIFICATION_PHASE:
 			if (territoryModel.getPlayerModel().getId() == gameModel.getCurrentPlayer().getId()) {
 				if (territoryModel.getArmies() > 1) {
-					gameModel.setState(Constants.FORTIFYING_PHASE);
 					gameModel.setMoveArmiesFromTerritory(territoryModel);
+					gameModel.notifyPhaseChanging();
+					gameModel.setState(Constants.FORTIFYING_PHASE);
 					gameModel.notifyPhaseChange();
 					str = Constants.MOVE_TO + gameModel.getMoveArmiesFromTerritory().getName();
 				} else {
@@ -323,8 +324,9 @@ public class PlayerModel {
 		case Constants.FORTIFYING_PHASE:
 			if (territoryModel.getPlayerModel().getId() == gameModel.getCurrentPlayer().getId() 
 					&& gameModel.getMoveArmiesFromTerritory().getAdjacentTerritories().contains(territoryModel)) {
-				gameModel.setState(Constants.FORTIFY_PHASE);
 				gameModel.setMoveArmiesToTerritory(territoryModel);
+				gameModel.notifyPhaseChanging();
+				gameModel.setState(Constants.FORTIFY_PHASE);
 				gameModel.notifyPhaseChange();
 				str = Constants.ARMIES_TO_MOVE;
 			} else {
@@ -350,8 +352,9 @@ public class PlayerModel {
 		case Constants.ATTACK_PHASE:
 			if (territoryModel.getPlayerModel().getId() == gameModel.getCurrentPlayer().getId()) {
 				if (territoryModel.getArmies() > 1) {
-					gameModel.setState(Constants.ATTACKING_PHASE);
 					attackingTerritory = territoryModel;
+					gameModel.notifyPhaseChanging();
+					gameModel.setState(Constants.ATTACKING_PHASE);
 					gameModel.notifyPhaseChange();
 					str = Constants.DEFEND_COUNTRY_SELECT_MESSAGE;
 				} else {
@@ -366,8 +369,9 @@ public class PlayerModel {
 			System.out.println(" defending territory = "+territoryModel.printTerritory());
 			if (territoryModel.getPlayerModel().getId() != getId() 
 					&& attackingTerritory.getAdjacentTerritories().contains(territoryModel)) {
-				gameModel.setState(Constants.ATTACK_FIGHT_PHASE);
 				defendingTerritory = territoryModel;
+				gameModel.notifyPhaseChanging();
+				gameModel.setState(Constants.ATTACK_FIGHT_PHASE);
 				gameModel.notifyPhaseChange();
 				str = Constants.ATTACK_BW_TERRITORIES_MESSAGE;
 				str = str.replace("A", attackingTerritory.getName());
@@ -590,6 +594,7 @@ public class PlayerModel {
 	private void updateStatus(String message) {
 		gameController.getMapView().getStatusLabel().setText(message);
 		gameController.getMapView().updatePlayerPanel();
+		gameController.getGameModel().notifyPhaseChanging();
 	}
 
 	/**
@@ -610,8 +615,10 @@ public class PlayerModel {
 			attackingTerritory.looseArmies(noOfArmiesToMove);
 			gameModel.notifyPhaseChange();
 		} else if(attackingTerritory.getArmies() == 1) {
-			updateStatus(Constants.CAPTURING_MESSAGE);
-			gameModel.notifyPhaseChange();
+			//updateStatus(Constants.CAPTURING_MESSAGE);
+			gameModel.setState(Constants.CAPTURE);
+			gameController.getGameModel().notifyPhaseChanging();
+			//gameModel.notifyPhaseChange();
 		}
 
 		clear();
@@ -659,6 +666,48 @@ public class PlayerModel {
 			rolledDiceView.dispose();
 		}
 		rolledDiceView = null;
+	}
+
+	/**
+	 * @return the attackingTerritory
+	 */
+	public TerritoryModel getAttackingTerritory() {
+		return attackingTerritory;
+	}
+
+	/**
+	 * @param attackingTerritory the attackingTerritory to set
+	 */
+	public void setAttackingTerritory(TerritoryModel attackingTerritory) {
+		this.attackingTerritory = attackingTerritory;
+	}
+
+	/**
+	 * @return the defendingTerritory
+	 */
+	public TerritoryModel getDefendingTerritory() {
+		return defendingTerritory;
+	}
+
+	/**
+	 * @param defendingTerritory the defendingTerritory to set
+	 */
+	public void setDefendingTerritory(TerritoryModel defendingTerritory) {
+		this.defendingTerritory = defendingTerritory;
+	}
+
+	/**
+	 * @return the gameController
+	 */
+	public GameController getGameController() {
+		return gameController;
+	}
+
+	/**
+	 * @param gameController the gameController to set
+	 */
+	public void setGameController(GameController gameController) {
+		this.gameController = gameController;
 	}
 	
 }
