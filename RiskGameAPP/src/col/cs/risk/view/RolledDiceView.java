@@ -281,7 +281,6 @@ public class RolledDiceView extends JFrame{
 	 */
 	public void exitForm() {
 		setVisible(false);
-		//dispose();
 	}
 
 }

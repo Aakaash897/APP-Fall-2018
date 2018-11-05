@@ -146,7 +146,7 @@ public class MapView extends JFrame implements MouseListener {
 		gameController.getMapSubPanelPlayer().add(fortifyButton,
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(735, 30, 90, 30));
 		
-		cardButton.setVisible(true);
+		cardButton.setVisible(false);
 		cardButton.setFont(resourceMap.getFont("CardButton.font")); 
 		cardButton.setText("Card"); 
 		cardButton.setName("CardButton"); 
