@@ -7,6 +7,13 @@ import org.junit.Test;
 
 import col.cs.risk.controller.GameController;
 
+/**
+ * This class Game Controller test the main driver functions
+ * that handles the game phases.
+ * 
+ * @author Team25
+ *
+ */
 public class GameControllerTest {
 
 	@Test
