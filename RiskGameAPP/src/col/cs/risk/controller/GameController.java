@@ -10,7 +10,13 @@ import col.cs.risk.helper.MapException;
 import col.cs.risk.helper.Utility;
 import col.cs.risk.model.Constants;
 import col.cs.risk.model.GameModel;
+import col.cs.risk.model.phase.AttackPhaseModel;
+import col.cs.risk.model.phase.EndPhaseModel;
+import col.cs.risk.model.phase.FortificationPhaseModel;
+import col.cs.risk.model.phase.ReEnforcementPhaseModel;
+import col.cs.risk.model.phase.StartPhaseModel;
 import col.cs.risk.view.MapView;
+import col.cs.risk.view.PhaseView;
 
 /**
  * Game Controller
@@ -43,7 +49,7 @@ public class GameController {
 	private int noOfRoundsCompleted;
 
 	/** Maximum number of rounds allowed per game */
-	private static int MAXIMUM_NO_OF_ROUNDS_ALLOWED = Constants.SIX;
+	private static int MAXIMUM_NO_OF_ROUNDS_ALLOWED = Constants.THREE;
 
 	/**
 	 * Constructor to initialize the 
@@ -56,6 +62,7 @@ public class GameController {
 			gameModel = new GameModel(false);
 			initComponents();
 			new MapView(this).setVisible(true);
+			initializePhaseView();
 			gameModel.setMainMapPanel(mapMainPanel);
 			gameModel.setSubMapPanel(mapSubPanelPlayer);
 			mapView.setTitle("Risk Conquest Game");
@@ -64,11 +71,13 @@ public class GameController {
 			if (gameModel.getState() == Constants.INITIAL_RE_ENFORCEMENT_PHASE) {
 				mapView.getStatusLabel().setText(Constants.RE_ENFORCEMENT_MESSAGE);
 			}
+			gameModel.notifyPhaseChanging();
 			mapMainPanel.repaint();
 		} catch (MapException ex) {
 			System.out.println(ex.getMessage());
 			ex.clearHistory();
 		} catch (Exception ex) {
+			ex.printStackTrace();
 			System.out.println("Exception: "+ex.getMessage());
 		}
 	}
@@ -81,6 +90,31 @@ public class GameController {
 		mapSubPanelPlayer = new PlayerPanelController(gameModel);
 	}
 
+	private void initializePhaseView() {
+		StartPhaseModel startPhaseModel = StartPhaseModel.getInstance();
+		ReEnforcementPhaseModel reInforcementPhaseModel = ReEnforcementPhaseModel.getInstance();
+		AttackPhaseModel attackPhaseModel = AttackPhaseModel.getInstance();
+		FortificationPhaseModel fortificationPhaseModel = FortificationPhaseModel.getInstance();
+		EndPhaseModel endPhaseModel = EndPhaseModel.getInstance();
+
+		PhaseView phaseView = PhaseView.getInstance();
+
+		startPhaseModel.addObserver(phaseView);
+		reInforcementPhaseModel.addObserver(phaseView);
+		attackPhaseModel.addObserver(phaseView);
+		fortificationPhaseModel.addObserver(phaseView);
+		endPhaseModel.addObserver(phaseView);
+
+		gameModel.setStartPhaseModel(startPhaseModel);
+		gameModel.setReInforcementPhaseModel(reInforcementPhaseModel);
+		gameModel.setAttackPhaseModel(attackPhaseModel);
+		gameModel.setFortificationPhaseModel(fortificationPhaseModel);
+		gameModel.setEndPhaseModel(endPhaseModel);
+
+		gameModel.setPhaseView(phaseView);
+		phaseView.showMonitor();
+	}
+	
 	/**
 	 * Action performed on attack button press
 	 * 
@@ -88,6 +122,7 @@ public class GameController {
 	 */
 	public void attackButtonActionPerformed(ActionEvent evt) {
 		gameModel.setState(Constants.ATTACK_PHASE);
+		gameModel.notifyPhaseChanging();
 		mapView.getAttackButton().setVisible(false);
 		if(gameModel.getCurrentPlayer().canAttack()) {
 			mapView.getStatusLabel().setText(Constants.ATTACK_COUNTRY_SELECT_MESSAGE);
@@ -105,6 +140,7 @@ public class GameController {
 	public void fortifyButtonActionPerformed(ActionEvent evt) {
 		System.out.println(" fortify button pressed ");
 		gameModel.setState(Constants.FORTIFICATION_PHASE);
+		gameModel.notifyPhaseChanging();
 		mapView.getStatusLabel().setText(Constants.MOVE_FROM);
 		mapView.getAttackButton().setVisible(false);
 		mapView.getFortifyButton().setVisible(false);
@@ -146,6 +182,9 @@ public class GameController {
 	 */
 	public void endButtonActionPerformed(ActionEvent evt) {
 		System.out.println(" end button pressed state = " + gameModel.getState());
+		if(gameModel.getPreviousState() == gameModel.getState()) {
+			gameModel.setPreviousState(Constants.NEW_GAME);
+		}
 		switch (gameModel.getState()) {
 		case Constants.ATTACK_PHASE:
 		case Constants.RE_ENFORCEMENT_PHASE:
@@ -204,11 +243,14 @@ public class GameController {
 	}
 
 	public void gameOver(String message) {
+		gameModel.setState(Constants.END_PHASE);
+		gameModel.notifyPhaseChanging(message);
 		mapView.getStatusLabel().setText(message);
 		mapView.getAttackButton().setVisible(false);
 		mapView.getFortifyButton().setVisible(false);
 		mapView.getEndButton().setVisible(false);
-		mapSubPanelPlayer.repaint();
+		//mapSubPanelPlayer.repaint();
+		gameModel.notifyPhaseChange();
 		Utility.showMessagePopUp(message, "Information");
 	}
 
@@ -264,14 +306,17 @@ public class GameController {
 		}
 
 		if(gameModel.getState() == Constants.ATTACK_FIGHT_PHASE) {
+			gameModel.setSelectedTerritory(null);
 			gameModel.getCurrentPlayer().startBattle(gameModel, mapView, this);
 		}
 
 		if (gameModel.getState() == Constants.START_TURN) {
+			gameModel.setSelectedTerritory(null);
 			handleStartTurn();
 		}
 
 		if (gameModel.getState() == Constants.ACTIVE_TURN) {
+			gameModel.setSelectedTerritory(null);
 			handleActiveTurn();
 		}
 		mapMainPanel.repaint();
@@ -284,6 +329,7 @@ public class GameController {
 	 */
 	public void handleAttack() {
 		gameModel.setState(Constants.ATTACK_PHASE);
+		gameModel.notifyPhaseChanging();
 		if(gameModel.getCurrentPlayer().canAttack()) {
 			mapView.getStatusLabel().setText(Constants.ATTACK_COUNTRY_SELECT_MESSAGE);
 		} else {
@@ -312,6 +358,7 @@ public class GameController {
 	 * Handle start turn state of player or before reinforcement i.e after fortification
 	 */
 	private void handleStartTurn() {
+		gameModel.setSelectedTerritory(null);
 		if (isFirstRound()) {
 			handleAttack();
 		} else {
@@ -344,6 +391,7 @@ public class GameController {
 				mapView.getUserEntered().setVisible(false);
 			}
 		}
+		gameModel.notifyPhaseChanging();
 	}
 
 	/**
@@ -389,5 +437,19 @@ public class GameController {
 	 */
 	public void setMapView(MapView mapView) {
 		this.mapView = mapView;
+	}
+
+	/**
+	 * @return the gameModel
+	 */
+	public GameModel getGameModel() {
+		return gameModel;
+	}
+
+	/**
+	 * @param gameModel the gameModel to set
+	 */
+	public void setGameModel(GameModel gameModel) {
+		this.gameModel = gameModel;
 	}
 }
