@@ -46,7 +46,7 @@ public class GameController {
 	private int currentRoundCompletedPlayersCount;
 
 	/** No of rounds/turns completed */
-	private int noOfRoundsCompleted;
+	public int noOfRoundsCompleted;
 
 	/** Maximum number of rounds allowed per game */
 	private static int MAXIMUM_NO_OF_ROUNDS_ALLOWED = Constants.THREE;
@@ -238,7 +238,7 @@ public class GameController {
 	 * 
 	 * @return true if yes
 	 */
-	private boolean isFirstRound() {
+	public boolean isFirstRound() {
 		return noOfRoundsCompleted == Constants.ZERO ? true : false;
 	}
 
