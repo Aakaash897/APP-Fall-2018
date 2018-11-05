@@ -16,9 +16,13 @@ import col.cs.risk.controller.GameController;
  */
 public class GameControllerTest {
 
+	/**
+	 * Test case to check whether the round is first or not.
+	 */
 	@Test
 	public void testIsFirstRound() {
 		GameController gameController = new GameController(false);
+		
 		gameController.noOfRoundsCompleted = 0;
 		assertTrue("Failed test", gameController.isFirstRound());
 
