@@ -61,7 +61,7 @@ public class PlayerSettingsController {
 	/**
 	 * Function sets the players for the game
 	 */
-	private void setPlayers() {
+	public void setPlayers() {
 		Vector<PlayerModel> players = new Vector<>();
 		for(int i=0;i<noOfPlayers;i++) {
 			players.add(new PlayerModel(i, "Player_"+(i+1)));
