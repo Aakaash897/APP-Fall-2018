@@ -15,15 +15,17 @@ public class CardModel {
 	/**
 	 * Instantiates a new card model.
 	 *
-	 * @param territoryNumber indicates the territory number
-	 * @param cardType for the card type
+	 * @param territoryNumber
+	 *            indicates the territory number
+	 * @param cardType
+	 *            for the card type
 	 */
 	public CardModel(String cardType, int territory) {
 		super();
 		this.cardType = cardType;
 		this.territory = territory;
 	}
-	
+
 	/**
 	 * Instantiates a new risk card model.
 	 *
@@ -36,19 +38,17 @@ public class CardModel {
 		this.territory = territoryNumber;
 		switch (cardType) {
 		case 0:
-			this.cardType = "INFANTRY";
+			this.cardType = Constants.ARMY_TYPE_INFANTRY;
 			break;
 		case 1:
-			this.cardType = "CAVALRY";
+			this.cardType = Constants.ARMY_TYPE_CAVALRY;
 			break;
 		case 2:
-			this.cardType = "ARTILLERY";
+			this.cardType = Constants.ARMY_TYPE_ARTILLERY;
 			break;
 		default:
-			this.cardType = "WILD";
+			this.cardType = Constants.ARMY_TYPE_WILD;
 			break;
 		}
 
 	}
-
-}
