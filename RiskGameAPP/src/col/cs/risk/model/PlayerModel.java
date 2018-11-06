@@ -2,7 +2,10 @@ package col.cs.risk.model;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Observable;
+import java.util.Set;
 import java.util.Vector;
 import java.util.stream.Collectors;
 
@@ -18,7 +21,7 @@ import col.cs.risk.view.RolledDiceView;
  * @author Team25
  *
  */
-public class PlayerModel {
+public class PlayerModel extends Observable {
 
 	/** player number */
 	private int id;
@@ -58,7 +61,7 @@ public class PlayerModel {
 
 	/** Game controller instance */
 	private GameController gameController;
-
+	
 	/** is auto out mode on */
 	private boolean isAutomatic;
 
@@ -131,6 +134,7 @@ public class PlayerModel {
 	 */
 	public void setOccupiedTerritories(Vector<TerritoryModel> occupiedTerritories) {
 		this.occupiedTerritories = occupiedTerritories;
+		isChanged();
 	}
 
 	/**
@@ -146,6 +150,7 @@ public class PlayerModel {
 	 */
 	public void setArmies(int armies) {
 		this.armies = armies;
+		isChanged();
 	}
 
 	/**
@@ -155,6 +160,7 @@ public class PlayerModel {
 	 */
 	public void addArmies(int armies) {
 		this.armies += armies;
+		isChanged();
 	}
 
 	/**
@@ -164,6 +170,7 @@ public class PlayerModel {
 	 */
 	public void looseArmies(int armies) {
 		this.armies -= armies;
+		isChanged();
 	}
 
 	/**
@@ -171,6 +178,7 @@ public class PlayerModel {
 	 */
 	public void addArmy() {
 		armies++;
+		isChanged();
 	}
 
 	/**
@@ -178,6 +186,7 @@ public class PlayerModel {
 	 */
 	public void looseArmy() {
 		armies--;
+		isChanged();
 	}
 
 	/**
@@ -190,6 +199,7 @@ public class PlayerModel {
 			occupiedTerritories = new Vector<>();
 		}
 		occupiedTerritories.add(territoryModel);
+		isChanged();
 	}
 
 	/**
@@ -200,6 +210,7 @@ public class PlayerModel {
 	public void removeOccupiedTerritory(TerritoryModel territoryModel) {
 		if (occupiedTerritories != null) {
 			occupiedTerritories.remove(territoryModel);
+			isChanged();
 		}
 	}
 
@@ -323,7 +334,7 @@ public class PlayerModel {
 			break;
 		case Constants.FORTIFYING_PHASE:
 			if (territoryModel.getPlayerModel().getId() == gameModel.getCurrentPlayer().getId() 
-					&& gameModel.getMoveArmiesFromTerritory().getAdjacentTerritories().contains(territoryModel)) {
+			&& gameModel.getMoveArmiesFromTerritory().getAdjacentTerritories().contains(territoryModel)) {
 				gameModel.setMoveArmiesToTerritory(territoryModel);
 				gameModel.notifyPhaseChanging();
 				gameModel.setState(Constants.FORTIFY_PHASE);
@@ -571,7 +582,7 @@ public class PlayerModel {
 			engageBattle(gameModel);
 		}
 	}
-	
+
 	/** 
 	 * Updating the battle status
 	 *  
@@ -586,7 +597,7 @@ public class PlayerModel {
 		}
 		updateStatus(message);
 	}
-	
+
 	/**
 	 * Request for updating the view status
 	 * @param message
@@ -615,14 +626,12 @@ public class PlayerModel {
 			attackingTerritory.looseArmies(noOfArmiesToMove);
 			gameModel.notifyPhaseChange();
 		} else if(attackingTerritory.getArmies() == 1) {
-			//updateStatus(Constants.CAPTURING_MESSAGE);
 			gameModel.setState(Constants.CAPTURE);
 			gameController.getGameModel().notifyPhaseChanging();
-			//gameModel.notifyPhaseChange();
 		}
 
 		clear();
-		
+
 		if(gameModel.isWon()) {
 			gameController.gameOver(Utility.replacePartInMessage(Constants.WINNER, Constants.CHAR_A, getName()));
 		} else {
@@ -650,7 +659,7 @@ public class PlayerModel {
 		System.out.println(" canAttack = "+canAttack);
 		return canAttack;
 	}
-		
+
 	/**
 	 * Clear battle history
 	 */
@@ -666,6 +675,90 @@ public class PlayerModel {
 			rolledDiceView.dispose();
 		}
 		rolledDiceView = null;
+	}
+
+	/**
+	 * Checks if is changed.
+	 */
+	public void isChanged() {
+		try {
+			int i[] = {0};
+			System.out.println(i[3]);
+		}catch (Exception e) {
+			e.printStackTrace();System.out.println("------------------\n");
+			
+		}
+		setChanged();
+		notifyObservers(this);
+	}
+
+	private StringBuilder basicContent(StringBuilder stringBuilder) {
+		if(stringBuilder == null || stringBuilder.length() == 0) {
+			stringBuilder = new StringBuilder();
+			stringBuilder.append("\n************* Player Domination View *************\n\n");
+			stringBuilder.append("Information:\n\n");
+		}
+		return stringBuilder;
+	}
+
+	public StringBuilder getDominationViewContent(StringBuilder stringBuilder, GameModel gameModel) {
+		stringBuilder = basicContent(stringBuilder);
+		for(PlayerModel player:GameModel.players) {
+			stringBuilder.append("Player: ");
+			stringBuilder.append(player.getName());
+			stringBuilder.append("\n");
+			stringBuilder.append("Percentage of map controlled by this player: ");
+			stringBuilder.append(calculatePercentage(player, gameModel));
+			stringBuilder.append("%\n");
+			stringBuilder.append("Continents controlled by this player: ");
+			stringBuilder.append(getcontrolledContinents(player));
+			stringBuilder.append("\n");
+			stringBuilder.append("Total number of armies owned by this player: ");
+			stringBuilder.append(player.getArmies());
+			stringBuilder.append("\n");
+			stringBuilder.append("Territories controlled by this player: ");
+			stringBuilder.append(player.getOccupiedTerritories().stream().map(x->x.getName()).collect(Collectors.toList()));
+			stringBuilder.append("\n");
+			stringBuilder.append("---------\n\n");
+		}
+		stringBuilder.append("==========================\n\n");
+		return stringBuilder;
+	}
+
+	public double calculatePercentage(PlayerModel player, GameModel gameModel) {
+		int totalNoTerritories = gameModel.getTerritories().size();
+		double percentage = 0.0;
+		if(totalNoTerritories != 0) {
+			percentage = (player.getOccupiedTerritories().size() * 100)/totalNoTerritories;
+		}
+		return percentage;
+	}
+	
+	public String getcontrolledContinents(PlayerModel player) {
+		Set<String> continents = new HashSet<>();
+		for(TerritoryModel territoryModel:player.getOccupiedTerritories()) {
+			if(isPlayerOwnContinent(player, territoryModel.getContinent())){
+				if(!continents.contains(territoryModel.getContinent().getName())) {
+					continents.add(territoryModel.getContinent().getName());
+				}
+			}
+		}
+		String continentsStr = "";
+		if(continents.size() > 0) {
+			continentsStr = String.join(", ", continents);
+		} 
+		return continentsStr;
+	}
+	
+	public boolean isPlayerOwnContinent(PlayerModel player, ContinentModel continentModel) {
+		boolean isOwned = true;
+		for(TerritoryModel territory:continentModel.getTerritories()) {
+			if(territory.getPlayerModel() != null && territory.getPlayerModel().getId() != player.getId()) {
+				isOwned = false;
+				break;
+			}
+		}
+		return isOwned;
 	}
 
 	/**
@@ -709,5 +802,5 @@ public class PlayerModel {
 	public void setGameController(GameController gameController) {
 		this.gameController = gameController;
 	}
-	
+
 }
