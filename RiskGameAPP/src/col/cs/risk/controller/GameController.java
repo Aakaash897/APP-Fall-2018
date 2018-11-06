@@ -1,9 +1,17 @@
 package col.cs.risk.controller;
 
+import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import col.cs.risk.helper.MapException;
@@ -28,7 +36,7 @@ import col.cs.risk.view.PhaseView;
  * @author Team25
  *
  */
-public class GameController {
+public class GameController extends javax.swing.JFrame{
 
 	/** Game model instance */
 	private GameModel gameModel;
@@ -50,6 +58,10 @@ public class GameController {
 
 	/** Maximum number of rounds allowed per game */
 	private static int MAXIMUM_NO_OF_ROUNDS_ALLOWED = Constants.THREE;
+	
+	private JPanel jp, statusPanel;
+	
+	private JLabel cardStatusLabel;
 
 	/**
 	 * Constructor to initialize the 
@@ -175,6 +187,41 @@ public class GameController {
 		mapSubPanelPlayer.repaint();
 		mapMainPanel.repaint();
 	}
+	
+	public void CardButtonMouseClicked(MouseEvent evt) {
+		
+		generateCardExchangeView();
+		
+	}
+
+	private void generateCardExchangeView() {
+		
+		System.out.println("************* INSIDE ***************");
+		JFrame cardsFrame;
+		JPanel cardPanel, cardbuttonsPanel;
+		JButton OKButton;
+		
+		if(gameModel.currentPlayer.getCardVector().size()<3)
+			JOptionPane.showMessageDialog(null, "Sorry, A minimum of 3 Cards Needed");
+		else
+		{
+		cardsFrame = new JFrame("Trade Cards");
+		cardsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		cardsFrame.setResizable(false);
+
+		statusPanel = new JPanel();
+		statusPanel.setLayout(new GridLayout(0, 1));
+		cardStatusLabel = new JLabel("Please select the any 3 cards you want to trade");
+		statusPanel.add(cardStatusLabel);
+		cardsFrame.add(statusPanel, BorderLayout.NORTH);
+
+		cardPanel = new JPanel();
+		GridLayout experimentLayout = new GridLayout(0, 2);
+		cardPanel.setLayout(experimentLayout);
+		
+		cardsFrame.pack();
+		cardsFrame.setVisible(true);
+	}}
 
 	/**
 	 * Action performed on end button press
@@ -281,13 +328,19 @@ public class GameController {
 		int y_coordinate = event.getY();
 		switch (gameModel.getState()) {
 		case Constants.INITIAL_RE_ENFORCEMENT_PHASE:
+			if (gameModel.getCurrentPlayer().getArmies() > Constants.ZERO) {
+				gameModel.gamePhasePlayerTurnSetup(x_coordinate, y_coordinate);
+			}
+			break;
 		case Constants.RE_ENFORCEMENT_PHASE:
+			mapView.getCardButton().setVisible(true);
 			if (gameModel.getCurrentPlayer().getArmies() > Constants.ZERO) {
 				gameModel.gamePhasePlayerTurnSetup(x_coordinate, y_coordinate);
 			}
 			break;
 		case Constants.FORTIFICATION_PHASE:
 		case Constants.FORTIFYING_PHASE:
+			mapView.getCardButton().setVisible(false);
 			String str = gameModel.gamePhaseActivePlayerActions(x_coordinate, y_coordinate);
 			if (!str.isEmpty()) {
 				mapView.getStatusLabel().setText(str);
@@ -301,6 +354,7 @@ public class GameController {
 			break;
 		case Constants.ATTACK_PHASE:
 		case Constants.ATTACKING_PHASE:
+			mapView.getCardButton().setVisible(false);
 			str = gameModel.gamePhaseActivePlayerActions(x_coordinate, y_coordinate);
 			if (!str.isEmpty()) {
 				mapView.getStatusLabel().setText(str);
@@ -455,4 +509,6 @@ public class GameController {
 	public void setGameModel(GameModel gameModel) {
 		this.gameModel = gameModel;
 	}
+
+	
 }

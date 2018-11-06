@@ -73,6 +73,8 @@ public class PlayerModel extends Observable {
 	/** CardModel vector */
 	private Vector<CardModel> cardVector = new Vector<>();
 
+	
+
 	/**
 	 * Constructor with parameters
 	 * 
@@ -306,6 +308,14 @@ public class PlayerModel extends Observable {
 	 */
 	public void setDefendingDiceList(HashMap<Integer, Integer> defendingDiceList) {
 		this.defendingDiceList = defendingDiceList;
+	}
+	
+	public Vector<CardModel> getCardVector() {
+		return cardVector;
+	}
+
+	public void setCardVector(Vector<CardModel> cardVector) {
+		this.cardVector = cardVector;
 	}
 
 	/**

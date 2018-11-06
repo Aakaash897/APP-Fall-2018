@@ -50,6 +50,8 @@ public class MapView extends JFrame implements MouseListener {
 	/** card exchange Button	 */
 	private JButton cardButton;
 
+	
+
 	/** Field to take user input for moving armies during fortification */
 	private JTextField userEntered;
 
@@ -152,7 +154,7 @@ public class MapView extends JFrame implements MouseListener {
 		cardButton.setName("CardButton"); 
 		cardButton.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
-				//CardButtonMouseClicked(evt);
+				gameController.CardButtonMouseClicked(evt);
 			}
 		});
 		gameController.getMapSubPanelPlayer().add(cardButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(799, 25, 220, 25));
@@ -337,6 +339,14 @@ public class MapView extends JFrame implements MouseListener {
 	 */
 	public JButton getFortifyButton() {
 		return fortifyButton;
+	}
+	
+	public JButton getCardButton() {
+		return cardButton;
+	}
+
+	public void setCardButton(JButton cardButton) {
+		this.cardButton = cardButton;
 	}
 
 	/**
