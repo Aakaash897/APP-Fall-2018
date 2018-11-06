@@ -72,5 +72,8 @@ public class Constants {
 	public static final String DEFAULT_MODIFIED_MAP_IMAGE_FILE_NAME = "currMap.png";
 	public static final String ATTACK_IMAGE = "attack.gif";
 	public static final String DEFEND_IMAGE = "shield.gif";
-
+	public static final String ARMY_TYPE_INFANTRY = "INFANTRY";
+	public static final String ARMY_TYPE_CAVALRY = "CAVALRY";
+	public static final String ARMY_TYPE_ARTILLERY = "ARTILLERY";
+	public static final String ARMY_TYPE_WILD = "WILD";
 }

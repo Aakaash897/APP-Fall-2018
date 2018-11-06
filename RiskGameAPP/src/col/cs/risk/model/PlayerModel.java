@@ -61,9 +61,15 @@ public class PlayerModel extends Observable {
 
 	/** Game controller instance */
 	private GameController gameController;
-	
+
 	/** is auto out mode on */
 	private boolean isAutomatic;
+
+	/** Card Model Object */
+	private CardModel cardModelObj;
+
+	/** CardModel vector */
+	private Vector<CardModel> cardVector = new Vector<>();
 
 	/**
 	 * Constructor with parameters
@@ -82,9 +88,12 @@ public class PlayerModel extends Observable {
 	/**
 	 * Constructor with parameters
 	 * 
-	 * @param id It holds the player id
-	 * @param name It hold the player name
-	 * @param occupiedTerritories It is a vector that holds the list of occupied territories
+	 * @param id
+	 *            It holds the player id
+	 * @param name
+	 *            It hold the player name
+	 * @param occupiedTerritories
+	 *            It is a vector that holds the list of occupied territories
 	 */
 	public PlayerModel(int id, String name, Vector<TerritoryModel> occupiedTerritories) {
 		this(id, name);
@@ -233,7 +242,7 @@ public class PlayerModel extends Observable {
 	 * Add turn bonus to current player
 	 */
 	public void addTurnBonus(GameModel gameModel) {
-		int bonus = territoryBonus()+gameModel.continentBonus();
+		int bonus = territoryBonus() + gameModel.continentBonus();
 		addArmies(bonus);
 	}
 
@@ -245,7 +254,8 @@ public class PlayerModel extends Observable {
 	}
 
 	/**
-	 * @param attackingNoOfDice the attackingNoOfDice to set
+	 * @param attackingNoOfDice
+	 *            the attackingNoOfDice to set
 	 */
 	public void setAttackingNoOfDice(int attackingNoOfDice) {
 		this.attackingNoOfDice = attackingNoOfDice;
@@ -259,7 +269,8 @@ public class PlayerModel extends Observable {
 	}
 
 	/**
-	 * @param defendingNoOfDice the defendingNoOfDice to set
+	 * @param defendingNoOfDice
+	 *            the defendingNoOfDice to set
 	 */
 	public void setDefendingNoOfDice(int defendingNoOfDice) {
 		this.defendingNoOfDice = defendingNoOfDice;
@@ -273,7 +284,8 @@ public class PlayerModel extends Observable {
 	}
 
 	/**
-	 * @param attackingDiceList the attackingDiceList to set
+	 * @param attackingDiceList
+	 *            the attackingDiceList to set
 	 */
 	public void setAttackingDiceList(HashMap<Integer, Integer> attackingDiceList) {
 		this.attackingDiceList = attackingDiceList;
@@ -287,7 +299,8 @@ public class PlayerModel extends Observable {
 	}
 
 	/**
-	 * @param defendingDiceList the defendingDiceList to set
+	 * @param defendingDiceList
+	 *            the defendingDiceList to set
 	 */
 	public void setDefendingDiceList(HashMap<Integer, Integer> defendingDiceList) {
 		this.defendingDiceList = defendingDiceList;
@@ -295,11 +308,12 @@ public class PlayerModel extends Observable {
 
 	/**
 	 * API to calculate territory bonus for current player
+	 * 
 	 * @return no of armies as bonus
 	 */
 	public int territoryBonus() {
 		double bonus = Constants.ZERO;
-		if(getOccupiedTerritories().size() < Constants.NINE) {
+		if (getOccupiedTerritories().size() < Constants.NINE) {
 			bonus = Constants.THREE;
 		} else {
 			bonus = Math.floor(getOccupiedTerritories().size() / Constants.THREE);
@@ -311,7 +325,8 @@ public class PlayerModel extends Observable {
 	 * Action on fortification phase for the current player
 	 * 
 	 * @param gameModel
-	 * @param territoryModel It is an instance of TerritoryModel that holds territories details
+	 * @param territoryModel
+	 *            It is an instance of TerritoryModel that holds territories details
 	 * @return status as string to display
 	 */
 	public String fortify(GameModel gameModel, TerritoryModel territoryModel) {
@@ -333,8 +348,8 @@ public class PlayerModel extends Observable {
 			}
 			break;
 		case Constants.FORTIFYING_PHASE:
-			if (territoryModel.getPlayerModel().getId() == gameModel.getCurrentPlayer().getId() 
-			&& gameModel.getMoveArmiesFromTerritory().getAdjacentTerritories().contains(territoryModel)) {
+			if (territoryModel.getPlayerModel().getId() == gameModel.getCurrentPlayer().getId()
+					&& gameModel.getMoveArmiesFromTerritory().getAdjacentTerritories().contains(territoryModel)) {
 				gameModel.setMoveArmiesToTerritory(territoryModel);
 				gameModel.notifyPhaseChanging();
 				gameModel.setState(Constants.FORTIFY_PHASE);
@@ -352,7 +367,9 @@ public class PlayerModel extends Observable {
 	}
 
 	/**
-	 * User actions on attack phase actions, selection of attacking and defending territory
+	 * User actions on attack phase actions, selection of attacking and defending
+	 * territory
+	 * 
 	 * @param gameModel
 	 * @param territoryModel
 	 * @return
@@ -376,9 +393,9 @@ public class PlayerModel extends Observable {
 			}
 			break;
 		case Constants.ATTACKING_PHASE:
-			System.out.println(" attackingTerritory "+attackingTerritory.printTerritory());
-			System.out.println(" defending territory = "+territoryModel.printTerritory());
-			if (territoryModel.getPlayerModel().getId() != getId() 
+			System.out.println(" attackingTerritory " + attackingTerritory.printTerritory());
+			System.out.println(" defending territory = " + territoryModel.printTerritory());
+			if (territoryModel.getPlayerModel().getId() != getId()
 					&& attackingTerritory.getAdjacentTerritories().contains(territoryModel)) {
 				defendingTerritory = territoryModel;
 				gameModel.notifyPhaseChanging();
@@ -400,6 +417,7 @@ public class PlayerModel extends Observable {
 
 	/**
 	 * Beginning of the battle b/w attacker and defender
+	 * 
 	 * @param gameModel
 	 * @param mapView
 	 * @param gameController
@@ -407,14 +425,16 @@ public class PlayerModel extends Observable {
 	public void startBattle(GameModel gameModel, MapView mapView, GameController gameController) {
 		rolledDiceView = new RolledDiceView(this);
 		this.gameController = gameController;
-		String[] options = {Constants.OK, Constants.CANCEL};
+		String[] options = { Constants.OK, Constants.CANCEL };
 		String option = gameController.getMapView().showOptionPopup(Constants.AUTOMATIC_OR_ALL_OUT_MODE, options);
 		isAutomatic = option.equals(Constants.OK) ? true : false;
 		engageBattle(gameModel);
 	}
 
 	/**
-	 * Continuing the battle until attacker lose all but one or defender lose all armies.
+	 * Continuing the battle until attacker lose all but one or defender lose all
+	 * armies.
+	 * 
 	 * @param gameModel
 	 */
 	private void engageBattle(GameModel gameModel) {
@@ -422,9 +442,9 @@ public class PlayerModel extends Observable {
 		attackingNoOfDice = 0;
 		defendingNoOfDice = 0;
 		setNoOfDiceToRoll();
-		if(attackingNoOfDice != 0 && defendingNoOfDice != 0) {
-			System.out.println(" isAutomatic = "+isAutomatic);
-			if(!isAutomatic) {
+		if (attackingNoOfDice != 0 && defendingNoOfDice != 0) {
+			System.out.println(" isAutomatic = " + isAutomatic);
+			if (!isAutomatic) {
 				Utility.showMessagePopUp(Constants.CLICK_OK_TO_ROLL_DICE, "Roll Dice");
 			}
 			rollAndSetDiceList();
@@ -442,7 +462,8 @@ public class PlayerModel extends Observable {
 	}
 
 	/**
-	 * @param isAutomatic the isAutomatic to set
+	 * @param isAutomatic
+	 *            the isAutomatic to set
 	 */
 	public void setAutomatic(boolean isAutomatic) {
 		this.isAutomatic = isAutomatic;
@@ -453,24 +474,25 @@ public class PlayerModel extends Observable {
 	 */
 	private void setNoOfDiceToRoll() {
 		int numberOfDice = attackingTerritory.getArmies();
-		if(numberOfDice > 1) {
-			if(isAutomatic) {
-				numberOfDice = numberOfDice < Constants.THREE ? numberOfDice-1 : Constants.THREE;
+		if (numberOfDice > 1) {
+			if (isAutomatic) {
+				numberOfDice = numberOfDice < Constants.THREE ? numberOfDice - 1 : Constants.THREE;
 			} else {
-				numberOfDice = gameController.getMapView().showOptionPopup(getName(), 
-						numberOfDice<Constants.THREE ? numberOfDice-1 : Constants.THREE, 
-								Constants.ATTACK_IMAGE, getName());
+				numberOfDice = gameController.getMapView().showOptionPopup(getName(),
+						numberOfDice < Constants.THREE ? numberOfDice - 1 : Constants.THREE, Constants.ATTACK_IMAGE,
+						getName());
 			}
 			attackingNoOfDice = numberOfDice;
 
 			numberOfDice = defendingTerritory.getArmies();
-			if(numberOfDice > 0) {
-				if(isAutomatic) {
+			if (numberOfDice > 0) {
+				if (isAutomatic) {
 					numberOfDice = numberOfDice < Constants.TWO ? numberOfDice : Constants.TWO;
 				} else {
-					numberOfDice = gameController.getMapView().showOptionPopup(defendingTerritory.getPlayerModel().getName(), 
-							numberOfDice<Constants.TWO ? numberOfDice : Constants.TWO, 
-									Constants.DEFEND_IMAGE, defendingTerritory.getPlayerModel().getName());
+					numberOfDice = gameController.getMapView().showOptionPopup(
+							defendingTerritory.getPlayerModel().getName(),
+							numberOfDice < Constants.TWO ? numberOfDice : Constants.TWO, Constants.DEFEND_IMAGE,
+							defendingTerritory.getPlayerModel().getName());
 				}
 				defendingNoOfDice = numberOfDice;
 			}
@@ -483,37 +505,39 @@ public class PlayerModel extends Observable {
 	private void rollAndSetDiceList() {
 		attackingDiceList.clear();
 		defendingDiceList.clear();
-		for(int i=1; i<=attackingNoOfDice; i++) {
-			attackingDiceList.put(i, Utility.getRandomNumber(Constants.SIX)+Constants.ONE);
+		for (int i = 1; i <= attackingNoOfDice; i++) {
+			attackingDiceList.put(i, Utility.getRandomNumber(Constants.SIX) + Constants.ONE);
 		}
-		for(int i=1; i<=defendingNoOfDice; i++) {
-			defendingDiceList.put(i, Utility.getRandomNumber(Constants.SIX)+Constants.ONE);
+		for (int i = 1; i <= defendingNoOfDice; i++) {
+			defendingDiceList.put(i, Utility.getRandomNumber(Constants.SIX) + Constants.ONE);
 		}
 	}
 
 	/**
 	 * Update the no of armies on attacking/defending territory after each fight
+	 * 
 	 * @param gameModel
 	 */
 	public void updateArmiesOnFightingTerritories(GameModel gameModel) {
 		Collection<Integer> attackDiceValues = attackingDiceList.values();
 		Collection<Integer> defendDiceValues = defendingDiceList.values();
-		List<Integer> attackList = attackDiceValues.stream().sorted().map(x->x).collect(Collectors.toList());
-		List<Integer> defendList = defendDiceValues.stream().sorted().map(x->x).collect(Collectors.toList());
+		List<Integer> attackList = attackDiceValues.stream().sorted().map(x -> x).collect(Collectors.toList());
+		List<Integer> defendList = defendDiceValues.stream().sorted().map(x -> x).collect(Collectors.toList());
 
-		if(attackList.size() == Constants.THREE && defendList.size() == Constants.TWO) {
-			if(attackList.get(Constants.TWO) > defendList.get(Constants.ONE)) {
+		if (attackList.size() == Constants.THREE && defendList.size() == Constants.TWO) {
+			if (attackList.get(Constants.TWO) > defendList.get(Constants.ONE)) {
 				defendingTerritory.looseArmy();
-				if(attackList.get(Constants.ONE) > defendList.get(Constants.ZERO)) {
+				if (attackList.get(Constants.ONE) > defendList.get(Constants.ZERO)) {
 					defendingTerritory.looseArmy();
-					updateFightStatusDisplayMessage(false, defendingTerritory.getPlayerModel().getName(), Constants.TWO);
+					updateFightStatusDisplayMessage(false, defendingTerritory.getPlayerModel().getName(),
+							Constants.TWO);
 				} else {
 					attackingTerritory.looseArmy();
 					updateFightStatusDisplayMessage(true, "", Constants.ZERO);
 				}
 			} else {
 				attackingTerritory.looseArmy();
-				if(attackList.get(Constants.ONE) > defendList.get(Constants.ZERO)) {
+				if (attackList.get(Constants.ONE) > defendList.get(Constants.ZERO)) {
 					defendingTerritory.looseArmy();
 					updateFightStatusDisplayMessage(true, "", Constants.ZERO);
 				} else {
@@ -521,8 +545,8 @@ public class PlayerModel extends Observable {
 					updateFightStatusDisplayMessage(false, getName(), Constants.TWO);
 				}
 			}
-		} else if(attackList.size() == Constants.THREE && defendList.size() == Constants.ONE) {
-			if(attackList.get(Constants.TWO) > defendList.get(Constants.ZERO)) {
+		} else if (attackList.size() == Constants.THREE && defendList.size() == Constants.ONE) {
+			if (attackList.get(Constants.TWO) > defendList.get(Constants.ZERO)) {
 				defendingTerritory.looseArmy();
 				updateFightStatusDisplayMessage(false, defendingTerritory.getPlayerModel().getName(), Constants.ONE);
 			} else {
@@ -530,19 +554,20 @@ public class PlayerModel extends Observable {
 				updateFightStatusDisplayMessage(false, getName(), Constants.ONE);
 			}
 
-		} else if(attackList.size() == Constants.TWO && defendList.size() == Constants.TWO) {
-			if(attackList.get(Constants.ONE) > defendList.get(Constants.ONE)) {
+		} else if (attackList.size() == Constants.TWO && defendList.size() == Constants.TWO) {
+			if (attackList.get(Constants.ONE) > defendList.get(Constants.ONE)) {
 				defendingTerritory.looseArmy();
-				if(attackList.get(Constants.ZERO) > defendList.get(Constants.ZERO)) {
+				if (attackList.get(Constants.ZERO) > defendList.get(Constants.ZERO)) {
 					defendingTerritory.looseArmy();
-					updateFightStatusDisplayMessage(false, defendingTerritory.getPlayerModel().getName(), Constants.TWO);
+					updateFightStatusDisplayMessage(false, defendingTerritory.getPlayerModel().getName(),
+							Constants.TWO);
 				} else {
 					attackingTerritory.looseArmy();
 					updateFightStatusDisplayMessage(true, "", Constants.ZERO);
 				}
 			} else {
 				attackingTerritory.looseArmy();
-				if(attackList.get(Constants.ZERO) > defendList.get(Constants.ZERO)) {
+				if (attackList.get(Constants.ZERO) > defendList.get(Constants.ZERO)) {
 					defendingTerritory.looseArmy();
 					updateFightStatusDisplayMessage(true, "", Constants.ZERO);
 				} else {
@@ -550,8 +575,8 @@ public class PlayerModel extends Observable {
 					updateFightStatusDisplayMessage(false, getName(), Constants.TWO);
 				}
 			}
-		} else if(attackList.size() == Constants.TWO && defendList.size() == Constants.ONE) {
-			if(attackList.get(Constants.ONE) > defendList.get(Constants.ZERO)) {
+		} else if (attackList.size() == Constants.TWO && defendList.size() == Constants.ONE) {
+			if (attackList.get(Constants.ONE) > defendList.get(Constants.ZERO)) {
 				defendingTerritory.looseArmy();
 				updateFightStatusDisplayMessage(false, defendingTerritory.getPlayerModel().getName(), Constants.ONE);
 			} else {
@@ -559,16 +584,16 @@ public class PlayerModel extends Observable {
 				updateFightStatusDisplayMessage(false, getName(), Constants.ONE);
 			}
 
-		} else if(attackList.size() == Constants.ONE && defendList.size() == Constants.TWO) {
-			if(attackList.get(Constants.ZERO) > defendList.get(Constants.ONE)) {
+		} else if (attackList.size() == Constants.ONE && defendList.size() == Constants.TWO) {
+			if (attackList.get(Constants.ZERO) > defendList.get(Constants.ONE)) {
 				defendingTerritory.looseArmy();
 				updateFightStatusDisplayMessage(false, defendingTerritory.getPlayerModel().getName(), Constants.ONE);
 			} else {
 				attackingTerritory.looseArmy();
 				updateFightStatusDisplayMessage(false, getName(), Constants.ONE);
 			}
-		} else if(attackList.size() == Constants.ONE && defendList.size() == Constants.ONE) {
-			if(attackList.get(Constants.ZERO) > defendList.get(Constants.ZERO)) {
+		} else if (attackList.size() == Constants.ONE && defendList.size() == Constants.ONE) {
+			if (attackList.get(Constants.ZERO) > defendList.get(Constants.ZERO)) {
 				defendingTerritory.looseArmy();
 				updateFightStatusDisplayMessage(false, defendingTerritory.getPlayerModel().getName(), Constants.ONE);
 			} else {
@@ -576,20 +601,20 @@ public class PlayerModel extends Observable {
 				updateFightStatusDisplayMessage(false, getName(), Constants.ONE);
 			}
 		}
-		if(defendingTerritory.getArmies() == 0 || attackingTerritory.getArmies() == 1) {
+		if (defendingTerritory.getArmies() == 0 || attackingTerritory.getArmies() == 1) {
 			updateResult(gameModel);
 		} else {
 			engageBattle(gameModel);
 		}
 	}
 
-	/** 
+	/**
 	 * Updating the battle status
-	 *  
+	 * 
 	 */
 	private void updateFightStatusDisplayMessage(boolean isboth, String player, int noOfArmies) {
 		String message;
-		if(isboth) {
+		if (isboth) {
 			message = Constants.BOTH_LOST_ARMIES_MESSAGE;
 		} else {
 			message = Utility.replacePartInMessage(Constants.LOST_ARMIES_MESSAGE, "A", player);
@@ -600,6 +625,7 @@ public class PlayerModel extends Observable {
 
 	/**
 	 * Request for updating the view status
+	 * 
 	 * @param message
 	 */
 	private void updateStatus(String message) {
@@ -609,30 +635,36 @@ public class PlayerModel extends Observable {
 	}
 
 	/**
-	 * Action taken once the battle is over 
+	 * Action taken once the battle is over
+	 * 
 	 * @param gameModel
 	 */
 	private void updateResult(GameModel gameModel) {
-		if(defendingTerritory.getArmies() == 0) {
+		if (defendingTerritory.getArmies() == 0) {
 			gameModel.setState(Constants.CAPTURE);
 			updateStatus(Constants.CAPTURING_MESSAGE);
 
-			int noOfArmiesToMove = gameController.getMapView().showInputDialogPopup(attackingTerritory.getArmies()-1);
+			int noOfArmiesToMove = gameController.getMapView().showInputDialogPopup(attackingTerritory.getArmies() - 1);
 			PlayerModel lostPlayer = defendingTerritory.getPlayerModel();
 			lostPlayer.removeOccupiedTerritory(defendingTerritory);
 			defendingTerritory.setPlayerModel(this);
 			addOccupiedTerritory(defendingTerritory);
 			defendingTerritory.setArmies(noOfArmiesToMove);
 			attackingTerritory.looseArmies(noOfArmiesToMove);
+			int randomNo = Utility.getRandomNumber(gameModel.totCards.size());
+			cardVector.add(gameModel.totCards.get(randomNo));
+			gameModel.totCards.remove(randomNo);
+			System.out.println("**************************************************");
+			System.out.println(cardVector.get(0).cardType);
 			gameModel.notifyPhaseChange();
-		} else if(attackingTerritory.getArmies() == 1) {
+		} else if (attackingTerritory.getArmies() == 1) {
 			gameModel.setState(Constants.CAPTURE);
 			gameController.getGameModel().notifyPhaseChanging();
 		}
 
 		clear();
 
-		if(gameModel.isWon()) {
+		if (gameModel.isWon()) {
 			gameController.gameOver(Utility.replacePartInMessage(Constants.WINNER, Constants.CHAR_A, getName()));
 		} else {
 			gameController.handleAttack();
@@ -642,21 +674,22 @@ public class PlayerModel extends Observable {
 
 	/**
 	 * Function to validate whether the player is able to attack on any territory
+	 * 
 	 * @return
 	 */
 	public boolean canAttack() {
 		boolean canAttack = false;
-		for(TerritoryModel territoryModel:occupiedTerritories) {
-			if(territoryModel.getArmies() > 1) {
-				for(TerritoryModel adjacent:territoryModel.getAdjacentTerritories()) {
-					if(adjacent.getPlayerModel().getId() != getId()) {
+		for (TerritoryModel territoryModel : occupiedTerritories) {
+			if (territoryModel.getArmies() > 1) {
+				for (TerritoryModel adjacent : territoryModel.getAdjacentTerritories()) {
+					if (adjacent.getPlayerModel().getId() != getId()) {
 						canAttack = true;
 						break;
 					}
 				}
 			}
 		}
-		System.out.println(" canAttack = "+canAttack);
+		System.out.println(" canAttack = " + canAttack);
 		return canAttack;
 	}
 
@@ -671,7 +704,7 @@ public class PlayerModel extends Observable {
 		attackingDiceList.clear();
 		attackingNoOfDice = Constants.ZERO;
 		defendingNoOfDice = Constants.ZERO;
-		if(rolledDiceView != null) {
+		if (rolledDiceView != null) {
 			rolledDiceView.dispose();
 		}
 		rolledDiceView = null;
@@ -682,18 +715,19 @@ public class PlayerModel extends Observable {
 	 */
 	public void isChanged() {
 		try {
-			int i[] = {0};
+			int i[] = { 0 };
 			System.out.println(i[3]);
-		}catch (Exception e) {
-			e.printStackTrace();System.out.println("------------------\n");
-			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("------------------\n");
+
 		}
 		setChanged();
 		notifyObservers(this);
 	}
 
 	private StringBuilder basicContent(StringBuilder stringBuilder) {
-		if(stringBuilder == null || stringBuilder.length() == 0) {
+		if (stringBuilder == null || stringBuilder.length() == 0) {
 			stringBuilder = new StringBuilder();
 			stringBuilder.append("\n************* Player Domination View *************\n\n");
 			stringBuilder.append("Information:\n\n");
@@ -703,7 +737,7 @@ public class PlayerModel extends Observable {
 
 	public StringBuilder getDominationViewContent(StringBuilder stringBuilder, GameModel gameModel) {
 		stringBuilder = basicContent(stringBuilder);
-		for(PlayerModel player:GameModel.players) {
+		for (PlayerModel player : GameModel.players) {
 			stringBuilder.append("Player: ");
 			stringBuilder.append(player.getName());
 			stringBuilder.append("\n");
@@ -717,7 +751,8 @@ public class PlayerModel extends Observable {
 			stringBuilder.append(player.getArmies());
 			stringBuilder.append("\n");
 			stringBuilder.append("Territories controlled by this player: ");
-			stringBuilder.append(player.getOccupiedTerritories().stream().map(x->x.getName()).collect(Collectors.toList()));
+			stringBuilder.append(
+					player.getOccupiedTerritories().stream().map(x -> x.getName()).collect(Collectors.toList()));
 			stringBuilder.append("\n");
 			stringBuilder.append("---------\n\n");
 		}
@@ -728,32 +763,32 @@ public class PlayerModel extends Observable {
 	public double calculatePercentage(PlayerModel player, GameModel gameModel) {
 		int totalNoTerritories = gameModel.getTerritories().size();
 		double percentage = 0.0;
-		if(totalNoTerritories != 0) {
-			percentage = (player.getOccupiedTerritories().size() * 100)/totalNoTerritories;
+		if (totalNoTerritories != 0) {
+			percentage = (player.getOccupiedTerritories().size() * 100) / totalNoTerritories;
 		}
 		return percentage;
 	}
-	
+
 	public String getcontrolledContinents(PlayerModel player) {
 		Set<String> continents = new HashSet<>();
-		for(TerritoryModel territoryModel:player.getOccupiedTerritories()) {
-			if(isPlayerOwnContinent(player, territoryModel.getContinent())){
-				if(!continents.contains(territoryModel.getContinent().getName())) {
+		for (TerritoryModel territoryModel : player.getOccupiedTerritories()) {
+			if (isPlayerOwnContinent(player, territoryModel.getContinent())) {
+				if (!continents.contains(territoryModel.getContinent().getName())) {
 					continents.add(territoryModel.getContinent().getName());
 				}
 			}
 		}
 		String continentsStr = "";
-		if(continents.size() > 0) {
+		if (continents.size() > 0) {
 			continentsStr = String.join(", ", continents);
-		} 
+		}
 		return continentsStr;
 	}
-	
+
 	public boolean isPlayerOwnContinent(PlayerModel player, ContinentModel continentModel) {
 		boolean isOwned = true;
-		for(TerritoryModel territory:continentModel.getTerritories()) {
-			if(territory.getPlayerModel() != null && territory.getPlayerModel().getId() != player.getId()) {
+		for (TerritoryModel territory : continentModel.getTerritories()) {
+			if (territory.getPlayerModel() != null && territory.getPlayerModel().getId() != player.getId()) {
 				isOwned = false;
 				break;
 			}
@@ -769,7 +804,8 @@ public class PlayerModel extends Observable {
 	}
 
 	/**
-	 * @param attackingTerritory the attackingTerritory to set
+	 * @param attackingTerritory
+	 *            the attackingTerritory to set
 	 */
 	public void setAttackingTerritory(TerritoryModel attackingTerritory) {
 		this.attackingTerritory = attackingTerritory;
@@ -783,7 +819,8 @@ public class PlayerModel extends Observable {
 	}
 
 	/**
-	 * @param defendingTerritory the defendingTerritory to set
+	 * @param defendingTerritory
+	 *            the defendingTerritory to set
 	 */
 	public void setDefendingTerritory(TerritoryModel defendingTerritory) {
 		this.defendingTerritory = defendingTerritory;
@@ -797,7 +834,8 @@ public class PlayerModel extends Observable {
 	}
 
 	/**
-	 * @param gameController the gameController to set
+	 * @param gameController
+	 *            the gameController to set
 	 */
 	public void setGameController(GameController gameController) {
 		this.gameController = gameController;
