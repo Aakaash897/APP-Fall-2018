@@ -653,14 +653,10 @@ public class PlayerModel extends Observable {
 			addOccupiedTerritory(defendingTerritory);
 			defendingTerritory.setArmies(noOfArmiesToMove);
 			attackingTerritory.looseArmies(noOfArmiesToMove);
-			int randomNo = Utility.getRandomNumber(gameModel.totCards.size());
-			cardVector.add(gameModel.totCards.get(randomNo));
-			gameModel.totCards.remove(randomNo);
-			System.out.println("**************************************************");
-			for(int i=0;i<cardVector.size();i++)
-			{
-				System.out.println(cardVector.get(0).cardType);				
-			}
+			if(!isAssignedAlready)
+ 				assignCard(gameModel);
+ 			else
+ 				System.out.println("*****************Already Assigned a Card********************");
 			gameModel.notifyPhaseChange();
 		} else if (attackingTerritory.getArmies() == 1) {
 			gameModel.setState(Constants.CAPTURE);
@@ -677,6 +673,19 @@ public class PlayerModel extends Observable {
 		gameModel.notifyPhaseChange();
 	}
 
+	public void assignCard(GameModel gameModel)
+ 	{
+ 		isAssignedAlready=true;
+ 		int randomNo = Utility.getRandomNumber(gameModel.totCards.size());
+ 		cardVector.add(gameModel.totCards.get(randomNo));
+ 		gameModel.totCards.remove(randomNo);
+ 		System.out.println("**************************************************");
+ 		for(int i=0;i<cardVector.size();i++)
+ 		{
+ 			System.out.println(cardVector.get(0).cardType);				
+ 		}
+ 	}
+	
 	/**
 	 * Function to validate whether the player is able to attack on any territory
 	 * 
