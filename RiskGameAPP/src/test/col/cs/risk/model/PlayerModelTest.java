@@ -124,10 +124,10 @@ public class PlayerModelTest {
 		
 
 		}
-
+	
 	
 	/**
-	 *  Test case to check Adding Occupied Territories list
+	 * This Test case checks Adding Occupied Territories list
 	 */
      @Test
      public void testAddOccupiedTerritory()
@@ -144,7 +144,29 @@ public class PlayerModelTest {
 		territories.add(tmodel4);
 		playerModel.setOccupiedTerritories(territories);
 		playerModel.addOccupiedTerritory(tmodel5);
-		assertEquals(territories,playerModel.getOccupiedTerritories());
+		assertEquals(territories,playerModel.occupiedTerritories);
 
      }
+     
+ 	/**
+ 	 * This Test case checks getting Occupied Territories list
+ 	 */
+      @Test
+      public void testGetOccupiedTerritory()
+      {
+     	TerritoryModel tmodel1 = new TerritoryModel(201, "tname1", 10, 20, new ContinentModel(301, "cname1", 3));
+  		TerritoryModel tmodel2 = new TerritoryModel(202, "tname2", 30, 40, new ContinentModel(302, "cname2", 5));
+  		TerritoryModel tmodel3 = new TerritoryModel(203, "tname3", 30, 40, new ContinentModel(301, "cname1", 3));
+  		TerritoryModel tmodel4 = new TerritoryModel(204, "tname4", 30, 40, new ContinentModel(302, "cname2", 5));
+  		TerritoryModel tmodel5 = new TerritoryModel(205, "tname5", 30, 40, new ContinentModel(301, "cname1", 3));
+ 		Vector<TerritoryModel> territories = new Vector<>();
+ 		territories.add(tmodel1);
+ 		territories.add(tmodel2);
+ 		territories.add(tmodel3);
+ 		territories.add(tmodel4);
+ 		territories.add(tmodel5);
+ 		playerModel.setOccupiedTerritories(territories);
+ 		assertEquals(territories,playerModel.getOccupiedTerritories());
+
+      }
 }
