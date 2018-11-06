@@ -332,7 +332,6 @@ public class PlayerModel extends Observable {
 	 * @return status as string to display
 	 */
 	public String fortify(GameModel gameModel, TerritoryModel territoryModel) {
-		
 		String str = "";
 		switch (gameModel.getState()) {
 		case Constants.FORTIFICATION_PHASE:
@@ -654,10 +653,14 @@ public class PlayerModel extends Observable {
 			addOccupiedTerritory(defendingTerritory);
 			defendingTerritory.setArmies(noOfArmiesToMove);
 			attackingTerritory.looseArmies(noOfArmiesToMove);
-			if(!isAssignedAlready)
-				assignCard(gameModel);
-			else
-				System.out.println("*****************Already Assigned a Card********************");
+			int randomNo = Utility.getRandomNumber(gameModel.totCards.size());
+			cardVector.add(gameModel.totCards.get(randomNo));
+			gameModel.totCards.remove(randomNo);
+			System.out.println("**************************************************");
+			for(int i=0;i<cardVector.size();i++)
+			{
+				System.out.println(cardVector.get(0).cardType);				
+			}
 			gameModel.notifyPhaseChange();
 		} else if (attackingTerritory.getArmies() == 1) {
 			gameModel.setState(Constants.CAPTURE);
@@ -673,20 +676,6 @@ public class PlayerModel extends Observable {
 		}
 		gameModel.notifyPhaseChange();
 	}
-	
-	public void assignCard(GameModel gameModel)
-	{
-		isAssignedAlready=true;
-		int randomNo = Utility.getRandomNumber(gameModel.totCards.size());
-		cardVector.add(gameModel.totCards.get(randomNo));
-		gameModel.totCards.remove(randomNo);
-		System.out.println("**************************************************");
-		for(int i=0;i<cardVector.size();i++)
-		{
-			System.out.println(cardVector.get(0).cardType);				
-		}
-	}
-	
 
 	/**
 	 * Function to validate whether the player is able to attack on any territory
@@ -727,18 +716,21 @@ public class PlayerModel extends Observable {
 	}
 
 	/**
-	 * Function to notify observers when player state change.
+	 * Checks if is changed.
 	 */
 	public void isChanged() {
+		try {
+			int i[] = { 0 };
+			System.out.println(i[3]);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("------------------\n");
+
+		}
 		setChanged();
 		notifyObservers(this);
 	}
 
-	/**
-	 * Basic information to display on player domination view
-	 * @param stringBuilder
-	 * @returns StringBuilder of basic string
-	 */
 	private StringBuilder basicContent(StringBuilder stringBuilder) {
 		if (stringBuilder == null || stringBuilder.length() == 0) {
 			stringBuilder = new StringBuilder();
@@ -748,12 +740,6 @@ public class PlayerModel extends Observable {
 		return stringBuilder;
 	}
 
-	/**
-	 * The details to display on domination view
-	 * @param stringBuilder
-	 * @param gameModel
-	 * @return StringBuilder of information
-	 */
 	public StringBuilder getDominationViewContent(StringBuilder stringBuilder, GameModel gameModel) {
 		stringBuilder = basicContent(stringBuilder);
 		for (PlayerModel player : GameModel.players) {
@@ -779,12 +765,6 @@ public class PlayerModel extends Observable {
 		return stringBuilder;
 	}
 
-	/**
-	 * Calculate percentage of map occupied by player
-	 * @param player
-	 * @param gameModel
-	 * @returns percentage
-	 */
 	public double calculatePercentage(PlayerModel player, GameModel gameModel) {
 		int totalNoTerritories = gameModel.getTerritories().size();
 		double percentage = 0.0;
@@ -794,11 +774,6 @@ public class PlayerModel extends Observable {
 		return percentage;
 	}
 
-	/**
-	 * Gets the list of continents controlled by a player
-	 * @param player
-	 * @return
-	 */
 	public String getcontrolledContinents(PlayerModel player) {
 		Set<String> continents = new HashSet<>();
 		for (TerritoryModel territoryModel : player.getOccupiedTerritories()) {
@@ -815,12 +790,6 @@ public class PlayerModel extends Observable {
 		return continentsStr;
 	}
 
-	/**
-	 * Checks whether a player owns a given continent
-	 * @param player
-	 * @param continentModel
-	 * @returns true if ownes
-	 */
 	public boolean isPlayerOwnContinent(PlayerModel player, ContinentModel continentModel) {
 		boolean isOwned = true;
 		for (TerritoryModel territory : continentModel.getTerritories()) {

@@ -4,6 +4,7 @@ import java.util.Observable;
 
 import col.cs.risk.model.Constants;
 import col.cs.risk.model.GameModel;
+import col.cs.risk.model.PlayerModel;
 
 /**
  * 
@@ -12,6 +13,12 @@ import col.cs.risk.model.GameModel;
  */
 public class ReEnforcementPhaseModel extends Observable implements GamePhase{
 
+	/** current player */
+	private PlayerModel currentPlayer;
+
+	/** armies received to distribute */
+	private int armiesReceived;
+
 	/** game model */
 	private GameModel gameModel;
 
@@ -19,6 +26,7 @@ public class ReEnforcementPhaseModel extends Observable implements GamePhase{
 	private static ReEnforcementPhaseModel reEnforcementPhaseModel;
 	
 	private StringBuilder stringBuilder;
+	
 
 	/**
 	 * 
@@ -30,7 +38,35 @@ public class ReEnforcementPhaseModel extends Observable implements GamePhase{
 		}
 		return reEnforcementPhaseModel;
 	}
-	
+
+	/**
+	 * @return the currentPlayer
+	 */
+	public PlayerModel getCurrentPlayer() {
+		return currentPlayer;
+	}
+
+	/**
+	 * @param currentPlayer the currentPlayer to set
+	 */
+	public void setCurrentPlayer(PlayerModel currentPlayer) {
+		this.currentPlayer = currentPlayer;
+	}
+
+	/**
+	 * @return the armiesReceived
+	 */
+	public int getArmiesReceived() {
+		return armiesReceived;
+	}
+
+	/**
+	 * @param armiesReceived the armiesReceived to set
+	 */
+	public void setArmiesReceived(int armiesReceived) {
+		this.armiesReceived = armiesReceived;
+	}
+
 	/**
 	 * @return the gameModel
 	 */
@@ -86,6 +122,7 @@ public class ReEnforcementPhaseModel extends Observable implements GamePhase{
 	@Override
 	public void setMessage(String message) {
 		// TODO Auto-generated method stub
+		
 	}
 
 }
