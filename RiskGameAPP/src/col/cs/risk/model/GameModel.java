@@ -19,7 +19,6 @@ import javax.swing.JPanel;
 
 import col.cs.risk.helper.MapException;
 import col.cs.risk.helper.Utility;
-import col.cs.risk.model.CardModel;
 import col.cs.risk.model.phase.AttackPhaseModel;
 import col.cs.risk.model.phase.EndPhaseModel;
 import col.cs.risk.model.phase.FortificationPhaseModel;
@@ -27,6 +26,7 @@ import col.cs.risk.model.phase.GamePhase;
 import col.cs.risk.model.phase.ReEnforcementPhaseModel;
 import col.cs.risk.model.phase.StartPhaseModel;
 import col.cs.risk.view.PhaseView;
+import col.cs.risk.view.PlayerDominationView;
 
 /**
  * GameModel class is to maintain game data such as continents, territories and
@@ -119,7 +119,7 @@ public class GameModel {
 	{
 		playerArmyMap = new HashMap<>();
 		playerArmyMap.put(2, 40);
-		playerArmyMap.put(3, 35);
+		playerArmyMap.put(3, 5);
 		playerArmyMap.put(4, 30);
 		playerArmyMap.put(5, 25);
 		playerArmyMap.put(6, 20);
@@ -138,6 +138,7 @@ public class GameModel {
 	 * @throws MapException
 	 */
 	public GameModel(Boolean ...booleans) throws MapException {
+		initializePlayerDominationView();
 		state = Constants.INITIAL_RE_ENFORCEMENT_PHASE;
 		initCurrentPlayer();
 		initializeMapAttributes();
@@ -146,8 +147,6 @@ public class GameModel {
 		distributeArmies();
 		assignTerritories();
 	}
-
-
 
 	/**
 	 * Function to Initialize the number of cards and add them
@@ -167,6 +166,18 @@ public class GameModel {
 
 	}
 
+	/**
+	 * Initialize player domination view.
+	 */
+	private void initializePlayerDominationView() {
+		PlayerDominationView playerDominationView = PlayerDominationView
+				.getInstance();
+		playerDominationView.setGameModel(this);
+		for (PlayerModel player : players)
+			player.addObserver(playerDominationView);
+		playerDominationView.showMonitor();
+	}
+	
 	/**
 	 * Initializes the map attributes especially map file as text data
 	 * for further processing
