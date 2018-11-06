@@ -121,7 +121,30 @@ public class PlayerModelTest {
 
 		// 3 (0- continent bonus and 3 territory bonus)
 		assertEquals(3, playerModel.getArmies());
+		
 
-	}
+		}
 
+	
+	/**
+	 *  Test case to check Adding Occupied Territories list
+	 */
+     @Test
+     public void testAddOccupiedTerritory()
+     {
+    	TerritoryModel tmodel1 = new TerritoryModel(201, "tname1", 10, 20, new ContinentModel(301, "cname1", 3));
+ 		TerritoryModel tmodel2 = new TerritoryModel(202, "tname2", 30, 40, new ContinentModel(302, "cname2", 5));
+ 		TerritoryModel tmodel3 = new TerritoryModel(203, "tname3", 30, 40, new ContinentModel(301, "cname1", 3));
+ 		TerritoryModel tmodel4 = new TerritoryModel(204, "tname4", 30, 40, new ContinentModel(302, "cname2", 5));
+ 		TerritoryModel tmodel5 = new TerritoryModel(205, "tname5", 30, 40, new ContinentModel(301, "cname1", 3));
+		Vector<TerritoryModel> territories = new Vector<>();
+		territories.add(tmodel1);
+		territories.add(tmodel2);
+		territories.add(tmodel3);
+		territories.add(tmodel4);
+		playerModel.setOccupiedTerritories(territories);
+		playerModel.addOccupiedTerritory(tmodel5);
+		assertEquals(territories,playerModel.getOccupiedTerritories());
+
+     }
 }
