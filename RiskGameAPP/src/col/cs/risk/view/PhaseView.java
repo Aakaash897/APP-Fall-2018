@@ -31,21 +31,22 @@ public class PhaseView implements Observer {
 	}
 
 	public void showMonitor() {
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int height = (int) (screenSize.height * 2 / 2.6);
+		int width = (int) (screenSize.width * 2 / 4.9);
+		phaseFrame = new JFrame();
+		JScrollPane scrollPanel;
+		
 		phaseTextArea = new JTextArea("", 40, 40);
 		phaseTextArea.setEditable(false);
-
-		JScrollPane scrollPanel;
 		scrollPanel = new JScrollPane(phaseTextArea);
 		scrollPanel.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
 		phaseViewPanel = new JPanel();
 		phaseViewPanel.add(scrollPanel);
 
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int height = (int) (screenSize.height * 2 / 2.6);
-		int width = (int) (screenSize.width * 2 / 4.9);
-		phaseFrame = new JFrame();
-		phaseFrame.setTitle("Phase Information");
+		phaseFrame.setTitle("Phase View");
+		phaseFrame.setLocation(5, 5);
 		phaseFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		phaseFrame.setPreferredSize(new Dimension(width, height));
 		phaseFrame.add(phaseViewPanel);

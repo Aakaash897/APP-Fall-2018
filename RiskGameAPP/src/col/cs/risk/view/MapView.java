@@ -121,8 +121,8 @@ public class MapView extends JFrame implements MouseListener {
 
 		attackButton.setVisible(false);
 		attackButton.setFont(resourceMap.getFont("attackButton.font"));
-		attackButton.setText(Constants.ATTACK_PHASE_MESSAGE);
-		attackButton.setName(Constants.ATTACK_PHASE_MESSAGE);
+		attackButton.setText(Constants.ATTACK_MESSAGE);
+		attackButton.setName(Constants.ATTACK_MESSAGE);
 		attackButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
