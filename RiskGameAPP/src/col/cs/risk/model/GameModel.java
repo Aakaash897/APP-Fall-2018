@@ -118,8 +118,8 @@ public class GameModel {
 	 */
 	{
 		playerArmyMap = new HashMap<>();
-		playerArmyMap.put(2, 40);
-		playerArmyMap.put(3, 35);
+		playerArmyMap.put(2, 30);
+		playerArmyMap.put(3, 20);
 		playerArmyMap.put(4, 30);
 		playerArmyMap.put(5, 25);
 		playerArmyMap.put(6, 20);

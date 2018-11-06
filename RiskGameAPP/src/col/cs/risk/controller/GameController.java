@@ -138,6 +138,7 @@ public class GameController {
 	 * @param evt
 	 */
 	public void fortifyButtonActionPerformed(ActionEvent evt) {
+		gameModel.currentPlayer.isAssignedAlready=false;
 		System.out.println(" fortify button pressed ");
 		gameModel.setState(Constants.FORTIFICATION_PHASE);
 		gameModel.notifyPhaseChanging();
@@ -181,12 +182,14 @@ public class GameController {
 	 * @param evt
 	 */
 	public void endButtonActionPerformed(ActionEvent evt) {
+		gameModel.currentPlayer.isAssignedAlready=false;
 		System.out.println(" end button pressed state = " + gameModel.getState());
 		if(gameModel.getPreviousState() == gameModel.getState()) {
 			gameModel.setPreviousState(Constants.NEW_GAME);
 		}
 		switch (gameModel.getState()) {
 		case Constants.ATTACK_PHASE:
+			
 		case Constants.RE_ENFORCEMENT_PHASE:
 			validatePlayerTurn();
 			break;
