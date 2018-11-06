@@ -40,6 +40,7 @@ public class Constants {
 	public static final String GAME_OVER_MESSAGE = "Game over, no winner";
 	public static final String WINNER = "A won the game";
 	public static final String REINFORCE_MESSAGE = "Reinforce";
+	public static final String ATTACK_MESSAGE = "Attack";
 	public static final String FORTIFY_MESSAGE = "Fortify";
 	public static final String SELECT_THE_ACTION_MESSAGE = "Click on the action you want to do";
 	public static final String NOT_A_CONNECTED_MAP_MESSAGE = "Not a connected map invalid country exists: ";
