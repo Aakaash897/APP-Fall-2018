@@ -655,7 +655,10 @@ public class PlayerModel extends Observable {
 			cardVector.add(gameModel.totCards.get(randomNo));
 			gameModel.totCards.remove(randomNo);
 			System.out.println("**************************************************");
-			System.out.println(cardVector.get(0).cardType);
+			for(int i=0;i<cardVector.size();i++)
+			{
+				System.out.println(cardVector.get(0).cardType);				
+			}
 			gameModel.notifyPhaseChange();
 		} else if (attackingTerritory.getArmies() == 1) {
 			gameModel.setState(Constants.CAPTURE);
