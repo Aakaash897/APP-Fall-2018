@@ -714,21 +714,18 @@ public class PlayerModel extends Observable {
 	}
 
 	/**
-	 * Checks if is changed.
+	 * Function to notify observers when player state change.
 	 */
 	public void isChanged() {
-		try {
-			int i[] = { 0 };
-			System.out.println(i[3]);
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("------------------\n");
-
-		}
 		setChanged();
 		notifyObservers(this);
 	}
 
+	/**
+	 * Basic information to display on player domination view
+	 * @param stringBuilder
+	 * @returns StringBuilder of basic string
+	 */
 	private StringBuilder basicContent(StringBuilder stringBuilder) {
 		if (stringBuilder == null || stringBuilder.length() == 0) {
 			stringBuilder = new StringBuilder();
@@ -738,6 +735,12 @@ public class PlayerModel extends Observable {
 		return stringBuilder;
 	}
 
+	/**
+	 * The details to display on domination view
+	 * @param stringBuilder
+	 * @param gameModel
+	 * @return StringBuilder of information
+	 */
 	public StringBuilder getDominationViewContent(StringBuilder stringBuilder, GameModel gameModel) {
 		stringBuilder = basicContent(stringBuilder);
 		for (PlayerModel player : GameModel.players) {
@@ -763,6 +766,12 @@ public class PlayerModel extends Observable {
 		return stringBuilder;
 	}
 
+	/**
+	 * Calculate percentage of map occupied by player
+	 * @param player
+	 * @param gameModel
+	 * @returns percentage
+	 */
 	public double calculatePercentage(PlayerModel player, GameModel gameModel) {
 		int totalNoTerritories = gameModel.getTerritories().size();
 		double percentage = 0.0;
@@ -772,6 +781,11 @@ public class PlayerModel extends Observable {
 		return percentage;
 	}
 
+	/**
+	 * Gets the list of continents controlled by a player
+	 * @param player
+	 * @return
+	 */
 	public String getcontrolledContinents(PlayerModel player) {
 		Set<String> continents = new HashSet<>();
 		for (TerritoryModel territoryModel : player.getOccupiedTerritories()) {
@@ -788,6 +802,12 @@ public class PlayerModel extends Observable {
 		return continentsStr;
 	}
 
+	/**
+	 * Checks whether a player owns a given continent
+	 * @param player
+	 * @param continentModel
+	 * @returns true if ownes
+	 */
 	public boolean isPlayerOwnContinent(PlayerModel player, ContinentModel continentModel) {
 		boolean isOwned = true;
 		for (TerritoryModel territory : continentModel.getTerritories()) {
