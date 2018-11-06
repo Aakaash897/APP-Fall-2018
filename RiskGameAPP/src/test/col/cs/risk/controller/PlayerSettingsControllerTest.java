@@ -16,6 +16,9 @@ import col.cs.risk.model.GameModel;
  */
 public class PlayerSettingsControllerTest {
 
+	/**
+	 * Test case for testing after setting the players.
+	 */
 	@Test
 	public void testSetPlayers() {
 		StartGameController startGameController = new StartGameController();
