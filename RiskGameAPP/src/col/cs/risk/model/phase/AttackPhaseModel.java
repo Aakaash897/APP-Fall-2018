@@ -5,31 +5,38 @@ import java.util.Observable;
 import col.cs.risk.model.Constants;
 import col.cs.risk.model.GameModel;
 
+/**
+ * AttackPhaseModel class is observable class observe the changes in the attack
+ * phases and notifies according to that change. In this all the attack phases
+ * are handled.
+ * 
+ * @author Team25
+ *
+ */
 public class AttackPhaseModel extends Observable implements GamePhase {
-	
+
 	/** game model */
 	private GameModel gameModel;
 
 	/** instance of this class */
 	private static AttackPhaseModel attackPhaseModel;
-	
+
 	private StringBuilder stringBuilder;
-	
+
 	/**
 	 * 
 	 * @return s instance of AttackPhaseModel
 	 */
 	public static AttackPhaseModel getInstance() {
-		if(attackPhaseModel == null) {
+		if (attackPhaseModel == null) {
 			attackPhaseModel = new AttackPhaseModel();
 		}
 		return attackPhaseModel;
 	}
-	
 
 	@Override
 	public void isChanged(boolean isStart) {
-		if(isStart) {
+		if (isStart) {
 			stringBuilder = null;
 		}
 		setChanged();
@@ -43,9 +50,9 @@ public class AttackPhaseModel extends Observable implements GamePhase {
 
 	@Override
 	public void setGameModel(GameModel gameModel) {
-		this.gameModel = gameModel;		
+		this.gameModel = gameModel;
 	}
-	
+
 	private String basicMessage() {
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("\n*************" + getTitle() + "*************\n\n");
@@ -58,37 +65,38 @@ public class AttackPhaseModel extends Observable implements GamePhase {
 
 	@Override
 	public String getContent() {
-		if(stringBuilder == null) {
+		if (stringBuilder == null) {
 			System.out.println(" initializing attack phase string");
 			stringBuilder = new StringBuilder();
 			stringBuilder.append(basicMessage());
 		}
-		System.out.println("AttackPhaseModel.getContent() state = "+gameModel.getState());
+		System.out.println("AttackPhaseModel.getContent() state = " + gameModel.getState());
 		switch (gameModel.getState()) {
 		case Constants.ATTACK_PHASE:
-			if(gameModel.getCurrentPlayer().getAttackingTerritory() != null) {
+			if (gameModel.getCurrentPlayer().getAttackingTerritory() != null) {
 				stringBuilder.append("Attacking territory: ");
 				stringBuilder.append(gameModel.getCurrentPlayer().getAttackingTerritory().getName());
 				stringBuilder.append(" \n");
 			}
 			break;
 		case Constants.ATTACKING_PHASE:
-			if(gameModel.getCurrentPlayer().getDefendingTerritory() != null) {
+			if (gameModel.getCurrentPlayer().getDefendingTerritory() != null) {
 				stringBuilder.append("Defending territory: ");
 				stringBuilder.append(gameModel.getCurrentPlayer().getDefendingTerritory().getName());
 				stringBuilder.append(" \n");
 			}
 			break;
 		case Constants.ATTACK_FIGHT_PHASE:
-			if(gameModel.getCurrentPlayer().getGameController() != null) {
-				stringBuilder.append(gameModel.getCurrentPlayer().getGameController().getMapView().getStatusLabel().getText());
+			if (gameModel.getCurrentPlayer().getGameController() != null) {
+				stringBuilder.append(
+						gameModel.getCurrentPlayer().getGameController().getMapView().getStatusLabel().getText());
 				stringBuilder.append("\n");
 			}
 			break;
 		case Constants.CAPTURE:
-			if(gameModel.getCurrentPlayer().getDefendingTerritory().getArmies() == 0) {
+			if (gameModel.getCurrentPlayer().getDefendingTerritory().getArmies() == 0) {
 				stringBuilder.append("Capturing defending territory\n");
-			} else if(gameModel.getCurrentPlayer().getAttackingTerritory().getArmies() == 1) {
+			} else if (gameModel.getCurrentPlayer().getAttackingTerritory().getArmies() == 1) {
 				stringBuilder.append("Lost the battle\n");
 			}
 			break;
@@ -98,7 +106,6 @@ public class AttackPhaseModel extends Observable implements GamePhase {
 		stringBuilder.append("\n");
 		return stringBuilder.toString();
 	}
-
 
 	@Override
 	public void setMessage(String message) {
