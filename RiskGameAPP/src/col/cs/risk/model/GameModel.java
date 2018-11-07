@@ -829,7 +829,7 @@ public class GameModel {
 	 * @return String of map data
 	 * 
 	 */
-	private String getMapContentToWrite() {
+	public String getMapContentToWrite() {
 		StringBuilder result = new StringBuilder();
 		result.append("[Map]"+"\n");
 		result.append("author=Shwetha"+"\n");

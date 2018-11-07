@@ -30,7 +30,7 @@ public class PlayerModel extends Observable {
 	private String name;
 
 	/** player occupied territories */
-	private Vector<TerritoryModel> occupiedTerritories;
+	public Vector<TerritoryModel> occupiedTerritories;
 
 	/** no. of armies with player */
 	private int armies;
