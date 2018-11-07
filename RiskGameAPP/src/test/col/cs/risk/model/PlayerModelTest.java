@@ -17,6 +17,7 @@ public class PlayerModelTest {
 	
 	PlayerModel playerModel;
 	GameModel gameModel;
+
 	
 	@Before
 	public void before() {
@@ -124,7 +125,43 @@ public class PlayerModelTest {
 		
 
 		}
-	
+	/**
+	 * Test case to verify the canAttack method
+	 */
+	@Test
+	public void testCanAttack() {
+		PlayerModel playerModel1 = new PlayerModel(102, "player2");
+		TerritoryModel tmodel1 = new TerritoryModel(201, "tname1", 10, 20, new ContinentModel(301, "cname1", 3));
+		TerritoryModel tmodel2 = new TerritoryModel(202, "tname2", 30, 40, new ContinentModel(302, "cname2", 5));
+		TerritoryModel tmodel3 = new TerritoryModel(203, "tname3", 30, 40, new ContinentModel(301, "cname1", 3));
+		TerritoryModel tmodel4 = new TerritoryModel(204, "tname4", 30, 40, new ContinentModel(302, "cname2", 5));
+		TerritoryModel tmodel5 = new TerritoryModel(205, "tname5", 30, 40, new ContinentModel(301, "cname1", 3));
+		tmodel1.addAdjacentTerritory(tmodel3);
+		tmodel1.addAdjacentTerritory(tmodel5);
+		tmodel2.addAdjacentTerritory(tmodel4);
+		tmodel3.addAdjacentTerritory(tmodel1);
+		tmodel4.addAdjacentTerritory(tmodel2);
+		tmodel4.addAdjacentTerritory(tmodel5);
+		tmodel5.addAdjacentTerritory(tmodel1);
+		tmodel5.addAdjacentTerritory(tmodel4);
+		tmodel1.setArmies(4);
+		tmodel2.setArmies(2);
+		tmodel3.setArmies(6);
+		tmodel4.setArmies(8);
+		tmodel5.setArmies(4);
+		Vector<TerritoryModel> territories = new Vector<>();
+		territories.add(tmodel1);
+		territories.add(tmodel2);
+		Vector<TerritoryModel> territories1 = new Vector<>();
+		territories1.add(tmodel3);
+		territories1.add(tmodel4);
+		territories1.add(tmodel5);
+		playerModel.setOccupiedTerritories(territories);
+		playerModel1.setOccupiedTerritories(territories1);
+		gameModel.setCurrentPlayer(playerModel);
+		assertEquals(true,playerModel.canAttack());
+
+	}
 	
 	/**
 	 * This Test case checks Adding Occupied Territories list
@@ -169,4 +206,5 @@ public class PlayerModelTest {
  		assertEquals(territories,playerModel.getOccupiedTerritories());
 
       }
+
 }
