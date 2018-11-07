@@ -66,11 +66,9 @@ public class AttackPhaseModel extends Observable implements GamePhase {
 	@Override
 	public String getContent() {
 		if (stringBuilder == null) {
-			System.out.println(" initializing attack phase string");
 			stringBuilder = new StringBuilder();
 			stringBuilder.append(basicMessage());
 		}
-		System.out.println("AttackPhaseModel.getContent() state = " + gameModel.getState());
 		switch (gameModel.getState()) {
 		case Constants.ATTACK_PHASE:
 			if (gameModel.getCurrentPlayer().getAttackingTerritory() != null) {
