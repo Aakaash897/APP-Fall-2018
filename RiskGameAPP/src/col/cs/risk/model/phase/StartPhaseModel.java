@@ -55,12 +55,12 @@ public class StartPhaseModel extends Observable implements GamePhase{
 
 	@Override
 	public String getTitle() {
-		return Constants.START_PHASE_MESSAGE+Constants.INITIAL_RE_ENFORCEMENT_PHASE_MESSAGE;
+		return Constants.START_PHASE_MESSAGE+" / "+Constants.INITIAL_RE_ENFORCEMENT_PHASE_MESSAGE;
 	}
 
 	private String basicMessage() {
 		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append("\n*************" + getTitle() + "*************\n\n");
+		stringBuilder.append("\n************* " + getTitle() + " *************\n\n");
 		stringBuilder.append("Information:\n\n");
 		stringBuilder.append(basicMessage1());
 		return stringBuilder.toString();
