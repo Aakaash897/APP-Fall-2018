@@ -75,8 +75,6 @@ public class RolledDiceView extends JFrame{
 
 		getContentPane().setBackground(new Color(238, 232, 170));
 		getContentPane().setLayout(null);
-		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//setVisible(true);
 		setResizable(false);
 		setSize(450, 300);
 
@@ -91,7 +89,6 @@ public class RolledDiceView extends JFrame{
 
 		panel = new JPanel();
 		panel.setBounds(0, 0, 444, 271);
-		//panel.setBackground(new Color(176, 224, 230));
 		getContentPane().add(panel);
 		panel.setLayout(null);
 
@@ -150,7 +147,6 @@ public class RolledDiceView extends JFrame{
 		setVisible(true);
 		HashMap<Integer, Integer> diceList = playerModel.getAttackingDiceList();
 		Set<Integer> keys = diceList.keySet();
-		System.out.println(" attack keys = "+keys.stream().map(x->x.toString()).collect(Collectors.toList()));
 		for(Integer diceNo:keys) {
 			switch (diceNo) {
 			case 1:
@@ -172,7 +168,6 @@ public class RolledDiceView extends JFrame{
 
 		diceList = playerModel.getDefendingDiceList();
 		keys = diceList.keySet();
-		System.out.println(" defend keys = "+keys.stream().map(x->x.toString()).collect(Collectors.toList()));
 		for(Integer diceNo:keys) {
 			switch (diceNo) {
 			case 1:
