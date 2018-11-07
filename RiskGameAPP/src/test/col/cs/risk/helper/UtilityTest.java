@@ -73,6 +73,9 @@ public class UtilityTest {
 		assertEquals(result.toString(),mapString.toString());
 	}
 	
+	/**
+	 * Test case to replace the part in message  
+	 */
 	@Test
 	public void testReplacePartInMessage() {
 		String str = "abcdfgh";

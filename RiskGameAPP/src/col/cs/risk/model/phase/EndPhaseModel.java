@@ -6,12 +6,11 @@ import col.cs.risk.model.Constants;
 import col.cs.risk.model.GameModel;
 
 /**
+ * EndPhaseModel class handles the scenario whenever the phase ends.
  * 
- * @author Team
- * Game end phase model
- *
+ * @author Team25
  */
-public class EndPhaseModel extends Observable implements GamePhase{
+public class EndPhaseModel extends Observable implements GamePhase {
 
 	/** Object of game model */
 	private GameModel gameModel;
@@ -20,7 +19,7 @@ public class EndPhaseModel extends Observable implements GamePhase{
 
 	/** instance of this class */
 	private static EndPhaseModel endPhaseModel;
-	
+
 	private String message;
 
 	/**
@@ -28,7 +27,7 @@ public class EndPhaseModel extends Observable implements GamePhase{
 	 * @return instance of FortificationPhaseModel
 	 */
 	public static EndPhaseModel getInstance() {
-		if(endPhaseModel == null) {
+		if (endPhaseModel == null) {
 			endPhaseModel = new EndPhaseModel();
 		}
 		return endPhaseModel;
@@ -45,10 +44,10 @@ public class EndPhaseModel extends Observable implements GamePhase{
 	public void setGameModel(GameModel gameModel) {
 		this.gameModel = gameModel;
 	}
-	
+
 	@Override
 	public void isChanged(boolean isStart) {
-		if(isStart) {
+		if (isStart) {
 			stringBuilder = null;
 		}
 		setChanged();
@@ -72,7 +71,7 @@ public class EndPhaseModel extends Observable implements GamePhase{
 
 	@Override
 	public String getContent() {
-		if(stringBuilder == null) {
+		if (stringBuilder == null) {
 			stringBuilder = new StringBuilder();
 			stringBuilder.append(basicMessage());
 		}
