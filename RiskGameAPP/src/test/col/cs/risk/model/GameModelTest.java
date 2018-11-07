@@ -30,6 +30,10 @@ public class GameModelTest {
 	 * Game model instance
 	 */
 	GameModel gameModel;
+	/** 
+	 * Continent model instance
+	 */
+	ContinentModel continentModel;
 
 	/**
 	 *  Map file contents as String
@@ -251,5 +255,34 @@ public class GameModelTest {
 		
 		assertEquals(territory2, gameModel.getTerritoryFromMapLocation(50, 70));
 		assertEquals(territory2.getName(), gameModel.getTerritoryFromMapLocation(50, 70).getName());
+	}
+	/**
+	 * Test case for Converting data in models(continent and territory) to string
+	 * @return String of map data
+	 * 
+	 */
+	@Test
+	public void testGetMapContentToWrite() {
+		
+		ContinentModel continent = new ContinentModel(1, "C1", 2);
+		TerritoryModel territory1 = new TerritoryModel(1, "T1", 10, 20, continent);
+		TerritoryModel territory2 = new TerritoryModel(2, "T2", 50, 70, continent);
+		TerritoryModel territory3 = new TerritoryModel(3, "T3", 100, 100, continent);
+		Vector<TerritoryModel> territorries = new Vector<>();
+		territorries.add(territory1);
+		territorries.add(territory2);
+		territorries.add(territory3);
+		gameModel.setTerritories(territorries);
+		Vector<ContinentModel> continents = new Vector<>();
+		continents.add(continent);
+		gameModel.setContinents(continents);
+
+		String str = "[Map]"+"\n"+"author=Shwetha"+"\n"+"image=currMap.jpg"+"\n"+"wrap=no"+
+		             "\n"+"scroll=horizontal"+"\n"+"warn=yes"+"\n\n"+"[Continents]"+"\n"+"C1"+"="+"2"+"\n"+"[Territories]"+"\n"+
+		             "1,"+"T1,"+"10,"+"20,"+"C1"+"\n"+"2,"+"T2,"+"50,"+"70,"+"C1"+"\n"+"3,"+"T3,"+"100,"+"100,"+"C1"+"\n"+"\n\n\n";
+		
+		assertEquals(str,gameModel.getMapContentToWrite());
+		
+	
 	}
 }
