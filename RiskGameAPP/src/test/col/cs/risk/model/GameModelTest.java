@@ -272,15 +272,20 @@ public class GameModelTest {
 		territorries.add(territory1);
 		territorries.add(territory2);
 		territorries.add(territory3);
-		gameModel.setTerritories(territorries);
+		continent.setTerritories(territorries);
 		Vector<ContinentModel> continents = new Vector<>();
 		continents.add(continent);
 		gameModel.setContinents(continents);
 
 		String str = "[Map]"+"\n"+"author=Shwetha"+"\n"+"image=currMap.jpg"+"\n"+"wrap=no"+
-		             "\n"+"scroll=horizontal"+"\n"+"warn=yes"+"\n\n"+"[Continents]"+"\n"+"C1"+"="+"2"+"\n"+"[Territories]"+"\n"+
-		             "1,"+"T1,"+"10,"+"20,"+"C1"+"\n"+"2,"+"T2,"+"50,"+"70,"+"C1"+"\n"+"3,"+"T3,"+"100,"+"100,"+"C1"+"\n"+"\n\n\n";
+		             "\n"+"scroll=horizontal"+"\n"+"warn=yes"+"\n\n"+"[Continents]"+"\n"+"C1"+"="+"2"+"\n"+"\n"+"[Territories]"+"\n"+
+		             "T1,"+"10,"+"20,"+"C1"+"\n"+"T2,"+"50,"+"70,"+"C1"+"\n"+"T3,"+"100,"+"100,"+"C1"+"\n"+"\n"+"\n\n\n";
 		
+		for(ContinentModel con:continents) {
+			for(TerritoryModel model:con.getTerritories()) {
+				System.out.println(model.printTerritory());
+			}
+			}
 		assertEquals(str,gameModel.getMapContentToWrite());
 		
 	
