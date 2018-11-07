@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import col.cs.risk.helper.Utility;
+import col.cs.risk.model.Constants;
 import col.cs.risk.model.GameModel;
 import col.cs.risk.model.PlayerModel;
 import col.cs.risk.model.TerritoryModel;
@@ -86,11 +87,11 @@ public class MapPanelController extends JPanel {
 
 		graphics.setFont(new Font("Verdana", Font.BOLD, 15));
 		graphics.setColor(Color.black);
-		int height = getImageHeight();
+		int height = getImageHeight()-Constants.FIVE;
 		if (height < 621) {
 			height += 30;
 		} else {
-			height = 655;
+			height = 650;
 		}
 		graphics.drawString("Current state: " + gameModel.getStateAsString(), 10, height);
 	}
