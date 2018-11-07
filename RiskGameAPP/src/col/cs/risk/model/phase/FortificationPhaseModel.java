@@ -60,7 +60,7 @@ public class FortificationPhaseModel extends Observable implements GamePhase{
 
 	private String basicMessage() {
 		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append("\n*************" + getTitle() + "*************\n\n");
+		stringBuilder.append("\n************* " + getTitle() + " *************\n\n");
 		stringBuilder.append("Current player: ");
 		stringBuilder.append(gameModel.getCurrentPlayer().getName());
 		stringBuilder.append("\n\n");
@@ -80,7 +80,7 @@ public class FortificationPhaseModel extends Observable implements GamePhase{
 			if(gameModel.getMoveArmiesFromTerritory()!=null) {
 				stringBuilder.append("Moving armies from territory: ");
 				stringBuilder.append(gameModel.getMoveArmiesFromTerritory().getName());
-				System.out.println("\n");
+				stringBuilder.append("\n");
 			}
 			break;
 		case Constants.FORTIFYING_PHASE:
