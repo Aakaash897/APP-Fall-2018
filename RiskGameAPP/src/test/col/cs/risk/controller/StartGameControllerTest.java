@@ -89,6 +89,9 @@ public class StartGameControllerTest {
 		assertTrue(startGameController.isMapContainsSingleCountry(space));
 	}
 
+	/**
+	 * Test case to check whether the entered text contains only single country
+	 */
 	@Test
 	public void testIsMapContainsSingleCountry() {
 		String singleLineText = "abcd";

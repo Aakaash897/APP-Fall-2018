@@ -20,28 +20,28 @@ import javax.swing.JOptionPane;
 import col.cs.risk.model.Constants;
 
 /**
- * This Utility class is a list of supporting APIs.
- * This class contains all the helping variables and methods that are used multiple times in the whole project.
- * These are all static methods.
+ * This Utility class is a list of supporting APIs. This class contains all the
+ * helping variables and methods that are used multiple times in the whole
+ * project. These are all static methods.
  * 
  * @author Team25
  *
  */
 public class Utility {
-	
+
 	/** Player and color combination */
 	private static HashMap<Integer, Color> playerColor = new HashMap<>();
-	
+
 	/**
 	 * Selected file path of the map
 	 */
 	public static String selectedMapFilePath;
 
-	/** 
+	/**
 	 * Map string having the whole map in the string format
 	 */
 	public static StringBuilder baseMapString;
-	
+
 	/** static block to initialize player color map */
 	static {
 		playerColor.put(0, Color.red);
@@ -55,7 +55,8 @@ public class Utility {
 	/**
 	 * Retrieves the path of the map file
 	 * 
-	 * @param filename : Name of the map file
+	 * @param filename
+	 *            : Name of the map file
 	 * @return String that has the complete path
 	 */
 	public static String getMapPath(String filename) {
@@ -86,17 +87,19 @@ public class Utility {
 	/**
 	 * Retrieves the image path
 	 * 
-	 * @param filename of the image
+	 * @param filename
+	 *            of the image
 	 * @return String having the full path of the image
 	 */
 	public static String getImagePath(String filename) {
 		return "resources/risk/images/" + filename;
 	}
-	
+
 	/**
 	 * Retrieves the dice path
 	 * 
-	 * @param filename of the dice
+	 * @param filename
+	 *            of the dice
 	 * @return String having the full path of the dice
 	 */
 	public static String getDicePath(String filename) {
@@ -171,26 +174,38 @@ public class Utility {
 	/**
 	 * Message pop up to show error message
 	 * 
-	 * @param errorMessage : Contains the actual message to be shown
+	 * @param errorMessage
+	 *            : Contains the actual message to be shown
 	 */
 	public static void showMessagePopUp(String errorMessage) {
 		JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
 	}
-	
+
 	/**
 	 * Message pop up to show error message
 	 * 
-	 * @param message : Contains the actual message to be shown
+	 * @param message
+	 *            : Contains the actual message to be shown
 	 */
 	public static void showMessagePopUp(String message, String title) {
 		JOptionPane.showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
 	}
-	
+
+	/**
+	 * to replace the part in message
+	 * 
+	 * @param message
+	 *            : has message , to store the updated message and return it
+	 * @param origin
+	 *            : message part to be replaced
+	 * @param replace
+	 *            : new message part
+	 * @returns updated message
+	 */
 	public static String replacePartInMessage(String message, String origin, String replace) {
 		message = message.replace(origin, replace);
 		return message;
 	}
-	
 
 	/**
 	 * Checks if is all territories are connected
@@ -206,7 +221,7 @@ public class Utility {
 			String line;
 			HashMap<String, Integer> territoryNames = new HashMap<String, Integer>();
 
-			//Add all territories to a list
+			// Add all territories to a list
 			while ((line = reader.readLine()) != null) {
 				if (line.equals("[Territories]")) {
 					while ((line = reader.readLine()) != null) {
@@ -228,7 +243,7 @@ public class Utility {
 							int adjacents = 0;
 							for (int i = 4; i < str.length; i++) {
 								boolean isValidTerritory = false;
-								//Check each adjacent territory is present in the list of territroies
+								// Check each adjacent territory is present in the list of territroies
 								for (Entry<String, Integer> territory : territoryNames.entrySet()) {
 									if (!str[0].trim().equalsIgnoreCase(str[i].trim())
 											&& territory.getKey().equalsIgnoreCase(str[i].trim())) {
@@ -257,7 +272,7 @@ public class Utility {
 		}
 		return true;
 	}
-	
+
 	public static Color getColor(int id) {
 		return playerColor.get(id);
 	}

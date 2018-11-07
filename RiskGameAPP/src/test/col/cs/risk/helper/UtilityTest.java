@@ -72,4 +72,11 @@ public class UtilityTest {
 		buffReader.close();
 		assertEquals(result.toString(),mapString.toString());
 	}
+	
+	@Test
+	public void testReplacePartInMessage() {
+		String str = "abcdfgh";
+		String modifiedStr = "abcdefgh";
+		assertTrue(Utility.replacePartInMessage(str, "d", "de").equals(modifiedStr));
+	}
 }
