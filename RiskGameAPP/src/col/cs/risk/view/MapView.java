@@ -50,8 +50,6 @@ public class MapView extends JFrame implements MouseListener {
 	/** card exchange Button	 */
 	private JButton cardButton;
 
-	
-
 	/** Field to take user input for moving armies during fortification */
 	private JTextField userEntered;
 
@@ -152,12 +150,14 @@ public class MapView extends JFrame implements MouseListener {
 		cardButton.setFont(resourceMap.getFont("CardButton.font")); 
 		cardButton.setText("Card"); 
 		cardButton.setName("CardButton"); 
-		cardButton.addMouseListener(new java.awt.event.MouseAdapter() {
-			public void mouseClicked(java.awt.event.MouseEvent evt) {
-				gameController.CardButtonMouseClicked(evt);
+		cardButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent evt) {
+				gameController.cardButtonActionPerformed(evt);				
 			}
 		});
-		gameController.getMapSubPanelPlayer().add(cardButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(799, 25, 220, 25));
+		gameController.getMapSubPanelPlayer().add(cardButton, 
+				new org.netbeans.lib.awtextra.AbsoluteConstraints(535, 30, 90, 30));
 
 		userEntered.setVisible(false);
 		userEntered.setFont(resourceMap.getFont("userEntered.font"));
@@ -341,14 +341,6 @@ public class MapView extends JFrame implements MouseListener {
 		return fortifyButton;
 	}
 	
-	public JButton getCardButton() {
-		return cardButton;
-	}
-
-	public void setCardButton(JButton cardButton) {
-		this.cardButton = cardButton;
-	}
-
 	/**
 	 * @param fortifyButton
 	 *            the fortifyButton to set
@@ -385,6 +377,20 @@ public class MapView extends JFrame implements MouseListener {
 	 */
 	public void setAttackButton(JButton attackButton) {
 		this.attackButton = attackButton;
+	}
+
+	/**
+	 * @return the cardButton
+	 */
+	public JButton getCardButton() {
+		return cardButton;
+	}
+
+	/**
+	 * @param cardButton the cardButton to set
+	 */
+	public void setCardButton(JButton cardButton) {
+		this.cardButton = cardButton;
 	}
 
 	/**
