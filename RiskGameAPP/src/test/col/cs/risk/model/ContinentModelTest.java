@@ -1,6 +1,7 @@
 package test.col.cs.risk.model;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Vector;
 
@@ -12,7 +13,7 @@ import col.cs.risk.model.PlayerModel;
 import col.cs.risk.model.TerritoryModel;
 
 /**
- * ContinentModelTest Contains the method for testing the occupacy of the
+ * ContinentModelTest Contains the method for testing the occupancy of the
  * continent.
  * 
  * @author Team25
@@ -50,5 +51,25 @@ public class ContinentModelTest {
 		continentModel = new ContinentModel(1, "cName", 1, vector);
 		assertFalse(continentModel.isContinentOccupiedBy(playerModel1));
 		assertFalse(continentModel.isContinentOccupiedBy(playerModel2));
+	}
+
+	/**
+	 * Test case to check the addition of territory to the list of occupied
+	 * territory
+	 */
+	@Test
+	public void testAddTerritory() {
+		TerritoryModel model1 = new TerritoryModel(201, "tname1", 10, 20, new ContinentModel(301, "cname1", 2));
+		model1.setArmies(5);
+		TerritoryModel model2 = new TerritoryModel(1, "tname2", 30, 40, new ContinentModel(1, "cname2", 3));
+		model2.setArmies(5);
+		Vector<TerritoryModel> vector = new Vector<>();
+		vector.add(model1);
+		continentModel = new ContinentModel(1, "cName", 1, vector);
+		int tempSize = continentModel.getTerritories().size();
+		continentModel.addTerritory(model2);
+		int newSize = continentModel.getTerritories().size();
+		assertTrue(newSize > tempSize);
+		assertFalse(tempSize == newSize);
 	}
 }
