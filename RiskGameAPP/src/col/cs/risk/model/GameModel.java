@@ -39,13 +39,13 @@ import col.cs.risk.view.PlayerDominationView;
 public class GameModel {
 
 	/** Default map string */
-	public StringBuilder baseMapString;
+	private StringBuilder baseMapString;
 
 	/** modified game map data */
-	public StringBuilder modifiedMapString;
+	private StringBuilder modifiedMapString;
 
 	/** game map data */
-	public File mapFileStream;
+	private File mapFileStream;
 
 	/** Boolean Object for validatingMap */
 	private boolean isGameMapValid;
@@ -60,21 +60,19 @@ public class GameModel {
 	private int state;
 
 	/** list of continents */
-	public Vector<ContinentModel> continents = new Vector<>();
+	private Vector<ContinentModel> continents = new Vector<>();
 
 	/** list of countries */
-	public Vector<TerritoryModel> territories = new Vector<>();
-
-	public Vector<CardModel> totCards = new Vector<>();
+	private Vector<TerritoryModel> territories = new Vector<>();
 
 	/** list of players */
 	public static Vector<PlayerModel> players = new Vector<>();
 
 	/** current player */
-	public PlayerModel currentPlayer;
+	private PlayerModel currentPlayer;
 
 	/** map of no. of player to no. of army */
-	public HashMap<Integer, Integer> playerArmyMap;
+	private HashMap<Integer, Integer> playerArmyMap;
 
 	/** String for Map Selected */
 	public static String imageSelected = "World.bmp";
@@ -95,7 +93,7 @@ public class GameModel {
 	private int noOfArmiesToMove;
 
 	/** list of unOccupied territories */
-	public Vector<TerritoryModel> unOccupiedTerritories;
+	private Vector<TerritoryModel> unOccupiedTerritories;
 
 	private PhaseView phaseView;
 
@@ -112,17 +110,31 @@ public class GameModel {
 	private TerritoryModel selectedTerritory;
 	
 	private int previousState;
-
+	
+	private Vector<CardModel> cardsDeck = new Vector<>();
+	
+	private HashMap<Integer, Integer> cardArmyMap;
+	
+	private int cardTradeCount = Constants.ZERO;
+ 
 	/**
 	 * Instance block to fill player and army details
 	 */
 	{
 		playerArmyMap = new HashMap<>();
-		playerArmyMap.put(2, 30);
-		playerArmyMap.put(3, 20);
+		playerArmyMap.put(2, 40);
+		playerArmyMap.put(3, 35);
 		playerArmyMap.put(4, 30);
 		playerArmyMap.put(5, 25);
 		playerArmyMap.put(6, 20);
+		
+		cardArmyMap = new HashMap<>();
+		cardArmyMap.put(Constants.ONE, Constants.FOUR);
+		cardArmyMap.put(Constants.TWO, Constants.SIX);
+		cardArmyMap.put(Constants.THREE, Constants.EIGHT);
+		cardArmyMap.put(Constants.FOUR, Constants.TEN);
+		cardArmyMap.put(Constants.FIVE, Constants.TWELVE);
+		cardArmyMap.put(Constants.SIX, Constants.FIFTEEN);
 	}
 
 	/**
@@ -143,7 +155,7 @@ public class GameModel {
 		initCurrentPlayer();
 		initializeMapAttributes();
 		validateAndLoadMap();
-		assignCardToEachTerritory();
+		initializeDeckOfCards();
 		distributeArmies();
 		assignTerritories();
 	}
@@ -153,16 +165,17 @@ public class GameModel {
 	 * to the CardModel Vector. Includes the WildCard also.
 	 * 
 	 */
-	private void assignCardToEachTerritory() {
-
-		for (int position = 0; position < territories.size(); position++)
-			totCards.add(new CardModel(position, position % 3));
-
-		Random wildCard = new Random();
-
-		if (totCards.size() > 0)
-			for (int wildCardCount = 1; wildCardCount <= 2; wildCardCount++)
-				totCards.add(new CardModel(wildCard.nextInt(totCards.size()), -1));
+	private void initializeDeckOfCards() {
+		for(TerritoryModel territoryModel:territories) {
+			int type = territoryModel.getId() % Constants.THREE;
+ 			cardsDeck.add(new CardModel(territoryModel.getId(), type, territoryModel));
+		}
+		
+		if (cardsDeck.size() > 0) {
+			for (int wildCardCount = 1; wildCardCount <= 2; wildCardCount++) {
+				cardsDeck.add(new CardModel(cardsDeck.size()+wildCardCount, -1, null));
+			}
+		}
 
 	}
 
@@ -788,6 +801,9 @@ public class GameModel {
 		case Constants.FORTIFY_PHASE:
 			stateString = Constants.FORTIFICATION_PHASE_MESSAGE;
 			break;
+		case Constants.CARD_TRADE:
+			stateString = Constants.CARD_TRADE_PHASE;
+			break;
 		case Constants.END_PHASE:
 			stateString = Constants.END_PHASE_MESSAGE;
 			break;
@@ -807,6 +823,13 @@ public class GameModel {
 			}
 		}
 		return isWon;
+	}
+	
+	public CardModel drawCard() {
+		if(cardsDeck.size() == 0) {
+			initializeDeckOfCards();
+		}
+		return cardsDeck.get(Utility.getRandomNumber(cardsDeck.size()));
 	}
 
 	/**
@@ -1219,4 +1242,47 @@ public class GameModel {
 	public void setPreviousState(int previousState) {
 		this.previousState = previousState;
 	}
+
+	/**
+	 * @return the cardsDeck
+	 */
+	public Vector<CardModel> getCardsDeck() {
+		return cardsDeck;
+	}
+
+	/**
+	 * @param cardsDeck the cardsDeck to set
+	 */
+	public void setCardsDeck(Vector<CardModel> cardsDeck) {
+		this.cardsDeck = cardsDeck;
+	}
+
+	/**
+	 * @return the cardTradeCount
+	 */
+	public int getCardTradeCount() {
+		return cardTradeCount;
+	}
+
+	/**
+	 * @param cardTradeCount the cardTradeCount to set
+	 */
+	public void setCardTradeCount(int cardTradeCount) {
+		this.cardTradeCount = cardTradeCount;
+	}
+
+	/**
+	 * @return the cardArmyMap
+	 */
+	public HashMap<Integer, Integer> getCardArmyMap() {
+		return cardArmyMap;
+	}
+
+	/**
+	 * @param cardArmyMap the cardArmyMap to set
+	 */
+	public void setCardArmyMap(HashMap<Integer, Integer> cardArmyMap) {
+		this.cardArmyMap = cardArmyMap;
+	}
+	
 }

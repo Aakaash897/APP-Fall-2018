@@ -9,47 +9,93 @@ package col.cs.risk.model;
  *
  */
 public class CardModel {
-	public String cardType;
-	public int territory;
+	
+	private int id;
+	
+	private String type;
+	
+	public TerritoryModel territoryModel;
 
 	/**
 	 * Instantiates a new card model.
-	 *
-	 * @param territoryNumber
-	 *            indicates the territory number
-	 * @param cardType
-	 *            for the card type
+	 * @param type cardType
+	 * @param territoryModel indicates the territory
 	 */
-	public CardModel(String cardType, int territory) {
-		super();
-		this.cardType = cardType;
-		this.territory = territory;
+	public CardModel(int id, String type, TerritoryModel territoryModel) {
+		this.id = id;
+		this.type = type;
+		this.territoryModel = territoryModel;
 	}
 
 	/**
-	 * Instantiates a new risk card model.
-	 *
-	 * @param territoryNumber Denotes the ID of the Territory
-	 *            
-	 * @param cardType Indicates the Type of Card
-	 *           
+	 * Instantiates a new card model.
+	 * @param type
+	 * @param territoryModel 
 	 */
-	public CardModel(int territoryNumber, int cardType) {
-		this.territory = territoryNumber;
-		switch (cardType) {
+	public CardModel(int id, int type, TerritoryModel territoryModel) {
+		this.id = id;
+		this.territoryModel = territoryModel;
+		this.type = getCardTypeAsString(type);
+	}
+
+	public String getCardTypeAsString(int type) {
+		String cardType = "";
+		switch (type) {
 		case 0:
-			this.cardType = Constants.ARMY_TYPE_INFANTRY;
+			cardType = Constants.ARMY_TYPE_INFANTRY;
 			break;
 		case 1:
-			this.cardType = Constants.ARMY_TYPE_CAVALRY;
+			cardType = Constants.ARMY_TYPE_CAVALRY;
 			break;
 		case 2:
-			this.cardType = Constants.ARMY_TYPE_ARTILLERY;
+			cardType = Constants.ARMY_TYPE_ARTILLERY;
 			break;
 		default:
-			this.cardType = Constants.ARMY_TYPE_WILD;
+			cardType = Constants.ARMY_TYPE_WILD;
 			break;
 		}
+		return cardType;
+	}
 
+	/**
+	 * @return the type
+	 */
+	public String getType() {
+		return type;
+	}
+
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	/**
+	 * @return the territoryModel
+	 */
+	public TerritoryModel getTerritoryModel() {
+		return territoryModel;
+	}
+
+	/**
+	 * @param territoryModel the territoryModel to set
+	 */
+	public void setTerritoryModel(TerritoryModel territoryModel) {
+		this.territoryModel = territoryModel;
+	}
+
+	/**
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
 	}
 }

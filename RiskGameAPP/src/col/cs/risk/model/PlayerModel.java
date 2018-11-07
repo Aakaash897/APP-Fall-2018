@@ -30,7 +30,7 @@ public class PlayerModel extends Observable {
 	private String name;
 
 	/** player occupied territories */
-	public Vector<TerritoryModel> occupiedTerritories;
+	private Vector<TerritoryModel> occupiedTerritories;
 
 	/** no. of armies with player */
 	private int armies;
@@ -64,16 +64,13 @@ public class PlayerModel extends Observable {
 
 	/** is auto out mode on */
 	private boolean isAutomatic;
-	
-	public boolean isAssignedAlready=false;
 
-	/** Card Model Object */
-	private CardModel cardModelObj;
+	private boolean isCardAssigned = false;
+	
+	private boolean isCardTradedAtThisTurn = false;
 
 	/** CardModel vector */
-	private Vector<CardModel> cardVector = new Vector<>();
-
-	
+	private Vector<CardModel> cards = new Vector<>();
 
 	/**
 	 * Constructor with parameters
@@ -243,14 +240,6 @@ public class PlayerModel extends Observable {
 	}
 
 	/**
-	 * Add turn bonus to current player
-	 */
-	public void addTurnBonus(GameModel gameModel) {
-		int bonus = territoryBonus() + gameModel.continentBonus();
-		addArmies(bonus);
-	}
-
-	/**
 	 * @return the attackingNoOfDice
 	 */
 	public int getAttackingNoOfDice() {
@@ -309,13 +298,24 @@ public class PlayerModel extends Observable {
 	public void setDefendingDiceList(HashMap<Integer, Integer> defendingDiceList) {
 		this.defendingDiceList = defendingDiceList;
 	}
-	
-	public Vector<CardModel> getCardVector() {
-		return cardVector;
+
+	/**
+	 * Add turn bonus to current player
+	 */
+	public void addTurnBonus(GameModel gameModel) {
+		if(isCardTradeRequired()) {
+			gameModel.setState(Constants.CARD_TRADE);
+		}
+		int bonus = territoryBonus() + gameModel.continentBonus();
+		addArmies(bonus);
 	}
 
-	public void setCardVector(Vector<CardModel> cardVector) {
-		this.cardVector = cardVector;
+	public boolean isCardTradeRequired() {
+		if(cards.size() >= Constants.FIVE) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -663,11 +663,14 @@ public class PlayerModel extends Observable {
 			addOccupiedTerritory(defendingTerritory);
 			defendingTerritory.setArmies(noOfArmiesToMove);
 			attackingTerritory.looseArmies(noOfArmiesToMove);
-			if(!isAssignedAlready)
- 				assignCard(gameModel);
- 			else
- 				System.out.println("*****************Already Assigned a Card********************");
 			gameModel.notifyPhaseChange();
+			if(!isCardAssigned) {
+				assignCard(gameModel);
+			}
+			if(isPlayerEliminated(lostPlayer)) {
+				addCards(lostPlayer.getCards());
+				lostPlayer.removeCards(lostPlayer.getCards());
+			}
 		} else if (attackingTerritory.getArmies() == 1) {
 			gameModel.setState(Constants.CAPTURE);
 			gameController.getGameModel().notifyPhaseChanging();
@@ -683,19 +686,50 @@ public class PlayerModel extends Observable {
 		gameModel.notifyPhaseChange();
 	}
 
+	public boolean isPlayerEliminated(PlayerModel player) {
+		boolean eliminated = false;
+		if(player.getOccupiedTerritories().size() == 0) {
+			eliminated = true;
+		}
+		return eliminated;
+	}
+
 	public void assignCard(GameModel gameModel)
- 	{
- 		isAssignedAlready=true;
- 		int randomNo = Utility.getRandomNumber(gameModel.totCards.size());
- 		cardVector.add(gameModel.totCards.get(randomNo));
- 		gameModel.totCards.remove(randomNo);
- 		System.out.println("**************************************************");
- 		for(int i=0;i<cardVector.size();i++)
- 		{
- 			System.out.println(cardVector.get(0).cardType);				
- 		}
- 	}
-	
+	{
+		isCardAssigned = true;
+		CardModel card = gameModel.drawCard();
+		if(card != null)
+		cards.add(card);
+		gameModel.getCardsDeck().remove(card);
+	}
+
+	public void removeCards(Vector<CardModel> cardsToBeRemoved) {
+		if(cardsToBeRemoved!=null && cardsToBeRemoved.size() > 0) {
+			cards.removeAll(cardsToBeRemoved);
+		}
+	}
+
+	public void addCards(Vector<CardModel> cardsToBeAdded) {
+		if(cardsToBeAdded!=null && cardsToBeAdded.size() > 0) {
+			cards.addAll(cardsToBeAdded);
+		}
+	}
+
+	public void addAdditionalBounusForTradeCardMatch(Vector<CardModel> cardsToBeRemoved) {
+		boolean isBonusToBeAdded = false;
+		TerritoryModel matchedTerritoryModel = null;
+		for(CardModel cardModel:cardsToBeRemoved) {
+			if(isTradedCardMatchAnyTerritoryOfPlayer(cardModel.getTerritoryModel())) {
+				isBonusToBeAdded = true;
+				matchedTerritoryModel = cardModel.getTerritoryModel();
+				break;
+			}
+		}
+		if(isBonusToBeAdded && matchedTerritoryModel != null) {
+			matchedTerritoryModel.addArmies(Constants.TWO);
+		}
+	}
+
 	/**
 	 * Function to validate whether the player is able to attack on any territory
 	 * 
@@ -740,6 +774,14 @@ public class PlayerModel extends Observable {
 	public void isChanged() {
 		setChanged();
 		notifyObservers(this);
+	}
+
+	public boolean isTradedCardMatchAnyTerritoryOfPlayer(TerritoryModel territoryModel) {
+		boolean isMatch = false;
+		if(territoryModel!=null && territoryModel.getPlayerModel().getId() == this.id) {
+			isMatch = true;
+		}
+		return isMatch;
 	}
 
 	/**
@@ -883,6 +925,48 @@ public class PlayerModel extends Observable {
 	 */
 	public void setGameController(GameController gameController) {
 		this.gameController = gameController;
+	}
+
+	/**
+	 * @return the cards
+	 */
+	public Vector<CardModel> getCards() {
+		return cards;
+	}
+
+	/**
+	 * @param cards the cards to set
+	 */
+	public void setCards(Vector<CardModel> cards) {
+		this.cards = cards;
+	}
+
+	/**
+	 * @return the isCardAssigned
+	 */
+	public boolean isCardAssigned() {
+		return isCardAssigned;
+	}
+
+	/**
+	 * @param isCardAssigned the isCardAssigned to set
+	 */
+	public void setCardAssigned(boolean isCardAssigned) {
+		this.isCardAssigned = isCardAssigned;
+	}
+
+	/**
+	 * @return the isCardTradedAtThisTurn
+	 */
+	public boolean isCardTradedAtThisTurn() {
+		return isCardTradedAtThisTurn;
+	}
+
+	/**
+	 * @param isCardTradedAtThisTurn the isCardTradedAtThisTurn to set
+	 */
+	public void setCardTradedAtThisTurn(boolean isCardTradedAtThisTurn) {
+		this.isCardTradedAtThisTurn = isCardTradedAtThisTurn;
 	}
 
 }
