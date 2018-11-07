@@ -11,15 +11,29 @@ import col.cs.risk.model.ContinentModel;
 import col.cs.risk.model.PlayerModel;
 import col.cs.risk.model.TerritoryModel;
 
+/**
+ * ContinentModelTest Contains the method for testing the occupacy of the
+ * continent.
+ * 
+ * @author Team25
+ * 
+ */
 public class ContinentModelTest {
 
+	/** continent model object */
 	private ContinentModel continentModel;
 
+	/**
+	 * Initialization before every test case
+	 */
 	@Before
 	public void before() {
 		continentModel = new ContinentModel(1, "cName", 1);
 	}
 
+	/**
+	 * Test case to check whether the continent is occupied or not
+	 */
 	@Test
 	public void testIsContinentOccupied() {
 		TerritoryModel model1 = new TerritoryModel(201, "tname1", 10, 20, new ContinentModel(301, "cname1", 2));
