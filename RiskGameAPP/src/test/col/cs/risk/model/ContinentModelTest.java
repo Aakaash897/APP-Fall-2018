@@ -1,5 +1,6 @@
 package test.col.cs.risk.model;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -71,5 +72,20 @@ public class ContinentModelTest {
 		int newSize = continentModel.getTerritories().size();
 		assertTrue(newSize > tempSize);
 		assertFalse(tempSize == newSize);
+	}
+	
+	/**
+	 * Test Case for checking Continent details as string
+	 */
+	@Test
+	public void testPrintContinent() {
+		TerritoryModel tmodel1 = new TerritoryModel(201, "tname1", 10, 20, new ContinentModel(1, "cname", 1));
+		Vector<TerritoryModel> vector1 = new Vector<>();
+		vector1.add(tmodel1);
+		continentModel.setTerritories(vector1);
+		String str = "id = 1" + ", name = cname"+ ", score = 1" + ", territories = [201]";
+		//assertEquals(str,continentModel.printContinent());
+		System.out.println(continentModel.printContinent());
+		
 	}
 }
