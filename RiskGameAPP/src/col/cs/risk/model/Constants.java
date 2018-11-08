@@ -45,7 +45,7 @@ public class Constants {
 	public static final String FORTIFY_MESSAGE = "Fortify";
 	public static final String CARD_TRADE_PHASE = "Card Trade";
 	public static final String SELECT_THE_ACTION_MESSAGE = "Click on the action you want to do";
-	public static final String CARD_TRADE_MESSAGE = "You must trade atleast one set of cards";
+	public static final String CARD_TRADE_MESSAGE = "Trade a set of cards";
 	public static final String NOT_A_CONNECTED_MAP_MESSAGE = "Not a connected map invalid country exists: ";
 	public static final String NOT_COMPLETE_CONNECTED_MAP_MESSAGE = "Not a completely connected map";
 	public static final String INVALID_MAP_MESSAGE = "Invalid map, check the format";
@@ -62,8 +62,8 @@ public class Constants {
 	public static final String CANNOT_ATTACK_MESSAGE = "Can't attack, ";
 	public static final String OK = "OK";
 	public static final String CANCEL = "CANCEL";
-	public static final String CARD_INVALID_TRADE_MESSAGE = "Minimum 3 cards(any type) required to trade available is: ";
-	public static final String INVALID_NO_OF_CARDS_TRADE_MESSAGE = "One trade must have 3 cards & card types should match trade rule";
+	public static final String CARD_INVALID_TRADE_MESSAGE = "Minimum 3 cards required to trade, available no. of cards: ";
+	public static final String INVALID_NO_OF_CARDS_TRADE_MESSAGE = "One trade must have 3 cards, 1 each or any 2 plus a wild card";
 	public static final int ZERO = 0;
 	public static final int ONE = 1;
 	public static final int TWO = 2;

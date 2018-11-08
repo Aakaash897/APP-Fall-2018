@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 import java.util.Scanner;
 import java.util.Vector;
 
@@ -95,39 +94,50 @@ public class GameModel {
 	/** list of unOccupied territories */
 	private Vector<TerritoryModel> unOccupiedTerritories;
 
+	/** Phase view monitor */
 	private PhaseView phaseView;
 
+	/** Start phase model instance */
 	private StartPhaseModel startPhaseModel;
 
+	/** reinforcement phase model instance */
 	private ReEnforcementPhaseModel reInforcementPhaseModel;
-	
+
+	/** attack phase model instance */
 	private AttackPhaseModel attackPhaseModel;
 
+	/** fortification phase model instance */
 	private FortificationPhaseModel fortificationPhaseModel;
 
+	/** end phase model instance */
 	private EndPhaseModel endPhaseModel;
-	
+
+	/** user selected territory */
 	private TerritoryModel selectedTerritory;
-	
+
+	/** previous state of game */
 	private int previousState;
-	
+
+	/** Deck/list of cards available to draw */
 	private Vector<CardModel> cardsDeck = new Vector<>();
-	
+
+	/** Card set to no of armies*/
 	private HashMap<Integer, Integer> cardArmyMap;
-	
+
+	/** No of card set traded at any point of game */
 	private int cardTradeCount = Constants.ZERO;
- 
+
 	/**
 	 * Instance block to fill player and army details
 	 */
 	{
 		playerArmyMap = new HashMap<>();
 		playerArmyMap.put(2, 40);
-		playerArmyMap.put(3, 35);
+		playerArmyMap.put(3, 5);
 		playerArmyMap.put(4, 30);
 		playerArmyMap.put(5, 25);
 		playerArmyMap.put(6, 20);
-		
+
 		cardArmyMap = new HashMap<>();
 		cardArmyMap.put(Constants.ONE, Constants.FOUR);
 		cardArmyMap.put(Constants.TWO, Constants.SIX);
@@ -168,9 +178,9 @@ public class GameModel {
 	private void initializeDeckOfCards() {
 		for(TerritoryModel territoryModel:territories) {
 			int type = territoryModel.getId() % Constants.THREE;
- 			cardsDeck.add(new CardModel(territoryModel.getId(), type, territoryModel));
+			cardsDeck.add(new CardModel(territoryModel.getId(), type, territoryModel));
 		}
-		
+
 		if (cardsDeck.size() > 0) {
 			for (int wildCardCount = 1; wildCardCount <= 2; wildCardCount++) {
 				cardsDeck.add(new CardModel(cardsDeck.size()+wildCardCount, -1, null));
@@ -190,7 +200,7 @@ public class GameModel {
 			player.addObserver(playerDominationView);
 		playerDominationView.showMonitor();
 	}
-	
+
 	/**
 	 * Initializes the map attributes especially map file as text data
 	 * for further processing
@@ -619,7 +629,11 @@ public class GameModel {
 			this.subMapPanel.repaint();
 		}
 	}
-	
+
+	/**
+	 * Notify observers while changing the state
+	 * @param values
+	 */
 	public void notifyPhaseChanging(String... values) {
 		if(previousState == 0) {
 			previousState = getState();
@@ -632,6 +646,9 @@ public class GameModel {
 			gamePhase = startPhaseModel;
 			break;
 		case Constants.RE_ENFORCEMENT_PHASE:
+		case Constants.CARD_TRADE:
+			clear = (previousState == Constants.RE_ENFORCEMENT_PHASE ||
+					previousState == Constants.CARD_TRADE) ? false : true;
 			gamePhase = reInforcementPhaseModel;
 			break;
 		case Constants.ATTACK_PHASE:	
@@ -814,6 +831,10 @@ public class GameModel {
 		return stateString;
 	}
 
+	/**
+	 * Check whether the current player won the game
+	 * @return
+	 */
 	public boolean isWon() {
 		boolean isWon = true;
 		for(TerritoryModel territory:territories) {
@@ -824,7 +845,11 @@ public class GameModel {
 		}
 		return isWon;
 	}
-	
+
+	/**
+	 * Player draws a card from a deck of cards
+	 * @return
+	 */
 	public CardModel drawCard() {
 		if(cardsDeck.size() == 0) {
 			initializeDeckOfCards();
@@ -1200,7 +1225,7 @@ public class GameModel {
 	public void setEndPhaseModel(EndPhaseModel endPhaseModel) {
 		this.endPhaseModel = endPhaseModel;
 	}
-	
+
 	/**
 	 * @return the attackPhaseModel
 	 */
@@ -1284,5 +1309,5 @@ public class GameModel {
 	public void setCardArmyMap(HashMap<Integer, Integer> cardArmyMap) {
 		this.cardArmyMap = cardArmyMap;
 	}
-	
+
 }

@@ -75,10 +75,14 @@ public class ReEnforcementPhaseModel extends Observable implements GamePhase{
 			stringBuilder = new StringBuilder();
 			stringBuilder.append(basicMessage());
 		}
-		if(gameModel.getSelectedTerritory()!=null) {
-			stringBuilder.append("Placed an army on territory: ");
-			stringBuilder.append(gameModel.getSelectedTerritory().getName());
-			stringBuilder.append("\n\n");
+		if(gameModel.getState() == Constants.CARD_TRADE) {
+			stringBuilder.append("Card trading \n\n");
+		} else {
+			if(gameModel.getSelectedTerritory()!=null) {
+				stringBuilder.append("Placed an army on territory: ");
+				stringBuilder.append(gameModel.getSelectedTerritory().getName());
+				stringBuilder.append("\n\n");
+			}
 		}
 		return stringBuilder.toString();
 	}

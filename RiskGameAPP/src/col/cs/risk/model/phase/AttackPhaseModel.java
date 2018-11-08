@@ -55,7 +55,7 @@ public class AttackPhaseModel extends Observable implements GamePhase {
 
 	private String basicMessage() {
 		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append("\n*************" + getTitle() + "*************\n\n");
+		stringBuilder.append("\n************* " + getTitle() + " *************\n\n");
 		stringBuilder.append("Current player: ");
 		stringBuilder.append(gameModel.getCurrentPlayer().getName());
 		stringBuilder.append("\n\n");
