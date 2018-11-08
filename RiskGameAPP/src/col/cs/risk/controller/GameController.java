@@ -9,10 +9,10 @@ import javax.swing.JTextField;
 
 import col.cs.risk.helper.MapException;
 import col.cs.risk.helper.Utility;
+import col.cs.risk.model.CardExchangeModel;
 import col.cs.risk.model.CardModel;
 import col.cs.risk.model.Constants;
 import col.cs.risk.model.GameModel;
-import col.cs.risk.model.TerritoryModel;
 import col.cs.risk.model.phase.AttackPhaseModel;
 import col.cs.risk.model.phase.EndPhaseModel;
 import col.cs.risk.model.phase.FortificationPhaseModel;
@@ -79,7 +79,7 @@ public class GameController {
 			}
 			gameModel.notifyPhaseChanging();
 			mapMainPanel.repaint();
-			cardTradeView = new CardTradeView(this);
+			initializeCardExchangeView();
 		} catch (MapException ex) {
 			System.out.println(ex.getMessage());
 			ex.clearHistory();
@@ -104,6 +104,9 @@ public class GameController {
 		mapSubPanelPlayer = new PlayerPanelController(gameModel);
 	}
 
+	/**
+	 * Initialize phase view, phase view observer pattern
+	 */
 	private void initializePhaseView() {
 		StartPhaseModel startPhaseModel = StartPhaseModel.getInstance();
 		ReEnforcementPhaseModel reInforcementPhaseModel = ReEnforcementPhaseModel.getInstance();
@@ -127,6 +130,16 @@ public class GameController {
 
 		gameModel.setPhaseView(phaseView);
 		phaseView.showMonitor();
+	}
+
+	/**
+	 * Initialize card exchange view, used as observer pattern
+	 */
+	private void initializeCardExchangeView() {
+		CardExchangeModel cardExchangeModel = CardExchangeModel.getInstance();
+		cardTradeView = new CardTradeView(this);
+		cardExchangeModel.addObserver(cardTradeView);
+		cardTradeView.initializeComponents();
 	}
 
 	/**
@@ -198,8 +211,12 @@ public class GameController {
 		mapMainPanel.repaint();
 	}
 
+	/**
+	 * Action performed on card button pressed
+	 * @param event
+	 */
 	public void cardButtonActionPerformed(ActionEvent event) {
-		cardTradeView.showCardExchangeView();
+		CardExchangeModel.getInstance().checkCardsTradeOption(this, true);
 	}
 
 	/**
@@ -274,6 +291,10 @@ public class GameController {
 		return noOfRoundsCompleted == Constants.ZERO ? true : false;
 	}
 
+	/**
+	 * Handles game over functionality
+	 * @param message to display
+	 */
 	public void gameOver(String message) {
 		gameModel.setState(Constants.END_PHASE);
 		gameModel.notifyPhaseChanging(message);
@@ -282,7 +303,6 @@ public class GameController {
 		mapView.getFortifyButton().setVisible(false);
 		mapView.getEndButton().setVisible(false);
 		mapView.getCardButton().setVisible(false);
-		//mapSubPanelPlayer.repaint();
 		gameModel.notifyPhaseChange();
 		Utility.showMessagePopUp(message, "Information");
 	}
@@ -415,45 +435,59 @@ public class GameController {
 			gameModel.setState(Constants.RE_ENFORCEMENT_PHASE);
 			gameModel.getCurrentPlayer().addTurnBonus(gameModel);
 			gameModel.notifyPhaseChange();
-			if(gameModel.getState() == Constants.CARD_TRADE) {
-				handleCardTrade();
-			} else { 
-				handleReinforcement1();
-			}
+			CardExchangeModel.getInstance().checkCardsTradeOption(this, false);
 		}
 	}
-	
-	private void handleCardTrade() {
-		gameModel.notifyPhaseChanging();
+
+	/**
+	 * Options to show when card exchange in progress
+	 */
+	public void handleCardTrade() {
 		mapView.getStatusLabel().setText(Constants.CARD_TRADE_MESSAGE);
 		mapView.getCardButton().setVisible(true);
 		mapView.getAttackButton().setVisible(false);
 		mapView.getFortifyButton().setVisible(false);
 		mapView.getEndButton().setVisible(false);
 		gameModel.notifyPhaseChange();
-		cardTradeView.showCardExchangeView();
+	}
+	
+	/**
+	 * Card trade status message
+	 */
+	public void addCardTradeStatus() {
+		mapView.getStatusLabel().setText(Constants.CARD_TRADE_MESSAGE);
+		gameModel.notifyPhaseChange();
 	}
 
-	private void handleReinforcement1() {
-		gameModel.setState(Constants.RE_ENFORCEMENT_PHASE);
-		gameModel.getCurrentPlayer().setCardTradedAtThisTurn(false);
-		mapView.getCardButton().setVisible(true);
-		if (gameModel.getCurrentPlayer().getArmies() == Constants.ZERO) {
-			mapView.getStatusLabel().setText(Constants.SELECT_THE_ACTION_MESSAGE);
-			mapView.getAttackButton().setVisible(true);
-			mapView.getFortifyButton().setVisible(true);
-			mapView.getEndButton().setVisible(true);
-			mapView.getUserEntered().setVisible(false);
-		} else {
-			mapView.getStatusLabel().setText(Constants.RE_ENFORCEMENT_MESSAGE);
-			mapView.getAttackButton().setVisible(false);
-			mapView.getFortifyButton().setVisible(false);
-			mapView.getEndButton().setVisible(false);
-			mapView.getUserEntered().setVisible(false);
+	/**
+	 * Handle reinforcement after card verification
+	 */
+	public void handleReinforcement1() {
+		if(!gameModel.getCurrentPlayer().isCardTradeMandatory()) {
+			gameModel.setState(Constants.RE_ENFORCEMENT_PHASE);
+			mapView.getCardButton().setVisible(true);
+			if (gameModel.getCurrentPlayer().getArmies() == Constants.ZERO) {
+				mapView.getStatusLabel().setText(Constants.SELECT_THE_ACTION_MESSAGE);
+				mapView.getAttackButton().setVisible(true);
+				mapView.getFortifyButton().setVisible(true);
+				mapView.getEndButton().setVisible(true);
+				mapView.getUserEntered().setVisible(false);
+			} else {
+				mapView.getStatusLabel().setText(Constants.RE_ENFORCEMENT_MESSAGE);
+				mapView.getAttackButton().setVisible(false);
+				mapView.getFortifyButton().setVisible(false);
+				mapView.getEndButton().setVisible(false);
+				mapView.getUserEntered().setVisible(false);
+			}
+			gameModel.notifyPhaseChanging();
+			gameModel.notifyPhaseChange();
 		}
-		gameModel.notifyPhaseChanging();
 	}
 
+	/**
+	 * Verifies the selected card set is valid for trading
+	 * @return
+	 */
 	public boolean isValidNoOfCardsTraded() {
 		boolean isValid = false;
 		int infantryCount = cardTradeView.getInfantryCardSelectedItem();
@@ -480,6 +514,10 @@ public class GameController {
 		return isValid;		
 	}
 
+	/**
+	 * Action taken on valid card set selected to trade
+	 * @param evt
+	 */
 	public void cardTradeActionPerformed(ActionEvent evt) {
 		int infantryCard = cardTradeView.getInfantryCardSelectedItem();
 		int cavarlyCard = cardTradeView.getCavalryCardSelectedItem();
@@ -491,8 +529,8 @@ public class GameController {
 
 		for(CardModel card:cards) {
 			if(infantryCard<=0 && cavarlyCard<=0 &&
-				artilleryCard<=0 && wildCard<=0) {
-					break;
+					artilleryCard<=0 && wildCard<=0) {
+				break;
 			}
 			switch(card.getType()) {
 			case Constants.ARMY_TYPE_INFANTRY:
@@ -521,12 +559,12 @@ public class GameController {
 				break;
 			}
 		}
-		
+
 		if(cardsToBeRemoved.size() == Constants.THREE) {
 			gameModel.getCurrentPlayer().addAdditionalBounusForTradeCardMatch(cardsToBeRemoved);
 			gameModel.getCurrentPlayer().removeCards(cardsToBeRemoved);
 		} 
-		
+
 		int tradeCount = gameModel.getCardTradeCount();
 		tradeCount++;
 		int armies;
@@ -538,7 +576,7 @@ public class GameController {
 		gameModel.setCardTradeCount(tradeCount);
 		cardTradeView.exitForm();
 		gameModel.getCurrentPlayer().addArmies(armies);
-		gameModel.getCurrentPlayer().setCardTradedAtThisTurn(true);
+		gameModel.getCurrentPlayer().setCardTradeMandatory(false);
 		handleReinforcement1();
 		gameModel.notifyPhaseChange();
 	}
