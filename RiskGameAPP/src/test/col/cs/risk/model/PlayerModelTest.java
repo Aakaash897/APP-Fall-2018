@@ -1,6 +1,7 @@
 package test.col.cs.risk.model;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Vector;
 
@@ -224,8 +225,35 @@ public class PlayerModelTest {
   		territories.add(tmodel4);
   		territories.add(tmodel5);
   		playerModel.setOccupiedTerritories(territories);
-  		assertEquals(true,playerModel.isPlayerEliminated(playerModel));
+  		assertEquals(false,playerModel.isPlayerEliminated(playerModel));
   		
   	}
+     
+ 	/**
+ 	 * Test Case to Calculate percentage of map occupied by player
+ 	 */
+     @Test
+ 	public void testCalculatePercentage() {
+      	TerritoryModel tmodel1 = new TerritoryModel(201, "tname1", 10, 20, new ContinentModel(301, "cname1", 3));
+   		TerritoryModel tmodel2 = new TerritoryModel(202, "tname2", 30, 40, new ContinentModel(302, "cname2", 5));
+   		TerritoryModel tmodel3 = new TerritoryModel(203, "tname3", 30, 40, new ContinentModel(301, "cname1", 3));
+   		TerritoryModel tmodel4 = new TerritoryModel(204, "tname4", 30, 40, new ContinentModel(302, "cname2", 5));
+   		TerritoryModel tmodel5 = new TerritoryModel(205, "tname5", 30, 40, new ContinentModel(301, "cname1", 3));
+  		Vector<TerritoryModel> territories = new Vector<>();
+  		territories.add(tmodel1);
+  		territories.add(tmodel2);
+  		territories.add(tmodel5);
+  		Vector<TerritoryModel> territories1 = new Vector<>();
+  		territories1.add(tmodel1);
+  		territories1.add(tmodel2);
+  		territories1.add(tmodel3);
+  		territories1.add(tmodel4);
+  		territories1.add(tmodel5);
+  		gameModel.setTerritories(territories1);
+  		playerModel.setOccupiedTerritories(territories);
+  		double value = playerModel.calculatePercentage(playerModel, gameModel);
+  		assertTrue(value==60);
+ 		
+ 	}
 
 }
