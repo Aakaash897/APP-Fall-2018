@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.stream.Collectors;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -18,18 +17,16 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import col.cs.risk.controller.GameController;
 import col.cs.risk.helper.Utility;
 import col.cs.risk.model.GameModel;
-import col.cs.risk.model.PlayerModel;
 
 public class RolledDiceView extends JFrame{
 
 	/**
-	 * 
+	 * serial version id
 	 */
 	private static final long serialVersionUID = 1L;
-
-	PlayerModel playerModel;
 
 	JPanel panel;
 
@@ -45,8 +42,7 @@ public class RolledDiceView extends JFrame{
 
 	JButton okButton;
 
-	GameModel gameModel;
-
+	GameController gameController;
 
 	ImageIcon attackingImageIcon1 = new ImageIcon(Utility.getDicePath("dice_red_1.png"));
 	ImageIcon attackingImageIcon2 = new ImageIcon(Utility.getDicePath("dice_red_2.png"));
@@ -65,9 +61,9 @@ public class RolledDiceView extends JFrame{
 		setTitle("Rolled Dice");
 	}
 
-	public RolledDiceView(PlayerModel playerModel) {
+	public RolledDiceView(GameController gameController) {
 		this();
-		this.playerModel = playerModel;
+		this.gameController = gameController;
 		initComponents();
 	}
 
@@ -122,7 +118,7 @@ public class RolledDiceView extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				exitForm();
-				playerModel.updateArmiesOnFightingTerritories(gameModel);
+				gameController.updateDiceAction();
 			}
 		});
 		okButton.setBounds(200, 230, 50, 30);
@@ -142,10 +138,9 @@ public class RolledDiceView extends JFrame{
 	}
 
 	public void showRolledDiceList(GameModel gameModel) {
-		this.gameModel = gameModel;
 		reset();
 		setVisible(true);
-		HashMap<Integer, Integer> diceList = playerModel.getAttackingDiceList();
+		HashMap<Integer, Integer> diceList = gameController.getGameModel().getCurrentPlayer().getAttackingDiceList();
 		Set<Integer> keys = diceList.keySet();
 		for(Integer diceNo:keys) {
 			switch (diceNo) {
@@ -166,7 +161,7 @@ public class RolledDiceView extends JFrame{
 			}
 		}
 
-		diceList = playerModel.getDefendingDiceList();
+		diceList = gameController.getGameModel().getCurrentPlayer().getDefendingDiceList();
 		keys = diceList.keySet();
 		for(Integer diceNo:keys) {
 			switch (diceNo) {
@@ -183,16 +178,16 @@ public class RolledDiceView extends JFrame{
 			}
 		}
 		repaint();
-		if(playerModel.isAutomatic()) {
-			hideRolledDiceList(gameModel);
+		if(gameController.getGameModel().getCurrentPlayer().isAutomatic()) {
+			hideRolledDiceList();
 		}
 	}
 
-	private void hideRolledDiceList(GameModel gameModel) {
+	private void hideRolledDiceList() {
 		TimerTask task = new TimerTask() {
 			public void run() {
 				exitForm();
-				playerModel.updateArmiesOnFightingTerritories(gameModel);
+				gameController.updateDiceAction();
 				cancel();
 			}
 		};
@@ -258,7 +253,6 @@ public class RolledDiceView extends JFrame{
 
 	public void clear() {
 		setVisible(false);
-		playerModel = null;
 		panel = null;
 		attackDiceLabel1 = null;
 		attackDiceLabel2 = null;

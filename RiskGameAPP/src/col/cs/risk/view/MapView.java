@@ -252,7 +252,13 @@ public class MapView extends JFrame implements MouseListener {
 		int noOfDice = JOptionPane.showOptionDialog(null, player+", select the number of armies(dice) to fight",
 				message,
                 JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, icon, options, options[0]);
-		return noOfDice+1;
+		
+		if(noOfDice != -1) {
+			noOfDice++;
+		} else {
+			noOfDice = options[0];
+		}
+		return noOfDice;
 	}
 	
 	/** 
@@ -281,10 +287,14 @@ public class MapView extends JFrame implements MouseListener {
 	 * @return
 	 */
 	public String showOptionPopup(String message, String[] options) {
+		String option = options[0];
 		int selection = JOptionPane.showOptionDialog(null, message,
 				"Selection popup",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
-		return options[selection];
+		if(selection != -1) {
+			option = options[selection];
+		}
+		return option;
 	}
 	
 	/**

@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 
 import col.cs.risk.controller.GameController;
 import col.cs.risk.helper.Utility;
-import col.cs.risk.view.MapView;
 import col.cs.risk.view.RolledDiceView;
 
 /**
@@ -65,8 +64,10 @@ public class PlayerModel extends Observable {
 	/** is auto out mode on */
 	private boolean isAutomatic;
 
+	/** Is card assigned to player */
 	private boolean isCardAssigned = false;
 	
+	/** Is card trade mandatory for the current turn */
 	private boolean isCardTradeMandatory = false;
 
 	/** CardModel vector */
@@ -309,7 +310,7 @@ public class PlayerModel extends Observable {
 
 	/**
 	 * Checks whether card trade is must for the current turn
-	 * @return
+	 * @returns true if trading mandatory
 	 */
 	public boolean isCardTradeRequired() {
 		if(cards.size() >= Constants.FIVE) {
@@ -385,7 +386,7 @@ public class PlayerModel extends Observable {
 	 * 
 	 * @param gameModel
 	 * @param territoryModel
-	 * @return
+	 * @return status string
 	 */
 	public String attack(GameModel gameModel, TerritoryModel territoryModel) {
 		String str = "";
@@ -430,15 +431,10 @@ public class PlayerModel extends Observable {
 	 * Beginning of the battle b/w attacker and defender
 	 * 
 	 * @param gameModel
-	 * @param mapView
 	 * @param gameController
 	 */
-	public void startBattle(GameModel gameModel, MapView mapView, GameController gameController) {
-		rolledDiceView = new RolledDiceView(this);
+	public void startBattle(GameModel gameModel, GameController gameController) {
 		this.gameController = gameController;
-		String[] options = { Constants.OK, Constants.CANCEL };
-		String option = gameController.getMapView().showOptionPopup(Constants.AUTOMATIC_OR_ALL_OUT_MODE, options);
-		isAutomatic = option.equals(Constants.OK) ? true : false;
 		engageBattle(gameModel);
 	}
 
@@ -452,13 +448,9 @@ public class PlayerModel extends Observable {
 		gameModel.notifyPhaseChange();
 		attackingNoOfDice = 0;
 		defendingNoOfDice = 0;
-		setNoOfDiceToRoll();
+		gameController.setNoOfDiceToRoll();
 		if (attackingNoOfDice != 0 && defendingNoOfDice != 0) {
-			if (!isAutomatic) {
-				Utility.showMessagePopUp(Constants.CLICK_OK_TO_ROLL_DICE, "Roll Dice");
-			}
-			rollAndSetDiceList();
-			rolledDiceView.showRolledDiceList(gameModel);
+			gameController.updateDiceList();
 		} else {
 			updateResult(gameModel);
 		}
@@ -480,39 +472,9 @@ public class PlayerModel extends Observable {
 	}
 
 	/**
-	 * Selection of no. of dice to roll(both attacker and defender)
-	 */
-	private void setNoOfDiceToRoll() {
-		int numberOfDice = attackingTerritory.getArmies();
-		if (numberOfDice > 1) {
-			if (isAutomatic) {
-				numberOfDice = numberOfDice < Constants.THREE ? numberOfDice - 1 : Constants.THREE;
-			} else {
-				numberOfDice = gameController.getMapView().showOptionPopup(getName(),
-						numberOfDice < Constants.THREE ? numberOfDice - 1 : Constants.THREE, Constants.ATTACK_IMAGE,
-						getName());
-			}
-			attackingNoOfDice = numberOfDice;
-
-			numberOfDice = defendingTerritory.getArmies();
-			if (numberOfDice > 0) {
-				if (isAutomatic) {
-					numberOfDice = numberOfDice < Constants.TWO ? numberOfDice : Constants.TWO;
-				} else {
-					numberOfDice = gameController.getMapView().showOptionPopup(
-							defendingTerritory.getPlayerModel().getName(),
-							numberOfDice < Constants.TWO ? numberOfDice : Constants.TWO, Constants.DEFEND_IMAGE,
-							defendingTerritory.getPlayerModel().getName());
-				}
-				defendingNoOfDice = numberOfDice;
-			}
-		}
-	}
-
-	/**
 	 * Rolling the dice and listing of selected faces
 	 */
-	private void rollAndSetDiceList() {
+	public void rollAndSetDiceList() {
 		attackingDiceList.clear();
 		defendingDiceList.clear();
 		for (int i = 1; i <= attackingNoOfDice; i++) {
@@ -620,7 +582,9 @@ public class PlayerModel extends Observable {
 
 	/**
 	 * Updating the battle status
-	 * 
+	 * @param isboth
+	 * @param player
+	 * @param noOfArmies
 	 */
 	private void updateFightStatusDisplayMessage(boolean isboth, String player, int noOfArmies) {
 		String message;
@@ -753,7 +717,7 @@ public class PlayerModel extends Observable {
 	/**
 	 * Function to validate whether the player is able to attack on any territory
 	 * 
-	 * @return
+	 * @returns true if player can attack(has more than 1 army)
 	 */
 	public boolean canAttack() {
 		boolean canAttack = false;
@@ -871,7 +835,7 @@ public class PlayerModel extends Observable {
 	/**
 	 * Gets the list of continents controlled by a player
 	 * @param player
-	 * @return
+	 * @return String of controlled continents
 	 */
 	public String getcontrolledContinents(PlayerModel player) {
 		Set<String> continents = new HashSet<>();
@@ -893,7 +857,7 @@ public class PlayerModel extends Observable {
 	 * Checks whether a player owns a given continent
 	 * @param player
 	 * @param continentModel
-	 * @returns true if ownes
+	 * @returns true if owns
 	 */
 	public boolean isPlayerOwnContinent(PlayerModel player, ContinentModel continentModel) {
 		boolean isOwned = true;
