@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Random;
 
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import col.cs.risk.model.Constants;

@@ -21,6 +21,7 @@ import col.cs.risk.model.phase.StartPhaseModel;
 import col.cs.risk.view.CardTradeView;
 import col.cs.risk.view.MapView;
 import col.cs.risk.view.PhaseView;
+import col.cs.risk.view.RolledDiceView;
 
 /**
  * Game Controller
@@ -55,7 +56,13 @@ public class GameController {
 	/** Maximum number of rounds allowed per game */
 	private static int MAXIMUM_NO_OF_ROUNDS_ALLOWED = Constants.TEN;
 
+	/**
+	 * Card exchange view
+	 */
 	private CardTradeView cardTradeView;
+	
+	/** view for displaying rolled dices list */
+	private RolledDiceView rolledDiceView;
 
 	/**
 	 * Constructor to initialize the 
@@ -80,6 +87,7 @@ public class GameController {
 			gameModel.notifyPhaseChanging();
 			mapMainPanel.repaint();
 			initializeCardExchangeView();
+			rolledDiceView = new RolledDiceView(this);
 		} catch (MapException ex) {
 			System.out.println(ex.getMessage());
 			ex.clearHistory();
@@ -363,7 +371,8 @@ public class GameController {
 
 		if(gameModel.getState() == Constants.ATTACK_FIGHT_PHASE) {
 			gameModel.setSelectedTerritory(null);
-			gameModel.getCurrentPlayer().startBattle(gameModel, mapView, this);
+			updateAutomaticMode();
+			gameModel.getCurrentPlayer().startBattle(gameModel, this);
 		}
 
 		if (gameModel.getState() == Constants.START_TURN) {
@@ -377,6 +386,16 @@ public class GameController {
 		}
 		mapMainPanel.repaint();
 		mapSubPanelPlayer.repaint();
+	}
+	
+	/**
+	 * Update automatic roll of dice or all out mode
+	 */
+	private void updateAutomaticMode() {
+		String[] options = { Constants.OK, Constants.CANCEL };
+		String option = mapView.showOptionPopup(Constants.AUTOMATIC_OR_ALL_OUT_MODE, options);
+		boolean automatic = option.equals(Constants.OK) ? true : false;
+		gameModel.getCurrentPlayer().setAutomatic(automatic);
 	}
 
 	/**
@@ -580,7 +599,54 @@ public class GameController {
 		handleReinforcement1();
 		gameModel.notifyPhaseChange();
 	}
+	
+	/**
+	 * Selection of no. of dice to roll(both attacker and defender)
+	 */
+	public void setNoOfDiceToRoll() {
+		int numberOfDice = gameModel.getCurrentPlayer().getAttackingTerritory().getArmies();
+		if (numberOfDice > 1) {
+			if (gameModel.getCurrentPlayer().isAutomatic()) {
+				numberOfDice = numberOfDice < Constants.THREE ? numberOfDice - 1 : Constants.THREE;
+			} else {
+				numberOfDice = mapView.showOptionPopup(gameModel.getCurrentPlayer().getName(),
+						numberOfDice < Constants.THREE ? numberOfDice - 1 : Constants.THREE, Constants.ATTACK_IMAGE,
+								gameModel.getCurrentPlayer().getName());
+			}
+			gameModel.getCurrentPlayer().setAttackingNoOfDice(numberOfDice);
 
+			numberOfDice = gameModel.getCurrentPlayer().getDefendingTerritory().getArmies();
+			if (numberOfDice > 0) {
+				if (gameModel.getCurrentPlayer().isAutomatic()) {
+					numberOfDice = numberOfDice < Constants.TWO ? numberOfDice : Constants.TWO;
+				} else {
+					numberOfDice = mapView.showOptionPopup(
+							gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel().getName(),
+							numberOfDice < Constants.TWO ? numberOfDice : Constants.TWO, Constants.DEFEND_IMAGE,
+									gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel().getName());
+				}
+				gameModel.getCurrentPlayer().setDefendingNoOfDice(numberOfDice);
+			}
+		}
+	}
+
+	/**
+	 * Update rolled dice list
+	 */
+	public void updateDiceList() {
+		if (!gameModel.getCurrentPlayer().isAutomatic()) {
+			Utility.showMessagePopUp(Constants.CLICK_OK_TO_ROLL_DICE, "Roll Dice");
+		}
+		gameModel.getCurrentPlayer().rollAndSetDiceList();
+		rolledDiceView.showRolledDiceList(gameModel);
+	}
+	
+	/**
+	 * Action performed after rolled dice displayed
+	 */
+	public void updateDiceAction() {
+		gameModel.getCurrentPlayer().updateArmiesOnFightingTerritories(gameModel);
+	}
 
 	/**
 	 * @return the mapMainPanel
