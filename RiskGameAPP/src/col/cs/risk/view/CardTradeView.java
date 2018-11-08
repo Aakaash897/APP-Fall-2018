@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.stream.Collectors;
 
 import javax.swing.BorderFactory;
@@ -18,75 +20,91 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 
 import col.cs.risk.controller.GameController;
 import col.cs.risk.helper.Utility;
+import col.cs.risk.model.CardExchangeModel;
 import col.cs.risk.model.CardModel;
 import col.cs.risk.model.Constants;
+import col.cs.risk.model.PlayerModel;
 
-public class CardTradeView  extends JFrame {
+public class CardTradeView  extends JFrame implements Observer {
 
 	/**
 	 * serial version id
 	 */
 	private static final long serialVersionUID = 1L;
 
+	/** Card panel */
 	private JPanel cardPanel;
 	
 	/** Infantry image label */
 	JLabel infantryLabel;
 
+	/** cavalry image label */
 	JLabel cavalryLabel;
 
+	/** artillery image label */
 	JLabel artilleryLabel;
 
+	/** wild image label */
 	JLabel wildLabel;
 	
 	/** infantry image card */
 	ImageIcon infantry;
 	
+	/** cavalry image card */
 	ImageIcon cavalry;
 	
+	/** artillery image card */
 	ImageIcon artillery;
 	
+	/** wild image card */
 	ImageIcon wild;
 
 	/** infantry cards available with player */
 	JComboBox<Integer> infantryCard;
 
+	/** cavalry cards available with player */
 	JComboBox<Integer> cavalryCard;
 
+	/** artillery cards available with player */
 	JComboBox<Integer> artilleryCard;
 
+	/** wild cards available with player */
 	JComboBox<Integer> wildCard;
 
+	/** ok button */
 	JButton okButton;
 	
+	/** show cards button */
 	JButton showCards;
-
+	
 	/** Game model instance */
 	GameController gameController;
 
+	/**
+	 * Default Constructor 
+	 */
 	public CardTradeView() {
 		setTitle("Cards trade screen");
 		setVisible(false);
 	}
 
+	/**
+	 * Constructor
+	 * @param gameController
+	 */
 	public CardTradeView(GameController gameController) {
 		this();
 		this.gameController = gameController;
-		initializeComponents();
 	}
 	
-	public static void main(String []args) {
-		CardTradeView view = new CardTradeView();
-		view.gameController = new GameController();
-		view.initializeComponents();
-		view.showCardExchangeView();
-		
-	}
-
-	private void initializeComponents() {
+	/**
+	 * Initializes the screen components
+	 */
+	public void initializeComponents() {
 		cardPanel = new JPanel();
 		infantryLabel = new JLabel();
 		cavalryLabel = new JLabel();
@@ -125,11 +143,15 @@ public class CardTradeView  extends JFrame {
 		wildCard = new JComboBox<>();
 		wildCard.setVisible(true);
 
+		setLocation(400, 200);
+		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		cardPanel.setBorder(BorderFactory.createLineBorder(new Color(0, 0, 0)));
 		setBackground(new Color(1, 1, 1));
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent event) {
-				exitForm();
+				if(!gameController.getGameModel().getCurrentPlayer().isCardTradeMandatory()) {
+					exitForm();
+				}
 			}
 		});
 
@@ -142,7 +164,6 @@ public class CardTradeView  extends JFrame {
 				}
 			}
 		});
-		//okButton.setBounds(300, 200, 50, 30);
 		cardPanel.add(okButton);
 		okButton.setVisible(true);
 		
@@ -155,10 +176,9 @@ public class CardTradeView  extends JFrame {
 						.map(x->x.getType() + "-" + (x.getTerritoryModel()!=null ?
 								x.getTerritoryModel().getName() : "no territory")).collect(Collectors.toList());
 				Utility.showMessagePopUp(String.join(", ", values), "Card Information");
-
 			}
 		});
-		//showCards.setBounds(300, 200, 50, 30);
+		
 		cardPanel.add(showCards);
 		showCards.setVisible(true);
 
@@ -222,6 +242,9 @@ public class CardTradeView  extends JFrame {
 		pack();
 	}
 
+	/**
+	 * Calls reset on the current page/options
+	 */
 	private void reset() {
 		if(infantryCard!=null) {
 			infantryCard.removeAllItems();
@@ -237,10 +260,15 @@ public class CardTradeView  extends JFrame {
 		}
 	}
 
-	public void showCardExchangeView() {
-		if(gameController.getGameModel().getCurrentPlayer().getCards().size() < 3) {
+	/**
+	 * Displays card exchange screen
+	 * @param currentPlayer
+	 */
+	public void showCardExchangeView(PlayerModel currentPlayer) {
+		if(currentPlayer.getCards().size() < 3) {
 			Utility.showMessagePopUp(Constants.CARD_INVALID_TRADE_MESSAGE +
-					gameController.getGameModel().getCurrentPlayer().getCards().size(), "Card Information");
+					currentPlayer.getCards().size(), "Card Information");
+			gameController.handleReinforcement1();
 		} else {
 			reset();
 			setVisible(true);
@@ -249,7 +277,7 @@ public class CardTradeView  extends JFrame {
 			int artilleryCount = 0;
 			int wildCount = 0;
 
-			for(CardModel card:gameController.getGameModel().getCurrentPlayer().getCards()) {
+			for(CardModel card:currentPlayer.getCards()) {
 				switch(card.getType()) {
 				case Constants.ARMY_TYPE_INFANTRY: 
 					infantryCount++;
@@ -286,8 +314,20 @@ public class CardTradeView  extends JFrame {
 					wildCard.addItem(new Integer(i));
 				}
 			}
+			
 			setVisible(true);
 		}
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void update(Observable obj, Object arg) {
+		CardExchangeModel model = (CardExchangeModel) obj;
+		GameController controller = (GameController) arg;
+		controller.handleCardTrade();
+		showCardExchangeView(model.getCurrentPlayer());
 	}
 
 	/**
@@ -298,6 +338,8 @@ public class CardTradeView  extends JFrame {
 	 */
 	public void exitForm() {
 		setVisible(false);
+		reset();
+		gameController.handleReinforcement1();
 	}
 
 	/**
@@ -351,12 +393,11 @@ public class CardTradeView  extends JFrame {
 	 * The second set traded in - 6 armies
 	 *  The third set traded in - 8 armies 
 	 *  The fourth set traded in - 10 armies
-		The fifth set traded in - 12 armies
-		The sixth set traded in - 15 armies
-		from next 5 more
-		7th - 20
-		8th - 25
-
+	 *	The fifth set traded in - 12 armies
+	 *	The sixth set traded in - 15 armies
+	 *	from next 5 more
+	 *	7th - 20
+	 *	8th - 25
+	 *
 	 */
-
 }

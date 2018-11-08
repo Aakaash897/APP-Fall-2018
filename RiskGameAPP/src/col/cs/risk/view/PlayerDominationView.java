@@ -16,7 +16,6 @@ import javax.swing.ScrollPaneConstants;
 
 import col.cs.risk.model.GameModel;
 import col.cs.risk.model.PlayerModel;
-import col.cs.risk.model.phase.GamePhase;
 
 /**
  * @author Team25
