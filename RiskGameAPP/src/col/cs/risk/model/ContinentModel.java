@@ -4,9 +4,9 @@ import java.util.Vector;
 import java.util.stream.Collectors;
 
 /**
- * Continent Class Contains the getter setters for data of the
- * continents. This Class also contains some methods to verify the territory
- * occupation, addTerritoryetc.
+ * Continent Class Contains the getter setters for data of the continents. This
+ * Class also contains some methods to verify the territory occupation,
+ * addTerritoryetc.
  * 
  * @author Team25
  * 
@@ -28,9 +28,13 @@ public class ContinentModel {
 	/**
 	 * Constructor with three parameters
 	 * 
-	 * @param id It contains the Continent Identification Number
-	 * @param name It contains the Continent Name
-	 * @param score It contains the Score for Continent to allocate player upon Conquer
+	 * @param id
+	 *            It contains the Continent Identification Number
+	 * @param name
+	 *            It contains the Continent Name
+	 * @param score
+	 *            It contains the Score for Continent to allocate player upon
+	 *            Conquer
 	 */
 	public ContinentModel(int id, String name, int score) {
 		this.id = id;
@@ -41,10 +45,15 @@ public class ContinentModel {
 	/**
 	 * Constructor with four parameters
 	 * 
-	 * @param id It contains the Continent Identification Number
-	 * @param name It contains the Continent Name
-	 * @param score It contains the Score for Continent to allocate player upon Conquer
-	 * @param territories It is a vector that holds the information of the territories
+	 * @param id
+	 *            It contains the Continent Identification Number
+	 * @param name
+	 *            It contains the Continent Name
+	 * @param score
+	 *            It contains the Score for Continent to allocate player upon
+	 *            Conquer
+	 * @param territories
+	 *            It is a vector that holds the information of the territories
 	 */
 	public ContinentModel(int id, String name, int score, Vector<TerritoryModel> territories) {
 		this(id, name, score);
@@ -54,7 +63,8 @@ public class ContinentModel {
 	/**
 	 * Validates the continent occupied status
 	 * 
-	 * @param playerModel It is an Reference of Player Model that holds Player's Details
+	 * @param playerModel
+	 *            It is an Reference of Player Model that holds Player's Details
 	 * @return true if occupied else false
 	 */
 	public boolean isContinentOccupiedBy(PlayerModel playerModel) {

@@ -7,18 +7,18 @@ import col.cs.risk.model.GameModel;
 
 /**
  * 
- * @author Team
- * Fortification phase model
+ * @author Team Fortification phase model
  *
  */
-public class FortificationPhaseModel extends Observable implements GamePhase{
+public class FortificationPhaseModel extends Observable implements GamePhase {
 
 	/** game model */
 	private GameModel gameModel;
 
 	/** instance of this class */
 	private static FortificationPhaseModel fortificationPhaseModel;
-	
+
+	/** StringBuilder object */
 	private StringBuilder stringBuilder;
 
 	/**
@@ -26,7 +26,7 @@ public class FortificationPhaseModel extends Observable implements GamePhase{
 	 * @return instance of FortificationPhaseModel
 	 */
 	public static FortificationPhaseModel getInstance() {
-		if(fortificationPhaseModel == null) {
+		if (fortificationPhaseModel == null) {
 			fortificationPhaseModel = new FortificationPhaseModel();
 		}
 		return fortificationPhaseModel;
@@ -46,7 +46,7 @@ public class FortificationPhaseModel extends Observable implements GamePhase{
 
 	@Override
 	public void isChanged(boolean isStart) {
-		if(isStart) {
+		if (isStart) {
 			stringBuilder = null;
 		}
 		setChanged();
@@ -58,6 +58,11 @@ public class FortificationPhaseModel extends Observable implements GamePhase{
 		return Constants.FORTIFICATION_PHASE_MESSAGE;
 	}
 
+	/**
+	 * Returns the basic player info
+	 * 
+	 * @return basic player info string
+	 */
 	private String basicMessage() {
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("\n************* " + getTitle() + " *************\n\n");
@@ -70,27 +75,27 @@ public class FortificationPhaseModel extends Observable implements GamePhase{
 
 	@Override
 	public String getContent() {
-		if(stringBuilder == null) {
+		if (stringBuilder == null) {
 			stringBuilder = new StringBuilder();
 			stringBuilder.append(basicMessage());
 		}
-		
+
 		switch (gameModel.getState()) {
 		case Constants.FORTIFICATION_PHASE:
-			if(gameModel.getMoveArmiesFromTerritory()!=null) {
+			if (gameModel.getMoveArmiesFromTerritory() != null) {
 				stringBuilder.append("Moving armies from territory: ");
 				stringBuilder.append(gameModel.getMoveArmiesFromTerritory().getName());
 				stringBuilder.append("\n");
 			}
 			break;
 		case Constants.FORTIFYING_PHASE:
-			if(gameModel.getMoveArmiesToTerritory() != null) {
+			if (gameModel.getMoveArmiesToTerritory() != null) {
 				stringBuilder.append("To territory: ");
 				stringBuilder.append(gameModel.getMoveArmiesToTerritory().getName());
 				stringBuilder.append("\n");
 			}
 		case Constants.FORTIFY_PHASE:
-			if(gameModel.getNoOfArmiesToMove() != 0) {
+			if (gameModel.getNoOfArmiesToMove() != 0) {
 				stringBuilder.append("No. of armies moving: ");
 				stringBuilder.append(gameModel.getNoOfArmiesToMove());
 				stringBuilder.append("\n");
@@ -105,7 +110,7 @@ public class FortificationPhaseModel extends Observable implements GamePhase{
 	@Override
 	public void setMessage(String message) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

@@ -7,17 +7,17 @@ import col.cs.risk.model.GameModel;
 
 /**
  * 
- * @author Team
- * Game reinforcement Model
+ * @author Team Game reinforcement Model
  */
-public class ReEnforcementPhaseModel extends Observable implements GamePhase{
+public class ReEnforcementPhaseModel extends Observable implements GamePhase {
 
 	/** game model */
 	private GameModel gameModel;
 
 	/** instance of this class */
 	private static ReEnforcementPhaseModel reEnforcementPhaseModel;
-	
+
+	/** StringBuilder object */
 	private StringBuilder stringBuilder;
 
 	/**
@@ -25,12 +25,12 @@ public class ReEnforcementPhaseModel extends Observable implements GamePhase{
 	 * @return s instance of ReEnforcementPhaseModel
 	 */
 	public static ReEnforcementPhaseModel getInstance() {
-		if(reEnforcementPhaseModel == null) {
+		if (reEnforcementPhaseModel == null) {
 			reEnforcementPhaseModel = new ReEnforcementPhaseModel();
 		}
 		return reEnforcementPhaseModel;
 	}
-	
+
 	/**
 	 * @return the gameModel
 	 */
@@ -45,7 +45,7 @@ public class ReEnforcementPhaseModel extends Observable implements GamePhase{
 
 	@Override
 	public void isChanged(boolean isStart) {
-		if(isStart) {
+		if (isStart) {
 			stringBuilder = null;
 		}
 		setChanged();
@@ -56,7 +56,12 @@ public class ReEnforcementPhaseModel extends Observable implements GamePhase{
 	public String getTitle() {
 		return Constants.REINFORCEMENT_PHASE_MESSAGE;
 	}
-	
+
+	/**
+	 * Returns the basic player info
+	 * 
+	 * @return basic player info string according to the phase
+	 */
 	private String basicMessage() {
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("\n************* " + getTitle() + " *************\n\n");
@@ -71,14 +76,14 @@ public class ReEnforcementPhaseModel extends Observable implements GamePhase{
 
 	@Override
 	public String getContent() {
-		if(stringBuilder == null) {
+		if (stringBuilder == null) {
 			stringBuilder = new StringBuilder();
 			stringBuilder.append(basicMessage());
 		}
-		if(gameModel.getState() == Constants.CARD_TRADE) {
+		if (gameModel.getState() == Constants.CARD_TRADE) {
 			stringBuilder.append("Card trading \n\n");
 		} else {
-			if(gameModel.getSelectedTerritory()!=null) {
+			if (gameModel.getSelectedTerritory() != null) {
 				stringBuilder.append("Placed an army on territory: ");
 				stringBuilder.append(gameModel.getSelectedTerritory().getName());
 				stringBuilder.append("\n\n");

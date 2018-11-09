@@ -66,7 +66,7 @@ public class PlayerModel extends Observable {
 
 	/** Is card assigned to player */
 	private boolean isCardAssigned = false;
-	
+
 	/** Is card trade mandatory for the current turn */
 	private boolean isCardTradeMandatory = false;
 
@@ -310,10 +310,11 @@ public class PlayerModel extends Observable {
 
 	/**
 	 * Checks whether card trade is must for the current turn
+	 * 
 	 * @returns true if trading mandatory
 	 */
 	public boolean isCardTradeRequired() {
-		if(cards.size() >= Constants.FIVE) {
+		if (cards.size() >= Constants.FIVE) {
 			return true;
 		} else {
 			return false;
@@ -582,6 +583,7 @@ public class PlayerModel extends Observable {
 
 	/**
 	 * Updating the battle status
+	 * 
 	 * @param isboth
 	 * @param player
 	 * @param noOfArmies
@@ -626,10 +628,10 @@ public class PlayerModel extends Observable {
 			defendingTerritory.setArmies(noOfArmiesToMove);
 			attackingTerritory.looseArmies(noOfArmiesToMove);
 			gameModel.notifyPhaseChange();
-			if(!isCardAssigned) {
+			if (!isCardAssigned) {
 				assignCard(gameModel);
 			}
-			if(isPlayerEliminated(lostPlayer)) {
+			if (isPlayerEliminated(lostPlayer)) {
 				addCards(lostPlayer.getCards());
 				lostPlayer.removeCards(lostPlayer.getCards());
 			}
@@ -650,12 +652,13 @@ public class PlayerModel extends Observable {
 
 	/**
 	 * Checks whether any player eliminated from the game
+	 * 
 	 * @param player
 	 * @return true if eliminated
 	 */
 	public boolean isPlayerEliminated(PlayerModel player) {
 		boolean eliminated = false;
-		if(player.getOccupiedTerritories().size() == 0) {
+		if (player.getOccupiedTerritories().size() == 0) {
 			eliminated = true;
 		}
 		return eliminated;
@@ -663,33 +666,35 @@ public class PlayerModel extends Observable {
 
 	/**
 	 * Assigns a card to the player
+	 * 
 	 * @param gameModel
 	 */
-	public void assignCard(GameModel gameModel)
-	{
+	public void assignCard(GameModel gameModel) {
 		isCardAssigned = true;
 		CardModel card = gameModel.drawCard();
-		if(card != null)
-		cards.add(card);
+		if (card != null)
+			cards.add(card);
 		gameModel.getCardsDeck().remove(card);
 	}
 
 	/**
 	 * Removes the list of cards from player
+	 * 
 	 * @param cardsToBeRemoved
 	 */
 	public void removeCards(Vector<CardModel> cardsToBeRemoved) {
-		if(cardsToBeRemoved!=null && cardsToBeRemoved.size() > 0) {
+		if (cardsToBeRemoved != null && cardsToBeRemoved.size() > 0) {
 			cards.removeAll(cardsToBeRemoved);
 		}
 	}
 
 	/**
 	 * Adds list of cards to the player
+	 * 
 	 * @param cardsToBeAdded
 	 */
 	public void addCards(Vector<CardModel> cardsToBeAdded) {
-		if(cardsToBeAdded!=null && cardsToBeAdded.size() > 0) {
+		if (cardsToBeAdded != null && cardsToBeAdded.size() > 0) {
 			cards.addAll(cardsToBeAdded);
 		}
 	}
@@ -697,19 +702,20 @@ public class PlayerModel extends Observable {
 	/**
 	 * Checks whether the traded card has the territory which belongs to the player,
 	 * if yes it adds two additional armies to the territory
+	 * 
 	 * @param cardsToBeRemoved
 	 */
 	public void addAdditionalBounusForTradeCardMatch(Vector<CardModel> cardsToBeRemoved) {
 		boolean isBonusToBeAdded = false;
 		TerritoryModel matchedTerritoryModel = null;
-		for(CardModel cardModel:cardsToBeRemoved) {
-			if(isTradedCardMatchAnyTerritoryOfPlayer(cardModel.getTerritoryModel())) {
+		for (CardModel cardModel : cardsToBeRemoved) {
+			if (isTradedCardMatchAnyTerritoryOfPlayer(cardModel.getTerritoryModel())) {
 				isBonusToBeAdded = true;
 				matchedTerritoryModel = cardModel.getTerritoryModel();
 				break;
 			}
 		}
-		if(isBonusToBeAdded && matchedTerritoryModel != null) {
+		if (isBonusToBeAdded && matchedTerritoryModel != null) {
 			matchedTerritoryModel.addArmies(Constants.TWO);
 		}
 	}
@@ -760,13 +766,15 @@ public class PlayerModel extends Observable {
 	}
 
 	/**
-	 * Checks whether a particular traded card has territory which belongs to current player
+	 * Checks whether a particular traded card has territory which belongs to
+	 * current player
+	 * 
 	 * @param territoryModel
-	 * @return
+	 * @return true if traded card has territory which belongs to current player
 	 */
 	public boolean isTradedCardMatchAnyTerritoryOfPlayer(TerritoryModel territoryModel) {
 		boolean isMatch = false;
-		if(territoryModel!=null && territoryModel.getPlayerModel().getId() == this.id) {
+		if (territoryModel != null && territoryModel.getPlayerModel().getId() == this.id) {
 			isMatch = true;
 		}
 		return isMatch;
@@ -774,6 +782,7 @@ public class PlayerModel extends Observable {
 
 	/**
 	 * Basic information to display on player domination view
+	 * 
 	 * @param stringBuilder
 	 * @returns StringBuilder of basic string
 	 */
@@ -788,6 +797,7 @@ public class PlayerModel extends Observable {
 
 	/**
 	 * The details to display on domination view
+	 * 
 	 * @param stringBuilder
 	 * @param gameModel
 	 * @return StringBuilder of information
@@ -819,6 +829,7 @@ public class PlayerModel extends Observable {
 
 	/**
 	 * Calculate percentage of map occupied by player
+	 * 
 	 * @param player
 	 * @param gameModel
 	 * @returns percentage
@@ -834,6 +845,7 @@ public class PlayerModel extends Observable {
 
 	/**
 	 * Gets the list of continents controlled by a player
+	 * 
 	 * @param player
 	 * @return String of controlled continents
 	 */
@@ -855,6 +867,7 @@ public class PlayerModel extends Observable {
 
 	/**
 	 * Checks whether a player owns a given continent
+	 * 
 	 * @param player
 	 * @param continentModel
 	 * @returns true if owns
@@ -923,7 +936,8 @@ public class PlayerModel extends Observable {
 	}
 
 	/**
-	 * @param cards the cards to set
+	 * @param cards
+	 *            the cards to set
 	 */
 	public void setCards(Vector<CardModel> cards) {
 		this.cards = cards;
@@ -937,7 +951,8 @@ public class PlayerModel extends Observable {
 	}
 
 	/**
-	 * @param isCardAssigned the isCardAssigned to set
+	 * @param isCardAssigned
+	 *            the isCardAssigned to set
 	 */
 	public void setCardAssigned(boolean isCardAssigned) {
 		this.isCardAssigned = isCardAssigned;
@@ -951,7 +966,8 @@ public class PlayerModel extends Observable {
 	}
 
 	/**
-	 * @param isCardTradeMandatory the isCardTradeMandatory to set
+	 * @param isCardTradeMandatory
+	 *            the isCardTradeMandatory to set
 	 */
 	public void setCardTradeMandatory(boolean isCardTradeMandatory) {
 		this.isCardTradeMandatory = isCardTradeMandatory;

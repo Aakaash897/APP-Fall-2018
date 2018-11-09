@@ -9,17 +9,23 @@ package col.cs.risk.model;
  *
  */
 public class CardModel {
-	
+
+	/** Card id */
 	private int id;
 	
+	/** Card type */
 	private String type;
-	
+
+	/** Territory Model instance */
 	public TerritoryModel territoryModel;
 
 	/**
 	 * Instantiates a new card model.
-	 * @param type cardType
-	 * @param territoryModel indicates the territory
+	 * 
+	 * @param type
+	 *            cardType
+	 * @param territoryModel
+	 *            indicates the territory
 	 */
 	public CardModel(int id, String type, TerritoryModel territoryModel) {
 		this.id = id;
@@ -29,8 +35,9 @@ public class CardModel {
 
 	/**
 	 * Instantiates a new card model.
+	 * 
 	 * @param type
-	 * @param territoryModel 
+	 * @param territoryModel
 	 */
 	public CardModel(int id, int type, TerritoryModel territoryModel) {
 		this.id = id;
@@ -38,6 +45,12 @@ public class CardModel {
 		this.type = getCardTypeAsString(type);
 	}
 
+	/**
+	 * it returns the card type according to the armies
+	 * 
+	 * @param type
+	 * @return cardType 
+	 */
 	public String getCardTypeAsString(int type) {
 		String cardType = "";
 		switch (type) {
@@ -65,7 +78,8 @@ public class CardModel {
 	}
 
 	/**
-	 * @param type the type to set
+	 * @param type
+	 *            the type to set
 	 */
 	public void setType(String type) {
 		this.type = type;
@@ -79,7 +93,8 @@ public class CardModel {
 	}
 
 	/**
-	 * @param territoryModel the territoryModel to set
+	 * @param territoryModel
+	 *            the territoryModel to set
 	 */
 	public void setTerritoryModel(TerritoryModel territoryModel) {
 		this.territoryModel = territoryModel;
@@ -93,7 +108,8 @@ public class CardModel {
 	}
 
 	/**
-	 * @param id the id to set
+	 * @param id
+	 *            the id to set
 	 */
 	public void setId(int id) {
 		this.id = id;

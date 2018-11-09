@@ -1,8 +1,8 @@
 package col.cs.risk.model;
 
 /**
- * This class contains the list of Strings with declared values
- * that are used throughout the system.
+ * This class contains the list of Strings with declared values that are used
+ * throughout the system.
  * 
  * @author Team25
  *

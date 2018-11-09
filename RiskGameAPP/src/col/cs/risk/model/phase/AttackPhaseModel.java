@@ -25,7 +25,7 @@ public class AttackPhaseModel extends Observable implements GamePhase {
 
 	/**
 	 * 
-	 * @return s instance of AttackPhaseModel
+	 * @returns instance of AttackPhaseModel
 	 */
 	public static AttackPhaseModel getInstance() {
 		if (attackPhaseModel == null) {
@@ -53,6 +53,11 @@ public class AttackPhaseModel extends Observable implements GamePhase {
 		this.gameModel = gameModel;
 	}
 
+	/**
+	 * Returns the basic player info
+	 * 
+	 * @return basic player info string
+	 */
 	private String basicMessage() {
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("\n************* " + getTitle() + " *************\n\n");
@@ -94,7 +99,7 @@ public class AttackPhaseModel extends Observable implements GamePhase {
 		case Constants.CAPTURE:
 			if (gameModel.getCurrentPlayer().getGameController() != null) {
 				stringBuilder.append("Capturing defending territory\n");
-			} 
+			}
 			break;
 		case Constants.LOST_BATTLE:
 			if (gameModel.getCurrentPlayer().getGameController() != null) {

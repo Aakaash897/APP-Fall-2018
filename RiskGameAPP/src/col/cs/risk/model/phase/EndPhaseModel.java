@@ -15,11 +15,13 @@ public class EndPhaseModel extends Observable implements GamePhase {
 	/** Object of game model */
 	private GameModel gameModel;
 
+	/** StringBuilder object */
 	private StringBuilder stringBuilder;
 
 	/** instance of this class */
 	private static EndPhaseModel endPhaseModel;
 
+	/** for the player info */
 	private String message;
 
 	/**
@@ -59,6 +61,11 @@ public class EndPhaseModel extends Observable implements GamePhase {
 		return Constants.END_PHASE_MESSAGE;
 	}
 
+	/**
+	 * Returns the basic player info
+	 * 
+	 * @return basic player info string
+	 */
 	private String basicMessage() {
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("\n************* " + getTitle() + " *************\n\n");

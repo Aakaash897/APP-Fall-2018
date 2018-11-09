@@ -7,14 +7,14 @@ import col.cs.risk.controller.GameController;
 public class CardExchangeModel extends Observable {
 
 	/** game model */
-	private  PlayerModel currentPlayer;
+	private PlayerModel currentPlayer;
 
 	/** instance of this class */
 	private static CardExchangeModel cardExchangeModel;
 
 	/**
 	 * 
-	 * @return s instance of CardExchangeModel
+	 * @returns instance of CardExchangeModel
 	 */
 	public static CardExchangeModel getInstance() {
 		if (cardExchangeModel == null) {
@@ -25,6 +25,7 @@ public class CardExchangeModel extends Observable {
 
 	/**
 	 * Notifies observers waiting for state change
+	 * 
 	 * @param gameController
 	 */
 	public void isChanged(GameController gameController) {
@@ -34,21 +35,22 @@ public class CardExchangeModel extends Observable {
 
 	/**
 	 * Notifies the observers if card trade action needs to be taken
+	 * 
 	 * @param gameController
 	 * @param isOpted
 	 */
 	public void checkCardsTradeOption(GameController gameController, boolean isOpted) {
 		this.currentPlayer = gameController.getGameModel().getCurrentPlayer();
-		if(isOpted || gameController.getGameModel().getCurrentPlayer().isCardTradeRequired()) {
+		if (isOpted || gameController.getGameModel().getCurrentPlayer().isCardTradeRequired()) {
 			gameController.getGameModel().setState(Constants.CARD_TRADE);
 			gameController.getGameModel().notifyPhaseChanging();
-			if(isOpted && !currentPlayer.isCardTradeMandatory()) {
+			if (isOpted && !currentPlayer.isCardTradeMandatory()) {
 				currentPlayer.setCardTradeMandatory(false);
 			} else {
 				currentPlayer.setCardTradeMandatory(true);
 			}
 			isChanged(gameController);
-		}  else {
+		} else {
 			currentPlayer.setCardTradeMandatory(false);
 			gameController.handleReinforcement1();
 		}
@@ -62,7 +64,8 @@ public class CardExchangeModel extends Observable {
 	}
 
 	/**
-	 * @param currentPlayer the currentPlayer to set
+	 * @param currentPlayer
+	 *            the currentPlayer to set
 	 */
 	public void setCurrentPlayer(PlayerModel currentPlayer) {
 		this.currentPlayer = currentPlayer;

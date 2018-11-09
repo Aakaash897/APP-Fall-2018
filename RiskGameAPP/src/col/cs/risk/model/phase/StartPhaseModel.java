@@ -7,15 +7,15 @@ import col.cs.risk.model.GameModel;
 
 /**
  * 
- * @author Team25
- * Game start phase model
+ * @author Team25 Game start phase model
  *
  */
-public class StartPhaseModel extends Observable implements GamePhase{
+public class StartPhaseModel extends Observable implements GamePhase {
 
 	/** Game model */
 	private GameModel gameModel;
 
+	/** StringBuilder object */
 	private StringBuilder stringBuilder;
 
 	/** instance of this class */
@@ -26,7 +26,7 @@ public class StartPhaseModel extends Observable implements GamePhase{
 	 * @return instance of StartPhaseModel
 	 */
 	public static StartPhaseModel getInstance() {
-		if(startPhaseModel == null) {
+		if (startPhaseModel == null) {
 			startPhaseModel = new StartPhaseModel();
 		}
 		return startPhaseModel;
@@ -46,7 +46,7 @@ public class StartPhaseModel extends Observable implements GamePhase{
 
 	@Override
 	public void isChanged(boolean isStart) {
-		if(isStart) {
+		if (isStart) {
 			stringBuilder = null;
 		}
 		setChanged();
@@ -55,9 +55,14 @@ public class StartPhaseModel extends Observable implements GamePhase{
 
 	@Override
 	public String getTitle() {
-		return Constants.START_PHASE_MESSAGE+" / "+Constants.INITIAL_RE_ENFORCEMENT_PHASE_MESSAGE;
+		return Constants.START_PHASE_MESSAGE + " / " + Constants.INITIAL_RE_ENFORCEMENT_PHASE_MESSAGE;
 	}
 
+	/**
+	 * Returns the info about player
+	 * 
+	 * @return simple info on start
+	 */
 	private String basicMessage() {
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("\n************* " + getTitle() + " *************\n\n");
@@ -66,6 +71,11 @@ public class StartPhaseModel extends Observable implements GamePhase{
 		return stringBuilder.toString();
 	}
 
+	/**
+	 * Returns the basic player info
+	 * 
+	 * @return basic player info string according to the phase
+	 */
 	private String basicMessage1() {
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("Current player: ");
@@ -78,11 +88,11 @@ public class StartPhaseModel extends Observable implements GamePhase{
 
 	@Override
 	public String getContent() {
-		if(stringBuilder == null) {
+		if (stringBuilder == null) {
 			stringBuilder = new StringBuilder();
 			stringBuilder.append(basicMessage());
 		} else {
-			if(gameModel.getSelectedTerritory()!=null) {
+			if (gameModel.getSelectedTerritory() != null) {
 				stringBuilder.append("Placed an army on territory: ");
 				stringBuilder.append(gameModel.getSelectedTerritory().getName());
 				stringBuilder.append("\n-----------------------\n\n");
