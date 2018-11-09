@@ -30,6 +30,7 @@ public class GameModelTest {
 	 * Game model instance
 	 */
 	GameModel gameModel;
+	
 	/** 
 	 * Continent model instance
 	 */
@@ -256,6 +257,7 @@ public class GameModelTest {
 		assertEquals(territory2, gameModel.getTerritoryFromMapLocation(50, 70));
 		assertEquals(territory2.getName(), gameModel.getTerritoryFromMapLocation(50, 70).getName());
 	}
+	
 	/**
 	 * Test case for Converting data in models(continent and territory) to string
 	 * @return String of map data
@@ -310,5 +312,68 @@ public class GameModelTest {
 	public void isContinentInTerrirotiesValid() {
 		assertEquals(true,gameModel.isContinentInTerrirotiesValid(mapString.toString()));
 	
+	}
+	
+	/**
+	 * Test case to test whether the player won if all other players are eliminated
+	 */
+	@Test
+	public void testIsOwn() {
+		PlayerModel playerModel1= new PlayerModel(101, "player1");
+		PlayerModel playerModel2 = new PlayerModel(102, "player2");
+		
+		ContinentModel continent = new ContinentModel(1, "C1", 2);
+		TerritoryModel territory1 = new TerritoryModel(1, "T1", 10, 20, continent);
+		TerritoryModel territory2 = new TerritoryModel(2, "T2", 50, 70, continent);
+		TerritoryModel territory3 = new TerritoryModel(3, "T3", 100, 100, continent);
+		
+		territory1.setPlayerModel(playerModel1);
+		territory2.setPlayerModel(playerModel1);
+		territory3.setPlayerModel(playerModel2);
+		
+		Vector<TerritoryModel> territorries = new Vector<>();
+		territorries.add(territory1);
+		territorries.add(territory2);
+		territorries.add(territory3);
+		
+		gameModel.setTerritories(territorries);
+		gameModel.setCurrentPlayer(playerModel1);
+		
+		assertFalse(gameModel.isWon());
+		
+		territory3.setPlayerModel(playerModel1);
+		assertTrue(gameModel.isWon());
+	}
+	
+	/**
+	 * test case to test/validate correct startup phase of game
+	 */
+	@Test
+	public void testGameStartPhase() {
+		Vector<PlayerModel> players = new Vector<>();
+		for(int i=0;i<3;i++) {
+			players.add(new PlayerModel(i, "Player_"+(i+1)));
+		}
+		GameModel.players = players;
+		
+		try {
+			GameModel newGameModel = new GameModel(true);
+			
+			// game start phase
+			assertEquals(Constants.INITIAL_RE_ENFORCEMENT_PHASE, newGameModel.getState());
+			// world map countries size
+			assertEquals(42, newGameModel.getTerritories().size());
+			// 42 + 2 wild card
+			assertEquals(44, newGameModel.getCardsDeck().size());
+			assertEquals(players.get(0).getName(), newGameModel.getCurrentPlayer().getName());
+			//list of countries occupied by each player
+			assertEquals(14, newGameModel.getCurrentPlayer().getOccupiedTerritories().size());
+			// 35 - 14(used to occupy counties)
+			assertEquals(21, newGameModel.getCurrentPlayer().getArmies());
+			
+		} catch (MapException e) {
+			e.printStackTrace();
+		}
+		
 	}
 }

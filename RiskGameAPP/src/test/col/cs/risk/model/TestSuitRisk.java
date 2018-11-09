@@ -4,17 +4,16 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import test.col.cs.risk.controller.StartGameControllerTest;
-import test.col.cs.risk.helper.UtilityTest;
+import test.col.cs.risk.controller.ControllerTestSuit;
+import test.col.cs.risk.helper.HelperTestSuitRisk;
 
 /**
- * Test suit class for executing all test cases together in a row.
+ * Test suit class for executing all test cases together.
  * 
  * @author Team25
  */
 @RunWith(Suite.class)
-@SuiteClasses({StartGameControllerTest.class, GameModelTest.class, UtilityTest.class,
-	PlayerModelTest.class})
+@SuiteClasses({ControllerTestSuit.class, ModelTestSuit.class, HelperTestSuitRisk.class})
 public class TestSuitRisk {
 
 }
