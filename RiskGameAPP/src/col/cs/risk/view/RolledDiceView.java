@@ -21,31 +21,44 @@ import col.cs.risk.controller.GameController;
 import col.cs.risk.helper.Utility;
 import col.cs.risk.model.GameModel;
 
-
-
-public class RolledDiceView extends JFrame{
+/**
+ * It handles the display of rolling dice screen.
+ * 
+ * @author Team25
+ * 
+ */
+public class RolledDiceView extends JFrame {
 
 	/**
 	 * serial version id
 	 */
 	private static final long serialVersionUID = 1L;
 
+	/** Rolled Dice Screen */
 	JPanel panel;
 
+	/** label for attacking dice1 */
 	JLabel attackDiceLabel1;
 
+	/** label for attacking dice2 */
 	JLabel attackDiceLabel2;
 
+	/** label for attacking dice3 */
 	JLabel attackDiceLabel3;
 
+	/** label for defending dice1 */
 	JLabel defendDiceLabel1;
 
+	/** label for defending dice2 */
 	JLabel defendDiceLabel2;
 
+	/** Ok button */
 	JButton okButton;
 
+	/** Game Controller Instance */
 	GameController gameController;
 
+	/** Image icons for the both dices */
 	ImageIcon attackingImageIcon1 = new ImageIcon(Utility.getDicePath("dice_red_1.png"));
 	ImageIcon attackingImageIcon2 = new ImageIcon(Utility.getDicePath("dice_red_2.png"));
 	ImageIcon attackingImageIcon3 = new ImageIcon(Utility.getDicePath("dice_red_3.png"));
@@ -59,16 +72,26 @@ public class RolledDiceView extends JFrame{
 	ImageIcon defendingImageIcon5 = new ImageIcon(Utility.getDicePath("dice_white_5.png"));
 	ImageIcon defendingImageIcon6 = new ImageIcon(Utility.getDicePath("dice_white_6.png"));
 
+	/** Constructor */
 	public RolledDiceView() {
 		setTitle("Rolled Dice");
 	}
 
+	/**
+	 * Constructor to initialize components
+	 * 
+	 * @param gameController
+	 */
 	public RolledDiceView(GameController gameController) {
 		this();
 		this.gameController = gameController;
 		initComponents();
 	}
 
+	/**
+	 * Initialize components relating to the RollDiceVIew which make the view
+	 *
+	 */
 	private void initComponents() {
 
 		getContentPane().setBackground(new Color(238, 232, 170));
@@ -130,6 +153,10 @@ public class RolledDiceView extends JFrame{
 		getContentPane().add(panel);
 	}
 
+	/**
+	 * resets all dice labels and shows the ok button
+	 *
+	 */
 	private void reset() {
 		attackDiceLabel1.setVisible(false);
 		attackDiceLabel2.setVisible(false);
@@ -139,12 +166,17 @@ public class RolledDiceView extends JFrame{
 		okButton.setVisible(true);
 	}
 
+	/**
+	 * gets the dice list for the attacking and defending player, does the action
+	 * according to the dice rolled
+	 *
+	 */
 	public void showRolledDiceList(GameModel gameModel) {
 		reset();
 		setVisible(true);
 		HashMap<Integer, Integer> diceList = gameController.getGameModel().getCurrentPlayer().getAttackingDiceList();
 		Set<Integer> keys = diceList.keySet();
-		for(Integer diceNo:keys) {
+		for (Integer diceNo : keys) {
 			switch (diceNo) {
 			case 1:
 				attackDiceLabel1.setIcon(getSelectedAttackDiceImage(diceList.get(diceNo)));
@@ -165,7 +197,7 @@ public class RolledDiceView extends JFrame{
 
 		diceList = gameController.getGameModel().getCurrentPlayer().getDefendingDiceList();
 		keys = diceList.keySet();
-		for(Integer diceNo:keys) {
+		for (Integer diceNo : keys) {
 			switch (diceNo) {
 			case 1:
 				defendDiceLabel1.setIcon(getSelectedDefendDiceImage(diceList.get(diceNo)));
@@ -180,11 +212,17 @@ public class RolledDiceView extends JFrame{
 			}
 		}
 		repaint();
-		if(gameController.getGameModel().getCurrentPlayer().isAutomatic()) {
+		if (gameController.getGameModel().getCurrentPlayer().isAutomatic()) {
 			hideRolledDiceList();
 		}
 	}
 
+	/**
+	 * For the automatic run , it invokes methods in game controller to do the
+	 * automatic actions according to the mode
+	 * 
+	 *
+	 */
 	private void hideRolledDiceList() {
 		TimerTask task = new TimerTask() {
 			public void run() {
@@ -199,6 +237,11 @@ public class RolledDiceView extends JFrame{
 		timer.schedule(task, delay);
 	}
 
+	/**
+	 * Sets the dice image according to the rolled dice number for the attacking
+	 * player
+	 *
+	 */
 	private ImageIcon getSelectedAttackDiceImage(int num) {
 		ImageIcon imageIcon = null;
 		switch (num) {
@@ -226,6 +269,11 @@ public class RolledDiceView extends JFrame{
 		return imageIcon;
 	}
 
+	/**
+	 * Sets the dice image according to the rolled dice number for the defending
+	 * player
+	 *
+	 */
 	private ImageIcon getSelectedDefendDiceImage(int num) {
 		ImageIcon imageIcon = null;
 		switch (num) {
@@ -253,6 +301,10 @@ public class RolledDiceView extends JFrame{
 		return imageIcon;
 	}
 
+	/**
+	 * clear and reset all the labels to null
+	 * 
+	 */
 	public void clear() {
 		setVisible(false);
 		panel = null;
@@ -267,8 +319,9 @@ public class RolledDiceView extends JFrame{
 	/**
 	 * Exit from Dice screen.
 	 *
-	 * @param evt the event
-	 *            
+	 * @param evt
+	 *            the event
+	 * 
 	 */
 	public void exitForm() {
 		setVisible(false);

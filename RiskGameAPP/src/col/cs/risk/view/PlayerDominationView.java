@@ -18,41 +18,55 @@ import col.cs.risk.model.GameModel;
 import col.cs.risk.model.PlayerModel;
 
 /**
- * This is an observer class that provides the player domination details
- * such as the percentage controlled, total number of armies and also the
- * territories controller by each after every event.
+ * This is an observer class that provides the player domination details such as
+ * the percentage controlled, total number of armies and also the territories
+ * controller by each after every event.
  * 
  * @author Team25
  *
  */
 public class PlayerDominationView implements Observer {
 
+	/** player domination View panel */
 	private JPanel playerDominationViewPanel;
 
+	/** player Text area */
 	private JTextArea playerViewTextArea;
 
+	/** player Frame */
 	private JFrame playerFrame;
-	
+
+	/** GameModel Instance */
 	private GameModel gameModel;
-	
+
+	/** StringBuilder object */
 	private StringBuilder stringBuilder = null;
 
+	/** PlayerDominationView Instance */
 	private static PlayerDominationView playerDominationView;
 
+	/**
+	 * 
+	 * @return instance of PlayerDominationView
+	 */
 	public static PlayerDominationView getInstance() {
-		if(playerDominationView == null) {
+		if (playerDominationView == null) {
 			playerDominationView = new PlayerDominationView();
 		}
 		return playerDominationView;
 	}
 
+	/**
+	 * function that helps to maintain the frame size of the player domination view
+	 * 
+	 */
 	public void showMonitor() {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int height = (int) (screenSize.height * 2 / 2.6);
 		int width = (int) (screenSize.width * 2 / 4.9);
 		playerFrame = new JFrame();
 		JScrollPane scrollPanel;
-		
+
 		playerViewTextArea = new JTextArea("", 40, 40);
 		playerViewTextArea.setEditable(false);
 		scrollPanel = new JScrollPane(playerViewTextArea);
@@ -73,8 +87,8 @@ public class PlayerDominationView implements Observer {
 
 	@Override
 	public void update(Observable object, Object arg) {
-		if(object != null) {
-			this.stringBuilder = ((PlayerModel)object).getDominationViewContent(this.stringBuilder, gameModel);
+		if (object != null) {
+			this.stringBuilder = ((PlayerModel) object).getDominationViewContent(this.stringBuilder, gameModel);
 			playerViewTextArea.setText(stringBuilder.toString());
 		}
 		playerFrame.repaint();
@@ -88,7 +102,8 @@ public class PlayerDominationView implements Observer {
 	}
 
 	/**
-	 * @param stringBuilder the stringBuilder to set
+	 * @param stringBuilder
+	 *            the stringBuilder to set
 	 */
 	public void setStringBuilder(StringBuilder stringBuilder) {
 		this.stringBuilder = stringBuilder;
@@ -102,10 +117,11 @@ public class PlayerDominationView implements Observer {
 	}
 
 	/**
-	 * @param gameModel the gameModel to set
+	 * @param gameModel
+	 *            the gameModel to set
 	 */
 	public void setGameModel(GameModel gameModel) {
 		this.gameModel = gameModel;
 	}
-	
+
 }

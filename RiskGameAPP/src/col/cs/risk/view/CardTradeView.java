@@ -29,17 +29,16 @@ import col.cs.risk.model.CardModel;
 import col.cs.risk.model.Constants;
 import col.cs.risk.model.PlayerModel;
 
-
 /**
- * This class is responsible for the card exchange UI which allows
- * the user to view the cards available and also let's the user
- * choose among the cards to trade in for armies with proper validation. 
+ * This class is responsible for the card exchange UI which allows the user to
+ * view the cards available and also let's the user choose among the cards to
+ * trade in for armies with proper validation.
  * 
  * @author Team25
  *
  */
 
-public class CardTradeView  extends JFrame implements Observer {
+public class CardTradeView extends JFrame implements Observer {
 
 	/**
 	 * serial version id
@@ -48,7 +47,7 @@ public class CardTradeView  extends JFrame implements Observer {
 
 	/** Card panel */
 	private JPanel cardPanel;
-	
+
 	/** Infantry image label */
 	JLabel infantryLabel;
 
@@ -60,16 +59,16 @@ public class CardTradeView  extends JFrame implements Observer {
 
 	/** wild image label */
 	JLabel wildLabel;
-	
+
 	/** infantry image card */
 	ImageIcon infantry;
-	
+
 	/** cavalry image card */
 	ImageIcon cavalry;
-	
+
 	/** artillery image card */
 	ImageIcon artillery;
-	
+
 	/** wild image card */
 	ImageIcon wild;
 
@@ -87,15 +86,15 @@ public class CardTradeView  extends JFrame implements Observer {
 
 	/** ok button */
 	JButton okButton;
-	
+
 	/** show cards button */
 	JButton showCards;
-	
+
 	/** Game model instance */
 	GameController gameController;
 
 	/**
-	 * Default Constructor 
+	 * Default Constructor
 	 */
 	public CardTradeView() {
 		setTitle("Cards trade screen");
@@ -104,13 +103,15 @@ public class CardTradeView  extends JFrame implements Observer {
 
 	/**
 	 * Constructor
-	 * @param gameController is the object for the GameController class
+	 * 
+	 * @param gameController
+	 *            is the object for the GameController class
 	 */
 	public CardTradeView(GameController gameController) {
 		this();
 		this.gameController = gameController;
 	}
-	
+
 	/**
 	 * Initializes the screen components
 	 */
@@ -120,7 +121,7 @@ public class CardTradeView  extends JFrame implements Observer {
 		cavalryLabel = new JLabel();
 		artilleryLabel = new JLabel();
 		wildLabel = new JLabel();
-		
+
 		infantry = new ImageIcon(Utility.getImagePath("infantry.png"));
 		cavalry = new ImageIcon(Utility.getImagePath("cavalry.png"));
 		artillery = new ImageIcon(Utility.getImagePath("artillery.png"));
@@ -140,7 +141,7 @@ public class CardTradeView  extends JFrame implements Observer {
 
 		wildLabel.setName("wild");
 		wildLabel.setIcon(wild);
-		
+
 		infantryCard = new JComboBox<>();
 		infantryCard.setVisible(true);
 
@@ -159,7 +160,7 @@ public class CardTradeView  extends JFrame implements Observer {
 		setBackground(new Color(1, 1, 1));
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent event) {
-				if(!gameController.getGameModel().getCurrentPlayer().isCardTradeMandatory()) {
+				if (!gameController.getGameModel().getCurrentPlayer().isCardTradeMandatory()) {
 					exitForm();
 				}
 			}
@@ -169,84 +170,104 @@ public class CardTradeView  extends JFrame implements Observer {
 		okButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				if(gameController.isValidNoOfCardsTraded()) {
+				if (gameController.isValidNoOfCardsTraded()) {
 					gameController.cardTradeActionPerformed(event);
 				}
 			}
 		});
 		cardPanel.add(okButton);
 		okButton.setVisible(true);
-		
+
 		showCards = new JButton("Show cards");
 		showCards.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				
+
 				List<String> values = gameController.getGameModel().getCurrentPlayer().getCards().stream()
-						.map(x->x.getType() + "-" + (x.getTerritoryModel()!=null ?
-								x.getTerritoryModel().getName() : "no territory")).collect(Collectors.toList());
+						.map(x -> x.getType() + "-"
+								+ (x.getTerritoryModel() != null ? x.getTerritoryModel().getName() : "no territory"))
+						.collect(Collectors.toList());
 				Utility.showMessagePopUp(String.join(", ", values), "Card Information");
 			}
 		});
-		
+
 		cardPanel.add(showCards);
 		showCards.setVisible(true);
 
 		GroupLayout groupLayout = new GroupLayout(cardPanel);
 		cardPanel.setLayout(groupLayout);
 
-		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup().addGap(61)
-						.addComponent(infantryLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, 
-								GroupLayout.PREFERRED_SIZE).addGap(50)
-						.addComponent(cavalryLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-								GroupLayout.PREFERRED_SIZE).addGap(50)
-						.addComponent(artilleryLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-								GroupLayout.PREFERRED_SIZE).addGap(50)
-						.addComponent(wildLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-								GroupLayout.PREFERRED_SIZE)
-						.addContainerGap(50, Short.MAX_VALUE))
-				.addGroup(groupLayout.createSequentialGroup().addGap(70)
-						.addComponent(infantryCard, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, 
-								GroupLayout.PREFERRED_SIZE).addGap(95)
-						.addComponent(cavalryCard, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-								GroupLayout.PREFERRED_SIZE).addGap(100)
-						.addComponent(artilleryCard, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-								GroupLayout.PREFERRED_SIZE).addGap(100)
-						.addComponent(wildCard, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-								GroupLayout.PREFERRED_SIZE)
-						.addContainerGap())
-				.addGroup(groupLayout.createSequentialGroup().addGap(150)
-						.addComponent(showCards).addGap(150)
-						.addComponent(okButton).addGap(50)));
-		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-				.addGroup(groupLayout.createSequentialGroup().addContainerGap()
-						.addContainerGap()
-						.addGap(15)
-						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(infantryLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE).addGap(50)
-								.addComponent(cavalryLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE).addGap(50)
-								.addComponent(artilleryLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE).addGap(50)
-								.addComponent(wildLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE).addGap(50))
-						.addContainerGap() .addGap(50)
-						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(infantryCard, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE).addGap(50)
-								.addComponent(cavalryCard, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE).addGap(50)
-								.addComponent(artilleryCard, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE).addGap(50)
-								.addComponent(wildCard, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE).addGap(50))
-						.addContainerGap().addGap(30)
-						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(showCards)
-								.addComponent(okButton))
-						.addContainerGap().addGap(50)));
+		groupLayout
+				.setHorizontalGroup(
+						groupLayout
+								.createParallelGroup(
+										Alignment.LEADING)
+								.addGroup(groupLayout.createSequentialGroup().addGap(61)
+										.addComponent(infantryLabel, GroupLayout.PREFERRED_SIZE,
+												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addGap(50)
+										.addComponent(cavalryLabel, GroupLayout.PREFERRED_SIZE,
+												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addGap(50)
+										.addComponent(artilleryLabel, GroupLayout.PREFERRED_SIZE,
+												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addGap(50).addComponent(wildLabel, GroupLayout.PREFERRED_SIZE,
+												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addContainerGap(50, Short.MAX_VALUE))
+								.addGroup(
+										groupLayout.createSequentialGroup().addGap(70)
+												.addComponent(infantryCard, GroupLayout.PREFERRED_SIZE,
+														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+												.addGap(95)
+												.addComponent(cavalryCard, GroupLayout.PREFERRED_SIZE,
+														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+												.addGap(100)
+												.addComponent(artilleryCard, GroupLayout.PREFERRED_SIZE,
+														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+												.addGap(100)
+												.addComponent(wildCard, GroupLayout.PREFERRED_SIZE,
+														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+												.addContainerGap())
+								.addGroup(groupLayout.createSequentialGroup().addGap(150).addComponent(showCards)
+										.addGap(150).addComponent(okButton).addGap(50)));
+		groupLayout
+				.setVerticalGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+						.addGroup(groupLayout
+								.createSequentialGroup().addContainerGap().addContainerGap().addGap(
+										15)
+								.addGroup(
+										groupLayout.createParallelGroup(Alignment.BASELINE)
+												.addComponent(infantryLabel, GroupLayout.PREFERRED_SIZE,
+														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+												.addGap(50)
+												.addComponent(cavalryLabel, GroupLayout.PREFERRED_SIZE,
+														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+												.addGap(50)
+												.addComponent(artilleryLabel, GroupLayout.PREFERRED_SIZE,
+														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+												.addGap(50)
+												.addComponent(wildLabel, GroupLayout.PREFERRED_SIZE,
+														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+												.addGap(50))
+								.addContainerGap().addGap(
+										50)
+								.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+										.addComponent(infantryCard, GroupLayout.PREFERRED_SIZE,
+												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addGap(50)
+										.addComponent(cavalryCard, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+												GroupLayout.PREFERRED_SIZE)
+										.addGap(50)
+										.addComponent(artilleryCard, GroupLayout.PREFERRED_SIZE,
+												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addGap(50)
+										.addComponent(wildCard, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+												GroupLayout.PREFERRED_SIZE)
+										.addGap(50))
+								.addContainerGap().addGap(30)
+								.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE).addComponent(showCards)
+										.addComponent(okButton))
+								.addContainerGap().addGap(50)));
 
 		add(cardPanel, BorderLayout.CENTER);
 		pack();
@@ -256,28 +277,29 @@ public class CardTradeView  extends JFrame implements Observer {
 	 * Calls reset on the current page/options
 	 */
 	private void reset() {
-		if(infantryCard!=null) {
+		if (infantryCard != null) {
 			infantryCard.removeAllItems();
 		}
-		if(cavalryCard!=null) {
+		if (cavalryCard != null) {
 			cavalryCard.removeAllItems();
 		}
-		if(artilleryCard!=null) {
+		if (artilleryCard != null) {
 			artilleryCard.removeAllItems();
 		}
-		if(wildCard!=null) {
+		if (wildCard != null) {
 			wildCard.removeAllItems();
 		}
 	}
 
 	/**
 	 * Displays card exchange screen
+	 * 
 	 * @param currentPlayer
 	 */
 	public void showCardExchangeView(PlayerModel currentPlayer) {
-		if(currentPlayer.getCards().size() < 3) {
-			Utility.showMessagePopUp(Constants.CARD_INVALID_TRADE_MESSAGE +
-					currentPlayer.getCards().size(), "Card Information");
+		if (currentPlayer.getCards().size() < 3) {
+			Utility.showMessagePopUp(Constants.CARD_INVALID_TRADE_MESSAGE + currentPlayer.getCards().size(),
+					"Card Information");
 			gameController.handleReinforcement1();
 		} else {
 			reset();
@@ -287,48 +309,48 @@ public class CardTradeView  extends JFrame implements Observer {
 			int artilleryCount = 0;
 			int wildCount = 0;
 
-			for(CardModel card:currentPlayer.getCards()) {
-				switch(card.getType()) {
-				case Constants.ARMY_TYPE_INFANTRY: 
+			for (CardModel card : currentPlayer.getCards()) {
+				switch (card.getType()) {
+				case Constants.ARMY_TYPE_INFANTRY:
 					infantryCount++;
 					break;
-				case Constants.ARMY_TYPE_CAVALRY: 
+				case Constants.ARMY_TYPE_CAVALRY:
 					cavalryCount++;
 					break;
-				case Constants.ARMY_TYPE_ARTILLERY: 
+				case Constants.ARMY_TYPE_ARTILLERY:
 					artilleryCount++;
 					break;
-				case Constants.ARMY_TYPE_WILD: 
+				case Constants.ARMY_TYPE_WILD:
 					wildCount++;
 					break;
 				}
 			}
 
-			if(infantryCount > 0) {
-				for(int i=0;i<=infantryCount;i++) {
+			if (infantryCount > 0) {
+				for (int i = 0; i <= infantryCount; i++) {
 					infantryCard.addItem(new Integer(i));
 				}
 			}
-			if(cavalryCount > 0) {
-				for(int i=0;i<=cavalryCount;i++) {
+			if (cavalryCount > 0) {
+				for (int i = 0; i <= cavalryCount; i++) {
 					cavalryCard.addItem(new Integer(i));
 				}
 			}
-			if(artilleryCount > 0) {
-				for(int i=0;i<=artilleryCount;i++) {
+			if (artilleryCount > 0) {
+				for (int i = 0; i <= artilleryCount; i++) {
 					artilleryCard.addItem(new Integer(i));
 				}
-			} 
-			if(wildCount > 0) {
-				for(int i=0;i<=wildCount;i++) {
+			}
+			if (wildCount > 0) {
+				for (int i = 0; i <= wildCount; i++) {
 					wildCard.addItem(new Integer(i));
 				}
 			}
-			
+
 			setVisible(true);
 		}
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -343,8 +365,9 @@ public class CardTradeView  extends JFrame implements Observer {
 	/**
 	 * Exit from card trade screen.
 	 *
-	 * @param evt the event
-	 *            
+	 * @param evt
+	 *            the event
+	 * 
 	 */
 	public void exitForm() {
 		setVisible(false);
@@ -352,13 +375,14 @@ public class CardTradeView  extends JFrame implements Observer {
 		gameController.handleReinforcement1();
 	}
 
-	/** 
+	/**
 	 * Function to get the Infantry Card Selected
+	 * 
 	 * @return the infantryCard
 	 */
 	public int getInfantryCardSelectedItem() {
 		int value = 0;
-		if(infantryCard.getSelectedItem() != null) {
+		if (infantryCard.getSelectedItem() != null) {
 			value = (Integer) infantryCard.getSelectedItem();
 		}
 		return value;
@@ -366,51 +390,53 @@ public class CardTradeView  extends JFrame implements Observer {
 
 	/**
 	 * Function to get the Cavalry Card Selected
+	 * 
 	 * @return the cavalryCard
 	 */
 	public int getCavalryCardSelectedItem() {
 		int value = 0;
-		if(cavalryCard.getSelectedItem() != null) {
+		if (cavalryCard.getSelectedItem() != null) {
 			value = (Integer) cavalryCard.getSelectedItem();
 		}
 		return value;
 	}
 
-
 	/**
 	 * Function to get the Artillery Card Selected
+	 * 
 	 * @return the artilleryCard
 	 */
 	public int getArtilleryCardSelectedItem() {
 		int value = 0;
-		if(artilleryCard.getSelectedItem() != null) {
+		if (artilleryCard.getSelectedItem() != null) {
 			value = (Integer) artilleryCard.getSelectedItem();
 		}
 		return value;
 	}
 
-
 	/**
 	 * Function to get the Wild Card Selected
+	 * 
 	 * @return the wildCard
 	 */
 	public int getWildCardSelectedItem() {
 		int value = 0;
-		if(wildCard.getSelectedItem() != null) {
+		if (wildCard.getSelectedItem() != null) {
 			value = (Integer) wildCard.getSelectedItem();
 		}
 		return value;
 	}
-	
+
 	/**
 	 * Sets selected items for all cards
+	 * 
 	 * @param infantryNo
 	 * @param cavalryNo
 	 * @param artilleryNo
 	 * @param wildNo
 	 */
 	public void setSelectedItem(int infantryNo, int cavalryNo, int artilleryNo, int wildNo) {
-		for(int i=0;i<=Constants.FIVE;i++) {
+		for (int i = 0; i <= Constants.FIVE; i++) {
 			infantryCard.addItem(new Integer(i));
 			cavalryCard.addItem(new Integer(i));
 			artilleryCard.addItem(new Integer(i));
@@ -422,16 +448,4 @@ public class CardTradeView  extends JFrame implements Observer {
 		wildCard.setSelectedItem(new Integer(wildNo));
 	}
 
-	/*
-	 * The first set traded in - 4 armies 
-	 * The second set traded in - 6 armies
-	 *  The third set traded in - 8 armies 
-	 *  The fourth set traded in - 10 armies
-	 *	The fifth set traded in - 12 armies
-	 *	The sixth set traded in - 15 armies
-	 *	from next 5 more
-	 *	7th - 20
-	 *	8th - 25
-	 *
-	 */
 }

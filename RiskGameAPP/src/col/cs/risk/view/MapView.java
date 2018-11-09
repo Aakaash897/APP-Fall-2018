@@ -46,8 +46,8 @@ public class MapView extends JFrame implements MouseListener {
 
 	/** fortify button */
 	private JButton fortifyButton;
-	
-	/** card exchange Button	 */
+
+	/** card exchange Button */
 	private JButton cardButton;
 
 	/** Field to take user input for moving armies during fortification */
@@ -58,7 +58,7 @@ public class MapView extends JFrame implements MouseListener {
 
 	/** game controller instance */
 	GameController gameController;
-	
+
 	/** timer to close the window */
 	public static boolean timerToClose = false;
 
@@ -148,18 +148,18 @@ public class MapView extends JFrame implements MouseListener {
 		});
 		gameController.getMapSubPanelPlayer().add(fortifyButton,
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(735, 30, 90, 30));
-		
+
 		cardButton.setVisible(false);
-		cardButton.setFont(resourceMap.getFont("CardButton.font")); 
-		cardButton.setText("Card"); 
-		cardButton.setName("CardButton"); 
+		cardButton.setFont(resourceMap.getFont("CardButton.font"));
+		cardButton.setText("Card");
+		cardButton.setName("CardButton");
 		cardButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
-				gameController.cardButtonActionPerformed(evt);				
+				gameController.cardButtonActionPerformed(evt);
 			}
 		});
-		gameController.getMapSubPanelPlayer().add(cardButton, 
+		gameController.getMapSubPanelPlayer().add(cardButton,
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(535, 30, 90, 30));
 
 		userEntered.setVisible(false);
@@ -222,14 +222,14 @@ public class MapView extends JFrame implements MouseListener {
 	public void updateMapPanel() {
 		gameController.getMapMainPanel().repaint();
 	}
-	
+
 	/**
 	 * Update the player details on player view
 	 */
 	public void updatePlayerPanel() {
 		gameController.getMapSubPanelPlayer().repaint();
 	}
-	
+
 	/**
 	 * Update both player and map details on view
 	 */
@@ -237,9 +237,10 @@ public class MapView extends JFrame implements MouseListener {
 		gameController.getMapMainPanel().repaint();
 		gameController.getMapSubPanelPlayer().repaint();
 	}
-	
+
 	/**
 	 * Show option to the players to select the no. of armies fight or dice to roll
+	 * 
 	 * @param message
 	 * @param maximumNo
 	 * @param image
@@ -249,72 +250,73 @@ public class MapView extends JFrame implements MouseListener {
 	public int showOptionPopup(String message, int maximumNo, String image, String player) {
 		ImageIcon icon = new ImageIcon(Utility.getImagePath(image));
 		Integer[] options = new Integer[maximumNo];
-		for(int i=0;i<maximumNo;i++) {
-			options[i] = i+1;
+		for (int i = 0; i < maximumNo; i++) {
+			options[i] = i + 1;
 		}
-		int noOfDice = JOptionPane.showOptionDialog(null, player+", select the number of armies(dice) to fight",
-				message,
-                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, icon, options, options[0]);
-		
-		if(noOfDice != -1) {
+		int noOfDice = JOptionPane.showOptionDialog(null, player + ", select the number of armies(dice) to fight",
+				message, JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, icon, options, options[0]);
+
+		if (noOfDice != -1) {
 			noOfDice++;
 		} else {
 			noOfDice = options[0];
 		}
 		return noOfDice;
 	}
-	
-	/** 
-	 * Once the attacker captures the defending country option given to user to select the no. of armies to move. 
+
+	/**
+	 * Once the attacker captures the defending country option given to user to
+	 * select the no. of armies to move.
+	 * 
 	 * @param maximumNo
 	 * @return no. of armies to move
 	 */
 	public int showInputDialogPopup(int maximumNo) {
 		Integer[] options = new Integer[maximumNo];
-		for(int i=0;i<maximumNo;i++) {
-			options[i] = i+1;
+		for (int i = 0; i < maximumNo; i++) {
+			options[i] = i + 1;
 		}
-		if(timerToClose) {
-		JOptionPane pane = new JOptionPane();
-		Thread t1 = new Thread(new Runnable() {
-            @SuppressWarnings("static-access")
-			public void run() {
-                try {
-                    Thread.sleep(200);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }               
-                pane.getRootFrame().dispose();
-            }
-        });
-        t1.start();
+		if (timerToClose) {
+			JOptionPane pane = new JOptionPane();
+			Thread t1 = new Thread(new Runnable() {
+				@SuppressWarnings("static-access")
+				public void run() {
+					try {
+						Thread.sleep(200);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					pane.getRootFrame().dispose();
+				}
+			});
+			t1.start();
 		}
-		Object value = JOptionPane.showInputDialog(null, "Select the no. of armies to move to the captured country", 
-        		"Move armies", JOptionPane.QUESTION_MESSAGE, null, options, options[options.length-1]);
-		int selectedNoOfArmiesToMove = options[options.length-1];
-        if(value != null) {
-        	selectedNoOfArmiesToMove = (Integer) value;
-        }
-        return selectedNoOfArmiesToMove;
+		Object value = JOptionPane.showInputDialog(null, "Select the no. of armies to move to the captured country",
+				"Move armies", JOptionPane.QUESTION_MESSAGE, null, options, options[options.length - 1]);
+		int selectedNoOfArmiesToMove = options[options.length - 1];
+		if (value != null) {
+			selectedNoOfArmiesToMove = (Integer) value;
+		}
+		return selectedNoOfArmiesToMove;
 	}
-	
+
 	/**
 	 * Option given for user to select/reject the request(action - all out mode)
+	 * 
 	 * @param message
 	 * @param options
 	 * @return
 	 */
 	public String showOptionPopup(String message, String[] options) {
 		String option = options[0];
-		int selection = JOptionPane.showOptionDialog(null, message,
-				"Selection popup",
-                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
-		if(selection != -1) {
+		int selection = JOptionPane.showOptionDialog(null, message, "Selection popup", JOptionPane.DEFAULT_OPTION,
+				JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+		if (selection != -1) {
 			option = options[selection];
 		}
 		return option;
 	}
-	
+
 	/**
 	 * Exiting from the application
 	 */
@@ -368,7 +370,7 @@ public class MapView extends JFrame implements MouseListener {
 	public JButton getFortifyButton() {
 		return fortifyButton;
 	}
-	
+
 	/**
 	 * @param fortifyButton
 	 *            the fortifyButton to set
@@ -415,7 +417,8 @@ public class MapView extends JFrame implements MouseListener {
 	}
 
 	/**
-	 * @param cardButton the cardButton to set
+	 * @param cardButton
+	 *            the cardButton to set
 	 */
 	public void setCardButton(JButton cardButton) {
 		this.cardButton = cardButton;
@@ -432,25 +435,25 @@ public class MapView extends JFrame implements MouseListener {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

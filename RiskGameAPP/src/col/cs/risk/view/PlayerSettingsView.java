@@ -18,9 +18,9 @@ import javax.swing.SwingConstants;
 import col.cs.risk.controller.PlayerSettingsController;
 
 /**
- * It handles the display of player settings screen such as the
- * number of players required and a button to accept the changes 
- * made.
+ * It handles the display of player settings screen such as the number of
+ * players required and a button to accept the changes made.
+ * 
  * @author Team25
  * 
  *
@@ -38,7 +38,7 @@ public class PlayerSettingsView extends JFrame {
 
 	/** Player Controller */
 	private PlayerSettingsController playerSettingsController;
-	
+
 	/**
 	 * Default Constructor
 	 */
@@ -48,7 +48,8 @@ public class PlayerSettingsView extends JFrame {
 
 	/**
 	 * Constructor to initialize components for this class and start the JPanel
-	 * @param playerController 
+	 * 
+	 * @param playerController
 	 */
 	public PlayerSettingsView(PlayerSettingsController playerController) {
 		this();
@@ -59,8 +60,8 @@ public class PlayerSettingsView extends JFrame {
 	}
 
 	/**
-	 * Initialize components relating to the playerSettingsview which allows
-	 * the user to choose from the options on the screen
+	 * Initialize components relating to the playerSettingsview which allows the
+	 * user to choose from the options on the screen
 	 */
 	private void initComponents() {
 		playerPanel = new JPanel();
@@ -72,7 +73,7 @@ public class PlayerSettingsView extends JFrame {
 			}
 		});
 
-		Integer[] playersList = {2, 3, 4, 5, 6};
+		Integer[] playersList = { 2, 3, 4, 5, 6 };
 		JComboBox<Integer> players = new JComboBox<>(playersList);
 		players.setSelectedItem(3);
 		players.addActionListener(new ActionListener() {
@@ -107,37 +108,28 @@ public class PlayerSettingsView extends JFrame {
 		playerSelection.setForeground(new Color(254, 254, 254));
 
 		GroupLayout playerLayout = new javax.swing.GroupLayout(playerPanel);
-		playerLayout
-		.setHorizontalGroup(playerLayout.createParallelGroup(Alignment.LEADING)
+		playerLayout.setHorizontalGroup(playerLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(playerLayout.createSequentialGroup().addContainerGap().addGap(200)
-						.addComponent(settings, 30, GroupLayout.DEFAULT_SIZE,
+						.addComponent(settings, 30, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addGap(20)
+						.addContainerGap())
+				.addGroup(playerLayout.createSequentialGroup().addGap(61)
+						.addComponent(playerSelection, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
 								GroupLayout.PREFERRED_SIZE)
-						.addGap(20).addContainerGap())
-				.addGroup(playerLayout.createSequentialGroup().addGap(61).addComponent(playerSelection, 
-						GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addGap(50)
+						.addGap(50)
 						.addComponent(players, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
 								GroupLayout.PREFERRED_SIZE)
 						.addContainerGap(243, Short.MAX_VALUE))
-				
+
 				.addGroup(playerLayout.createSequentialGroup().addContainerGap(443, Short.MAX_VALUE)
-						.addComponent(finish, GroupLayout.PREFERRED_SIZE, 124,
-								GroupLayout.PREFERRED_SIZE)
-						.addGap(26).addContainerGap()));
-		playerLayout
-		.setVerticalGroup(
-				playerLayout.createParallelGroup(Alignment.TRAILING)
-				.addGroup(
-						playerLayout.createSequentialGroup().addContainerGap()
-						.addContainerGap()
-						.addGap(15)
-						.addGap(37).addComponent(settings).addGap(29).addContainerGap()
-						.addGap(25).addContainerGap()
-						.addGroup(playerLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(playerSelection).addGap(20).addComponent(players,
-										GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+						.addComponent(finish, GroupLayout.PREFERRED_SIZE, 124, GroupLayout.PREFERRED_SIZE).addGap(26)
+						.addContainerGap()));
+		playerLayout.setVerticalGroup(playerLayout.createParallelGroup(Alignment.TRAILING)
+				.addGroup(playerLayout.createSequentialGroup().addContainerGap().addContainerGap().addGap(15).addGap(37)
+						.addComponent(settings).addGap(29).addContainerGap().addGap(25).addContainerGap()
+						.addGroup(playerLayout.createParallelGroup(Alignment.BASELINE).addComponent(playerSelection)
+								.addGap(20).addComponent(players, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
 										GroupLayout.PREFERRED_SIZE))
-						.addContainerGap() .addGap(50)
-						.addGap(37).addComponent(finish).addGap(29).addContainerGap()));
+						.addContainerGap().addGap(50).addGap(37).addComponent(finish).addGap(29).addContainerGap()));
 
 		playerPanel.setLayout(playerLayout);
 		add(playerPanel, java.awt.BorderLayout.CENTER);
@@ -147,8 +139,9 @@ public class PlayerSettingsView extends JFrame {
 	/**
 	 * Exit from Player setting screen.
 	 *
-	 * @param evt the event
-	 *            
+	 * @param evt
+	 *            the event
+	 * 
 	 */
 	private void exitForm(WindowEvent evt) {
 		setVisible(false);

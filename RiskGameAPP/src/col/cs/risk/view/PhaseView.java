@@ -14,9 +14,9 @@ import javax.swing.ScrollPaneConstants;
 import col.cs.risk.model.phase.GamePhase;
 
 /**
- * This class sets the phase view window size along with
- * the addition of scroll bar and other widgets. It also is an
- * observer class that provides the changes in a text box.
+ * This class sets the phase view window size along with the addition of scroll
+ * bar and other widgets. It also is an observer class that provides the changes
+ * in a text box.
  * 
  * @author Team25
  *
@@ -24,28 +24,40 @@ import col.cs.risk.model.phase.GamePhase;
 
 public class PhaseView implements Observer {
 
+	/** Phase View panel */
 	private JPanel phaseViewPanel;
 
+	/** Phase Text area */
 	private JTextArea phaseTextArea;
 
+	/** Phase Frame */
 	private JFrame phaseFrame;
 
+	/** PhaseView Instance */
 	private static PhaseView phaseInfoMonitor;
 
+	/**
+	 * 
+	 * @return instance of PhaseView
+	 */
 	public static PhaseView getInstance() {
-		if(phaseInfoMonitor == null) {
+		if (phaseInfoMonitor == null) {
 			phaseInfoMonitor = new PhaseView();
 		}
 		return phaseInfoMonitor;
 	}
 
+	/**
+	 * function that helps to maintain the frame size of the phase view
+	 * 
+	 */
 	public void showMonitor() {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int height = (int) (screenSize.height * 2 / 2.6);
 		int width = (int) (screenSize.width * 2 / 4.9);
 		phaseFrame = new JFrame();
 		JScrollPane scrollPanel;
-		
+
 		phaseTextArea = new JTextArea("", 40, 40);
 		phaseTextArea.setEditable(false);
 		scrollPanel = new JScrollPane(phaseTextArea);
@@ -66,8 +78,8 @@ public class PhaseView implements Observer {
 
 	@Override
 	public void update(Observable object, Object arg) {
-		if(object != null) {
-			phaseTextArea.setText(((GamePhase)object).getContent());
+		if (object != null) {
+			phaseTextArea.setText(((GamePhase) object).getContent());
 		}
 		phaseFrame.repaint();
 	}

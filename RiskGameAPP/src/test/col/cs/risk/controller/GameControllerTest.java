@@ -24,34 +24,33 @@ import col.cs.risk.view.CardTradeView;
 import col.cs.risk.view.MapView;
 
 /**
- * This class Game Controller test the main driver functions
- * that handles the game phases.
+ * This class Game Controller test the main driver functions that handles the
+ * game phases.
  * 
  * @author Team25
  *
  */
 public class GameControllerTest {
-	
-	/** 
+
+	/**
 	 * Game controller object
 	 */
 	GameController gameController;
-	
+
 	/**
 	 * gameModel object
 	 */
 	GameModel gameModel;
-	
+
 	/**
 	 * card trade view object
 	 */
 	CardTradeView cardTradeView;
-	
+
 	/**
 	 * player model object
 	 */
 	PlayerModel playerModel;
-
 
 	/**
 	 * Initialization before every test case
@@ -66,7 +65,7 @@ public class GameControllerTest {
 		cardTradeView = new CardTradeView(gameController);
 		cardTradeView.initializeComponents();
 		gameController.setCardTradeView(cardTradeView);
-		
+
 		MapPanelController mapMainPanel = new MapPanelController(gameModel);
 		PlayerPanelController mapSubPanelPlayer = new PlayerPanelController(gameModel);
 		gameController.setMapMainPanel(mapMainPanel);
@@ -91,17 +90,17 @@ public class GameControllerTest {
 	@Test
 	public void testIsFirstRound() {
 		GameController gameController = new GameController();
-		
+
 		gameController.noOfRoundsCompleted = 0;
 		assertTrue("Failed test", gameController.isFirstRound());
 
 		gameController.noOfRoundsCompleted = 1;
 		assertFalse("Failed test", gameController.isFirstRound());
 	}
-	
+
 	/**
-	 * Test case to check whether the trading card set is valid or not
-	 * according risk game rule
+	 * Test case to check whether the trading card set is valid or not according
+	 * risk game rule
 	 */
 	@Test
 	public void testSelectedCardSetValidation() {
@@ -115,7 +114,7 @@ public class GameControllerTest {
 		CardModel card6 = new CardModel(6, Constants.ARMY_TYPE_WILD, tmodel1);
 		CardModel card7 = new CardModel(7, Constants.ARMY_TYPE_INFANTRY, tmodel1);
 		CardModel card8 = new CardModel(8, Constants.ARMY_TYPE_INFANTRY, tmodel1);
-		
+
 		Vector<CardModel> cards = new Vector<>();
 		cards.addElement(card1);
 		cards.addElement(card2);
@@ -127,16 +126,16 @@ public class GameControllerTest {
 		cards.addElement(card8);
 		playerModel.addCards(cards);
 		Utility.timerToClose = true;
-		
+
 		// invalid set of cards
 		// 3 wild cards
 		cardTradeView.setSelectedItem(0, 0, 0, 3);
 		assertFalse(gameController.isValidNoOfCardsTraded());
-		
+
 		// 2 wild cards + 1 any
 		cardTradeView.setSelectedItem(0, 0, 1, 2);
 		assertFalse(gameController.isValidNoOfCardsTraded());
-		
+
 		// any 2 + 1 other(not wild) card
 		cardTradeView.setSelectedItem(0, 2, 1, 0);
 		assertFalse(gameController.isValidNoOfCardsTraded());
@@ -146,23 +145,23 @@ public class GameControllerTest {
 		assertFalse(gameController.isValidNoOfCardsTraded());
 		cardTradeView.setSelectedItem(1, 1, 1, 1);
 		assertFalse(gameController.isValidNoOfCardsTraded());
-		
+
 		// valid set of cards
 		// 1 each and only 3 cards
 		cardTradeView.setSelectedItem(1, 1, 1, 0);
 		assertTrue(gameController.isValidNoOfCardsTraded());
 		cardTradeView.setSelectedItem(0, 1, 1, 1);
 		assertTrue(gameController.isValidNoOfCardsTraded());
-		
+
 		// any 2 + 1 wild card
 		cardTradeView.setSelectedItem(0, 0, 2, 1);
 		assertTrue(gameController.isValidNoOfCardsTraded());
-		
+
 		// any 3 (not wild)
 		cardTradeView.setSelectedItem(3, 0, 0, 0);
 		assertTrue(gameController.isValidNoOfCardsTraded());
 	}
-	
+
 	/**
 	 * Test case to test armies assigned in exchange to card trade.
 	 */
@@ -174,26 +173,26 @@ public class GameControllerTest {
 		CardModel card2 = new CardModel(1, Constants.ARMY_TYPE_ARTILLERY, tmodel1);
 		CardModel card3 = new CardModel(1, Constants.ARMY_TYPE_CAVALRY, tmodel1);
 		CardModel card4 = new CardModel(1, Constants.ARMY_TYPE_WILD, tmodel1);
-		
+
 		Vector<CardModel> cards = new Vector<>();
 		cards.addElement(card1);
 		cards.addElement(card2);
 		cards.addElement(card3);
 		cards.addElement(card4);
 		playerModel.addCards(cards);
-		
-		//first set trading
+
+		// first set trading
 		gameController.cardTradeActionPerformed(null);
-		
+
 		cardTradeView.setSelectedItem(1, 1, 1, 0);
 		assertEquals(Constants.FOUR, playerModel.getArmies());
-		
-		//second set trading (6+4)
+
+		// second set trading (6+4)
 		gameController.cardTradeActionPerformed(null);
 		cardTradeView.setSelectedItem(2, 0, 0, 1);
 		assertEquals(Constants.TEN, playerModel.getArmies());
-		
-		//seventh set trading
+
+		// seventh set trading
 		gameModel.setCardTradeCount(Constants.SIX);
 		gameController.cardTradeActionPerformed(null);
 		cardTradeView.setSelectedItem(1, 1, 0, 1);

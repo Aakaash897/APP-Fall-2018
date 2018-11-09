@@ -25,33 +25,44 @@ import col.cs.risk.model.TerritoryModel;
 import col.cs.risk.view.MapView;
 
 /**
- * Test class to check whether the players are being added,
- * armies being assigned, territories being allocated and the 
- * attack simulation.
+ * Test class to check whether the players are being added, armies being
+ * assigned, territories being allocated and the attack simulation.
  * 
  * @author Team25
  *
  */
 
 public class PlayerModelTest {
-	
+
+	/**
+	 * Player model instance
+	 */
 	PlayerModel playerModel;
+
+	/**
+	 * Game model instance
+	 */
 	GameModel gameModel;
 
-	
+	/**
+	 * Initialization before every test case
+	 */
 	@Before
 	public void before() {
 		playerModel = new PlayerModel(101, "player1");
 		gameModel = new GameModel();
 		gameModel.setCurrentPlayer(playerModel);
 	}
-	
+
+	/**
+	 * DeInitialization after every test case
+	 */
 	@After
 	public void after() {
 		playerModel = null;
 		gameModel = null;
 	}
-	
+
 	/**
 	 * Test case for calculating territory bonus
 	 */
@@ -96,7 +107,7 @@ public class PlayerModelTest {
 		territories.remove(0);
 		assertEquals(3, playerModel.territoryBonus());
 	}
-	
+
 	/**
 	 * Calculating turn bonus for a current player
 	 */
@@ -143,9 +154,9 @@ public class PlayerModelTest {
 
 		// 3 (0- continent bonus and 3 territory bonus)
 		assertEquals(3, playerModel.getArmies());
-		
 
-		}
+	}
+
 	/**
 	 * Test case to verify the canAttack method
 	 */
@@ -210,18 +221,17 @@ public class PlayerModelTest {
 		tmodel3.setArmies(1);
 		assertFalse(playerModel.canAttack());
 	}
-	
+
 	/**
 	 * This Test case checks Adding Occupied Territories list
 	 */
-     @Test
-     public void testAddOccupiedTerritory()
-     {
-    	TerritoryModel tmodel1 = new TerritoryModel(201, "tname1", 10, 20, new ContinentModel(301, "cname1", 3));
- 		TerritoryModel tmodel2 = new TerritoryModel(202, "tname2", 30, 40, new ContinentModel(302, "cname2", 5));
- 		TerritoryModel tmodel3 = new TerritoryModel(203, "tname3", 30, 40, new ContinentModel(301, "cname1", 3));
- 		TerritoryModel tmodel4 = new TerritoryModel(204, "tname4", 30, 40, new ContinentModel(302, "cname2", 5));
- 		TerritoryModel tmodel5 = new TerritoryModel(205, "tname5", 30, 40, new ContinentModel(301, "cname1", 3));
+	@Test
+	public void testAddOccupiedTerritory() {
+		TerritoryModel tmodel1 = new TerritoryModel(201, "tname1", 10, 20, new ContinentModel(301, "cname1", 3));
+		TerritoryModel tmodel2 = new TerritoryModel(202, "tname2", 30, 40, new ContinentModel(302, "cname2", 5));
+		TerritoryModel tmodel3 = new TerritoryModel(203, "tname3", 30, 40, new ContinentModel(301, "cname1", 3));
+		TerritoryModel tmodel4 = new TerritoryModel(204, "tname4", 30, 40, new ContinentModel(302, "cname2", 5));
+		TerritoryModel tmodel5 = new TerritoryModel(205, "tname5", 30, 40, new ContinentModel(301, "cname1", 3));
 		Vector<TerritoryModel> territories = new Vector<>();
 		territories.add(tmodel1);
 		territories.add(tmodel2);
@@ -232,7 +242,7 @@ public class PlayerModelTest {
 		assertEquals(territories.size(), playerModel.getOccupiedTerritories().size());
 
 		playerModel.addOccupiedTerritory(tmodel5);
-		assertEquals(territories,playerModel.getOccupiedTerritories());
+		assertEquals(territories, playerModel.getOccupiedTerritories());
 		assertEquals(5, playerModel.getOccupiedTerritories().size());
 		assertEquals(tmodel3.getName(), playerModel.getOccupiedTerritories().get(2).getName());
 	}
@@ -241,8 +251,7 @@ public class PlayerModelTest {
 	 * This Test case checks getting Occupied Territories list
 	 */
 	@Test
-	public void testGetOccupiedTerritory()
-	{
+	public void testGetOccupiedTerritory() {
 		TerritoryModel tmodel1 = new TerritoryModel(201, "tname1", 10, 20, new ContinentModel(301, "cname1", 3));
 		TerritoryModel tmodel2 = new TerritoryModel(202, "tname2", 30, 40, new ContinentModel(302, "cname2", 5));
 		TerritoryModel tmodel3 = new TerritoryModel(203, "tname3", 30, 40, new ContinentModel(301, "cname1", 3));
@@ -256,9 +265,12 @@ public class PlayerModelTest {
 		territories.add(tmodel5);
 		playerModel.setOccupiedTerritories(territories);
 
-		assertEquals(territories,playerModel.getOccupiedTerritories());
+		assertEquals(territories, playerModel.getOccupiedTerritories());
 	}
 
+	/**
+	 * This Test case for adding the new cards and removing the cards.
+	 */
 	@Test
 	public void testAddRemoveCards() {
 		TerritoryModel tmodel1 = new TerritoryModel(201, "tname1", 10, 20, new ContinentModel(301, "cname1", 3));
@@ -279,27 +291,33 @@ public class PlayerModelTest {
 		test.add(card2);
 		test.add(card3);
 		playerModel.removeCards(test);
-		assertEquals(playerModel.getCards().size(), cards.size()-2);
+		assertEquals(playerModel.getCards().size(), cards.size() - 2);
 	}
-	
-     @Test
-  	public void testIsPlayerEliminated() {
-      	TerritoryModel tmodel1 = new TerritoryModel(201, "tname1", 10, 20, new ContinentModel(301, "cname1", 3));
-   		TerritoryModel tmodel2 = new TerritoryModel(202, "tname2", 30, 40, new ContinentModel(302, "cname2", 5));
-   		TerritoryModel tmodel3 = new TerritoryModel(203, "tname3", 30, 40, new ContinentModel(301, "cname1", 3));
-   		TerritoryModel tmodel4 = new TerritoryModel(204, "tname4", 30, 40, new ContinentModel(302, "cname2", 5));
-   		TerritoryModel tmodel5 = new TerritoryModel(205, "tname5", 30, 40, new ContinentModel(301, "cname1", 3));
-  		Vector<TerritoryModel> territories = new Vector<>();
-  		territories.add(tmodel1);
-  		territories.add(tmodel2);
-  		territories.add(tmodel3);
-  		territories.add(tmodel4);
-  		territories.add(tmodel5);
-  		playerModel.setOccupiedTerritories(territories);
-  		assertEquals(false,playerModel.isPlayerEliminated(playerModel));
-  		
-  	}
 
+	/**
+	 * This Test case checks for the elimination of the player.
+	 */
+	@Test
+	public void testIsPlayerEliminated() {
+		TerritoryModel tmodel1 = new TerritoryModel(201, "tname1", 10, 20, new ContinentModel(301, "cname1", 3));
+		TerritoryModel tmodel2 = new TerritoryModel(202, "tname2", 30, 40, new ContinentModel(302, "cname2", 5));
+		TerritoryModel tmodel3 = new TerritoryModel(203, "tname3", 30, 40, new ContinentModel(301, "cname1", 3));
+		TerritoryModel tmodel4 = new TerritoryModel(204, "tname4", 30, 40, new ContinentModel(302, "cname2", 5));
+		TerritoryModel tmodel5 = new TerritoryModel(205, "tname5", 30, 40, new ContinentModel(301, "cname1", 3));
+		Vector<TerritoryModel> territories = new Vector<>();
+		territories.add(tmodel1);
+		territories.add(tmodel2);
+		territories.add(tmodel3);
+		territories.add(tmodel4);
+		territories.add(tmodel5);
+		playerModel.setOccupiedTerritories(territories);
+		assertEquals(false, playerModel.isPlayerEliminated(playerModel));
+
+	}
+
+	/**
+	 * This Test case checks for setting of attacking territory.
+	 */
 	@Test
 	public void testSettingAttackingTerritory() {
 		TerritoryModel tmodel1 = new TerritoryModel(201, "tname1", 10, 20, new ContinentModel(301, "cname1", 3));
@@ -329,6 +347,9 @@ public class PlayerModelTest {
 
 	}
 
+	/**
+	 * This Test case checks for the setting of defending territory.
+	 */
 	@Test
 	public void testSettingDefendingTerritory() {
 		TerritoryModel tmodel1 = new TerritoryModel(201, "tname1", 10, 20, new ContinentModel(301, "cname1", 3));
@@ -343,7 +364,7 @@ public class PlayerModelTest {
 		tmodel1.setArmies(2);
 		playerModel.attack(gameModel, tmodel1);
 
-		//selected territory doesn't belong to current player
+		// selected territory doesn't belong to current player
 		String str = "Territory tname1 attacking on territory tname2";
 		assertEquals(str, playerModel.attack(gameModel, tmodel2));
 		assertEquals(tmodel2.getId(), playerModel.getDefendingTerritory().getId());
@@ -358,10 +379,15 @@ public class PlayerModelTest {
 
 	}
 
+	/**
+	 * This Test case checks for the capturing of the territory on wining the game.
+	 */
 	@Test
 	public void testCapturingTerritoryOrWinning() {
-		TerritoryModel attackingTerritoryModel = new TerritoryModel(201, "tname1", 10, 20, new ContinentModel(301, "cname1", 3));
-		TerritoryModel defendingTerritoryModel = new TerritoryModel(202, "tname2", 30, 40, new ContinentModel(301, "cname1", 3));
+		TerritoryModel attackingTerritoryModel = new TerritoryModel(201, "tname1", 10, 20,
+				new ContinentModel(301, "cname1", 3));
+		TerritoryModel defendingTerritoryModel = new TerritoryModel(202, "tname2", 30, 40,
+				new ContinentModel(301, "cname1", 3));
 
 		TerritoryModel tmodel3 = new TerritoryModel(203, "tname3", 30, 40, new ContinentModel(301, "cname1", 3));
 		TerritoryModel tmodel4 = new TerritoryModel(204, "tname4", 30, 40, new ContinentModel(302, "cname2", 5));
@@ -424,16 +450,20 @@ public class PlayerModelTest {
 		playerModel.setAttackingTerritory(attackingTerritoryModel);
 		playerModel.setDefendingTerritory(defendingTerritoryModel);
 
-		// Won the battle and game 
+		// Won the battle and game
 		playerModel.updateResult(gameModel);
 		assertEquals(Constants.END_PHASE, gameModel.getState());
 	}
 
+	/**
+	 * This Test case checks for the action on fortification phase for the current
+	 * player.
+	 */
 	@Test
 	public void testFortify() {
 		TerritoryModel model1 = new TerritoryModel(201, "tname1", 10, 20, new ContinentModel(301, "cname1", 3));
 		TerritoryModel model2 = new TerritoryModel(202, "tname2", 30, 40, new ContinentModel(301, "cname1", 3));
-		
+
 		TerritoryModel tmodel3 = new TerritoryModel(203, "tname3", 30, 40, new ContinentModel(301, "cname1", 3));
 		model1.addAdjacentTerritory(tmodel3);
 
@@ -452,21 +482,21 @@ public class PlayerModelTest {
 		model1.setArmies(1);
 		assertEquals(Constants.MIN_TWO_ARMY_MESSAGE, playerModel.fortify(gameModel, model1));
 
-		//selected territory is valid to move armies from
+		// selected territory is valid to move armies from
 		model1.setPlayerModel(playerModel);
 		model1.setArmies(3);
-		assertEquals(Constants.MOVE_TO+model1.getName(), playerModel.fortify(gameModel, model1));
+		assertEquals(Constants.MOVE_TO + model1.getName(), playerModel.fortify(gameModel, model1));
 		assertEquals(Constants.FORTIFYING_PHASE, gameModel.getState());
 		assertEquals(model1.getName(), gameModel.getMoveArmiesFromTerritory().getName());
 
 		// selected territory doesn't belongs to player to move armies to
 		model2.setPlayerModel(playerModelOther);
-		assertEquals(Constants.MOVE_TO+model1.getName(), playerModel.fortify(gameModel, model2));
+		assertEquals(Constants.MOVE_TO + model1.getName(), playerModel.fortify(gameModel, model2));
 
 		// selected territory belongs to player but not adjacent
 		model2.setPlayerModel(playerModel);
-		assertEquals(Constants.MOVE_TO+model1.getName(), playerModel.fortify(gameModel, model2));
-		
+		assertEquals(Constants.MOVE_TO + model1.getName(), playerModel.fortify(gameModel, model2));
+
 		// valid territory to move to
 		model1.addAdjacentTerritory(model2);
 		gameModel.setState(Constants.FORTIFYING_PHASE);

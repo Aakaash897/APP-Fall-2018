@@ -3,8 +3,10 @@ package col.cs.risk.model.phase;
 import col.cs.risk.model.GameModel;
 
 /**
+ * This Interface maintains the game phase. this has all the methods that all
+ * the phases overrides and according tho the phase does the functionality.
  * 
- * @author Team25 Game phase Maintenance
+ * @author Team25
  *
  */
 public interface GamePhase {

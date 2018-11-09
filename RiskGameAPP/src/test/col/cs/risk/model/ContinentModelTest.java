@@ -75,7 +75,7 @@ public class ContinentModelTest {
 		assertTrue(newSize > tempSize);
 		assertFalse(tempSize == newSize);
 	}
-	
+
 	/**
 	 * Test Case for checking Continent details as string
 	 */
@@ -86,6 +86,6 @@ public class ContinentModelTest {
 		vector1.add(tmodel1);
 		continentModel.setTerritories(vector1);
 		String str = "id = 1, name = cName, score = 1, territories = [201]";
-		assertEquals(str,continentModel.printContinent());		
+		assertEquals(str, continentModel.printContinent());
 	}
 }

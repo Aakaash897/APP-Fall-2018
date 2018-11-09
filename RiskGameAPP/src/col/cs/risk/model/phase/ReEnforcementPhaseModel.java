@@ -6,8 +6,10 @@ import col.cs.risk.model.Constants;
 import col.cs.risk.model.GameModel;
 
 /**
+ * This class handles the entities for the reinforcement phase such as to show
+ * the info according the actions done by the player in the reinforcement phase.
  * 
- * @author Team Game reinforcement Model
+ * @author Team25
  */
 public class ReEnforcementPhaseModel extends Observable implements GamePhase {
 

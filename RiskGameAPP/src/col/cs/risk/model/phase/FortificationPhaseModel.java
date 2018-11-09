@@ -6,8 +6,11 @@ import col.cs.risk.model.Constants;
 import col.cs.risk.model.GameModel;
 
 /**
+ * This class handles the entities for the fortification phase such as to show
+ * the info according the actions done by the player.
  * 
- * @author Team Fortification phase model
+ * 
+ * @author Team25
  *
  */
 public class FortificationPhaseModel extends Observable implements GamePhase {

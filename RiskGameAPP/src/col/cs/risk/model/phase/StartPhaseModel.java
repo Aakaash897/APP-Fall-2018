@@ -6,8 +6,10 @@ import col.cs.risk.model.Constants;
 import col.cs.risk.model.GameModel;
 
 /**
+ * This class handles the entities for the start phase for showing the info
+ * according the actions done by the player in the start phase.
  * 
- * @author Team25 Game start phase model
+ * @author Team25
  *
  */
 public class StartPhaseModel extends Observable implements GamePhase {

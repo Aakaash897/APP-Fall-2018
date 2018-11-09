@@ -9,7 +9,8 @@ import col.cs.risk.controller.StartGameController;
 import col.cs.risk.model.GameModel;
 
 /**
- * PlayerSettingsControllerTest It tests various functions like no of players playing the game.
+ * PlayerSettingsControllerTest It tests various functions like no of players
+ * playing the game.
  * 
  * @author Team25
  *

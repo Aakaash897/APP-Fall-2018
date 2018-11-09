@@ -4,6 +4,13 @@ import java.util.Observable;
 
 import col.cs.risk.controller.GameController;
 
+/**
+ * This model class handles the card exchange entities like current players,
+ * which cards players will exchnage.it keeps the record for that things.
+ * 
+ * @author Team25
+ *
+ */
 public class CardExchangeModel extends Observable {
 
 	/** game model */
