@@ -29,6 +29,16 @@ import col.cs.risk.model.CardModel;
 import col.cs.risk.model.Constants;
 import col.cs.risk.model.PlayerModel;
 
+
+/**
+ * This class is responsible for the card exchange UI which allows
+ * the user to view the cards available and also let's the user
+ * choose among the cards to trade in for armies with proper validation. 
+ * 
+ * @author Team25
+ *
+ */
+
 public class CardTradeView  extends JFrame implements Observer {
 
 	/**
