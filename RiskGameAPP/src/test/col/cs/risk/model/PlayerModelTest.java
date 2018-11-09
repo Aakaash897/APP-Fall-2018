@@ -1,6 +1,7 @@
 package test.col.cs.risk.model;
 
 import static org.junit.Assert.assertEquals;
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -21,6 +22,15 @@ import col.cs.risk.model.GameModel;
 import col.cs.risk.model.PlayerModel;
 import col.cs.risk.model.TerritoryModel;
 import col.cs.risk.view.MapView;
+
+/**
+ * Test class to check whether the players are being added,
+ * armies being assigned, territories being allocated and the 
+ * attack simulation.
+ * 
+ * @author Team25
+ *
+ */
 
 public class PlayerModelTest {
 	

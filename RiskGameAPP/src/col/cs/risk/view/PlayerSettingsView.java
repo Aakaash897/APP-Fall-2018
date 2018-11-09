@@ -18,7 +18,9 @@ import javax.swing.SwingConstants;
 import col.cs.risk.controller.PlayerSettingsController;
 
 /**
- * It handles the display of player settings screen.
+ * It handles the display of player settings screen such as the
+ * number of players required and a button to accept the changes 
+ * made.
  * @author Team25
  * 
  *
