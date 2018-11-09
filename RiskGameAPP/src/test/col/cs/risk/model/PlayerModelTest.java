@@ -145,6 +145,11 @@ public class PlayerModelTest {
 		tmodel4.addAdjacentTerritory(tmodel5);
 		tmodel5.addAdjacentTerritory(tmodel1);
 		tmodel5.addAdjacentTerritory(tmodel4);
+		tmodel1.setPlayerModel(playerModel);
+		tmodel2.setPlayerModel(playerModel);
+		tmodel3.setPlayerModel(playerModel1);
+		tmodel4.setPlayerModel(playerModel1);
+		tmodel5.setPlayerModel(playerModel1);
 		tmodel1.setArmies(4);
 		tmodel2.setArmies(2);
 		tmodel3.setArmies(6);
