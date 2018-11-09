@@ -18,6 +18,10 @@ import col.cs.risk.model.GameModel;
 import col.cs.risk.model.PlayerModel;
 
 /**
+ * This is an observer class that provides the player domination details
+ * such as the percentage controlled, total number of armies and also the
+ * territories controller by each after every event.
+ * 
  * @author Team25
  *
  */

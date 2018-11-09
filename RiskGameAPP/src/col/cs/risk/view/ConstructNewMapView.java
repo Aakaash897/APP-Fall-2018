@@ -307,7 +307,7 @@ public class ConstructNewMapView extends JFrame {
 	 * Loads a new Frame that has Map Format on pressing Format button on Create Map
 	 * Frame
 	 * 
-	 * @param event
+	 * @param event object to handle the event
 	 */
 	private static void format_action(ActionEvent event) {
 

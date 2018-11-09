@@ -13,6 +13,15 @@ import javax.swing.ScrollPaneConstants;
 
 import col.cs.risk.model.phase.GamePhase;
 
+/**
+ * This class sets the phase view window size along with
+ * the addition of scroll bar and other widgets. It also is an
+ * observer class that provides the changes in a text box.
+ * 
+ * @author Team25
+ *
+ */
+
 public class PhaseView implements Observer {
 
 	private JPanel phaseViewPanel;
