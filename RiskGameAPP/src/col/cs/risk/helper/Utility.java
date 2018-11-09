@@ -41,6 +41,9 @@ public class Utility {
 	 */
 	public static StringBuilder baseMapString;
 
+	/** timer to close the window */
+	public static boolean timerToClose = false;
+
 	/** static block to initialize player color map */
 	static {
 		playerColor.put(0, Color.red);
@@ -182,11 +185,25 @@ public class Utility {
 
 	/**
 	 * Message pop up to show error message
-	 * 
-	 * @param message
-	 *            : Contains the actual message to be shown
+	 * @param message Contains the actual message to be shown
+	 * @param title
 	 */
 	public static void showMessagePopUp(String message, String title) {
+		if(timerToClose) {
+			JOptionPane pane = new JOptionPane();
+			Thread t1 = new Thread(new Runnable() {
+				@SuppressWarnings("static-access")
+				public void run() {
+					try {
+						Thread.sleep(200);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}               
+					pane.getRootFrame().dispose();
+				}
+			});
+			t1.start();
+		}
 		JOptionPane.showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
 	}
 

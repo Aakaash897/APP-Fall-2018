@@ -15,6 +15,7 @@ import org.junit.Test;
 import col.cs.risk.controller.GameController;
 import col.cs.risk.controller.MapPanelController;
 import col.cs.risk.controller.PlayerPanelController;
+import col.cs.risk.helper.Utility;
 import col.cs.risk.model.CardModel;
 import col.cs.risk.model.Constants;
 import col.cs.risk.model.ContinentModel;
@@ -395,6 +396,8 @@ public class PlayerModelTest {
 		gameController.setMapSubPanelPlayer(mapSubPanelPlayer);
 		new MapView(gameController);
 		playerModel.setGameController(gameController);
+		MapView.timerToClose = true;
+		Utility.timerToClose = true;
 
 		// Lost the battle
 		playerModel.updateResult(gameModel);
