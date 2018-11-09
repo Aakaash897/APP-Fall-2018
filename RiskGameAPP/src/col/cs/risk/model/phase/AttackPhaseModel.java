@@ -92,9 +92,12 @@ public class AttackPhaseModel extends Observable implements GamePhase {
 			}
 			break;
 		case Constants.CAPTURE:
-			if (gameModel.getCurrentPlayer().getDefendingTerritory().getArmies() == 0) {
+			if (gameModel.getCurrentPlayer().getGameController() != null) {
 				stringBuilder.append("Capturing defending territory\n");
-			} else if (gameModel.getCurrentPlayer().getAttackingTerritory().getArmies() == 1) {
+			} 
+			break;
+		case Constants.LOST_BATTLE:
+			if (gameModel.getCurrentPlayer().getGameController() != null) {
 				stringBuilder.append("Lost the battle\n");
 			}
 			break;

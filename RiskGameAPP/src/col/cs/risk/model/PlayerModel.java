@@ -613,7 +613,7 @@ public class PlayerModel extends Observable {
 	 * 
 	 * @param gameModel
 	 */
-	private void updateResult(GameModel gameModel) {
+	public void updateResult(GameModel gameModel) {
 		if (defendingTerritory.getArmies() == 0) {
 			gameModel.setState(Constants.CAPTURE);
 			updateStatus(Constants.CAPTURING_MESSAGE);
@@ -634,7 +634,7 @@ public class PlayerModel extends Observable {
 				lostPlayer.removeCards(lostPlayer.getCards());
 			}
 		} else if (attackingTerritory.getArmies() == 1) {
-			gameModel.setState(Constants.CAPTURE);
+			gameModel.setState(Constants.LOST_BATTLE);
 			gameController.getGameModel().notifyPhaseChanging();
 		}
 

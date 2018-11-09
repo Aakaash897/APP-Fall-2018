@@ -133,7 +133,7 @@ public class GameModel {
 	{
 		playerArmyMap = new HashMap<>();
 		playerArmyMap.put(2, 40);
-		playerArmyMap.put(3, 5);
+		playerArmyMap.put(3, 35);
 		playerArmyMap.put(4, 30);
 		playerArmyMap.put(5, 25);
 		playerArmyMap.put(6, 20);
@@ -655,10 +655,11 @@ public class GameModel {
 		case Constants.ATTACKING_PHASE:
 		case Constants.ATTACK_FIGHT_PHASE:
 		case Constants.CAPTURE:
+		case Constants.LOST_BATTLE:
 			gamePhase = attackPhaseModel;
-			clear = (previousState == Constants.ATTACK_PHASE ||
-					previousState == Constants.ATTACKING_PHASE || previousState == Constants.ATTACK_FIGHT_PHASE 
-					|| previousState == Constants.CAPTURE) ? false : true;
+			clear = (previousState == Constants.ATTACK_PHASE || previousState == Constants.ATTACKING_PHASE
+					|| previousState == Constants.ATTACK_FIGHT_PHASE || previousState == Constants.CAPTURE
+					|| previousState == Constants.LOST_BATTLE) ? false : true;
 			break;
 		case Constants.FORTIFICATION_PHASE:	
 		case Constants.FORTIFYING_PHASE:

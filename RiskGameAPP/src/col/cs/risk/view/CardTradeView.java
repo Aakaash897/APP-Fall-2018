@@ -387,6 +387,26 @@ public class CardTradeView  extends JFrame implements Observer {
 		}
 		return value;
 	}
+	
+	/**
+	 * Sets selected items for all cards
+	 * @param infantryNo
+	 * @param cavalryNo
+	 * @param artilleryNo
+	 * @param wildNo
+	 */
+	public void setSelectedItem(int infantryNo, int cavalryNo, int artilleryNo, int wildNo) {
+		for(int i=0;i<=Constants.FIVE;i++) {
+			infantryCard.addItem(new Integer(i));
+			cavalryCard.addItem(new Integer(i));
+			artilleryCard.addItem(new Integer(i));
+			wildCard.addItem(new Integer(i));
+		}
+		infantryCard.setSelectedItem(new Integer(infantryNo));
+		cavalryCard.setSelectedItem(new Integer(cavalryNo));
+		artilleryCard.setSelectedItem(new Integer(artilleryNo));
+		wildCard.setSelectedItem(new Integer(wildNo));
+	}
 
 	/*
 	 * The first set traded in - 4 armies 

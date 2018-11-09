@@ -22,7 +22,8 @@ public class Constants {
 	public static final int ATTACKING_PHASE = 11;
 	public static final int ATTACK_FIGHT_PHASE = 12;
 	public static final int CAPTURE = 13;
-	public static final int CARD_TRADE = 14;
+	public static final int LOST_BATTLE = 14;
+	public static final int CARD_TRADE = 15;
 	public static final String RE_ENFORCEMENT_MESSAGE = "Place an army on a territory you occupy";
 	public static final String MOVE_FROM = "Select a country of yours to move armies from";
 	public static final String MIN_TWO_ARMY_MESSAGE = "Your occupied country should have minimum 2 army";
@@ -71,7 +72,7 @@ public class Constants {
 	public static final int FOUR = 4;
 	public static final int FIVE = 5;
 	public static final int SIX = 6;
-	public static final int SEVEN = 6;
+	public static final int SEVEN = 7;
 	public static final int EIGHT = 8;
 	public static final int NINE = 9;
 	public static final int TEN = 10;
