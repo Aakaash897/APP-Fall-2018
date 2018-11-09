@@ -164,8 +164,13 @@ public class GameController {
 		mapView.getAttackButton().setVisible(false);
 		if (gameModel.getCurrentPlayer().canAttack()) {
 			mapView.getStatusLabel().setText(Constants.ATTACK_COUNTRY_SELECT_MESSAGE);
+		} else if(gameModel.getCurrentPlayer().canFortify()){
+			Utility.showMessagePopUp(Constants.CANNOT_ATTACK_MESSAGE, "Information");
+			fortifyButtonActionPerformed(null);
 		} else {
+			Utility.showMessagePopUp(Constants.CANNOT_ATTACK_MESSAGE+Constants.FORTIFY_MESSAGE, "Information");
 			mapView.getStatusLabel().setText(Constants.CANNOT_ATTACK_MESSAGE + Constants.SELECT_THE_ACTION_MESSAGE);
+			validatePlayerTurn();
 		}
 		gameModel.notifyPhaseChange();
 	}
@@ -408,14 +413,19 @@ public class GameController {
 		gameModel.notifyPhaseChanging();
 		if (gameModel.getCurrentPlayer().canAttack()) {
 			mapView.getStatusLabel().setText(Constants.ATTACK_COUNTRY_SELECT_MESSAGE);
+			mapView.getCardButton().setVisible(false);
+			mapView.getFortifyButton().setVisible(true);
+			mapView.getEndButton().setVisible(true);
+			mapView.getAttackButton().setVisible(false);
+			mapView.getUserEntered().setVisible(false);
+		} else if(gameModel.getCurrentPlayer().canFortify()){
+			Utility.showMessagePopUp(Constants.CANNOT_ATTACK_MESSAGE, "Information");
+			fortifyButtonActionPerformed(null);
 		} else {
 			mapView.getStatusLabel().setText(Constants.CANNOT_ATTACK_MESSAGE + Constants.SELECT_THE_ACTION_MESSAGE);
+			Utility.showMessagePopUp(Constants.CANNOT_ATTACK_MESSAGE+Constants.FORTIFY_MESSAGE, "Information");
+			validatePlayerTurn();
 		}
-		mapView.getCardButton().setVisible(false);
-		mapView.getFortifyButton().setVisible(true);
-		mapView.getEndButton().setVisible(true);
-		mapView.getAttackButton().setVisible(false);
-		mapView.getUserEntered().setVisible(false);
 	}
 
 	/**

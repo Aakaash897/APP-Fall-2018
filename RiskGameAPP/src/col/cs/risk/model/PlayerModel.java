@@ -740,6 +740,26 @@ public class PlayerModel extends Observable {
 		}
 		return canAttack;
 	}
+	
+	/**
+	 * Function to validate whether the player is able to fortify
+	 * @return
+	 */
+	public boolean canFortify() {
+		boolean canFortify = false;
+		for (TerritoryModel territoryModel : occupiedTerritories) {
+			if (territoryModel.getArmies() > 1) {
+				for (TerritoryModel adjacent : territoryModel.getAdjacentTerritories()) {
+					if (adjacent.getPlayerModel().getId() == getId()) {
+						canFortify = true;
+						break;
+					}
+				}
+			}
+		}
+		return canFortify;
+	}
+	
 
 	/**
 	 * Clear battle history

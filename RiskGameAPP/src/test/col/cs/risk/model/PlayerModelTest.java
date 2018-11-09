@@ -384,21 +384,34 @@ public class PlayerModelTest {
 	 */
 	@Test
 	public void testCapturingTerritoryOrWinning() {
-		TerritoryModel attackingTerritoryModel = new TerritoryModel(201, "tname1", 10, 20,
-				new ContinentModel(301, "cname1", 3));
-		TerritoryModel defendingTerritoryModel = new TerritoryModel(202, "tname2", 30, 40,
-				new ContinentModel(301, "cname1", 3));
+		TerritoryModel attackingTerritoryModel = new TerritoryModel(201, "tname1", 10, 20, new ContinentModel(301, "cname1", 3));
+		TerritoryModel defendingTerritoryModel = new TerritoryModel(202, "tname2", 30, 40, new ContinentModel(301, "cname1", 3));
 
 		TerritoryModel tmodel3 = new TerritoryModel(203, "tname3", 30, 40, new ContinentModel(301, "cname1", 3));
 		TerritoryModel tmodel4 = new TerritoryModel(204, "tname4", 30, 40, new ContinentModel(302, "cname2", 5));
 		TerritoryModel tmodel5 = new TerritoryModel(205, "tname5", 30, 40, new ContinentModel(301, "cname1", 3));
 
-		PlayerModel playerModelOther = new PlayerModel(102, "player2");
+		tmodel4.addAdjacentTerritory(tmodel3);
+		tmodel4.addAdjacentTerritory(tmodel5);
+		
+		tmodel5.addAdjacentTerritory(tmodel3);
+		tmodel5.addAdjacentTerritory(tmodel4);
+		
+		PlayerModel playerModelOther = new PlayerModel(1, "player2");
 		attackingTerritoryModel.setPlayerModel(playerModel);
 		defendingTerritoryModel.setPlayerModel(playerModelOther);
+		
+		attackingTerritoryModel.addAdjacentTerritory(tmodel3);
+		attackingTerritoryModel.addAdjacentTerritory(tmodel4);
+		attackingTerritoryModel.addAdjacentTerritory(tmodel5);
+		
+		defendingTerritoryModel.addAdjacentTerritory(tmodel3);
+		defendingTerritoryModel.addAdjacentTerritory(tmodel4);
+		defendingTerritoryModel.addAdjacentTerritory(tmodel5);
+		
 		tmodel3.setPlayerModel(playerModelOther);
-		tmodel4.setPlayerModel(playerModelOther);
-		tmodel5.setPlayerModel(playerModelOther);
+		tmodel4.setPlayerModel(playerModel);
+		tmodel5.setPlayerModel(playerModel);
 
 		Vector<TerritoryModel> territories = new Vector<>();
 		territories.add(attackingTerritoryModel);
@@ -410,9 +423,16 @@ public class PlayerModelTest {
 
 		playerModel.setAttackingTerritory(attackingTerritoryModel);
 		playerModel.setDefendingTerritory(defendingTerritoryModel);
+		playerModel.addOccupiedTerritory(tmodel4);
+		playerModel.addOccupiedTerritory(tmodel5);
+		playerModel.addOccupiedTerritory(attackingTerritoryModel);
+		playerModelOther.addOccupiedTerritory(tmodel3);
 
 		defendingTerritoryModel.setArmies(1);
 		attackingTerritoryModel.setArmies(1);
+		tmodel3.setArmies(10);
+		tmodel4.setArmies(10);
+		tmodel5.setArmies(10);
 
 		GameController gameController = new GameController();
 		gameController.setGameModel(gameModel);
@@ -424,7 +444,13 @@ public class PlayerModelTest {
 		playerModel.setGameController(gameController);
 		MapView.timerToClose = true;
 		Utility.timerToClose = true;
-
+		
+		Vector<PlayerModel> players = new Vector<>();
+		players.add(playerModel);
+		players.add(playerModelOther);
+		
+		GameModel.setPlayers(players);
+		
 		// Lost the battle
 		playerModel.updateResult(gameModel);
 		assertEquals(Constants.ATTACK_PHASE, gameModel.getState());
@@ -450,7 +476,7 @@ public class PlayerModelTest {
 		playerModel.setAttackingTerritory(attackingTerritoryModel);
 		playerModel.setDefendingTerritory(defendingTerritoryModel);
 
-		// Won the battle and game
+		// Won the battle and game 
 		playerModel.updateResult(gameModel);
 		assertEquals(Constants.END_PHASE, gameModel.getState());
 	}
