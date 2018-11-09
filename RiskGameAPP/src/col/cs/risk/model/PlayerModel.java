@@ -15,7 +15,8 @@ import col.cs.risk.view.RolledDiceView;
 
 /**
  * This class maintains the player details as well as implements the methods
- * related to player like occupyTerritory and do fortification etc.
+ * related to player like occupyTerritory and do fortification etc. It also simulates the
+ * attack phase of the game and handles the update needed along with it.
  * 
  * @author Team25
  *

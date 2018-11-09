@@ -289,17 +289,6 @@ public class GameModelTest {
 	}
 
 	/**
-	 * Test Case Validates if territories are connected
-	 * 
-	 * @param mapText Map file as string
-	 * @return true if all territories are connected
-	 */
-	@Test
-	public void isAllTerritoriesHaveAdjacents() {
-		assertEquals(true, gameModel.isAllTerritoriesHaveAdjacents(mapString.toString()));
-	}
-
-	/**
 	 * Test Case Validates the whether territories belongs to the defined continents
 	 * 
 	 * @param mapText Map file as string
