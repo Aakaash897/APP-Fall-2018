@@ -104,7 +104,7 @@ public class CardTradeView  extends JFrame implements Observer {
 
 	/**
 	 * Constructor
-	 * @param gameController
+	 * @param gameController is the object for the GameController class
 	 */
 	public CardTradeView(GameController gameController) {
 		this();
@@ -352,7 +352,8 @@ public class CardTradeView  extends JFrame implements Observer {
 		gameController.handleReinforcement1();
 	}
 
-	/**
+	/** 
+	 * Function to get the Infantry Card Selected
 	 * @return the infantryCard
 	 */
 	public int getInfantryCardSelectedItem() {
@@ -364,6 +365,7 @@ public class CardTradeView  extends JFrame implements Observer {
 	}
 
 	/**
+	 * Function to get the Cavalry Card Selected
 	 * @return the cavalryCard
 	 */
 	public int getCavalryCardSelectedItem() {
@@ -376,6 +378,7 @@ public class CardTradeView  extends JFrame implements Observer {
 
 
 	/**
+	 * Function to get the Artillery Card Selected
 	 * @return the artilleryCard
 	 */
 	public int getArtilleryCardSelectedItem() {
@@ -388,6 +391,7 @@ public class CardTradeView  extends JFrame implements Observer {
 
 
 	/**
+	 * Function to get the Wild Card Selected
 	 * @return the wildCard
 	 */
 	public int getWildCardSelectedItem() {
