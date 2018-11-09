@@ -26,8 +26,8 @@ import col.cs.risk.view.RolledDiceView;
 /**
  * Game Controller
  * 
- * This is the Main Driver of the controller. This includes all the phases of game. This
- * class handles the main game functionalities like changePlayerTurn,
+ * This is the Main Driver of the controller. This includes all the phases of
+ * game. This class handles the main game functionalities like changePlayerTurn,
  * handleAttack, endGame etc.
  * 
  * @author Team25
@@ -60,13 +60,12 @@ public class GameController {
 	 * Card exchange view
 	 */
 	private CardTradeView cardTradeView;
-	
+
 	/** view for displaying rolled dices list */
 	private RolledDiceView rolledDiceView;
 
 	/**
-	 * Constructor to initialize the 
-	 * Jpanel
+	 * Constructor to initialize the Jpanel
 	 * 
 	 * @param booleans
 	 */
@@ -93,12 +92,12 @@ public class GameController {
 			ex.clearHistory();
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			System.out.println("Exception: "+ex.getMessage());
+			System.out.println("Exception: " + ex.getMessage());
 		}
 	}
 
 	/**
-	 * Default controller
+	 * Default constructor
 	 */
 	public GameController() {
 
@@ -156,17 +155,17 @@ public class GameController {
 	 * @param evt
 	 */
 	public void attackButtonActionPerformed(ActionEvent evt) {
-		if(gameModel.getState() == Constants.CARD_TRADE) {
+		if (gameModel.getState() == Constants.CARD_TRADE) {
 			return;
 		}
 		gameModel.setState(Constants.ATTACK_PHASE);
 		gameModel.notifyPhaseChanging();
 		mapView.getCardButton().setVisible(false);
 		mapView.getAttackButton().setVisible(false);
-		if(gameModel.getCurrentPlayer().canAttack()) {
+		if (gameModel.getCurrentPlayer().canAttack()) {
 			mapView.getStatusLabel().setText(Constants.ATTACK_COUNTRY_SELECT_MESSAGE);
 		} else {
-			mapView.getStatusLabel().setText(Constants.CANNOT_ATTACK_MESSAGE+Constants.SELECT_THE_ACTION_MESSAGE);
+			mapView.getStatusLabel().setText(Constants.CANNOT_ATTACK_MESSAGE + Constants.SELECT_THE_ACTION_MESSAGE);
 		}
 		gameModel.notifyPhaseChange();
 	}
@@ -177,7 +176,7 @@ public class GameController {
 	 * @param evt
 	 */
 	public void fortifyButtonActionPerformed(ActionEvent evt) {
-		if(gameModel.getState() == Constants.CARD_TRADE) {
+		if (gameModel.getState() == Constants.CARD_TRADE) {
 			return;
 		}
 		gameModel.getCurrentPlayer().setCardAssigned(false);
@@ -205,7 +204,7 @@ public class GameController {
 				mapView.getStatusLabel().setText(Constants.MIN_ONE_ARMY_MESSAGE);
 			} else {
 				gameModel.setNoOfArmiesToMove(armies);
-				if(gameModel.moveArmies()) {
+				if (gameModel.moveArmies()) {
 					gameModel.setNoOfArmiesToMove(Constants.ZERO);
 					gameModel.setMoveArmiesFromTerritory(null);
 					gameModel.setMoveArmiesToTerritory(null);
@@ -221,6 +220,7 @@ public class GameController {
 
 	/**
 	 * Action performed on card button pressed
+	 * 
 	 * @param event
 	 */
 	public void cardButtonActionPerformed(ActionEvent event) {
@@ -235,7 +235,7 @@ public class GameController {
 	public void endButtonActionPerformed(ActionEvent evt) {
 		gameModel.getCurrentPlayer().setCardAssigned(false);
 		System.out.println(" end button pressed state = " + gameModel.getState());
-		if(gameModel.getPreviousState() == gameModel.getState()) {
+		if (gameModel.getPreviousState() == gameModel.getState()) {
 			gameModel.setPreviousState(Constants.NEW_GAME);
 		}
 		switch (gameModel.getState()) {
@@ -301,7 +301,9 @@ public class GameController {
 
 	/**
 	 * Handles game over functionality
-	 * @param message to display
+	 * 
+	 * @param message
+	 *            to display
 	 */
 	public void gameOver(String message) {
 		gameModel.setState(Constants.END_PHASE);
@@ -340,7 +342,7 @@ public class GameController {
 		switch (gameModel.getState()) {
 		case Constants.INITIAL_RE_ENFORCEMENT_PHASE:
 		case Constants.RE_ENFORCEMENT_PHASE:
-			if(mapView.getCardButton().isVisible()) {
+			if (mapView.getCardButton().isVisible()) {
 				mapView.getCardButton().setVisible(false);
 			}
 			if (gameModel.getCurrentPlayer().getArmies() > Constants.ZERO) {
@@ -369,7 +371,7 @@ public class GameController {
 			break;
 		}
 
-		if(gameModel.getState() == Constants.ATTACK_FIGHT_PHASE) {
+		if (gameModel.getState() == Constants.ATTACK_FIGHT_PHASE) {
 			gameModel.setSelectedTerritory(null);
 			updateAutomaticMode();
 			gameModel.getCurrentPlayer().startBattle(gameModel, this);
@@ -387,7 +389,7 @@ public class GameController {
 		mapMainPanel.repaint();
 		mapSubPanelPlayer.repaint();
 	}
-	
+
 	/**
 	 * Update automatic roll of dice or all out mode
 	 */
@@ -399,16 +401,15 @@ public class GameController {
 	}
 
 	/**
-	 * This function sets the console output upon
-	 * entering the Attack Phase
+	 * This function sets the console output upon entering the Attack Phase
 	 */
 	public void handleAttack() {
 		gameModel.setState(Constants.ATTACK_PHASE);
 		gameModel.notifyPhaseChanging();
-		if(gameModel.getCurrentPlayer().canAttack()) {
+		if (gameModel.getCurrentPlayer().canAttack()) {
 			mapView.getStatusLabel().setText(Constants.ATTACK_COUNTRY_SELECT_MESSAGE);
 		} else {
-			mapView.getStatusLabel().setText(Constants.CANNOT_ATTACK_MESSAGE+Constants.SELECT_THE_ACTION_MESSAGE);
+			mapView.getStatusLabel().setText(Constants.CANNOT_ATTACK_MESSAGE + Constants.SELECT_THE_ACTION_MESSAGE);
 		}
 		mapView.getCardButton().setVisible(false);
 		mapView.getFortifyButton().setVisible(true);
@@ -418,9 +419,9 @@ public class GameController {
 	}
 
 	/**
-	 * Handle active turn state of
-	 * the risk game i.e once all the player armies are placed on the territories
-	 * but still it will be in reinforcement phase still next user action
+	 * Handle active turn state of the risk game i.e once all the player armies are
+	 * placed on the territories but still it will be in reinforcement phase still
+	 * next user action
 	 */
 	private void handleActiveTurn() {
 		gameModel.setState(Constants.RE_ENFORCEMENT_PHASE);
@@ -431,7 +432,8 @@ public class GameController {
 	}
 
 	/**
-	 * Handle start turn state of player or before reinforcement i.e after fortification
+	 * Handle start turn state of player or before reinforcement i.e after
+	 * fortification
 	 */
 	private void handleStartTurn() {
 		gameModel.setSelectedTerritory(null);
@@ -444,11 +446,10 @@ public class GameController {
 	}
 
 	/**
-	 * Handles the reinforcement state
-	 * of the game
+	 * Handles the reinforcement state of the game
 	 */
 	private void handleReinforcement() {
-		if(gameModel.getCurrentPlayer().getOccupiedTerritories().isEmpty()) {
+		if (gameModel.getCurrentPlayer().getOccupiedTerritories().isEmpty()) {
 			validatePlayerTurn();
 		} else {
 			gameModel.setState(Constants.RE_ENFORCEMENT_PHASE);
@@ -469,7 +470,7 @@ public class GameController {
 		mapView.getEndButton().setVisible(false);
 		gameModel.notifyPhaseChange();
 	}
-	
+
 	/**
 	 * Card trade status message
 	 */
@@ -482,7 +483,7 @@ public class GameController {
 	 * Handle reinforcement after card verification
 	 */
 	public void handleReinforcement1() {
-		if(!gameModel.getCurrentPlayer().isCardTradeMandatory()) {
+		if (!gameModel.getCurrentPlayer().isCardTradeMandatory()) {
 			gameModel.setState(Constants.RE_ENFORCEMENT_PHASE);
 			mapView.getCardButton().setVisible(true);
 			if (gameModel.getCurrentPlayer().getArmies() == Constants.ZERO) {
@@ -505,7 +506,8 @@ public class GameController {
 
 	/**
 	 * Verifies the selected card set is valid for trading
-	 * @return
+	 * 
+	 * @return isValid variable
 	 */
 	public boolean isValidNoOfCardsTraded() {
 		boolean isValid = false;
@@ -514,27 +516,28 @@ public class GameController {
 		int artilleryCount = cardTradeView.getArtilleryCardSelectedItem();
 		int wildCount = cardTradeView.getWildCardSelectedItem();
 
-		int count = infantryCount+cavarlyCount+artilleryCount+wildCount;
+		int count = infantryCount + cavarlyCount + artilleryCount + wildCount;
 
-		if(count == Constants.THREE) {
-			if(infantryCount == Constants.THREE || cavarlyCount == Constants.THREE 
+		if (count == Constants.THREE) {
+			if (infantryCount == Constants.THREE || cavarlyCount == Constants.THREE
 					|| artilleryCount == Constants.THREE) {
-				isValid =  true;
-			} else if(infantryCount == Constants.ONE && cavarlyCount == Constants.ONE 
+				isValid = true;
+			} else if (infantryCount == Constants.ONE && cavarlyCount == Constants.ONE
 					&& artilleryCount == Constants.ONE) {
-				isValid =  true;
-			} else if(wildCount == Constants.ONE) {
-				isValid =  true;
+				isValid = true;
+			} else if (wildCount == Constants.ONE) {
+				isValid = true;
 			}
-		} 
-		if(!isValid) {
+		}
+		if (!isValid) {
 			Utility.showMessagePopUp(Constants.INVALID_NO_OF_CARDS_TRADE_MESSAGE, "Card Information");
 		}
-		return isValid;		
+		return isValid;
 	}
 
 	/**
 	 * Action taken on valid card set selected to trade
+	 * 
 	 * @param evt
 	 */
 	public void cardTradeActionPerformed(ActionEvent evt) {
@@ -546,32 +549,31 @@ public class GameController {
 		Vector<CardModel> cards = gameModel.getCurrentPlayer().getCards();
 		Vector<CardModel> cardsToBeRemoved = new Vector<>();
 
-		for(CardModel card:cards) {
-			if(infantryCard<=0 && cavarlyCard<=0 &&
-					artilleryCard<=0 && wildCard<=0) {
+		for (CardModel card : cards) {
+			if (infantryCard <= 0 && cavarlyCard <= 0 && artilleryCard <= 0 && wildCard <= 0) {
 				break;
 			}
-			switch(card.getType()) {
+			switch (card.getType()) {
 			case Constants.ARMY_TYPE_INFANTRY:
-				if(infantryCard > 0) {
+				if (infantryCard > 0) {
 					cardsToBeRemoved.add(card);
 					infantryCard--;
 				}
 				break;
 			case Constants.ARMY_TYPE_CAVALRY:
-				if(cavarlyCard > 0) {
+				if (cavarlyCard > 0) {
 					cardsToBeRemoved.add(card);
 					cavarlyCard--;
 				}
 				break;
 			case Constants.ARMY_TYPE_ARTILLERY:
-				if(artilleryCard > 0) {
+				if (artilleryCard > 0) {
 					cardsToBeRemoved.add(card);
 					artilleryCard--;
 				}
 				break;
 			case Constants.ARMY_TYPE_WILD:
-				if(wildCard > 0) {
+				if (wildCard > 0) {
 					cardsToBeRemoved.add(card);
 					wildCard--;
 				}
@@ -579,18 +581,18 @@ public class GameController {
 			}
 		}
 
-		if(cardsToBeRemoved.size() == Constants.THREE) {
+		if (cardsToBeRemoved.size() == Constants.THREE) {
 			gameModel.getCurrentPlayer().addAdditionalBounusForTradeCardMatch(cardsToBeRemoved);
 			gameModel.getCurrentPlayer().removeCards(cardsToBeRemoved);
-		} 
+		}
 
 		int tradeCount = gameModel.getCardTradeCount();
 		tradeCount++;
 		int armies;
-		if(tradeCount <= Constants.SIX) {
+		if (tradeCount <= Constants.SIX) {
 			armies = gameModel.getCardArmyMap().get(tradeCount);
 		} else {
-			armies = gameModel.getCardArmyMap().get(Constants.SIX) + (tradeCount-Constants.SIX)*Constants.FIVE;
+			armies = gameModel.getCardArmyMap().get(Constants.SIX) + (tradeCount - Constants.SIX) * Constants.FIVE;
 		}
 		gameModel.setCardTradeCount(tradeCount);
 		cardTradeView.exitForm();
@@ -599,7 +601,7 @@ public class GameController {
 		handleReinforcement1();
 		gameModel.notifyPhaseChange();
 	}
-	
+
 	/**
 	 * Selection of no. of dice to roll(both attacker and defender)
 	 */
@@ -611,7 +613,7 @@ public class GameController {
 			} else {
 				numberOfDice = mapView.showOptionPopup(gameModel.getCurrentPlayer().getName(),
 						numberOfDice < Constants.THREE ? numberOfDice - 1 : Constants.THREE, Constants.ATTACK_IMAGE,
-								gameModel.getCurrentPlayer().getName());
+						gameModel.getCurrentPlayer().getName());
 			}
 			gameModel.getCurrentPlayer().setAttackingNoOfDice(numberOfDice);
 
@@ -623,7 +625,7 @@ public class GameController {
 					numberOfDice = mapView.showOptionPopup(
 							gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel().getName(),
 							numberOfDice < Constants.TWO ? numberOfDice : Constants.TWO, Constants.DEFEND_IMAGE,
-									gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel().getName());
+							gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel().getName());
 				}
 				gameModel.getCurrentPlayer().setDefendingNoOfDice(numberOfDice);
 			}
@@ -640,7 +642,7 @@ public class GameController {
 		gameModel.getCurrentPlayer().rollAndSetDiceList();
 		rolledDiceView.showRolledDiceList(gameModel);
 	}
-	
+
 	/**
 	 * Action performed after rolled dice displayed
 	 */
@@ -701,7 +703,8 @@ public class GameController {
 	}
 
 	/**
-	 * @param gameModel the gameModel to set
+	 * @param gameModel
+	 *            the gameModel to set
 	 */
 	public void setGameModel(GameModel gameModel) {
 		this.gameModel = gameModel;
@@ -715,7 +718,8 @@ public class GameController {
 	}
 
 	/**
-	 * @param cardTradeView the cardTradeView to set
+	 * @param cardTradeView
+	 *            the cardTradeView to set
 	 */
 	public void setCardTradeView(CardTradeView cardTradeView) {
 		this.cardTradeView = cardTradeView;
