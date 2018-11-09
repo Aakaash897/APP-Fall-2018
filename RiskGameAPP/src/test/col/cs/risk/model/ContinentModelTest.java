@@ -22,7 +22,9 @@ import col.cs.risk.model.TerritoryModel;
  */
 public class ContinentModelTest {
 
-	/** continent model object */
+	/**
+	 * continent model object
+	 */
 	private ContinentModel continentModel;
 
 	/**
@@ -83,9 +85,7 @@ public class ContinentModelTest {
 		Vector<TerritoryModel> vector1 = new Vector<>();
 		vector1.add(tmodel1);
 		continentModel.setTerritories(vector1);
-		String str = "id = 1" + ", name = cname"+ ", score = 1" + ", territories = [201]";
-		//assertEquals(str,continentModel.printContinent());
-		System.out.println(continentModel.printContinent());
-		
+		String str = "id = 1, name = cName, score = 1, territories = [201]";
+		assertEquals(str,continentModel.printContinent());		
 	}
 }

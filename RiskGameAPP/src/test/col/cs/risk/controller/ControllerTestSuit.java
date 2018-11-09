@@ -10,8 +10,7 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author Team25
  */
 @RunWith(Suite.class)
-@SuiteClasses({StartGameControllerTest.class, PlayerSettingsControllerTest.class, 
-	GameControllerTest.class})
+@SuiteClasses({ StartGameControllerTest.class, PlayerSettingsControllerTest.class, GameControllerTest.class })
 public class ControllerTestSuit {
 
 }

@@ -10,8 +10,7 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author Team25
  */
 @RunWith(Suite.class)
-@SuiteClasses({GameModelTest.class, PlayerModelTest.class, 
-	ContinentModelTest.class, TerritoryModelTest.class})
+@SuiteClasses({ GameModelTest.class, PlayerModelTest.class, ContinentModelTest.class, TerritoryModelTest.class })
 public class ModelTestSuit {
 
 }

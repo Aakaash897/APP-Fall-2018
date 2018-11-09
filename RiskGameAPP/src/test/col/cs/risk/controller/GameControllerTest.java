@@ -31,16 +31,24 @@ import col.cs.risk.view.MapView;
  */
 public class GameControllerTest {
 	
-	/** Game controller object */
+	/** 
+	 * Game controller object
+	 */
 	GameController gameController;
 	
-	/** gameModel object */
+	/**
+	 * gameModel object
+	 */
 	GameModel gameModel;
 	
-	/** card trade view object */
+	/**
+	 * card trade view object
+	 */
 	CardTradeView cardTradeView;
 	
-	/** player model object */
+	/**
+	 * player model object
+	 */
 	PlayerModel playerModel;
 
 

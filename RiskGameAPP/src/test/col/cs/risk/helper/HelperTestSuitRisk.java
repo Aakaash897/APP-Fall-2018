@@ -10,7 +10,7 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author Team25
  */
 @RunWith(Suite.class)
-@SuiteClasses({UtilityTest.class})
+@SuiteClasses({ UtilityTest.class })
 public class HelperTestSuitRisk {
 
 }

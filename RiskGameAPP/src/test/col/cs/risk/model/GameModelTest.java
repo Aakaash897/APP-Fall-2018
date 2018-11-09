@@ -18,26 +18,26 @@ import col.cs.risk.model.PlayerModel;
 import col.cs.risk.model.TerritoryModel;
 
 /**
- * Test cases for Game Model methods regarding the map attributes
- * such as the connectivity, validation and player assignment.
+ * Test cases for Game Model methods regarding the map attributes such as the
+ * connectivity, validation and player assignment.
  * 
  * @author Team25
  *
  */
 public class GameModelTest {
 
-	/** 
+	/**
 	 * Game model instance
 	 */
 	GameModel gameModel;
-	
-	/** 
+
+	/**
 	 * Continent model instance
 	 */
 	ContinentModel continentModel;
 
 	/**
-	 *  Map file contents as String
+	 * Map file contents as String
 	 */
 	StringBuilder mapString;
 
@@ -160,30 +160,30 @@ public class GameModelTest {
 	public void testNextPlayer() {
 		Vector<PlayerModel> playerVector = new Vector<>();
 		for (int i = 0; i < 5; i++) {
-			PlayerModel tempPlayerModel = new PlayerModel(i, "name"+i);
+			PlayerModel tempPlayerModel = new PlayerModel(i, "name" + i);
 			playerVector.add(tempPlayerModel);
 		}
 		GameModel.players = playerVector;
-		//Setting first player as current player
+		// Setting first player as current player
 		gameModel.setCurrentPlayer(playerVector.elementAt(0));
 
-		//changing the player
+		// changing the player
 		gameModel.nextPlayer();
 		assertTrue(gameModel.getCurrentPlayer() == playerVector.get(1) ? true : false);
 
-		//changing the player
+		// changing the player
 		gameModel.nextPlayer();
 		assertTrue(gameModel.getCurrentPlayer() == playerVector.get(2) ? true : false);
-		
-		//changing the player
+
+		// changing the player
 		gameModel.nextPlayer();
 		assertTrue(gameModel.getCurrentPlayer() == playerVector.get(3) ? true : false);
 
-		//changing the player
+		// changing the player
 		gameModel.nextPlayer();
 		assertTrue(gameModel.getCurrentPlayer() == playerVector.get(4) ? true : false);
-		
-		//changing the player
+
+		// changing the player
 		gameModel.nextPlayer();
 		assertTrue(gameModel.getCurrentPlayer() == playerVector.get(0) ? true : false);
 	}
@@ -203,7 +203,7 @@ public class GameModelTest {
 		model2.addAdjacentTerritory(model3);
 		model3.addAdjacentTerritory(model4);
 		model4.addAdjacentTerritory(model1);
-		
+
 		Vector<TerritoryModel> territories = new Vector<>();
 		territories.add(model1);
 		territories.add(model2);
@@ -246,26 +246,27 @@ public class GameModelTest {
 		TerritoryModel territory1 = new TerritoryModel(1, "T1", 10, 20, continent);
 		TerritoryModel territory2 = new TerritoryModel(2, "T2", 50, 70, continent);
 		TerritoryModel territory3 = new TerritoryModel(3, "T3", 100, 100, continent);
-		
+
 		Vector<TerritoryModel> territorries = new Vector<>();
 		territorries.add(territory1);
 		territorries.add(territory2);
 		territorries.add(territory3);
-		
+
 		gameModel.setTerritories(territorries);
-		
+
 		assertEquals(territory2, gameModel.getTerritoryFromMapLocation(50, 70));
 		assertEquals(territory2.getName(), gameModel.getTerritoryFromMapLocation(50, 70).getName());
 	}
-	
+
 	/**
 	 * Test case for Converting data in models(continent and territory) to string
+	 * 
 	 * @return String of map data
 	 * 
 	 */
 	@Test
 	public void testGetMapContentToWrite() {
-		
+
 		ContinentModel continent = new ContinentModel(1, "C1", 2);
 		TerritoryModel territory1 = new TerritoryModel(1, "T1", 10, 20, continent);
 		TerritoryModel territory2 = new TerritoryModel(2, "T2", 50, 70, continent);
@@ -279,86 +280,82 @@ public class GameModelTest {
 		continents.add(continent);
 		gameModel.setContinents(continents);
 
-		String str = "[Map]"+"\n"+"author=Shwetha"+"\n"+"image=currMap.jpg"+"\n"+"wrap=no"+
-		             "\n"+"scroll=horizontal"+"\n"+"warn=yes"+"\n\n"+"[Continents]"+"\n"+"C1"+"="+"2"+"\n"+"\n"+"[Territories]"+"\n"+
-		             "T1,"+"10,"+"20,"+"C1"+"\n"+"T2,"+"50,"+"70,"+"C1"+"\n"+"T3,"+"100,"+"100,"+"C1"+"\n"+"\n"+"\n\n\n";
-		
-		for(ContinentModel con:continents) {
-			for(TerritoryModel model:con.getTerritories()) {
-				System.out.println(model.printTerritory());
-			}
-			}
-		assertEquals(str,gameModel.getMapContentToWrite());
-		
-	
+		String str = "[Map]" + "\n" + "author=Shwetha" + "\n" + "image=currMap.jpg" + "\n" + "wrap=no" + "\n"
+				+ "scroll=horizontal" + "\n" + "warn=yes" + "\n\n" + "[Continents]" + "\n" + "C1" + "=" + "2" + "\n"
+				+ "\n" + "[Territories]" + "\n" + "T1," + "10," + "20," + "C1" + "\n" + "T2," + "50," + "70," + "C1"
+				+ "\n" + "T3," + "100," + "100," + "C1" + "\n" + "\n" + "\n\n\n";
+
+		assertEquals(str, gameModel.getMapContentToWrite());
 	}
-	
+
 	/**
-	 *Test Case Validates if territories are connected
+	 * Test Case Validates if territories are connected
+	 * 
 	 * @param mapText Map file as string
 	 * @return true if all territories are connected
 	 */
 	@Test
 	public void isAllTerritoriesHaveAdjacents() {
-		assertEquals(true,gameModel.isAllTerritoriesHaveAdjacents(mapString.toString()));
+		assertEquals(true, gameModel.isAllTerritoriesHaveAdjacents(mapString.toString()));
 	}
-	
+
 	/**
 	 * Test Case Validates the whether territories belongs to the defined continents
+	 * 
 	 * @param mapText Map file as string
 	 * @return true if all territories belongs to the predefined continents.
 	 */
 	@Test
 	public void isContinentInTerrirotiesValid() {
-		assertEquals(true,gameModel.isContinentInTerrirotiesValid(mapString.toString()));
-	
+		assertEquals(true, gameModel.isContinentInTerrirotiesValid(mapString.toString()));
+
 	}
-	
+
 	/**
 	 * Test case to test whether the player won if all other players are eliminated
 	 */
 	@Test
 	public void testIsOwn() {
-		PlayerModel playerModel1= new PlayerModel(101, "player1");
+		PlayerModel playerModel1 = new PlayerModel(101, "player1");
 		PlayerModel playerModel2 = new PlayerModel(102, "player2");
-		
+
 		ContinentModel continent = new ContinentModel(1, "C1", 2);
 		TerritoryModel territory1 = new TerritoryModel(1, "T1", 10, 20, continent);
 		TerritoryModel territory2 = new TerritoryModel(2, "T2", 50, 70, continent);
 		TerritoryModel territory3 = new TerritoryModel(3, "T3", 100, 100, continent);
-		
+
 		territory1.setPlayerModel(playerModel1);
 		territory2.setPlayerModel(playerModel1);
 		territory3.setPlayerModel(playerModel2);
-		
+
 		Vector<TerritoryModel> territorries = new Vector<>();
 		territorries.add(territory1);
 		territorries.add(territory2);
 		territorries.add(territory3);
-		
+
 		gameModel.setTerritories(territorries);
 		gameModel.setCurrentPlayer(playerModel1);
-		
+
 		assertFalse(gameModel.isWon());
-		
+
 		territory3.setPlayerModel(playerModel1);
 		assertTrue(gameModel.isWon());
 	}
-	
+
 	/**
 	 * test case to test/validate correct startup phase of game
 	 */
 	@Test
 	public void testGameStartPhase() {
 		Vector<PlayerModel> players = new Vector<>();
-		for(int i=0;i<3;i++) {
-			players.add(new PlayerModel(i, "Player_"+(i+1)));
+		for (int i = 0; i < 3; i++) {
+			players.add(new PlayerModel(i, "Player_" + (i + 1)));
 		}
 		GameModel.players = players;
-		
+
 		try {
 			GameModel newGameModel = new GameModel(true);
-			
+
 			// game start phase
 			assertEquals(Constants.INITIAL_RE_ENFORCEMENT_PHASE, newGameModel.getState());
 			// world map countries size
@@ -366,14 +363,14 @@ public class GameModelTest {
 			// 42 + 2 wild card
 			assertEquals(44, newGameModel.getCardsDeck().size());
 			assertEquals(players.get(0).getName(), newGameModel.getCurrentPlayer().getName());
-			//list of countries occupied by each player
+			// list of countries occupied by each player
 			assertEquals(14, newGameModel.getCurrentPlayer().getOccupiedTerritories().size());
 			// 35 - 14(used to occupy counties)
 			assertEquals(21, newGameModel.getCurrentPlayer().getArmies());
-			
+
 		} catch (MapException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 }
