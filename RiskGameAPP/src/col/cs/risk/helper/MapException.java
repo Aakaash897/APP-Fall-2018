@@ -5,8 +5,8 @@ import col.cs.risk.model.Constants;
 import col.cs.risk.model.GameModel;
 
 /**
- * The class Map exception is used to throw invalid map exception
- * i.e., if any errors in map like it is not connected.
+ * The class Map exception is used to throw invalid map exception i.e., if any
+ * errors in map like it is not connected.
  * 
  * @author Team25
  *
@@ -20,12 +20,14 @@ public class MapException extends Exception {
 
 	/**
 	 * Constructor of the class
-	 * @param errorMessage : Message passed using this
+	 * 
+	 * @param errorMessage
+	 *            : Message passed using this
 	 */
 	public MapException(String errorMessage) {
 		super(errorMessage);
 	}
-	
+
 	/**
 	 * Clears the history such as players and all map details
 	 */

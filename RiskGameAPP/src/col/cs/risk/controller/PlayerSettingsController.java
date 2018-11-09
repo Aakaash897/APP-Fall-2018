@@ -22,11 +22,11 @@ public class PlayerSettingsController {
 	public int noOfPlayers = 3;
 
 	/** selected map either World, India, Europe etc */
-	public static String selectedMap; 
-	
+	public static String selectedMap;
+
 	/** player settings view instance */
 	public PlayerSettingsView playerSettingsView;
-	
+
 	/** Start game Controller instance */
 	private StartGameController startGameController;
 
@@ -40,6 +40,7 @@ public class PlayerSettingsController {
 
 	/**
 	 * Action performed on pressing finish button on settings screen
+	 * 
 	 * @param evt
 	 */
 	public void finishActionPerformed(ActionEvent evt) {
@@ -47,15 +48,16 @@ public class PlayerSettingsController {
 		playerSettingsView.setVisible(false);
 		GameController.showGUI();
 	}
-	
+
 	/**
 	 * No of players selection component
+	 * 
 	 * @param evt
 	 */
 	public void noOfPlayersActionPerformed(ActionEvent evt) {
 		JComboBox<?> comboBox = (JComboBox<?>) evt.getSource();
 		noOfPlayers = (Integer) comboBox.getSelectedItem();
-		System.out.println(" Selected number = "+noOfPlayers);
+		System.out.println(" Selected number = " + noOfPlayers);
 	}
 
 	/**
@@ -63,32 +65,33 @@ public class PlayerSettingsController {
 	 */
 	public void setPlayers() {
 		Vector<PlayerModel> players = new Vector<>();
-		for(int i=0;i<noOfPlayers;i++) {
-			players.add(new PlayerModel(i, "Player_"+(i+1)));
+		for (int i = 0; i < noOfPlayers; i++) {
+			players.add(new PlayerModel(i, "Player_" + (i + 1)));
 		}
 		GameModel.players = players;
 	}
-	
+
 	/**
 	 * User selected map representation such as India, 3D Cliff, Europe etc.
+	 * 
 	 * @param evt
 	 */
 	public void mapSelectionActionPerformed(ActionEvent evt) {
 		JComboBox<?> comboBox = (JComboBox<?>) evt.getSource();
 		selectedMap = (String) comboBox.getSelectedItem();
 		GameModel.isBaseMapModified = true;
-		System.out.println(" Selected map = "+selectedMap);
+		System.out.println(" Selected map = " + selectedMap);
 
-		switch(selectedMap) {
+		switch (selectedMap) {
 		case "UserDefined":
 			GameModel.imageSelected = "currMap.png";
 			break;
 		default:
-			GameModel.imageSelected = selectedMap+".bmp";
+			GameModel.imageSelected = selectedMap + ".bmp";
 			break;
 		}
 	}
-	
+
 	/**
 	 * @return the playerSettingsView
 	 */
@@ -97,7 +100,8 @@ public class PlayerSettingsController {
 	}
 
 	/**
-	 * @param playerSettingsView the playerSettingsView to set
+	 * @param playerSettingsView
+	 *            the playerSettingsView to set
 	 */
 	public void setPlayerSettingsView(PlayerSettingsView playerSettingsView) {
 		this.playerSettingsView = playerSettingsView;
@@ -111,7 +115,8 @@ public class PlayerSettingsController {
 	}
 
 	/**
-	 * @param noOfPlayers the noOfPlayers to set
+	 * @param noOfPlayers
+	 *            the noOfPlayers to set
 	 */
 	public void setNoOfPlayers(int noOfPlayers) {
 		this.noOfPlayers = noOfPlayers;
@@ -125,7 +130,8 @@ public class PlayerSettingsController {
 	}
 
 	/**
-	 * @param selectedMap the selectedMap to set
+	 * @param selectedMap
+	 *            the selectedMap to set
 	 */
 	public static void setSelectedMap(String selectedMap) {
 		PlayerSettingsController.selectedMap = selectedMap;
@@ -139,7 +145,8 @@ public class PlayerSettingsController {
 	}
 
 	/**
-	 * @param startGameController the startGameController to set
+	 * @param startGameController
+	 *            the startGameController to set
 	 */
 	public void setStartGameController(StartGameController startGameController) {
 		this.startGameController = startGameController;

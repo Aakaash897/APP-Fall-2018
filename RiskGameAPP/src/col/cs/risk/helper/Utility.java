@@ -185,11 +185,13 @@ public class Utility {
 
 	/**
 	 * Message pop up to show error message
-	 * @param message Contains the actual message to be shown
+	 * 
+	 * @param message
+	 *            Contains the actual message to be shown
 	 * @param title
 	 */
 	public static void showMessagePopUp(String message, String title) {
-		if(timerToClose) {
+		if (timerToClose) {
 			JOptionPane pane = new JOptionPane();
 			Thread t1 = new Thread(new Runnable() {
 				@SuppressWarnings("static-access")
@@ -198,7 +200,7 @@ public class Utility {
 						Thread.sleep(200);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
-					}               
+					}
 					pane.getRootFrame().dispose();
 				}
 			});
@@ -288,6 +290,12 @@ public class Utility {
 		}
 		return true;
 	}
+
+	/**
+	 * return the player color according to player id
+	 * 
+	 * @return playerColor
+	 */
 
 	public static Color getColor(int id) {
 		return playerColor.get(id);

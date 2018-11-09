@@ -271,7 +271,8 @@ public class StartGameController {
 			try {
 				if (Utility.isConnectedMap(mapString.toString())) {
 					try {
-						FileWriter fw = new FileWriter(new File(Utility.getMapPath(Constants.DEFAULT_MODIFIED_MAP_FILE_NAME)));
+						FileWriter fw = new FileWriter(
+								new File(Utility.getMapPath(Constants.DEFAULT_MODIFIED_MAP_FILE_NAME)));
 						fw.write(mapString.toString());
 						fw.close();
 						constructNewMapView.setVisible(false);

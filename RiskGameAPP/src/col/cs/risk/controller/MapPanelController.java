@@ -87,7 +87,7 @@ public class MapPanelController extends JPanel {
 
 		graphics.setFont(new Font("Verdana", Font.BOLD, 15));
 		graphics.setColor(Color.black);
-		int height = getImageHeight()-Constants.FIVE;
+		int height = getImageHeight() - Constants.FIVE;
 		if (height < 621) {
 			height += 30;
 		} else {
