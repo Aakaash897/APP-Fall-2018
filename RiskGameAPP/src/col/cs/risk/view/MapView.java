@@ -58,6 +58,9 @@ public class MapView extends JFrame implements MouseListener {
 
 	/** game controller instance */
 	GameController gameController;
+	
+	/** timer to close the window */
+	public static boolean timerToClose = false;
 
 	/**
 	 * Default Constructor
@@ -271,9 +274,24 @@ public class MapView extends JFrame implements MouseListener {
 		for(int i=0;i<maximumNo;i++) {
 			options[i] = i+1;
 		}
+		if(timerToClose) {
+		JOptionPane pane = new JOptionPane();
+		Thread t1 = new Thread(new Runnable() {
+            @SuppressWarnings("static-access")
+			public void run() {
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }               
+                pane.getRootFrame().dispose();
+            }
+        });
+        t1.start();
+		}
 		Object value = JOptionPane.showInputDialog(null, "Select the no. of armies to move to the captured country", 
         		"Move armies", JOptionPane.QUESTION_MESSAGE, null, options, options[options.length-1]);
-        int selectedNoOfArmiesToMove = options[options.length-1];
+		int selectedNoOfArmiesToMove = options[options.length-1];
         if(value != null) {
         	selectedNoOfArmiesToMove = (Integer) value;
         }

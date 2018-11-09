@@ -13,6 +13,7 @@ import org.junit.Test;
 import col.cs.risk.controller.GameController;
 import col.cs.risk.controller.MapPanelController;
 import col.cs.risk.controller.PlayerPanelController;
+import col.cs.risk.helper.Utility;
 import col.cs.risk.model.CardModel;
 import col.cs.risk.model.Constants;
 import col.cs.risk.model.ContinentModel;
@@ -125,6 +126,7 @@ public class GameControllerTest {
 		cards.addElement(card7);
 		cards.addElement(card8);
 		playerModel.addCards(cards);
+		Utility.timerToClose = true;
 		
 		// invalid set of cards
 		// 3 wild cards
