@@ -163,10 +163,10 @@ public class GameController {
 		if (gameModel.getCurrentPlayer().canAttack()) {
 			mapView.getStatusLabel().setText(Constants.ATTACK_COUNTRY_SELECT_MESSAGE);
 		} else if(gameModel.getCurrentPlayer().canFortify()){
-			Utility.showMessagePopUp(Constants.CANNOT_ATTACK_MESSAGE, "Information");
+			Utility.showMessagePopUp(Constants.CANNOT_ATTACK_MESSAGE, Constants.INFORMATION);
 			fortifyButtonActionPerformed(null);
 		} else {
-			Utility.showMessagePopUp(Constants.CANNOT_ATTACK_MESSAGE+Constants.FORTIFY_MESSAGE, "Information");
+			Utility.showMessagePopUp(Constants.CANNOT_ATTACK_MESSAGE+Constants.FORTIFY_MESSAGE, Constants.INFORMATION);
 			mapView.getStatusLabel().setText(Constants.CANNOT_ATTACK_MESSAGE + Constants.SELECT_THE_ACTION_MESSAGE);
 			validatePlayerTurn();
 		}
@@ -317,7 +317,7 @@ public class GameController {
 		mapView.getEndButton().setVisible(false);
 		mapView.getCardButton().setVisible(false);
 		gameModel.notifyPhaseChange();
-		Utility.showMessagePopUp(message, "Information");
+		Utility.showMessagePopUp(message, Constants.INFORMATION);
 	}
 
 	/**
@@ -417,11 +417,11 @@ public class GameController {
 			mapView.getAttackButton().setVisible(false);
 			mapView.getUserEntered().setVisible(false);
 		} else if(gameModel.getCurrentPlayer().canFortify()){
-			Utility.showMessagePopUp(Constants.CANNOT_ATTACK_MESSAGE, "Information");
+			Utility.showMessagePopUp(Constants.CANNOT_ATTACK_MESSAGE, Constants.INFORMATION);
 			fortifyButtonActionPerformed(null);
 		} else {
 			mapView.getStatusLabel().setText(Constants.CANNOT_ATTACK_MESSAGE + Constants.SELECT_THE_ACTION_MESSAGE);
-			Utility.showMessagePopUp(Constants.CANNOT_ATTACK_MESSAGE+Constants.FORTIFY_MESSAGE, "Information");
+			Utility.showMessagePopUp(Constants.CANNOT_ATTACK_MESSAGE+Constants.FORTIFY_MESSAGE, Constants.INFORMATION);
 			validatePlayerTurn();
 		}
 	}
@@ -553,59 +553,10 @@ public class GameController {
 		int cavarlyCard = cardTradeView.getCavalryCardSelectedItem();
 		int artilleryCard = cardTradeView.getArtilleryCardSelectedItem();
 		int wildCard = cardTradeView.getWildCardSelectedItem();
-
-		Vector<CardModel> cards = gameModel.getCurrentPlayer().getCards();
-		Vector<CardModel> cardsToBeRemoved = new Vector<>();
-
-		for (CardModel card : cards) {
-			if (infantryCard <= 0 && cavarlyCard <= 0 && artilleryCard <= 0 && wildCard <= 0) {
-				break;
-			}
-			switch (card.getType()) {
-			case Constants.ARMY_TYPE_INFANTRY:
-				if (infantryCard > 0) {
-					cardsToBeRemoved.add(card);
-					infantryCard--;
-				}
-				break;
-			case Constants.ARMY_TYPE_CAVALRY:
-				if (cavarlyCard > 0) {
-					cardsToBeRemoved.add(card);
-					cavarlyCard--;
-				}
-				break;
-			case Constants.ARMY_TYPE_ARTILLERY:
-				if (artilleryCard > 0) {
-					cardsToBeRemoved.add(card);
-					artilleryCard--;
-				}
-				break;
-			case Constants.ARMY_TYPE_WILD:
-				if (wildCard > 0) {
-					cardsToBeRemoved.add(card);
-					wildCard--;
-				}
-				break;
-			}
-		}
-
-		if (cardsToBeRemoved.size() == Constants.THREE) {
-			gameModel.getCurrentPlayer().addAdditionalBounusForTradeCardMatch(cardsToBeRemoved);
-			gameModel.getCurrentPlayer().removeCards(cardsToBeRemoved);
-		}
-
-		int tradeCount = gameModel.getCardTradeCount();
-		tradeCount++;
-		int armies;
-		if (tradeCount <= Constants.SIX) {
-			armies = gameModel.getCardArmyMap().get(tradeCount);
-		} else {
-			armies = gameModel.getCardArmyMap().get(Constants.SIX) + (tradeCount - Constants.SIX) * Constants.FIVE;
-		}
-		gameModel.setCardTradeCount(tradeCount);
+		
+		gameModel.getCurrentPlayer().cardTradeActionPerformed(gameModel,
+				infantryCard, cavarlyCard, artilleryCard, wildCard);
 		cardTradeView.exitForm();
-		gameModel.getCurrentPlayer().addArmies(armies);
-		gameModel.getCurrentPlayer().setCardTradeMandatory(false);
 		handleReinforcement1();
 		gameModel.notifyPhaseChange();
 	}

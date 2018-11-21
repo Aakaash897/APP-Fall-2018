@@ -97,4 +97,5 @@ public class Constants {
 	public static final String ARMY_TYPE_CAVALRY = "CAVALRY";
 	public static final String ARMY_TYPE_ARTILLERY = "ARTILLERY";
 	public static final String ARMY_TYPE_WILD = "WILD";
+	public static final String INFORMATION = "Information";
 }

@@ -161,41 +161,4 @@ public class GameControllerTest {
 		cardTradeView.setSelectedItem(3, 0, 0, 0);
 		assertTrue(gameController.isValidNoOfCardsTraded());
 	}
-
-	/**
-	 * Test case to test armies assigned in exchange to card trade.
-	 */
-	@Test
-	public void testcardTradeActionPerformed() {
-		TerritoryModel tmodel1 = new TerritoryModel(201, "tname1", 10, 20, new ContinentModel(301, "cname1", 3));
-		tmodel1.setPlayerModel(playerModel);
-		CardModel card1 = new CardModel(1, Constants.ARMY_TYPE_INFANTRY, tmodel1);
-		CardModel card2 = new CardModel(1, Constants.ARMY_TYPE_ARTILLERY, tmodel1);
-		CardModel card3 = new CardModel(1, Constants.ARMY_TYPE_CAVALRY, tmodel1);
-		CardModel card4 = new CardModel(1, Constants.ARMY_TYPE_WILD, tmodel1);
-
-		Vector<CardModel> cards = new Vector<>();
-		cards.addElement(card1);
-		cards.addElement(card2);
-		cards.addElement(card3);
-		cards.addElement(card4);
-		playerModel.addCards(cards);
-
-		// first set trading
-		gameController.cardTradeActionPerformed(null);
-
-		cardTradeView.setSelectedItem(1, 1, 1, 0);
-		assertEquals(Constants.FOUR, playerModel.getArmies());
-
-		// second set trading (6+4)
-		gameController.cardTradeActionPerformed(null);
-		cardTradeView.setSelectedItem(2, 0, 0, 1);
-		assertEquals(Constants.TEN, playerModel.getArmies());
-
-		// seventh set trading
-		gameModel.setCardTradeCount(Constants.SIX);
-		gameController.cardTradeActionPerformed(null);
-		cardTradeView.setSelectedItem(1, 1, 0, 1);
-		assertEquals(Constants.THIRTY, playerModel.getArmies());
-	}
 }

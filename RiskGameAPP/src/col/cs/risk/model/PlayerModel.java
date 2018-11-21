@@ -1,5 +1,6 @@
 package col.cs.risk.model;
 
+import java.awt.event.ActionEvent;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -835,6 +836,70 @@ public class PlayerModel extends Observable {
 			isMatch = true;
 		}
 		return isMatch;
+	}
+	
+
+	/**
+	 * Action taken on valid card set selected to trade
+	 * @param gameModel
+	 * @param infantryCard
+	 * @param cavarlyCard
+	 * @param artilleryCard
+	 * @param wildCard
+	 */
+	public void cardTradeActionPerformed(GameModel gameModel, int infantryCard, int cavarlyCard, int artilleryCard, int wildCard) {
+
+		Vector<CardModel> cards = getCards();
+		Vector<CardModel> cardsToBeRemoved = new Vector<>();
+
+		for (CardModel card : cards) {
+			if (infantryCard <= 0 && cavarlyCard <= 0 && artilleryCard <= 0 && wildCard <= 0) {
+				break;
+			}
+			switch (card.getType()) {
+			case Constants.ARMY_TYPE_INFANTRY:
+				if (infantryCard > 0) {
+					cardsToBeRemoved.add(card);
+					infantryCard--;
+				}
+				break;
+			case Constants.ARMY_TYPE_CAVALRY:
+				if (cavarlyCard > 0) {
+					cardsToBeRemoved.add(card);
+					cavarlyCard--;
+				}
+				break;
+			case Constants.ARMY_TYPE_ARTILLERY:
+				if (artilleryCard > 0) {
+					cardsToBeRemoved.add(card);
+					artilleryCard--;
+				}
+				break;
+			case Constants.ARMY_TYPE_WILD:
+				if (wildCard > 0) {
+					cardsToBeRemoved.add(card);
+					wildCard--;
+				}
+				break;
+			}
+		}
+
+		if (cardsToBeRemoved.size() == Constants.THREE) {
+			addAdditionalBounusForTradeCardMatch(cardsToBeRemoved);
+			removeCards(cardsToBeRemoved);
+		}
+
+		int tradeCount = gameModel.getCardTradeCount();
+		tradeCount++;
+		int armies;
+		if (tradeCount <= Constants.SIX) {
+			armies = gameModel.getCardArmyMap().get(tradeCount);
+		} else {
+			armies = gameModel.getCardArmyMap().get(Constants.SIX) + (tradeCount - Constants.SIX) * Constants.FIVE;
+		}
+		gameModel.setCardTradeCount(tradeCount);
+		addArmies(armies);
+		setCardTradeMandatory(false);
 	}
 
 	/**
