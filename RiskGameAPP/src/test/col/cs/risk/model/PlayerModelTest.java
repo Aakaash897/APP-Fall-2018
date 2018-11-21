@@ -500,6 +500,7 @@ public class PlayerModelTest {
 		// Fortification phase but selected territory doesn't belong to player
 		PlayerModel playerModelOther = new PlayerModel(102, "player2");
 		model1.setPlayerModel(playerModelOther);
+		tmodel3.setPlayerModel(playerModelOther);
 		gameModel.setState(Constants.FORTIFICATION_PHASE);
 		assertEquals(Constants.MOVE_FROM, playerModel.fortify(gameModel, model1));
 

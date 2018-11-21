@@ -65,13 +65,18 @@ public class GameController {
 	private RolledDiceView rolledDiceView;
 
 	/**
-	 * Constructor to initialize the Jpanel
-	 * 
-	 * @param booleans
+	 * Default constructor
 	 */
-	public GameController(Boolean... booleans) {
+	public GameController() {
+		this.gameModel = new GameModel();
+	}
+	
+	/**
+	 * Initialize the Game controller
+	 */
+	public void initialize() {
 		try {
-			gameModel = new GameModel(false);
+			gameModel.initialize();
 			initComponents();
 			new MapView(this).setVisible(true);
 			initializePhaseView();
@@ -94,13 +99,6 @@ public class GameController {
 			ex.printStackTrace();
 			System.out.println("Exception: " + ex.getMessage());
 		}
-	}
-
-	/**
-	 * Default constructor
-	 */
-	public GameController() {
-
 	}
 
 	/**
@@ -328,7 +326,7 @@ public class GameController {
 	public static void showGUI() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				new GameController(false);
+				new GameController().initialize();;
 			}
 		});
 	}

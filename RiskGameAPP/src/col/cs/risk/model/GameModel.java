@@ -155,12 +155,10 @@ public class GameModel {
 	}
 
 	/**
-	 * Constructor with parameters for initial verification and setup
-	 * 
-	 * @param booleans
+	 * Initialize with parameters for initial verification and setup
 	 * @throws MapException
 	 */
-	public GameModel(Boolean... booleans) throws MapException {
+	public void initialize() throws MapException {
 		initializePlayerDominationView();
 		state = Constants.INITIAL_RE_ENFORCEMENT_PHASE;
 		initCurrentPlayer();

@@ -106,7 +106,7 @@ public class GameModelTest {
 	 */
 	@Test
 	public void testReadFile() {
-		String fileName = Constants.DEFAULT_MODIFIED_MAP_FILE_NAME;
+		String fileName = Constants.DEFAULT_MAP_FILE_NAME;
 		mapString = gameModel.readFile(mapString, fileName);
 
 		assertTrue(mapString.length() > 0 ? true : false);
@@ -343,8 +343,9 @@ public class GameModelTest {
 		GameModel.players = players;
 
 		try {
-			GameModel newGameModel = new GameModel(true);
-
+			GameModel newGameModel = new GameModel();
+			newGameModel.initialize();
+			
 			// game start phase
 			assertEquals(Constants.INITIAL_RE_ENFORCEMENT_PHASE, newGameModel.getState());
 			// world map countries size
