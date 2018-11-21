@@ -49,6 +49,7 @@ public class Constants {
 	public static final String CARD_TRADE_MESSAGE = "Trade a set of cards";
 	public static final String NOT_A_CONNECTED_MAP_MESSAGE = "Not a connected map invalid country exists: ";
 	public static final String NOT_COMPLETE_CONNECTED_MAP_MESSAGE = "Not a completely connected map";
+	public static final String NOT_COMPLETE_CONTINENT_CONNECTED_MAP_MESSAGE = "Not a completely connected continent map";
 	public static final String INVALID_MAP_MESSAGE = "Invalid map, check the format";
 	public static final String INVALID_PLAYER_NO_SELECTION_MESSAGE = "Invalid number of players selected";
 	public static final String ATTACK_COUNTRY_SELECT_MESSAGE = "Select a territory of yours to attack from";

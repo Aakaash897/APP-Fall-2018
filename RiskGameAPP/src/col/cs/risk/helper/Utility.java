@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Random;
 
@@ -261,7 +262,7 @@ public class Utility {
 							int adjacents = 0;
 							for (int i = 4; i < str.length; i++) {
 								boolean isValidTerritory = false;
-								// Check each adjacent territory is present in the list of territroies
+								// Check each adjacent territory is present in the list of territories
 								for (Entry<String, Integer> territory : territoryNames.entrySet()) {
 									if (!str[0].trim().equalsIgnoreCase(str[i].trim())
 											&& territory.getKey().equalsIgnoreCase(str[i].trim())) {
@@ -282,6 +283,65 @@ public class Utility {
 			}
 			for (Entry<String, Integer> territory : territoryNames.entrySet()) {
 				if (territory.getValue() == 0) {
+					throw new MapException(Constants.NOT_A_CONNECTED_MAP_MESSAGE + territory.getKey());
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
+	
+	public boolean isCompleteConnectedMap(String result) throws MapException {
+		try {
+			InputStream is = new ByteArrayInputStream(result.getBytes());
+			BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+			String line;
+			HashMap<String, HashSet<String>> territoryNames = new HashMap<String, HashSet<String>>();
+
+			// Add all territories to a list
+			while ((line = reader.readLine()) != null) {
+				if (line.equals("[Territories]")) {
+					while ((line = reader.readLine()) != null) {
+						if (!line.matches("")) {
+							String[] str = line.split(",");
+							territoryNames.put(str[0].trim(), new HashSet<>());
+						}
+					}
+					break;
+				}
+			}
+			is = new ByteArrayInputStream(result.getBytes());
+			reader = new BufferedReader(new InputStreamReader(is));
+			while ((line = reader.readLine()) != null) {
+				if (line.equals("[Territories]")) {
+					while ((line = reader.readLine()) != null) {
+						if (!line.matches("")) {
+							String[] str = line.split(",");
+							HashSet<String> adjacentTerritories = territoryNames.get(str[0].trim());
+							for (int i = 4; i < str.length; i++) {
+								boolean isValidTerritory = false;
+								// Check each adjacent territory is present in the list of territories
+								for (Entry<String, HashSet<String>> territory : territoryNames.entrySet()) {
+									if (!str[0].trim().equalsIgnoreCase(str[i].trim())
+											&& territory.getKey().equalsIgnoreCase(str[i].trim())) {
+										isValidTerritory = true;
+										adjacentTerritories.add(territory.getKey());
+										break;
+									}
+								}
+								if (!isValidTerritory) {
+									throw new MapException(Constants.NOT_A_CONNECTED_MAP_MESSAGE + str[i]);
+								}
+							}
+							territoryNames.put(str[0].trim(), adjacentTerritories);
+						}
+					}
+					break;
+				}
+			}
+			for (Entry<String, HashSet<String>> territory : territoryNames.entrySet()) {
+				if (territory.getValue().size() == 0) {
 					throw new MapException(Constants.NOT_A_CONNECTED_MAP_MESSAGE + territory.getKey());
 				}
 			}

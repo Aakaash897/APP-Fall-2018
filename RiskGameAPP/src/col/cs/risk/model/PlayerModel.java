@@ -365,7 +365,8 @@ public class PlayerModel extends Observable {
 			break;
 		case Constants.FORTIFYING_PHASE:
 			if (territoryModel.getPlayerModel().getId() == gameModel.getCurrentPlayer().getId()
-					&& gameModel.getMoveArmiesFromTerritory().getAdjacentTerritories().contains(territoryModel)) {
+			&& (gameModel.getMoveArmiesFromTerritory().getAdjacentTerritories().contains(territoryModel)
+					|| isFortificationPossibleByMultipleHop(gameModel, territoryModel))) {
 				gameModel.setMoveArmiesToTerritory(territoryModel);
 				gameModel.notifyPhaseChanging();
 				gameModel.setState(Constants.FORTIFY_PHASE);
@@ -380,6 +381,41 @@ public class PlayerModel extends Observable {
 			break;
 		}
 		return str;
+	}
+
+	private boolean isFortificationPossibleByMultipleHop(GameModel gameModel, TerritoryModel territoryModel) {
+		boolean isMultihop = false;
+		HashSet<Integer> territoryIds = new HashSet<>();
+		for(TerritoryModel territory: gameModel.getMoveArmiesFromTerritory().getAdjacentTerritories()) {
+			isMultihop = isMultipleHop(gameModel, territoryModel, territory, 
+					territoryIds, isMultihop);
+			if(isMultihop) {
+				break;
+			}
+		}
+		System.out.println(" isMultihop possible = "+isMultihop);
+		return isMultihop;
+	}
+
+	public boolean isMultipleHop(GameModel gameModel, TerritoryModel selectedTerritoryModel, 
+			TerritoryModel adjacentTerritoryModel, HashSet<Integer> territoryIds, boolean isMultihop) {
+		if(!territoryIds.contains(adjacentTerritoryModel.getId()) && 
+				adjacentTerritoryModel.getPlayerModel().getId() == this.id) {
+			territoryIds.add(adjacentTerritoryModel.getId());
+			if(adjacentTerritoryModel.getId() == selectedTerritoryModel.getId()) {
+				isMultihop = true;
+			} else {
+				for(TerritoryModel territory:adjacentTerritoryModel.getAdjacentTerritories()) {
+					isMultihop = isMultipleHop(gameModel, selectedTerritoryModel, territory, territoryIds, isMultihop);
+					if(isMultihop) {
+						break;
+					}
+				}
+			}
+		} else if(adjacentTerritoryModel.getId() == selectedTerritoryModel.getId()) {
+			isMultihop = false;
+		}
+		return isMultihop;
 	}
 
 	/**
@@ -410,7 +446,7 @@ public class PlayerModel extends Observable {
 			break;
 		case Constants.ATTACKING_PHASE:
 			if (territoryModel.getPlayerModel().getId() != getId()
-					&& attackingTerritory.getAdjacentTerritories().contains(territoryModel)) {
+			&& attackingTerritory.getAdjacentTerritories().contains(territoryModel)) {
 				defendingTerritory = territoryModel;
 				gameModel.notifyPhaseChanging();
 				gameModel.setState(Constants.ATTACK_FIGHT_PHASE);
@@ -740,7 +776,7 @@ public class PlayerModel extends Observable {
 		}
 		return canAttack;
 	}
-	
+
 	/**
 	 * Function to validate whether the player is able to fortify
 	 * @return
@@ -759,7 +795,7 @@ public class PlayerModel extends Observable {
 		}
 		return canFortify;
 	}
-	
+
 
 	/**
 	 * Clear battle history

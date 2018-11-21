@@ -463,10 +463,40 @@ public class GameModel {
 			}
 			scn.close();
 			isCompleteConnectionExist();
+			isCompleteConnectionExistWithinContinent();
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private boolean isCompleteConnectionExistWithinContinent() throws MapException {
+		for (ContinentModel continent : continents) {
+			if(continent.getTerritories().size() > 1) {
+				HashSet<Integer> territoryIds = new HashSet<>();
+				territoryIds = isTerritoryValidInContinent(continent, continent.getTerritories().get(0), territoryIds);
+				if (territoryIds.size() < continent.getTerritories().size()) {
+					throw new MapException(Constants.NOT_COMPLETE_CONTINENT_CONNECTED_MAP_MESSAGE);
+				}
+			}
+		}
+		return true;
+	}
+
+	public HashSet<Integer> isTerritoryValidInContinent(ContinentModel continent, TerritoryModel territoryModel,
+			HashSet<Integer> territoryIds) {
+		if (!isFinished(territoryIds, continent) 
+				&& continent.getTerritories().contains(territoryModel)
+				&& !territoryIds.contains(territoryModel.getId())) {
+			territoryIds.add(territoryModel.getId());
+			for (TerritoryModel territory : territoryModel.getAdjacentTerritories()) {
+				if (isFinished(territoryIds, continent)) {
+					break;
+				}
+				territoryIds = processTerritory(territoryIds, territory, continent);
+			}
+		}
+		return territoryIds;
 	}
 
 	/**
@@ -526,6 +556,15 @@ public class GameModel {
 		}
 	}
 
+	private boolean isFinished(HashSet<Integer> territoryIds, ContinentModel continentModel) {
+		if (continentModel.getTerritories().size() == territoryIds.size()
+				|| territoryIds.size() > continentModel.getTerritories().size()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	/**
 	 * If the territory is not processed it will process and to list of traversed
 	 * territories
@@ -539,6 +578,14 @@ public class GameModel {
 	private HashSet<Integer> processTerritory(HashSet<Integer> territoryIds, TerritoryModel territory) {
 		if (!territoryIds.contains(territory.getId())) {
 			territoryIds = isCompleteConnectedMap(territory, territoryIds);
+		}
+		return territoryIds;
+	}
+
+	private HashSet<Integer> processTerritory(HashSet<Integer> territoryIds, TerritoryModel territory,
+			ContinentModel continentModel) {
+		if (!territoryIds.contains(territory.getId()) && continentModel.getTerritories().contains(territory)) {
+			territoryIds = isTerritoryValidInContinent(continentModel, territory, territoryIds);
 		}
 		return territoryIds;
 	}

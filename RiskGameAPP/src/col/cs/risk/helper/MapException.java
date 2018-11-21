@@ -37,6 +37,7 @@ public class MapException extends Exception {
 		GameModel.isBaseMapModified = false;
 		GameModel.fileName = Constants.DEFAULT_MAP_FILE_NAME;
 		new StartGameController();
+		Utility.writeToFile(Constants.DEFAULT_MODIFIED_MAP_FILE_NAME, "");
 		Utility.showMessagePopUp(getMessage());
 	}
 }
