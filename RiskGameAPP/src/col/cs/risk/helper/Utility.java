@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map.Entry;
@@ -128,9 +129,9 @@ public class Utility {
 	}
 
 	/**
-	 * Generates the random number
+	 * Generates the random number includes 0 but not num
 	 * 
-	 * @param num
+	 * @param num it must be >= 1 
 	 * @return returns the random number between 0 and num parameter
 	 */
 	public static int getRandomNumber(int num) {
@@ -359,5 +360,31 @@ public class Utility {
 
 	public static Color getColor(int id) {
 		return playerColor.get(id);
+	}
+	
+	/**
+	 * Write log.
+	 *
+	 * @param text
+	 *            the text
+	 * @param isApplicationStart
+	 *            the is application start
+	 */
+	public static void writeLog(String text, boolean... append) {
+		boolean isAppend = true;
+		if(append != null && append.length > 0) {
+			isAppend = append[0];
+		}
+		try (FileWriter fw = new FileWriter("resources/risk/log/log.txt", isAppend); // append contents to file
+				BufferedWriter bw = new BufferedWriter(fw);
+				PrintWriter out = new PrintWriter(bw)) {
+			out.println(text);
+			out.println();
+			out.close();
+			bw.close();
+			fw.close();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
 	}
 }

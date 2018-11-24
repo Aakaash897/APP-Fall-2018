@@ -49,7 +49,7 @@ public class PlayerStrategySettingsView extends JFrame implements ActionListener
 			 * @param noOfPlayers No of Players Playing Game 
 			 * @param TitlePlayer Title set as Players
 			 */
-		    PlayerStrategySettingsView(int noOfPlayers, String TitlePlayer){ 
+		    public PlayerStrategySettingsView(int noOfPlayers, String TitlePlayer){ 
 	            PlayerStrategySettingsViewFrame = new JFrame();
 		    	this.titlePlayer = titlePlayer;
 		    	this.noOfPlayers = noOfPlayers;

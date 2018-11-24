@@ -1,6 +1,5 @@
 package col.cs.risk.model;
 
-import java.awt.event.ActionEvent;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,6 +11,7 @@ import java.util.stream.Collectors;
 
 import col.cs.risk.controller.GameController;
 import col.cs.risk.helper.Utility;
+import col.cs.risk.model.strategy.IStrategy;
 import col.cs.risk.view.RolledDiceView;
 
 /**
@@ -74,19 +74,32 @@ public class PlayerModel extends Observable {
 
 	/** CardModel vector */
 	private Vector<CardModel> cards = new Vector<>();
+	
+	/**
+	 * Strategy model
+	 */
+	private IStrategy strategy;
 
 	/**
 	 * Constructor with parameters
-	 * 
-	 * @param id
-	 *            player id
-	 * @param name
-	 *            player name
+	 * @param id player id
+	 * @param name player name
 	 */
 	public PlayerModel(int id, String name) {
 		this.id = id;
 		this.name = name;
 		occupiedTerritories = new Vector<>();
+	}
+	
+	/**
+	 * Constructor with parameters
+	 * @param id player id
+	 * @param name player name
+	 * @param strategy player strategy
+	 */
+	public PlayerModel(int id, String name, IStrategy strategy) {
+		this(id, name);
+		this.strategy = strategy;
 	}
 
 	/**
@@ -96,11 +109,13 @@ public class PlayerModel extends Observable {
 	 *            It holds the player id
 	 * @param name
 	 *            It hold the player name
+	 * @param strategy
+	 * 			 It contains strategy of the player
 	 * @param occupiedTerritories
 	 *            It is a vector that holds the list of occupied territories
 	 */
-	public PlayerModel(int id, String name, Vector<TerritoryModel> occupiedTerritories) {
-		this(id, name);
+	public PlayerModel(int id, String name, IStrategy strategy, Vector<TerritoryModel> occupiedTerritories) {
+		this(id, name, strategy);
 		this.occupiedTerritories = occupiedTerritories;
 	}
 
@@ -316,11 +331,13 @@ public class PlayerModel extends Observable {
 	 * @returns true if trading mandatory
 	 */
 	public boolean isCardTradeRequired() {
+		Utility.writeLog("No. of cards available = "+cards.size());
+		boolean isRequired = false;
 		if (cards.size() >= Constants.FIVE) {
-			return true;
-		} else {
-			return false;
-		}
+			isRequired = true;
+		} 
+		Utility.writeLog("Is Card Trade Mandatory = "+isRequired);
+		return isRequired;
 	}
 
 	/**
@@ -335,6 +352,7 @@ public class PlayerModel extends Observable {
 		} else {
 			bonus = Math.floor(getOccupiedTerritories().size() / Constants.THREE);
 		}
+		Utility.writeLog("territory bonus = "+bonus);
 		return (int) bonus;
 	}
 
@@ -346,45 +364,7 @@ public class PlayerModel extends Observable {
 	 *            It is an instance of TerritoryModel that holds territories details
 	 * @return status as string to display
 	 */
-	public String fortify(GameModel gameModel, TerritoryModel territoryModel) {
-		String str = "";
-		switch (gameModel.getState()) {
-		case Constants.FORTIFICATION_PHASE:
-			if (territoryModel.getPlayerModel().getId() == gameModel.getCurrentPlayer().getId()) {
-				if (territoryModel.getArmies() > 1) {
-					gameModel.setMoveArmiesFromTerritory(territoryModel);
-					gameModel.notifyPhaseChanging();
-					gameModel.setState(Constants.FORTIFYING_PHASE);
-					gameModel.notifyPhaseChange();
-					str = Constants.MOVE_TO + gameModel.getMoveArmiesFromTerritory().getName();
-				} else {
-					str = Constants.MIN_TWO_ARMY_MESSAGE;
-				}
-			} else {
-				str = Constants.MOVE_FROM;
-			}
-			break;
-		case Constants.FORTIFYING_PHASE:
-			if (territoryModel.getPlayerModel().getId() == gameModel.getCurrentPlayer().getId()
-			&& (gameModel.getMoveArmiesFromTerritory().getAdjacentTerritories().contains(territoryModel)
-					|| isFortificationPossibleByMultipleHop(gameModel, territoryModel))) {
-				gameModel.setMoveArmiesToTerritory(territoryModel);
-				gameModel.notifyPhaseChanging();
-				gameModel.setState(Constants.FORTIFY_PHASE);
-				gameModel.notifyPhaseChange();
-				str = Constants.ARMIES_TO_MOVE;
-			} else {
-				str = Constants.MOVE_TO + gameModel.getMoveArmiesFromTerritory().getName();
-			}
-			break;
-
-		default:
-			break;
-		}
-		return str;
-	}
-
-	private boolean isFortificationPossibleByMultipleHop(GameModel gameModel, TerritoryModel territoryModel) {
+	public boolean isFortificationPossibleByMultipleHop(GameModel gameModel, TerritoryModel territoryModel) {
 		boolean isMultihop = false;
 		HashSet<Integer> territoryIds = new HashSet<>();
 		for(TerritoryModel territory: gameModel.getMoveArmiesFromTerritory().getAdjacentTerritories()) {
@@ -420,59 +400,13 @@ public class PlayerModel extends Observable {
 	}
 
 	/**
-	 * User actions on attack phase actions, selection of attacking and defending
-	 * territory
-	 * 
-	 * @param gameModel
-	 * @param territoryModel
-	 * @return status string
-	 */
-	public String attack(GameModel gameModel, TerritoryModel territoryModel) {
-		String str = "";
-		switch (gameModel.getState()) {
-		case Constants.ATTACK_PHASE:
-			if (territoryModel.getPlayerModel().getId() == gameModel.getCurrentPlayer().getId()) {
-				if (territoryModel.getArmies() > 1) {
-					attackingTerritory = territoryModel;
-					gameModel.notifyPhaseChanging();
-					gameModel.setState(Constants.ATTACKING_PHASE);
-					gameModel.notifyPhaseChange();
-					str = Constants.DEFEND_COUNTRY_SELECT_MESSAGE;
-				} else {
-					str = Constants.MIN_TWO_ARMY_MESSAGE;
-				}
-			} else {
-				str = Constants.ATTACK_COUNTRY_SELECT_MESSAGE;
-			}
-			break;
-		case Constants.ATTACKING_PHASE:
-			if (territoryModel.getPlayerModel().getId() != getId()
-			&& attackingTerritory.getAdjacentTerritories().contains(territoryModel)) {
-				defendingTerritory = territoryModel;
-				gameModel.notifyPhaseChanging();
-				gameModel.setState(Constants.ATTACK_FIGHT_PHASE);
-				gameModel.notifyPhaseChange();
-				str = Constants.ATTACK_BW_TERRITORIES_MESSAGE;
-				str = str.replace("A", attackingTerritory.getName());
-				str = str.replace("B", defendingTerritory.getName());
-			} else {
-				str = Constants.DEFEND_COUNTRY_SELECT_MESSAGE;
-			}
-			break;
-
-		default:
-			break;
-		}
-		return str;
-	}
-
-	/**
 	 * Beginning of the battle b/w attacker and defender
 	 * 
 	 * @param gameModel
 	 * @param gameController
 	 */
 	public void startBattle(GameModel gameModel, GameController gameController) {
+		Utility.writeLog("---------- Battle started --------");
 		this.gameController = gameController;
 		engageBattle(gameModel);
 	}
@@ -514,13 +448,16 @@ public class PlayerModel extends Observable {
 	 * Rolling the dice and listing of selected faces
 	 */
 	public void rollAndSetDiceList() {
+		//Utility.writeLog("Rolling and setting selected dices:");
 		attackingDiceList.clear();
 		defendingDiceList.clear();
 		for (int i = 1; i <= attackingNoOfDice; i++) {
 			attackingDiceList.put(i, Utility.getRandomNumber(Constants.SIX) + Constants.ONE);
+			//Utility.writeLog("attackingDiceList dice no:   "+i+" rolled phase: "+attackingDiceList.get(i));
 		}
 		for (int i = 1; i <= defendingNoOfDice; i++) {
 			defendingDiceList.put(i, Utility.getRandomNumber(Constants.SIX) + Constants.ONE);
+			//Utility.writeLog("defendingDiceList dice no: "+i+" rolled phase: "+defendingDiceList.get(i));
 		}
 	}
 
@@ -630,9 +567,15 @@ public class PlayerModel extends Observable {
 		String message;
 		if (isboth) {
 			message = Constants.BOTH_LOST_ARMIES_MESSAGE;
+			Utility.writeLog("Both attacker and defender lost an army");
 		} else {
 			message = Utility.replacePartInMessage(Constants.LOST_ARMIES_MESSAGE, "A", player);
 			message = Utility.replacePartInMessage(message, "B", Integer.toString(noOfArmies));
+			if(getName().equals(player)) {
+				Utility.writeLog("Attacker lost "+noOfArmies);
+			} else {
+				Utility.writeLog("Defender lost "+noOfArmies);
+			}
 		}
 		updateStatus(message);
 	}
@@ -657,8 +600,15 @@ public class PlayerModel extends Observable {
 		if (defendingTerritory.getArmies() == 0) {
 			gameModel.setState(Constants.CAPTURE);
 			updateStatus(Constants.CAPTURING_MESSAGE);
-
-			int noOfArmiesToMove = gameController.getMapView().showInputDialogPopup(attackingTerritory.getArmies() - 1);
+			Utility.writeLog(Constants.CAPTURING_MESSAGE +defendingTerritory.getName());
+			
+			int noOfArmiesToMove;
+			if(isHuman()) {
+				noOfArmiesToMove = gameController.getMapView().showInputDialogPopup(attackingTerritory.getArmies() - 1);
+			} else {
+				noOfArmiesToMove = attackingTerritory.getArmies() - 1;
+			}
+			Utility.writeLog("Moving "+noOfArmiesToMove+" armies to territory "+defendingTerritory.getName());
 			PlayerModel lostPlayer = defendingTerritory.getPlayerModel();
 			lostPlayer.removeOccupiedTerritory(defendingTerritory);
 			defendingTerritory.setPlayerModel(this);
@@ -670,10 +620,13 @@ public class PlayerModel extends Observable {
 				assignCard(gameModel);
 			}
 			if (isPlayerEliminated(lostPlayer)) {
+				Utility.writeLog(lostPlayer.getName()+" eliminated from the game ");
+				Utility.writeLog(lostPlayer.getCards().size()+" cards added to current player "+getName());
 				addCards(lostPlayer.getCards());
 				lostPlayer.removeCards(lostPlayer.getCards());
 			}
 		} else if (attackingTerritory.getArmies() == 1) {
+			Utility.writeLog("Attacker lost the battle ");
 			gameModel.setState(Constants.LOST_BATTLE);
 			gameController.getGameModel().notifyPhaseChanging();
 		}
@@ -686,6 +639,14 @@ public class PlayerModel extends Observable {
 			gameController.handleAttack();
 		}
 		gameModel.notifyPhaseChange();
+	}
+	
+	public boolean winningStatus(GameModel gameModel) {
+		if (gameModel.isWon()) {
+			gameModel.setState(Constants.END_PHASE);
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -710,6 +671,8 @@ public class PlayerModel extends Observable {
 	public void assignCard(GameModel gameModel) {
 		isCardAssigned = true;
 		CardModel card = gameModel.drawCard();
+		Utility.writeLog("Drawn a card: "+card.getType()+", country on it is: "+
+		(card.getTerritoryModel()==null?"":card.getTerritoryModel().getName()));
 		if (card != null)
 			cards.add(card);
 		gameModel.getCardsDeck().remove(card);
@@ -746,15 +709,19 @@ public class PlayerModel extends Observable {
 	public void addAdditionalBounusForTradeCardMatch(Vector<CardModel> cardsToBeRemoved) {
 		boolean isBonusToBeAdded = false;
 		TerritoryModel matchedTerritoryModel = null;
+		CardModel matchedCard = null;
 		for (CardModel cardModel : cardsToBeRemoved) {
 			if (isTradedCardMatchAnyTerritoryOfPlayer(cardModel.getTerritoryModel())) {
 				isBonusToBeAdded = true;
 				matchedTerritoryModel = cardModel.getTerritoryModel();
+				matchedCard = cardModel;
 				break;
 			}
 		}
 		if (isBonusToBeAdded && matchedTerritoryModel != null) {
 			matchedTerritoryModel.addArmies(Constants.TWO);
+			Utility.writeLog("Added bonus 2 armies for trading card: "+matchedCard.getType()+
+					", which has a territory name: "+matchedTerritoryModel.getName());
 		}
 	}
 
@@ -775,6 +742,7 @@ public class PlayerModel extends Observable {
 				}
 			}
 		}
+		Utility.writeLog(getName()+" can attack = "+canAttack);
 		return canAttack;
 	}
 
@@ -794,6 +762,7 @@ public class PlayerModel extends Observable {
 				}
 			}
 		}
+		Utility.writeLog(getName()+" can fortify = "+canFortify);
 		return canFortify;
 	}
 
@@ -848,10 +817,12 @@ public class PlayerModel extends Observable {
 	 * @param wildCard
 	 */
 	public void cardTradeActionPerformed(GameModel gameModel, int infantryCard, int cavarlyCard, int artilleryCard, int wildCard) {
-
+		Utility.writeLog(" ------------ Trading cards -------------- ");
 		Vector<CardModel> cards = getCards();
 		Vector<CardModel> cardsToBeRemoved = new Vector<>();
 
+		Utility.writeLog("Available cards : "+cards.stream().map(x -> x.getType()).collect(Collectors.toList()));
+		
 		for (CardModel card : cards) {
 			if (infantryCard <= 0 && cavarlyCard <= 0 && artilleryCard <= 0 && wildCard <= 0) {
 				break;
@@ -885,6 +856,7 @@ public class PlayerModel extends Observable {
 		}
 
 		if (cardsToBeRemoved.size() == Constants.THREE) {
+			Utility.writeLog("Traded cards : "+cardsToBeRemoved.stream().map(x -> x.getType()).collect(Collectors.toList()));
 			addAdditionalBounusForTradeCardMatch(cardsToBeRemoved);
 			removeCards(cardsToBeRemoved);
 		}
@@ -900,6 +872,15 @@ public class PlayerModel extends Observable {
 		gameModel.setCardTradeCount(tradeCount);
 		addArmies(armies);
 		setCardTradeMandatory(false);
+		Utility.writeLog("Armies added to player due to card trade = "+armies);
+	}
+	
+	public boolean isHuman() {
+		boolean isHuman = false;
+		if(getStrategy().getStrategyString() == Constants.HUMAN) {
+			isHuman = true;
+		}
+		return isHuman;
 	}
 
 	/**
@@ -929,6 +910,8 @@ public class PlayerModel extends Observable {
 		for (PlayerModel player : GameModel.players) {
 			stringBuilder.append("Player: ");
 			stringBuilder.append(player.getName());
+			stringBuilder.append(" as ");
+			stringBuilder.append(player.getStrategy().getStrategyString());
 			stringBuilder.append("\n");
 			stringBuilder.append("Percentage of map controlled by this player: ");
 			stringBuilder.append(calculatePercentage(player, gameModel));
@@ -1003,6 +986,28 @@ public class PlayerModel extends Observable {
 			}
 		}
 		return isOwned;
+	}
+	
+	public void reinforce(GameModel gameModel) {
+		Utility.writeLog("----------- ReInforce of player : "+getName()+" "+getStrategy().getStrategyString()+" armies : "+getArmies()+" -------------");
+		strategy.reInforce(gameModel);
+	}
+	
+	public void initialReinforce(GameModel gameModel) {
+		Utility.writeLog("----------- InitialReInforce of player : "+getName()+" "+getStrategy().getStrategyString()+" armies : "+getArmies()+" -------------");
+		strategy.initialReInforce(gameModel);
+	}
+	
+	public String attack(GameModel gameModel, TerritoryModel... territoryModel) {
+		return strategy.attack(gameModel, territoryModel);
+	}
+	
+	public String fortify(GameModel gameModel, TerritoryModel... territoryModel) {
+		return strategy.fortify(gameModel, territoryModel);
+	}
+	
+	public void autoFortifyArmies(GameModel gameModel) {
+		strategy.autoFortifyArmies(gameModel);
 	}
 
 	/**
@@ -1095,4 +1100,18 @@ public class PlayerModel extends Observable {
 		this.isCardTradeMandatory = isCardTradeMandatory;
 	}
 
+	/**
+	 * @return the strategy
+	 */
+	public IStrategy getStrategy() {
+		return strategy;
+	}
+
+	/**
+	 * @param strategy the strategy to set
+	 */
+	public void setStrategy(IStrategy strategy) {
+		this.strategy = strategy;
+	}
+	
 }

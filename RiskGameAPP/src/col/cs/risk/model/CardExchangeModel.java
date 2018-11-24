@@ -3,6 +3,7 @@ package col.cs.risk.model;
 import java.util.Observable;
 
 import col.cs.risk.controller.GameController;
+import col.cs.risk.model.strategy.Human;
 
 /**
  * This model class handles the card exchange entities like current players,
@@ -56,7 +57,10 @@ public class CardExchangeModel extends Observable {
 			} else {
 				currentPlayer.setCardTradeMandatory(true);
 			}
-			isChanged(gameController);
+
+			if(this.currentPlayer.getStrategy() instanceof Human) {
+				isChanged(gameController);
+			}
 		} else {
 			currentPlayer.setCardTradeMandatory(false);
 			gameController.handleReinforcement1();

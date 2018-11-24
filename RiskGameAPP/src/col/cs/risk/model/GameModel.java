@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Vector;
+import java.util.stream.Collectors;
 
 import javax.swing.JPanel;
 
@@ -592,9 +593,11 @@ public class GameModel {
 	 * Distribute armies between players
 	 */
 	private void distributeArmies() {
+		Utility.writeLog("Initial armies distributed as follows:");
 		int armies = playerArmyMap.get(players.size());
 		for (PlayerModel playerModel : players) {
 			playerModel.addArmies(armies);
+			Utility.writeLog(playerModel.getName()+" armies: "+armies);
 		}
 	}
 
@@ -609,6 +612,12 @@ public class GameModel {
 		while ((territoryModel = getRandomUnoccupiedTerritory()) != null) {
 			occupyTerritory(territoryModel, currentPlayer);
 			nextPlayer();
+		}
+		Utility.writeLog("Randomly assigned initial territories: ");
+		for(PlayerModel player:players) {
+			Utility.writeLog(player.getName()+" : "+player.getStrategy().getStrategyString()+" - Occupied territories - "+
+					player.getOccupiedTerritories().size()+" : "+
+					player.getOccupiedTerritories().stream().map(x -> x.getName()).collect(Collectors.toList()));
 		}
 	}
 
@@ -771,13 +780,18 @@ public class GameModel {
 	 */
 	public void gamePhasePlayerTurnSetup(int x_coordinate, int y_coordinate) {
 		TerritoryModel territoryModel = getTerritoryFromMapLocation(x_coordinate, y_coordinate);
+		gamePhasePlayerTurnSetup1(territoryModel);
+	}
+
+	public void gamePhasePlayerTurnSetup1(TerritoryModel territoryModel) {
 		if (territoryModel != null) {
 			System.out.println("selected territory name = " + territoryModel.getName() + " occupied by = "
-					+ territoryModel.getPlayerModel().getName());
+					+ territoryModel.getPlayerModel().getName()+" as "+territoryModel.getPlayerModel().getStrategy().getStrategyString());
 			switch (getState()) {
 			case Constants.INITIAL_RE_ENFORCEMENT_PHASE:
 				if (territoryModel.getPlayerModel().getId() == currentPlayer.getId()) {
 					addArmyOnOccupiedTerritory(territoryModel, currentPlayer);
+					Utility.writeLog("Placed an army on territory : "+territoryModel.getName());
 					nextPlayer();
 					notifyPhaseChanging();
 					selectedTerritory = null;
@@ -795,6 +809,7 @@ public class GameModel {
 			case Constants.RE_ENFORCEMENT_PHASE:
 				if (territoryModel.getPlayerModel().getId() == currentPlayer.getId()) {
 					addArmyOnOccupiedTerritory(territoryModel, currentPlayer);
+					Utility.writeLog("Placed an army on territory : "+territoryModel.getName());
 					notifyPhaseChanging();
 					if (currentPlayer.getArmies() == Constants.ZERO) {
 						setState(Constants.ACTIVE_TURN);
@@ -816,15 +831,20 @@ public class GameModel {
 	 */
 	public String gamePhaseActivePlayerActions(int x_coordinate, int y_coordinate) {
 		TerritoryModel territoryModel = getTerritoryFromMapLocation(x_coordinate, y_coordinate);
+		return gamePhaseActivePlayerActions1(territoryModel);
+	}
+
+	private String gamePhaseActivePlayerActions1(TerritoryModel territoryModel) {
+		String str = "";
 		if (territoryModel != null) {
 			System.out.println(" territory model name = " + territoryModel.getName());
 			if (getState() == Constants.FORTIFICATION_PHASE || getState() == Constants.FORTIFYING_PHASE) {
-				return currentPlayer.fortify(this, territoryModel);
+				str = currentPlayer.fortify(this, territoryModel);
 			} else if (getState() == Constants.ATTACK_PHASE || getState() == Constants.ATTACKING_PHASE) {
-				return currentPlayer.attack(this, territoryModel);
+				str = currentPlayer.attack(this, territoryModel);
 			}
 		}
-		return "";
+		return str;
 	}
 
 	/**
@@ -854,6 +874,7 @@ public class GameModel {
 				bonus += continentModel.getScore();
 			}
 		}
+		Utility.writeLog("Continent Bonus = "+bonus);
 		return bonus;
 	}
 
@@ -915,6 +936,69 @@ public class GameModel {
 			break;
 		case Constants.END_PHASE:
 			stateString = Constants.END_PHASE_MESSAGE;
+			break;
+		default:
+			stateString = "";
+			break;
+		}
+		return stateString;
+	}
+	
+	/**
+	 * To get current state in a string format
+	 * 
+	 * @return current state as string
+	 */
+	public String getStateAsStringInDepth() {
+		String stateString;
+		switch (getState()) {
+		case Constants.NEW_GAME:
+			stateString = Constants.NEW_GAME_MESSAGE;
+			break;
+		case Constants.INITIAL_RE_ENFORCEMENT_PHASE:
+			stateString = Constants.INITIAL_RE_ENFORCEMENT_PHASE_MESSAGE;
+			break;
+		case Constants.RE_ENFORCEMENT_PHASE:
+			stateString = Constants.REINFORCEMENT_PHASE_MESSAGE;
+			break;
+		case Constants.START_TURN:
+			stateString = "Turn start phase";
+			break;
+		case Constants.ACTIVE_TURN:
+			stateString = "Active turn or after reinforcement before begining any other phase";
+			break;
+		case Constants.CHANGE_TURN:
+			stateString = "Change turn phase";
+			break;
+		case Constants.ATTACK_PHASE:
+			stateString = Constants.ATTACK_PHASE_MESSAGE;
+			break;
+		case Constants.ATTACKING_PHASE:
+			stateString = "Attacking pahase";
+			break;
+		case Constants.ATTACK_FIGHT_PHASE:
+			stateString = "Fighting phase";
+			break;
+		case Constants.CAPTURE:
+			stateString = "Capturing phase";
+			break;
+		case Constants.FORTIFICATION_PHASE:
+			stateString = Constants.FORTIFICATION_PHASE_MESSAGE;
+			break;
+		case Constants.FORTIFYING_PHASE:
+			stateString = "Fortifying phase";
+			break;
+		case Constants.FORTIFY_PHASE:
+			stateString = "Fortify phase";
+			break;
+		case Constants.CARD_TRADE:
+			stateString = Constants.CARD_TRADE_PHASE;
+			break;
+		case Constants.END_PHASE:
+			stateString = Constants.END_PHASE_MESSAGE;
+			break;
+		case Constants.LOST_BATTLE:
+			stateString = "Battle lost phase";
 			break;
 		default:
 			stateString = "";

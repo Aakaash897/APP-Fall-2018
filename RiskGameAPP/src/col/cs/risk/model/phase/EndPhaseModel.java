@@ -82,8 +82,10 @@ public class EndPhaseModel extends Observable implements GamePhase {
 			stringBuilder = new StringBuilder();
 			stringBuilder.append(basicMessage());
 		}
-		stringBuilder.append(message);
-		stringBuilder.append("\n");
+		if(message != null) {
+			stringBuilder.append(message);
+			stringBuilder.append("\n");
+		}
 		return stringBuilder.toString();
 	}
 

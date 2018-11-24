@@ -24,6 +24,7 @@ public class Constants {
 	public static final int CAPTURE = 13;
 	public static final int LOST_BATTLE = 14;
 	public static final int CARD_TRADE = 15;
+	public static final int CHANGE_TURN = 16;
 	public static final String RE_ENFORCEMENT_MESSAGE = "Place an army on a territory you occupy";
 	public static final String MOVE_FROM = "Select a country of yours to move armies from";
 	public static final String MIN_TWO_ARMY_MESSAGE = "Your occupied country should have minimum 2 army";
@@ -44,7 +45,7 @@ public class Constants {
 	public static final String REINFORCE_MESSAGE = "Reinforce";
 	public static final String ATTACK_MESSAGE = "Attack";
 	public static final String FORTIFY_MESSAGE = "Fortify";
-	public static final String CARD_TRADE_PHASE = "Card Trade";
+	public static final String CARD_TRADE_PHASE = "Card Trade phase";
 	public static final String SELECT_THE_ACTION_MESSAGE = "Click on the action you want to do";
 	public static final String CARD_TRADE_MESSAGE = "Trade a set of cards";
 	public static final String NOT_A_CONNECTED_MAP_MESSAGE = "Not a connected map invalid country exists: ";
@@ -56,12 +57,13 @@ public class Constants {
 	public static final String DEFEND_COUNTRY_SELECT_MESSAGE = "Select an adjacent territory to defend";
 	public static final String CLICK_OK_TO_ROLL_DICE = "Click ok to roll the dice";
 	public static final String ATTACK_BW_TERRITORIES_MESSAGE = "Territory A attacking on territory B";
-	public static final String CAPTURING_MESSAGE = "Capturing a country";
+	public static final String CAPTURING_MESSAGE = "Capturing a country ";
 	public static final String LOST_BATTLE_MESSAGE = "Lost battle";
 	public static final String AUTOMATIC_OR_ALL_OUT_MODE = "Automatic or all out mode during attack";
 	public static final String LOST_ARMIES_MESSAGE = "A lost B army/armies";
 	public static final String BOTH_LOST_ARMIES_MESSAGE = "Both players lost one army each";
 	public static final String CANNOT_ATTACK_MESSAGE = "Can't attack, ";
+	public static final String CANNOT_FORTIFY_MESSAGE = "Can't fortify ";
 	public static final String OK = "OK";
 	public static final String CANCEL = "CANCEL";
 	public static final String CARD_INVALID_TRADE_MESSAGE = "Minimum 3 cards required to trade, available no. of cards: ";
@@ -98,4 +100,10 @@ public class Constants {
 	public static final String ARMY_TYPE_ARTILLERY = "ARTILLERY";
 	public static final String ARMY_TYPE_WILD = "WILD";
 	public static final String INFORMATION = "Information";
+	public static final String HUMAN = "Human";
+	public static final String AGGRESSIVE = "Aggressive";
+	public static final String BENEVOLENT = "Benevolent";
+	public static final String RANDOM = "Random";
+	public static final String CHEATER = "Cheater";
+	
 }
