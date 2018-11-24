@@ -42,6 +42,7 @@ public class StartGameController {
 	 * Starts the game page(Loads the home page) with multiple options
 	 */
 	public StartGameController() {
+		Utility.writeLog("*********************** The Risk Game starts **********************", false);
 		new HomePageViewLoader(this).setVisible(true);
 		new LoadExistingMapController(this);
 	}
@@ -129,6 +130,7 @@ public class StartGameController {
 	 */
 	public void startGameButtonActionPerformed(ActionEvent event) {
 		homePageViewLoader.setVisible(false);
+		Utility.writeLog("Start Default Game button pressed");
 		setPlayers();
 		System.out.println(" Start Default Game button pressed ");
 	}
@@ -156,7 +158,7 @@ public class StartGameController {
 	 * @param event
 	 */
 	public void loadExistingMapButtonActionPerformed(ActionEvent event) {
-		System.out.println(" Load Existing Map button pressed ");
+		Utility.writeLog("Load Existing Map button pressed");
 		loadExistingMapController.openFileChooserFromView();
 	}
 
@@ -166,7 +168,7 @@ public class StartGameController {
 	 * @param event
 	 */
 	public void exitButtonActionPerformed(ActionEvent event) {
-		System.out.println(" Exit button pressed ");
+		Utility.writeLog(" Exit button pressed ");
 		System.exit(0);
 	}
 
@@ -176,7 +178,7 @@ public class StartGameController {
 	 * @param event
 	 */
 	public void newMapButtonActionPerformed(ActionEvent event) {
-		System.out.println(" Construct New Map button pressed ");
+		Utility.writeLog(" Construct New Map button pressed ");
 		mapConstructionView.setVisible(false);
 		new ConstructNewMapView(this);
 	}
@@ -187,7 +189,7 @@ public class StartGameController {
 	 * @param event
 	 */
 	public void modifyExistingMapButtonActionPerformed(ActionEvent event) {
-		System.out.println(" Modify Existing Map button pressed ");
+		Utility.writeLog(" Modify Existing Map button pressed ");
 		loadExistingMapController.showModificationView();
 	}
 

@@ -1,12 +1,21 @@
 package col.cs.risk.controller;
 
 import java.awt.event.ActionEvent;
+import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.JComboBox;
 
+import col.cs.risk.helper.Utility;
+import col.cs.risk.model.Constants;
 import col.cs.risk.model.GameModel;
 import col.cs.risk.model.PlayerModel;
+import col.cs.risk.model.strategy.Aggressive;
+import col.cs.risk.model.strategy.Benevolent;
+import col.cs.risk.model.strategy.Cheater;
+import col.cs.risk.model.strategy.Human;
+import col.cs.risk.model.strategy.IStrategy;
+import col.cs.risk.model.strategy.Random;
 import col.cs.risk.view.PlayerSettingsView;
 
 /**
@@ -29,6 +38,9 @@ public class PlayerSettingsController {
 
 	/** Start game Controller instance */
 	private StartGameController startGameController;
+	
+	/** Player strategy map */
+	HashMap<String, String> playerStrategy = new HashMap<>();
 
 	/**
 	 * Default Constructor which also initializes player settings view
@@ -44,9 +56,74 @@ public class PlayerSettingsController {
 	 * @param evt
 	 */
 	public void finishActionPerformed(ActionEvent evt) {
+		Utility.writeLog("No of Players = "+noOfPlayers);
 		setPlayers();
 		playerSettingsView.setVisible(false);
+		//PlayerStrategySettingsView view = new PlayerStrategySettingsView(noOfPlayers, "Strategy");
+		//view.setVisible(true);
+		setDummyStrategies();
+		setPlayersStrategy();
 		GameController.showGUI();
+	}
+	
+	public void setDummyStrategies() {
+		playerStrategy.clear();
+		for(PlayerModel model:GameModel.players) {
+			int random = Utility.getRandomNumber(5);
+			//int random = Utility.getRandomNumber(4)+1;
+			//int random = Utility.getRandomNumber(2);
+			switch (random) {
+			case 0:
+				playerStrategy.put(model.getName(), Constants.HUMAN);
+				break;
+			case 1:
+				playerStrategy.put(model.getName(), Constants.AGGRESSIVE);
+				break;
+			case 2:
+				playerStrategy.put(model.getName(), Constants.BENEVOLENT);
+				break;
+			case 3:
+				playerStrategy.put(model.getName(), Constants.RANDOM);
+				break;
+			case 4:
+				playerStrategy.put(model.getName(), Constants.CHEATER);
+				break;
+			default:
+				break;
+			}
+		}
+	}
+	
+	public void setPlayersStrategy() {
+		for(PlayerModel model:GameModel.players) {
+			model.setStrategy(getStrategyInstance(model));
+			Utility.writeLog(model.getName()+" as "+model.getStrategy().getStrategyString());
+		}
+	}
+	
+	public IStrategy getStrategyInstance(PlayerModel playerModel) {
+		String strategyName = playerStrategy.get(playerModel.getName());
+		IStrategy strategy = null;
+		switch (strategyName) {
+		case Constants.HUMAN:
+			strategy = new Human(playerModel);
+			break;
+		case Constants.AGGRESSIVE:
+			strategy = new Aggressive(playerModel);
+			break;
+		case Constants.BENEVOLENT:
+			strategy = new Benevolent(playerModel);
+			break;
+		case Constants.RANDOM:
+			strategy = new Random(playerModel);
+			break;
+		case Constants.CHEATER:
+			strategy = new Cheater(playerModel);
+			break;
+		default:
+			break;
+		}
+		return strategy;
 	}
 
 	/**

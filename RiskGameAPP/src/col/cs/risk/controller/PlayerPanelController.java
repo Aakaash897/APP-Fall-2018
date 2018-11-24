@@ -56,7 +56,8 @@ public class PlayerPanelController extends JPanel {
 		super.paintComponent(graphics);
 		Font font = new Font("Arial Black", Font.ITALIC, 26);
 		int width, position;
-		String name = gameModel.getCurrentPlayer().getName();
+		String name = gameModel.getCurrentPlayer().getName()+" as "+
+				gameModel.getCurrentPlayer().getStrategy().getStrategyString();
 		int currPlayerId = gameModel.getCurrentPlayer().getId();
 
 		for (PlayerModel playerModel : GameModel.players) {

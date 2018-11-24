@@ -3,7 +3,7 @@ package col.cs.risk.controller;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
-import java.util.Vector;
+import java.util.ArrayList;
 
 import javax.swing.JTextField;
 
@@ -18,6 +18,7 @@ import col.cs.risk.model.phase.EndPhaseModel;
 import col.cs.risk.model.phase.FortificationPhaseModel;
 import col.cs.risk.model.phase.ReEnforcementPhaseModel;
 import col.cs.risk.model.phase.StartPhaseModel;
+import col.cs.risk.model.strategy.Human;
 import col.cs.risk.view.CardTradeView;
 import col.cs.risk.view.MapView;
 import col.cs.risk.view.PhaseView;
@@ -52,6 +53,8 @@ public class GameController {
 
 	/** No of rounds/turns completed */
 	public int noOfRoundsCompleted;
+	
+	public boolean isMaxNumberOfRoundsSet = true;
 
 	/** Maximum number of rounds allowed per game */
 	private static int MAXIMUM_NO_OF_ROUNDS_ALLOWED = Constants.TEN;
@@ -64,18 +67,23 @@ public class GameController {
 	/** view for displaying rolled dices list */
 	private RolledDiceView rolledDiceView;
 
+	private boolean isGameOver = false;
+
+	private boolean isAutoRunning = false;
+
 	/**
 	 * Default constructor
 	 */
 	public GameController() {
 		this.gameModel = new GameModel();
 	}
-	
+
 	/**
 	 * Initialize the Game controller
 	 */
 	public void initialize() {
 		try {
+			Utility.writeLog("********************* Game start up phase ***************************");
 			gameModel.initialize();
 			initComponents();
 			new MapView(this).setVisible(true);
@@ -92,6 +100,16 @@ public class GameController {
 			mapMainPanel.repaint();
 			initializeCardExchangeView();
 			rolledDiceView = new RolledDiceView(this);
+			isGameOver = false;
+			isAutoRunning = false;
+			//isMaxNumberOfRoundsSet = false;
+			Utility.writeLog("******************* Initial Reinforcement phase ************************");
+			automaticHandleStrategies();
+			/*
+			Must work on random selection of no of armies to attack and defend 
+			if Human add human intervention
+			
+			*/
 		} catch (MapException ex) {
 			System.out.println(ex.getMessage());
 			ex.clearHistory();
@@ -99,6 +117,181 @@ public class GameController {
 			ex.printStackTrace();
 			System.out.println("Exception: " + ex.getMessage());
 		}
+	}
+
+	public void automaticHandleStrategies() {
+		while(!(gameModel.getCurrentPlayer().getStrategy() instanceof Human) && !isGameOver) {
+			gameModel.notifyPhaseChange();
+			isAutoRunning = true;
+			System.out.println("\n\n--------------------------");
+			System.out.println(" gameModel.getState() = "+gameModel.getState()+" as string = "+gameModel.getStateAsString());
+			System.out.println(" player = "+gameModel.getCurrentPlayer().getName()+" as "+gameModel.getCurrentPlayer().getStrategy().getStrategyString());
+			String str = "";
+			switch(gameModel.getState()) {
+			case Constants.INITIAL_RE_ENFORCEMENT_PHASE:
+				if (gameModel.getCurrentPlayer().getArmies() > Constants.ZERO) {
+					gameModel.getCurrentPlayer().initialReinforce(gameModel);
+				} else {
+					gameModel.setState(Constants.ATTACK_PHASE);
+				}
+				break;
+			case Constants.RE_ENFORCEMENT_PHASE:
+				if (mapView.getCardButton().isVisible()) {
+					mapView.getCardButton().setVisible(false);
+				}
+				if (gameModel.getCurrentPlayer().getArmies() > Constants.ZERO) {
+					gameModel.getCurrentPlayer().reinforce(gameModel);
+				} else {
+					gameModel.setState(Constants.ATTACK_PHASE);
+				}
+				break;
+			case Constants.CARD_TRADE:
+				Utility.writeLog(" ************ "+gameModel.getStateAsStringInDepth()+ " of "+
+						gameModel.getCurrentPlayer().getName()+" "+gameModel.getCurrentPlayer().getStrategy().getStrategyString()+" ************ ");
+				if(gameModel.getCurrentPlayer().isCardTradeMandatory()) {
+					handleAutomaticCardTrade();
+				} else {
+					handleReinforcement1();
+				}
+				break;
+			case Constants.START_TURN:
+				Utility.writeLog("************** Turn start/Reinforcement of "+gameModel.getCurrentPlayer().getName()+" : "
+						+gameModel.getCurrentPlayer().getStrategy().getStrategyString()+" ********************");
+				Utility.writeLog("Occupied territories count = "+gameModel.getCurrentPlayer().getOccupiedTerritories().size());
+				Utility.writeLog("% of occupied = "+gameModel.getCurrentPlayer().calculatePercentage(
+						gameModel.getCurrentPlayer(), gameModel));
+				Utility.writeLog("Round no. of player: "+noOfRoundsCompleted);
+				
+				handleStartTurn();
+				break;
+			case Constants.ACTIVE_TURN:
+				gameModel.setState(Constants.ATTACK_PHASE);
+				break;
+			case Constants.ATTACK_PHASE:
+			case Constants.ATTACKING_PHASE:
+				str = gameModel.getCurrentPlayer().attack(gameModel);
+				break;
+			case Constants.ATTACK_FIGHT_PHASE: 
+				gameModel.setSelectedTerritory(null);
+				gameModel.getCurrentPlayer().setAutomatic(true);
+				gameModel.getCurrentPlayer().startBattle(gameModel, this);
+				break;
+			case Constants.FORTIFICATION_PHASE:
+			case Constants.FORTIFYING_PHASE:
+				str = gameModel.getCurrentPlayer().fortify(gameModel);
+				break;
+			case Constants.FORTIFY_PHASE:
+				gameModel.getCurrentPlayer().autoFortifyArmies(gameModel);
+				break;
+			case Constants.CHANGE_TURN:
+				validatePlayerTurn();
+				break;
+			case Constants.END_PHASE:
+				if(isGameOver) {
+					break;
+				} else {
+					if(gameModel.isWon()) {
+						gameOver(Utility.replacePartInMessage(Constants.WINNER, 
+								Constants.CHAR_A, gameModel.getCurrentPlayer().getName()));
+					} else {
+						gameOver(Constants.GAME_OVER_MESSAGE);
+					}
+				}
+				isGameOver = true;
+				break;
+			default : break;
+			}
+			if (!str.isEmpty()) {
+				mapView.getStatusLabel().setText(str);
+			}
+			if(!isGameOver) {
+				gameModel.notifyPhaseChanging();
+			}
+			gameModel.notifyPhaseChange();
+		}
+		isAutoRunning = false;
+
+		if((gameModel.getCurrentPlayer().getStrategy() instanceof Human) && !isGameOver) {
+			if (gameModel.getState() == Constants.START_TURN) {
+				gameModel.setSelectedTerritory(null);
+				handleStartTurn();
+				gameModel.notifyPhaseChange();
+			}
+		}
+	}
+
+	public void checkAndRunAuto() {
+		System.out.println("GameController.checkAndRunAuto() isAutoRunning = "+isAutoRunning);
+		System.out.println("gameModel.getCurrentPlayer().isHuman() = "+gameModel.getCurrentPlayer().isHuman());
+		if(!gameModel.getCurrentPlayer().isHuman() && !isAutoRunning) {
+			automaticHandleStrategies();
+		}
+	}
+
+	private void handleAutomaticCardTrade() {
+		ArrayList<CardModel> infantry = new ArrayList<>();
+		ArrayList<CardModel> cavalry = new ArrayList<>();
+		ArrayList<CardModel> artillery = new ArrayList<>();
+		ArrayList<CardModel> wild = new ArrayList<>();
+		for (CardModel card : gameModel.getCurrentPlayer().getCards()) {
+			switch (card.getType()) {
+			case Constants.ARMY_TYPE_INFANTRY:
+				infantry.add(card);
+				break;
+			case Constants.ARMY_TYPE_CAVALRY:
+				cavalry.add(card);
+				break;
+			case Constants.ARMY_TYPE_ARTILLERY:
+				artillery.add(card);
+				break;
+			case Constants.ARMY_TYPE_WILD:
+				wild.add(card);
+				break;
+			}
+		}
+
+		int infantryCount = 0;
+		int cavelryCount = 0;
+		int artilleryCount = 0;
+		int wildCount = 0;
+		
+		if(infantry.size() >= 3) {
+			infantryCount = 3;
+		} else if(cavalry.size() >= 3) {
+			cavelryCount = 3;
+		} else if(artillery.size() >= 3) {
+			artilleryCount = 3;
+		} else if(infantry.size() >= 2 && wild.size() > 0) {
+			infantryCount = 2;
+			wildCount = 1;
+		} else if(cavalry.size() >= 2 && wild.size() > 0) {
+			cavelryCount = 2;
+			wildCount = 1;
+		} else if(artillery.size() >= 2 && wild.size() > 0) {
+			artilleryCount = 2;
+			wildCount = 1;
+		} else if(infantry.size() >= 1 && artillery.size() >= 1 && wild.size() > 0) {
+			infantryCount = 1;
+			artilleryCount = 1;
+			wildCount = 1;
+		} else if(infantry.size() >= 1 && cavalry.size() >= 1 && wild.size() > 0) {
+			infantryCount = 1;
+			cavelryCount = 1;
+			wildCount = 1;
+		} else if(artillery.size() >= 1 && cavalry.size() >= 1 && wild.size() > 0) {
+			cavelryCount = 1;
+			artilleryCount = 1;
+			wildCount = 1;
+		} else if(infantry.size() >= 1 && artillery.size() >= 1 && cavalry.size() >= 1) {
+			infantryCount = 1;
+			cavelryCount = 1;
+			artilleryCount = 1;
+		} 
+
+		gameModel.getCurrentPlayer().cardTradeActionPerformed(gameModel,
+				infantryCount, cavelryCount, artilleryCount, wildCount);
+		handleReinforcement1();
+
 	}
 
 	/**
@@ -163,10 +356,14 @@ public class GameController {
 		if (gameModel.getCurrentPlayer().canAttack()) {
 			mapView.getStatusLabel().setText(Constants.ATTACK_COUNTRY_SELECT_MESSAGE);
 		} else if(gameModel.getCurrentPlayer().canFortify()){
-			Utility.showMessagePopUp(Constants.CANNOT_ATTACK_MESSAGE, Constants.INFORMATION);
+			if(gameModel.getCurrentPlayer().isHuman()) {
+				Utility.showMessagePopUp(Constants.CANNOT_ATTACK_MESSAGE, Constants.INFORMATION);
+			}
 			fortifyButtonActionPerformed(null);
 		} else {
-			Utility.showMessagePopUp(Constants.CANNOT_ATTACK_MESSAGE+Constants.FORTIFY_MESSAGE, Constants.INFORMATION);
+			if(gameModel.getCurrentPlayer().isHuman()) {
+				Utility.showMessagePopUp(Constants.CANNOT_ATTACK_MESSAGE+Constants.FORTIFY_MESSAGE, Constants.INFORMATION);
+			}
 			mapView.getStatusLabel().setText(Constants.CANNOT_ATTACK_MESSAGE + Constants.SELECT_THE_ACTION_MESSAGE);
 			validatePlayerTurn();
 		}
@@ -208,6 +405,8 @@ public class GameController {
 			} else {
 				gameModel.setNoOfArmiesToMove(armies);
 				if (gameModel.moveArmies()) {
+					Utility.writeLog("Moving "+armies+" armies from "+gameModel.getMoveArmiesToTerritory().getName()+
+							" to "+gameModel.getMoveArmiesFromTerritory().getName());
 					gameModel.setNoOfArmiesToMove(Constants.ZERO);
 					gameModel.setMoveArmiesFromTerritory(null);
 					gameModel.setMoveArmiesToTerritory(null);
@@ -227,6 +426,7 @@ public class GameController {
 	 * @param event
 	 */
 	public void cardButtonActionPerformed(ActionEvent event) {
+		Utility.writeLog("Card button pressed");
 		CardExchangeModel.getInstance().checkCardsTradeOption(this, true);
 	}
 
@@ -236,6 +436,7 @@ public class GameController {
 	 * @param evt
 	 */
 	public void endButtonActionPerformed(ActionEvent evt) {
+		Utility.writeLog("End button pressed");
 		gameModel.getCurrentPlayer().setCardAssigned(false);
 		System.out.println(" end button pressed state = " + gameModel.getState());
 		if (gameModel.getPreviousState() == gameModel.getState()) {
@@ -267,7 +468,7 @@ public class GameController {
 		if (currentRoundCompletedPlayersCount == GameModel.getPlayers().size()) {
 			noOfRoundsCompleted++;
 			currentRoundCompletedPlayersCount = Constants.ZERO;
-			if (noOfRoundsCompleted >= MAXIMUM_NO_OF_ROUNDS_ALLOWED) {
+			if (isMaxNumberOfRoundsSet && noOfRoundsCompleted >= MAXIMUM_NO_OF_ROUNDS_ALLOWED) {
 				gameOver(Constants.GAME_OVER_MESSAGE);
 			} else {
 				changeTurn();
@@ -281,8 +482,15 @@ public class GameController {
 	 * Changing the current player
 	 */
 	private void changeTurn() {
+		Utility.writeLog("================= Changing player(current player) turn =====================");
 		gameModel.getCurrentPlayer().setCardAssigned(false);
 		gameModel.nextPlayer();
+		Utility.writeLog("************** Turn start/Reinforcement of "+gameModel.getCurrentPlayer().getName()+" : "
+				+gameModel.getCurrentPlayer().getStrategy().getStrategyString()+" ********************");
+		Utility.writeLog("Occupied territories count = "+gameModel.getCurrentPlayer().getOccupiedTerritories().size());
+		Utility.writeLog("% of occupied = "+gameModel.getCurrentPlayer().calculatePercentage(
+				gameModel.getCurrentPlayer(), gameModel));
+		Utility.writeLog("Round no. of player: "+(noOfRoundsCompleted+1));
 		gameModel.getCurrentPlayer().setCardAssigned(false);
 		System.out.println(" noOfRoundsCompleted = " + noOfRoundsCompleted);
 		if (isFirstRound()) {
@@ -291,6 +499,7 @@ public class GameController {
 			handleReinforcement();
 		}
 		gameModel.notifyPhaseChange();
+		checkAndRunAuto();
 	}
 
 	/**
@@ -309,15 +518,20 @@ public class GameController {
 	 *            to display
 	 */
 	public void gameOver(String message) {
-		gameModel.setState(Constants.END_PHASE);
-		gameModel.notifyPhaseChanging(message);
-		mapView.getStatusLabel().setText(message);
-		mapView.getAttackButton().setVisible(false);
-		mapView.getFortifyButton().setVisible(false);
-		mapView.getEndButton().setVisible(false);
-		mapView.getCardButton().setVisible(false);
-		gameModel.notifyPhaseChange();
-		Utility.showMessagePopUp(message, Constants.INFORMATION);
+		if(!isGameOver) {
+			gameModel.setState(Constants.END_PHASE);
+			gameModel.notifyPhaseChanging(message);
+			mapView.getStatusLabel().setText(message);
+			mapView.getAttackButton().setVisible(false);
+			mapView.getFortifyButton().setVisible(false);
+			mapView.getEndButton().setVisible(false);
+			mapView.getCardButton().setVisible(false);
+			gameModel.notifyPhaseChange();
+			isGameOver = true;
+			Utility.writeLog(" ************ "+gameModel.getStateAsStringInDepth()+" ************* ");
+			Utility.writeLog(message);
+			Utility.showMessagePopUp(message, Constants.INFORMATION);
+		}
 	}
 
 	/**
@@ -340,16 +554,23 @@ public class GameController {
 	public void mouseClicked(MouseEvent event) {
 		System.out.println("\n\n\n------------------");
 		System.out.println("Mouse clicked status = " + gameModel.getState() + ", " + gameModel.getStateAsString());
+		Utility.writeLog("Mouse clicked current status = " + gameModel.getState() + ", " + gameModel.getStateAsStringInDepth());
 		int x_coordinate = event.getX();
 		int y_coordinate = event.getY();
 		switch (gameModel.getState()) {
 		case Constants.INITIAL_RE_ENFORCEMENT_PHASE:
+			if (gameModel.getCurrentPlayer().getArmies() > Constants.ZERO) {
+				gameModel.getTerritoryFromMapLocation(x_coordinate, y_coordinate);
+				gameModel.getCurrentPlayer().initialReinforce(gameModel);
+			}
+			break;
 		case Constants.RE_ENFORCEMENT_PHASE:
 			if (mapView.getCardButton().isVisible()) {
 				mapView.getCardButton().setVisible(false);
 			}
 			if (gameModel.getCurrentPlayer().getArmies() > Constants.ZERO) {
-				gameModel.gamePhasePlayerTurnSetup(x_coordinate, y_coordinate);
+				gameModel.getTerritoryFromMapLocation(x_coordinate, y_coordinate);
+				gameModel.getCurrentPlayer().reinforce(gameModel);
 			}
 			break;
 		case Constants.FORTIFICATION_PHASE:
@@ -373,7 +594,6 @@ public class GameController {
 			}
 			break;
 		}
-
 		if (gameModel.getState() == Constants.ATTACK_FIGHT_PHASE) {
 			gameModel.setSelectedTerritory(null);
 			updateAutomaticMode();
@@ -391,6 +611,7 @@ public class GameController {
 		}
 		mapMainPanel.repaint();
 		mapSubPanelPlayer.repaint();
+		checkAndRunAuto();
 	}
 
 	/**
@@ -417,11 +638,15 @@ public class GameController {
 			mapView.getAttackButton().setVisible(false);
 			mapView.getUserEntered().setVisible(false);
 		} else if(gameModel.getCurrentPlayer().canFortify()){
-			Utility.showMessagePopUp(Constants.CANNOT_ATTACK_MESSAGE, Constants.INFORMATION);
+			if(gameModel.getCurrentPlayer().isHuman()) {
+				Utility.showMessagePopUp(Constants.CANNOT_ATTACK_MESSAGE, Constants.INFORMATION);
+			}
 			fortifyButtonActionPerformed(null);
 		} else {
 			mapView.getStatusLabel().setText(Constants.CANNOT_ATTACK_MESSAGE + Constants.SELECT_THE_ACTION_MESSAGE);
-			Utility.showMessagePopUp(Constants.CANNOT_ATTACK_MESSAGE+Constants.FORTIFY_MESSAGE, Constants.INFORMATION);
+			if(gameModel.getCurrentPlayer().isHuman()) {
+				Utility.showMessagePopUp(Constants.CANNOT_ATTACK_MESSAGE+Constants.FORTIFY_MESSAGE, Constants.INFORMATION);
+			}
 			validatePlayerTurn();
 		}
 	}
@@ -492,6 +717,7 @@ public class GameController {
 	 */
 	public void handleReinforcement1() {
 		if (!gameModel.getCurrentPlayer().isCardTradeMandatory()) {
+			Utility.writeLog("No of armies with player: "+gameModel.getCurrentPlayer().getArmies());
 			gameModel.setState(Constants.RE_ENFORCEMENT_PHASE);
 			mapView.getCardButton().setVisible(true);
 			if (gameModel.getCurrentPlayer().getArmies() == Constants.ZERO) {
@@ -553,7 +779,7 @@ public class GameController {
 		int cavarlyCard = cardTradeView.getCavalryCardSelectedItem();
 		int artilleryCard = cardTradeView.getArtilleryCardSelectedItem();
 		int wildCard = cardTradeView.getWildCardSelectedItem();
-		
+
 		gameModel.getCurrentPlayer().cardTradeActionPerformed(gameModel,
 				infantryCard, cavarlyCard, artilleryCard, wildCard);
 		cardTradeView.exitForm();
@@ -572,9 +798,10 @@ public class GameController {
 			} else {
 				numberOfDice = mapView.showOptionPopup(gameModel.getCurrentPlayer().getName(),
 						numberOfDice < Constants.THREE ? numberOfDice - 1 : Constants.THREE, Constants.ATTACK_IMAGE,
-						gameModel.getCurrentPlayer().getName());
+								gameModel.getCurrentPlayer().getName());
 			}
 			gameModel.getCurrentPlayer().setAttackingNoOfDice(numberOfDice);
+			Utility.writeLog("Attacking no. of dice = "+numberOfDice);
 
 			numberOfDice = gameModel.getCurrentPlayer().getDefendingTerritory().getArmies();
 			if (numberOfDice > 0) {
@@ -584,9 +811,10 @@ public class GameController {
 					numberOfDice = mapView.showOptionPopup(
 							gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel().getName(),
 							numberOfDice < Constants.TWO ? numberOfDice : Constants.TWO, Constants.DEFEND_IMAGE,
-							gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel().getName());
+									gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel().getName());
 				}
 				gameModel.getCurrentPlayer().setDefendingNoOfDice(numberOfDice);
+				Utility.writeLog("Defending no. of dice = "+numberOfDice);
 			}
 		}
 	}
@@ -599,7 +827,11 @@ public class GameController {
 			Utility.showMessagePopUp(Constants.CLICK_OK_TO_ROLL_DICE, "Roll Dice");
 		}
 		gameModel.getCurrentPlayer().rollAndSetDiceList();
-		rolledDiceView.showRolledDiceList(gameModel);
+		if(gameModel.getCurrentPlayer().isHuman()) {
+			rolledDiceView.showRolledDiceList(gameModel);
+		} else {
+			updateDiceAction();
+		}
 	}
 
 	/**
