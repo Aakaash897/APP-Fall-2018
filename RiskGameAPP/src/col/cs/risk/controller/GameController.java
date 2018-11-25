@@ -53,7 +53,7 @@ public class GameController {
 
 	/** No of rounds/turns completed */
 	public int noOfRoundsCompleted;
-	
+
 	public boolean isMaxNumberOfRoundsSet = true;
 
 	/** Maximum number of rounds allowed per game */
@@ -105,11 +105,6 @@ public class GameController {
 			//isMaxNumberOfRoundsSet = false;
 			Utility.writeLog("******************* Initial Reinforcement phase ************************");
 			automaticHandleStrategies();
-			/*
-			Must work on random selection of no of armies to attack and defend 
-			if Human add human intervention
-			
-			*/
 		} catch (MapException ex) {
 			System.out.println(ex.getMessage());
 			ex.clearHistory();
@@ -161,7 +156,7 @@ public class GameController {
 				Utility.writeLog("% of occupied = "+gameModel.getCurrentPlayer().calculatePercentage(
 						gameModel.getCurrentPlayer(), gameModel));
 				Utility.writeLog("Round no. of player: "+noOfRoundsCompleted);
-				
+
 				handleStartTurn();
 				break;
 			case Constants.ACTIVE_TURN:
@@ -254,7 +249,7 @@ public class GameController {
 		int cavelryCount = 0;
 		int artilleryCount = 0;
 		int wildCount = 0;
-		
+
 		if(infantry.size() >= 3) {
 			infantryCount = 3;
 		} else if(cavalry.size() >= 3) {
@@ -794,11 +789,16 @@ public class GameController {
 		int numberOfDice = gameModel.getCurrentPlayer().getAttackingTerritory().getArmies();
 		if (numberOfDice > 1) {
 			if (gameModel.getCurrentPlayer().isAutomatic()) {
-				numberOfDice = numberOfDice < Constants.THREE ? numberOfDice - 1 : Constants.THREE;
+				if(gameModel.getCurrentPlayer().isHuman()) {
+					numberOfDice = numberOfDice < Constants.THREE ? numberOfDice - 1 : Constants.THREE;
+				} else {
+					numberOfDice = numberOfDice < Constants.THREE ? numberOfDice - 1 : (Utility.getRandomNumber(Constants.THREE)+1);
+				}
 			} else {
-				numberOfDice = mapView.showOptionPopup(gameModel.getCurrentPlayer().getName(),
+				numberOfDice = mapView.showOptionPopup(gameModel.getCurrentPlayer().getName()+" : "+
+						gameModel.getCurrentPlayer().getStrategy().getStrategyString(),
 						numberOfDice < Constants.THREE ? numberOfDice - 1 : Constants.THREE, Constants.ATTACK_IMAGE,
-								gameModel.getCurrentPlayer().getName());
+								gameModel.getCurrentPlayer().getName()+" : "+gameModel.getCurrentPlayer().getStrategy().getStrategyString());
 			}
 			gameModel.getCurrentPlayer().setAttackingNoOfDice(numberOfDice);
 			Utility.writeLog("Attacking no. of dice = "+numberOfDice);
@@ -806,12 +806,29 @@ public class GameController {
 			numberOfDice = gameModel.getCurrentPlayer().getDefendingTerritory().getArmies();
 			if (numberOfDice > 0) {
 				if (gameModel.getCurrentPlayer().isAutomatic()) {
-					numberOfDice = numberOfDice < Constants.TWO ? numberOfDice : Constants.TWO;
+					if(gameModel.getCurrentPlayer().isHuman()) {
+						numberOfDice = numberOfDice < Constants.TWO ? numberOfDice : Constants.TWO;
+					} else if(gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel().isHuman()) {
+						numberOfDice = mapView.showOptionPopup(
+								gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel().getName()+" : "+
+								gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel().getStrategy().getStrategyString(),
+								numberOfDice < Constants.TWO ? numberOfDice : Constants.TWO, Constants.DEFEND_IMAGE,
+										gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel().getName()+" : "+
+										gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel().getStrategy().getStrategyString());
+					} else {
+						numberOfDice = numberOfDice < Constants.TWO ? numberOfDice : (Utility.getRandomNumber(Constants.TWO)+1);
+					}
 				} else {
-					numberOfDice = mapView.showOptionPopup(
-							gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel().getName(),
-							numberOfDice < Constants.TWO ? numberOfDice : Constants.TWO, Constants.DEFEND_IMAGE,
-									gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel().getName());
+					if(!gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel().isHuman()) {
+						numberOfDice = numberOfDice < Constants.TWO ? numberOfDice : (Utility.getRandomNumber(Constants.TWO)+1);
+					} else {
+						numberOfDice = mapView.showOptionPopup(
+								gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel().getName()+" : "+
+								gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel().getStrategy().getStrategyString(),
+								numberOfDice < Constants.TWO ? numberOfDice : Constants.TWO, Constants.DEFEND_IMAGE,
+										gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel().getName()+" : "+
+										gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel().getStrategy().getStrategyString());
+					}
 				}
 				gameModel.getCurrentPlayer().setDefendingNoOfDice(numberOfDice);
 				Utility.writeLog("Defending no. of dice = "+numberOfDice);

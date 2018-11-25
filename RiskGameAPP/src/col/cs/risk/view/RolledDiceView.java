@@ -227,8 +227,8 @@ public class RolledDiceView extends JFrame {
 		TimerTask task = new TimerTask() {
 			public void run() {
 				exitForm();
-				gameController.updateDiceAction();
 				cancel();
+				gameController.updateDiceAction();
 			}
 		};
 		Timer timer = new Timer("Timer");

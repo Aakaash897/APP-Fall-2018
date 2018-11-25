@@ -475,6 +475,10 @@ public class GameModel {
 				HashSet<Integer> territoryIds = new HashSet<>();
 				territoryIds = isTerritoryValidInContinent(continent, continent.getTerritories().get(0), territoryIds);
 				if (territoryIds.size() < continent.getTerritories().size()) {
+					System.out.println("continent = "+continent.getName());
+					System.out.println(" countries = "+continent.getTerritories().stream().map(x -> x.getName()).collect(Collectors.toList()));
+					System.out.println(" countries ids = "+continent.getTerritories().stream().map(x -> x.getId()).collect(Collectors.toList()));
+					System.out.println(" territoryIds = "+territoryIds.stream().map(x -> x.toString()).collect(Collectors.toList()));
 					throw new MapException(Constants.NOT_COMPLETE_CONTINENT_CONNECTED_MAP_MESSAGE);
 				}
 			}
