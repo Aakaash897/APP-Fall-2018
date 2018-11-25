@@ -41,8 +41,8 @@ public class MapView extends JFrame implements MouseListener {
 	/** status label */
 	private JLabel statusLabel;
 	
-	/** Pause Button */
-	private JButton pauseButton;
+	/** Save Button */
+	private JButton saveButton;
 	
 	/** attack button */
 	private JButton attackButton;
@@ -91,7 +91,7 @@ public class MapView extends JFrame implements MouseListener {
 	 */
 	private void showMap() {
 		statusLabel = new JLabel();
-		pauseButton=new JButton();
+		saveButton=new JButton();
 		attackButton = new JButton();
 		fortifyButton = new JButton();
 		cardButton = new JButton();
@@ -126,11 +126,11 @@ public class MapView extends JFrame implements MouseListener {
 		statusLabel.setName("statusLabel");
 		gameController.getMapSubPanelPlayer().add(statusLabel, new AbsoluteConstraints(122, 70, 610, -1));
 
-		pauseButton.setVisible(true);
-		pauseButton.setFont(resourceMap.getFont("attackButton.font"));
-		pauseButton.setText(Constants.PAUSE);
-		pauseButton.setName(Constants.PAUSE);
-		gameController.getMapSubPanelPlayer().add(pauseButton,new AbsoluteConstraints(100, 100, 90, 30));
+		saveButton.setVisible(false);
+		saveButton.setFont(resourceMap.getFont("saveButton.font"));
+		saveButton.setText(Constants.SAVE);
+		saveButton.setName(Constants.SAVE);
+		gameController.getMapSubPanelPlayer().add(saveButton,new AbsoluteConstraints(535, 30, 90, 30));
 		
 		attackButton.setVisible(false);
 		attackButton.setFont(resourceMap.getFont("attackButton.font"));
@@ -424,6 +424,21 @@ public class MapView extends JFrame implements MouseListener {
 	 */
 	public JButton getCardButton() {
 		return cardButton;
+	}
+
+	/**
+	 * @return the saveButton
+	 */
+	public JButton getSaveButton() {
+		return saveButton;
+	}
+
+	/**
+	 * @param saveButton
+	 *            the saveButton to set
+	 */
+	public void setSaveButton(JButton saveButton) {
+		this.saveButton = saveButton;
 	}
 
 	/**

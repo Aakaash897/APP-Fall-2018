@@ -105,6 +105,6 @@ public class Constants {
 	public static final String BENEVOLENT = "Benevolent";
 	public static final String RANDOM = "Random";
 	public static final String CHEATER = "Cheater";
-	public static final String PAUSE = "Pause";
+	public static final String SAVE = "Save";
 	
 }
