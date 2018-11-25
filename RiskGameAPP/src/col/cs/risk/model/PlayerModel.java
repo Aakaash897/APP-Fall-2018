@@ -549,7 +549,7 @@ public class PlayerModel extends Observable {
 				updateFightStatusDisplayMessage(false, getName(), Constants.ONE);
 			}
 		}
-		if (defendingTerritory.getArmies() == 0 || attackingTerritory.getArmies() == 1) {
+		if (defendingTerritory.getArmies() <= 0 || attackingTerritory.getArmies() <= 1) {
 			updateResult(gameModel);
 		} else {
 			engageBattle(gameModel);
@@ -597,6 +597,7 @@ public class PlayerModel extends Observable {
 	 * @param gameModel
 	 */
 	public void updateResult(GameModel gameModel) {
+		System.out.println("End of battle");
 		if (defendingTerritory.getArmies() == 0) {
 			gameModel.setState(Constants.CAPTURE);
 			updateStatus(Constants.CAPTURING_MESSAGE);
