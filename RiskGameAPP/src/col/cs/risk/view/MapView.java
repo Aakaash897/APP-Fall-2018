@@ -40,7 +40,10 @@ public class MapView extends JFrame implements MouseListener {
 
 	/** status label */
 	private JLabel statusLabel;
-
+	
+	/** Pause Button */
+	private JButton pauseButton;
+	
 	/** attack button */
 	private JButton attackButton;
 
@@ -88,6 +91,7 @@ public class MapView extends JFrame implements MouseListener {
 	 */
 	private void showMap() {
 		statusLabel = new JLabel();
+		pauseButton=new JButton();
 		attackButton = new JButton();
 		fortifyButton = new JButton();
 		cardButton = new JButton();
@@ -122,6 +126,12 @@ public class MapView extends JFrame implements MouseListener {
 		statusLabel.setName("statusLabel");
 		gameController.getMapSubPanelPlayer().add(statusLabel, new AbsoluteConstraints(122, 70, 610, -1));
 
+		pauseButton.setVisible(true);
+		pauseButton.setFont(resourceMap.getFont("attackButton.font"));
+		pauseButton.setText(Constants.PAUSE);
+		pauseButton.setName(Constants.PAUSE);
+		gameController.getMapSubPanelPlayer().add(pauseButton,new AbsoluteConstraints(100, 100, 90, 30));
+		
 		attackButton.setVisible(false);
 		attackButton.setFont(resourceMap.getFont("attackButton.font"));
 		attackButton.setText(Constants.ATTACK_MESSAGE);
