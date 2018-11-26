@@ -635,7 +635,8 @@ public class PlayerModel extends Observable {
 		clear();
 
 		if (gameModel.isWon()) {
-			gameController.gameOver(Utility.replacePartInMessage(Constants.WINNER, Constants.CHAR_A, getName()));
+			gameController.gameOver(Utility.replacePartInMessage(Constants.WINNER, Constants.CHAR_A, 
+					(getName()+getStrategy().getStrategyString())));
 		} else {
 			gameController.handleAttack();
 		}

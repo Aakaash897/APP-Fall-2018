@@ -17,6 +17,7 @@ import col.cs.risk.model.strategy.Human;
 import col.cs.risk.model.strategy.IStrategy;
 import col.cs.risk.model.strategy.Random;
 import col.cs.risk.view.PlayerSettingsView;
+import col.cs.risk.view.PlayerStrategySettingsView;
 
 /**
  * PlayerSettingsController It controls the no of players playing the game. It
@@ -58,42 +59,24 @@ public class PlayerSettingsController {
 	public void finishActionPerformed(ActionEvent evt) {
 		Utility.writeLog("No of Players = "+noOfPlayers);
 		setPlayers();
-		playerSettingsView.setVisible(false);
-		//PlayerStrategySettingsView view = new PlayerStrategySettingsView(noOfPlayers, "Strategy");
-		//view.setVisible(true);
-		setDummyStrategies();
+		setPlayerSettingsVisible(false);
+		PlayerStrategySettingsView view = new PlayerStrategySettingsView(noOfPlayers, "Strategy", this);
+		view.setVisible(true);
+	}
+	
+	/**
+	 * Player strategy setting save action performed
+	 * @param playersStrategiesMap
+	 */
+	public void playerStrategyTypeSaveActionPerformed(HashMap<String, String> playersStrategiesMap) {
+		this.playerStrategy = playersStrategiesMap;
 		setPlayersStrategy();
 		GameController.showGUI();
 	}
 	
-	public void setDummyStrategies() {
-		playerStrategy.clear();
-		for(PlayerModel model:GameModel.players) {
-			int random = Utility.getRandomNumber(5);
-			//int random = Utility.getRandomNumber(4)+1;
-			//int random = Utility.getRandomNumber(2);
-			switch (random) {
-			case 0:
-				playerStrategy.put(model.getName(), Constants.HUMAN);
-				break;
-			case 1:
-				playerStrategy.put(model.getName(), Constants.AGGRESSIVE);
-				break;
-			case 2:
-				playerStrategy.put(model.getName(), Constants.BENEVOLENT);
-				break;
-			case 3:
-				playerStrategy.put(model.getName(), Constants.RANDOM);
-				break;
-			case 4:
-				playerStrategy.put(model.getName(), Constants.CHEATER);
-				break;
-			default:
-				break;
-			}
-		}
-	}
-	
+	/**
+	 * Sets player strategy
+	 */
 	public void setPlayersStrategy() {
 		for(PlayerModel model:GameModel.players) {
 			model.setStrategy(getStrategyInstance(model));
@@ -101,6 +84,11 @@ public class PlayerSettingsController {
 		}
 	}
 	
+	/**
+	 * Initializes strategies of the player
+	 * @param playerModel
+	 * @return
+	 */
 	public IStrategy getStrategyInstance(PlayerModel playerModel) {
 		String strategyName = playerStrategy.get(playerModel.getName());
 		IStrategy strategy = null;
@@ -227,6 +215,10 @@ public class PlayerSettingsController {
 	 */
 	public void setStartGameController(StartGameController startGameController) {
 		this.startGameController = startGameController;
+	}
+	
+	public void setPlayerSettingsVisible(boolean visible) {
+		playerSettingsView.setVisible(visible);
 	}
 
 }

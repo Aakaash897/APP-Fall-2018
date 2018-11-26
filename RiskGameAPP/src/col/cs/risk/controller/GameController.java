@@ -187,7 +187,8 @@ public class GameController {
 				} else {
 					if(gameModel.isWon()) {
 						gameOver(Utility.replacePartInMessage(Constants.WINNER, 
-								Constants.CHAR_A, gameModel.getCurrentPlayer().getName()));
+								Constants.CHAR_A, (gameModel.getCurrentPlayer().getName()+" : "+
+										gameModel.getCurrentPlayer().getStrategy().getStrategyString())));
 					} else {
 						gameOver(Constants.GAME_OVER_MESSAGE);
 					}

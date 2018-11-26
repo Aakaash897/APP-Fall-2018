@@ -1,0 +1,1490 @@
+*********************** The Risk Game starts **********************
+
+Start Default Game button pressed
+
+No of Players = 3
+
+Player_1 as Aggressive
+
+Player_2 as Random
+
+Player_3 as Cheater
+
+********************* Game start up phase ***************************
+
+Initial armies distributed as follows:
+
+Player_1 armies: 35
+
+Player_2 armies: 35
+
+Player_3 armies: 35
+
+Randomly assigned initial territories: 
+
+Player_1 : Aggressive - Occupied territories - 14 : [Alberta, Greenland, India, New Guinea, Southern Europe, East Africa, Great Britain, Quebec, Northern Europe, Siam, Iceland, Western United States, Central America, Peru]
+
+Player_2 : Random - Occupied territories - 14 : [Eastern Australia, Egypt, Argentina, Yatusk, Siberia, Alaska, Western Australia, Mongolia, Irkutsk, Indonesia, Japan, Afghanistan, North Africa, Ontario]
+
+Player_3 : Cheater - Occupied territories - 14 : [Scandinavia, Middle East, China, Venezuala, Eastern United States, Congo, Northwest Territory, Madagascar, Western Europe, South Africa, Ukraine, Kamchatka, Brazil, Ural]
+
+******************* Initial Reinforcement phase ************************
+
+----------- InitialReInforce of player : Player_1 Aggressive armies : 21 -------------
+
+Strongest territory : Iceland
+
+Placed an army on territory : Iceland
+
+----------- InitialReInforce of player : Player_2 Random armies : 21 -------------
+
+Randomly selected territory : Egypt
+
+Placed an army on territory : Egypt
+
+----------- InitialReInforce of player : Player_3 Cheater armies : 21 -------------
+
+Selected territory : Madagascar
+
+Placed an army on territory : Madagascar
+
+----------- InitialReInforce of player : Player_1 Aggressive armies : 20 -------------
+
+Strongest territory : Iceland
+
+Placed an army on territory : Iceland
+
+----------- InitialReInforce of player : Player_2 Random armies : 20 -------------
+
+Randomly selected territory : Egypt
+
+Placed an army on territory : Egypt
+
+----------- InitialReInforce of player : Player_3 Cheater armies : 20 -------------
+
+Selected territory : Eastern United States
+
+Placed an army on territory : Eastern United States
+
+----------- InitialReInforce of player : Player_1 Aggressive armies : 19 -------------
+
+Strongest territory : Iceland
+
+Placed an army on territory : Iceland
+
+----------- InitialReInforce of player : Player_2 Random armies : 19 -------------
+
+Randomly selected territory : Yatusk
+
+Placed an army on territory : Yatusk
+
+----------- InitialReInforce of player : Player_3 Cheater armies : 19 -------------
+
+Selected territory : Scandinavia
+
+Placed an army on territory : Scandinavia
+
+----------- InitialReInforce of player : Player_1 Aggressive armies : 18 -------------
+
+Strongest territory : Iceland
+
+Placed an army on territory : Iceland
+
+----------- InitialReInforce of player : Player_2 Random armies : 18 -------------
+
+Randomly selected territory : Irkutsk
+
+Placed an army on territory : Irkutsk
+
+----------- InitialReInforce of player : Player_3 Cheater armies : 18 -------------
+
+Selected territory : Ural
+
+Placed an army on territory : Ural
+
+----------- InitialReInforce of player : Player_1 Aggressive armies : 17 -------------
+
+Strongest territory : Iceland
+
+Placed an army on territory : Iceland
+
+----------- InitialReInforce of player : Player_2 Random armies : 17 -------------
+
+Randomly selected territory : Afghanistan
+
+Placed an army on territory : Afghanistan
+
+----------- InitialReInforce of player : Player_3 Cheater armies : 17 -------------
+
+Selected territory : Eastern United States
+
+Placed an army on territory : Eastern United States
+
+----------- InitialReInforce of player : Player_1 Aggressive armies : 16 -------------
+
+Strongest territory : Iceland
+
+Placed an army on territory : Iceland
+
+----------- InitialReInforce of player : Player_2 Random armies : 16 -------------
+
+Randomly selected territory : Argentina
+
+Placed an army on territory : Argentina
+
+----------- InitialReInforce of player : Player_3 Cheater armies : 16 -------------
+
+Selected territory : Ukraine
+
+Placed an army on territory : Ukraine
+
+----------- InitialReInforce of player : Player_1 Aggressive armies : 15 -------------
+
+Strongest territory : Iceland
+
+Placed an army on territory : Iceland
+
+----------- InitialReInforce of player : Player_2 Random armies : 15 -------------
+
+Randomly selected territory : Yatusk
+
+Placed an army on territory : Yatusk
+
+----------- InitialReInforce of player : Player_3 Cheater armies : 15 -------------
+
+Selected territory : South Africa
+
+Placed an army on territory : South Africa
+
+----------- InitialReInforce of player : Player_1 Aggressive armies : 14 -------------
+
+Strongest territory : Iceland
+
+Placed an army on territory : Iceland
+
+----------- InitialReInforce of player : Player_2 Random armies : 14 -------------
+
+Randomly selected territory : Argentina
+
+Placed an army on territory : Argentina
+
+----------- InitialReInforce of player : Player_3 Cheater armies : 14 -------------
+
+Selected territory : Middle East
+
+Placed an army on territory : Middle East
+
+----------- InitialReInforce of player : Player_1 Aggressive armies : 13 -------------
+
+Strongest territory : Iceland
+
+Placed an army on territory : Iceland
+
+----------- InitialReInforce of player : Player_2 Random armies : 13 -------------
+
+Randomly selected territory : Western Australia
+
+Placed an army on territory : Western Australia
+
+----------- InitialReInforce of player : Player_3 Cheater armies : 13 -------------
+
+Selected territory : Northwest Territory
+
+Placed an army on territory : Northwest Territory
+
+----------- InitialReInforce of player : Player_1 Aggressive armies : 12 -------------
+
+Strongest territory : Iceland
+
+Placed an army on territory : Iceland
+
+----------- InitialReInforce of player : Player_2 Random armies : 12 -------------
+
+Randomly selected territory : North Africa
+
+Placed an army on territory : North Africa
+
+----------- InitialReInforce of player : Player_3 Cheater armies : 12 -------------
+
+Selected territory : Congo
+
+Placed an army on territory : Congo
+
+----------- InitialReInforce of player : Player_1 Aggressive armies : 11 -------------
+
+Strongest territory : Iceland
+
+Placed an army on territory : Iceland
+
+----------- InitialReInforce of player : Player_2 Random armies : 11 -------------
+
+Randomly selected territory : Yatusk
+
+Placed an army on territory : Yatusk
+
+----------- InitialReInforce of player : Player_3 Cheater armies : 11 -------------
+
+Selected territory : Middle East
+
+Placed an army on territory : Middle East
+
+----------- InitialReInforce of player : Player_1 Aggressive armies : 10 -------------
+
+Strongest territory : Iceland
+
+Placed an army on territory : Iceland
+
+----------- InitialReInforce of player : Player_2 Random armies : 10 -------------
+
+Randomly selected territory : Afghanistan
+
+Placed an army on territory : Afghanistan
+
+----------- InitialReInforce of player : Player_3 Cheater armies : 10 -------------
+
+Selected territory : Congo
+
+Placed an army on territory : Congo
+
+----------- InitialReInforce of player : Player_1 Aggressive armies : 9 -------------
+
+Strongest territory : Iceland
+
+Placed an army on territory : Iceland
+
+----------- InitialReInforce of player : Player_2 Random armies : 9 -------------
+
+Randomly selected territory : Afghanistan
+
+Placed an army on territory : Afghanistan
+
+----------- InitialReInforce of player : Player_3 Cheater armies : 9 -------------
+
+Selected territory : Kamchatka
+
+Placed an army on territory : Kamchatka
+
+----------- InitialReInforce of player : Player_1 Aggressive armies : 8 -------------
+
+Strongest territory : Iceland
+
+Placed an army on territory : Iceland
+
+----------- InitialReInforce of player : Player_2 Random armies : 8 -------------
+
+Randomly selected territory : Ontario
+
+Placed an army on territory : Ontario
+
+----------- InitialReInforce of player : Player_3 Cheater armies : 8 -------------
+
+Selected territory : Western Europe
+
+Placed an army on territory : Western Europe
+
+----------- InitialReInforce of player : Player_1 Aggressive armies : 7 -------------
+
+Strongest territory : Iceland
+
+Placed an army on territory : Iceland
+
+----------- InitialReInforce of player : Player_2 Random armies : 7 -------------
+
+Randomly selected territory : Eastern Australia
+
+Placed an army on territory : Eastern Australia
+
+----------- InitialReInforce of player : Player_3 Cheater armies : 7 -------------
+
+Selected territory : Ukraine
+
+Placed an army on territory : Ukraine
+
+----------- InitialReInforce of player : Player_1 Aggressive armies : 6 -------------
+
+Strongest territory : Iceland
+
+Placed an army on territory : Iceland
+
+----------- InitialReInforce of player : Player_2 Random armies : 6 -------------
+
+Randomly selected territory : North Africa
+
+Placed an army on territory : North Africa
+
+----------- InitialReInforce of player : Player_3 Cheater armies : 6 -------------
+
+Selected territory : South Africa
+
+Placed an army on territory : South Africa
+
+----------- InitialReInforce of player : Player_1 Aggressive armies : 5 -------------
+
+Strongest territory : Iceland
+
+Placed an army on territory : Iceland
+
+----------- InitialReInforce of player : Player_2 Random armies : 5 -------------
+
+Randomly selected territory : Western Australia
+
+Placed an army on territory : Western Australia
+
+----------- InitialReInforce of player : Player_3 Cheater armies : 5 -------------
+
+Selected territory : Western Europe
+
+Placed an army on territory : Western Europe
+
+----------- InitialReInforce of player : Player_1 Aggressive armies : 4 -------------
+
+Strongest territory : Iceland
+
+Placed an army on territory : Iceland
+
+----------- InitialReInforce of player : Player_2 Random armies : 4 -------------
+
+Randomly selected territory : Irkutsk
+
+Placed an army on territory : Irkutsk
+
+----------- InitialReInforce of player : Player_3 Cheater armies : 4 -------------
+
+Selected territory : Kamchatka
+
+Placed an army on territory : Kamchatka
+
+----------- InitialReInforce of player : Player_1 Aggressive armies : 3 -------------
+
+Strongest territory : Iceland
+
+Placed an army on territory : Iceland
+
+----------- InitialReInforce of player : Player_2 Random armies : 3 -------------
+
+Randomly selected territory : Siberia
+
+Placed an army on territory : Siberia
+
+----------- InitialReInforce of player : Player_3 Cheater armies : 3 -------------
+
+Selected territory : Northwest Territory
+
+Placed an army on territory : Northwest Territory
+
+----------- InitialReInforce of player : Player_1 Aggressive armies : 2 -------------
+
+Strongest territory : Iceland
+
+Placed an army on territory : Iceland
+
+----------- InitialReInforce of player : Player_2 Random armies : 2 -------------
+
+Randomly selected territory : Egypt
+
+Placed an army on territory : Egypt
+
+----------- InitialReInforce of player : Player_3 Cheater armies : 2 -------------
+
+Selected territory : Brazil
+
+Placed an army on territory : Brazil
+
+----------- InitialReInforce of player : Player_1 Aggressive armies : 1 -------------
+
+Strongest territory : Iceland
+
+Placed an army on territory : Iceland
+
+----------- InitialReInforce of player : Player_2 Random armies : 1 -------------
+
+Randomly selected territory : Afghanistan
+
+Placed an army on territory : Afghanistan
+
+----------- InitialReInforce of player : Player_3 Cheater armies : 1 -------------
+
+Selected territory : Venezuala
+
+Placed an army on territory : Venezuala
+
+************** Turn start/Reinforcement of Player_1 : Aggressive ********************
+
+Occupied territories count = 14
+
+% of occupied = 33.0
+
+Round no. of player: 0
+
+Player_1 can attack = true
+
+ ************ Attack phase : Player_1 Aggressive ************ 
+
+Attacking territory = Iceland no. of armies = 22
+
+Defending territory = Scandinavia, no of armies = 2 belongs to Player_3 Cheater
+
+---------- Battle started --------
+
+Attacking no. of dice = 2
+
+Defending no. of dice = 2
+
+Attacker lost 2
+
+Attacking no. of dice = 3
+
+Defending no. of dice = 2
+
+Both attacker and defender lost an army
+
+Attacking no. of dice = 3
+
+Defending no. of dice = 1
+
+Defender lost 1
+
+Capturing a country Scandinavia
+
+Moving 18 armies to territory Scandinavia
+
+Drawn a card: INFANTRY, country on it is: Brazil
+
+Player_1 can attack = true
+
+ ************ Attack phase : Player_1 Aggressive ************ 
+
+Attacking territory = Scandinavia no. of armies = 18
+
+Defending territory = Ukraine, no of armies = 3 belongs to Player_3 Cheater
+
+---------- Battle started --------
+
+Attacking no. of dice = 2
+
+Defending no. of dice = 1
+
+Defender lost 1
+
+Attacking no. of dice = 2
+
+Defending no. of dice = 1
+
+Defender lost 1
+
+Attacking no. of dice = 2
+
+Defending no. of dice = 1
+
+Defender lost 1
+
+Capturing a country Ukraine
+
+Moving 17 armies to territory Ukraine
+
+Player_1 can attack = true
+
+ ************ Attack phase : Player_1 Aggressive ************ 
+
+Attacking territory = Ukraine no. of armies = 17
+
+Defending territory = Ural, no of armies = 2 belongs to Player_3 Cheater
+
+---------- Battle started --------
+
+Attacking no. of dice = 3
+
+Defending no. of dice = 1
+
+Attacker lost 1
+
+Attacking no. of dice = 2
+
+Defending no. of dice = 2
+
+Both attacker and defender lost an army
+
+Attacking no. of dice = 2
+
+Defending no. of dice = 1
+
+Attacker lost 1
+
+Attacking no. of dice = 3
+
+Defending no. of dice = 1
+
+Defender lost 1
+
+Capturing a country Ural
+
+Moving 13 armies to territory Ural
+
+Player_1 can attack = true
+
+ ************ Attack phase : Player_1 Aggressive ************ 
+
+Attacking territory = Ural no. of armies = 13
+
+Defending territory = Siberia, no of armies = 2 belongs to Player_2 Random
+
+---------- Battle started --------
+
+Attacking no. of dice = 2
+
+Defending no. of dice = 1
+
+Attacker lost 1
+
+Attacking no. of dice = 2
+
+Defending no. of dice = 1
+
+Defender lost 1
+
+Attacking no. of dice = 1
+
+Defending no. of dice = 1
+
+Defender lost 1
+
+Capturing a country Siberia
+
+Moving 11 armies to territory Siberia
+
+Player_1 can attack = true
+
+ ************ Attack phase : Player_1 Aggressive ************ 
+
+Attacking territory = Siberia no. of armies = 11
+
+Defending territory = Yatusk, no of armies = 4 belongs to Player_2 Random
+
+---------- Battle started --------
+
+Attacking no. of dice = 3
+
+Defending no. of dice = 2
+
+Both attacker and defender lost an army
+
+Attacking no. of dice = 2
+
+Defending no. of dice = 1
+
+Attacker lost 1
+
+Attacking no. of dice = 1
+
+Defending no. of dice = 1
+
+Attacker lost 1
+
+Attacking no. of dice = 2
+
+Defending no. of dice = 2
+
+Attacker lost 2
+
+Attacking no. of dice = 2
+
+Defending no. of dice = 1
+
+Defender lost 1
+
+Attacking no. of dice = 1
+
+Defending no. of dice = 1
+
+Attacker lost 1
+
+Attacking no. of dice = 1
+
+Defending no. of dice = 2
+
+Defender lost 1
+
+Attacking no. of dice = 1
+
+Defending no. of dice = 1
+
+Attacker lost 1
+
+Attacking no. of dice = 1
+
+Defending no. of dice = 1
+
+Attacker lost 1
+
+Attacking no. of dice = 1
+
+Defending no. of dice = 1
+
+Attacker lost 1
+
+Attacking no. of dice = 1
+
+Defending no. of dice = 1
+
+Attacker lost 1
+
+Attacker lost the battle 
+
+Player_1 can attack = false
+
+Player_1 can fortify = false
+
+================= Changing player(current player) turn =====================
+
+************** Turn start/Reinforcement of Player_2 : Random ********************
+
+Occupied territories count = 13
+
+% of occupied = 30.0
+
+Round no. of player: 1
+
+Player_2 can attack = true
+
+ ************ Attack phase : Player_2 Random ************ 
+
+Decides to attack
+
+Attacking territory = Afghanistan, no of armies = 5
+
+Defending territory = India, no of armies = 1 belongs to Player_1 Aggressive
+
+---------- Battle started --------
+
+Attacking no. of dice = 1
+
+Defending no. of dice = 1
+
+Attacker lost 1
+
+Attacking no. of dice = 1
+
+Defending no. of dice = 1
+
+Defender lost 1
+
+Capturing a country India
+
+Moving 3 armies to territory India
+
+Drawn a card: ARTILLERY, country on it is: Quebec
+
+Player_2 can attack = true
+
+ ************ Attack phase : Player_2 Random ************ 
+
+Decides to attack
+
+Attacking territory = Irkutsk, no of armies = 3
+
+Defending territory = Kamchatka, no of armies = 3 belongs to Player_3 Cheater
+
+---------- Battle started --------
+
+Attacking no. of dice = 2
+
+Defending no. of dice = 2
+
+Attacker lost 2
+
+Attacker lost the battle 
+
+Player_2 can attack = true
+
+ ************ Attack phase : Player_2 Random ************ 
+
+Decides not to attack
+
+Can't attack, 
+
+ ************ Fortification phase : Player_2 Random ************ 
+
+Moving armies from territory = Ontario, no of armies = 2
+
+Can't fortify 
+
+================= Changing player(current player) turn =====================
+
+************** Turn start/Reinforcement of Player_3 : Cheater ********************
+
+Occupied territories count = 11
+
+% of occupied = 26.0
+
+Round no. of player: 1
+
+Player_3 can attack = true
+
+ ************ Attack phase : Player_3 Cheater ************ 
+
+Conquered territory = Ukraine
+
+Conquered territory = Afghanistan
+
+Conquered territory = India
+
+Conquered territory = Southern Europe
+
+Conquered territory = Egypt
+
+Conquered territory = East Africa
+
+Conquered territory = Ural
+
+Conquered territory = Siberia
+
+Conquered territory = Mongolia
+
+Conquered territory = Siam
+
+Conquered territory = Central America
+
+Conquered territory = Peru
+
+Conquered territory = Ontario
+
+Conquered territory = Quebec
+
+Conquered territory = Western United States
+
+Conquered territory = North Africa
+
+Conquered territory = Alaska
+
+Conquered territory = Alberta
+
+Conquered territory = Greenland
+
+Conquered territory = Great Britain
+
+Conquered territory = Northern Europe
+
+Conquered territory = Yatusk
+
+Conquered territory = Irkutsk
+
+Conquered territory = Japan
+
+Conquered territory = Argentina
+
+Drawn a card: CAVALRY, country on it is: Ontario
+
+ ************ Fortification phase : Player_3 Cheater ************ 
+
+Doubling armies on territory = Ukraine from 2 to 4
+
+Doubling armies on territory = Siam from 2 to 4
+
+Doubling armies on territory = Greenland from 2 to 4
+
+Doubling armies on territory = Great Britain from 2 to 4
+
+Doubling armies on territory = Northern Europe from 2 to 4
+
+================= Changing player(current player) turn =====================
+
+************** Turn start/Reinforcement of Player_1 : Aggressive ********************
+
+Occupied territories count = 3
+
+% of occupied = 7.0
+
+Round no. of player: 2
+
+territory bonus = 3.0
+
+Continent Bonus = 0
+
+No. of cards available = 1
+
+Is Card Trade Mandatory = false
+
+No of armies with player: 3
+
+----------- ReInforce of player : Player_1 Aggressive armies : 3 -------------
+
+Strongest territory : Iceland
+
+Placed an army on territory : Iceland
+
+----------- ReInforce of player : Player_1 Aggressive armies : 2 -------------
+
+Strongest territory : Iceland
+
+Placed an army on territory : Iceland
+
+----------- ReInforce of player : Player_1 Aggressive armies : 1 -------------
+
+Strongest territory : Iceland
+
+Placed an army on territory : Iceland
+
+ ************ Attack phase : Player_1 Aggressive ************ 
+
+Attacking territory = Iceland no. of armies = 4
+
+Defending territory = Greenland, no of armies = 2 belongs to Player_3 Cheater
+
+---------- Battle started --------
+
+Attacking no. of dice = 2
+
+Defending no. of dice = 2
+
+Attacker lost 2
+
+Attacking no. of dice = 1
+
+Defending no. of dice = 1
+
+Attacker lost 1
+
+Attacker lost the battle 
+
+Player_1 can attack = false
+
+Player_1 can fortify = false
+
+================= Changing player(current player) turn =====================
+
+************** Turn start/Reinforcement of Player_2 : Random ********************
+
+Occupied territories count = 3
+
+% of occupied = 7.0
+
+Round no. of player: 2
+
+territory bonus = 3.0
+
+Continent Bonus = 0
+
+No. of cards available = 1
+
+Is Card Trade Mandatory = false
+
+No of armies with player: 3
+
+----------- ReInforce of player : Player_2 Random armies : 3 -------------
+
+Randomly selected territory : Indonesia
+
+Placed an army on territory : Indonesia
+
+----------- ReInforce of player : Player_2 Random armies : 2 -------------
+
+Randomly selected territory : Indonesia
+
+Placed an army on territory : Indonesia
+
+----------- ReInforce of player : Player_2 Random armies : 1 -------------
+
+Randomly selected territory : Western Australia
+
+Placed an army on territory : Western Australia
+
+ ************ Attack phase : Player_2 Random ************ 
+
+Decides not to attack
+
+Can't attack, 
+
+ ************ Fortification phase : Player_2 Random ************ 
+
+Moving armies from territory = Western Australia, no of armies = 4
+
+Moving armies to territory = Indonesia, no of armies = 3
+
+Moving 1 armies from Indonesia to Western Australia
+
+================= Changing player(current player) turn =====================
+
+************** Turn start/Reinforcement of Player_3 : Cheater ********************
+
+Occupied territories count = 36
+
+% of occupied = 85.0
+
+Round no. of player: 2
+
+territory bonus = 12.0
+
+Continent Bonus = 17
+
+No. of cards available = 1
+
+Is Card Trade Mandatory = false
+
+No of armies with player: 29
+
+----------- ReInforce of player : Player_3 Cheater armies : 29 -------------
+
+Doubling armies on territory = Middle East from 3 to 6
+
+Doubling armies on territory = China from 1 to 2
+
+Doubling armies on territory = Venezuala from 2 to 4
+
+Doubling armies on territory = Eastern United States from 3 to 6
+
+Doubling armies on territory = Congo from 3 to 6
+
+Doubling armies on territory = Northwest Territory from 3 to 6
+
+Doubling armies on territory = Madagascar from 2 to 4
+
+Doubling armies on territory = Western Europe from 3 to 6
+
+Doubling armies on territory = South Africa from 3 to 6
+
+Doubling armies on territory = Kamchatka from 3 to 6
+
+Doubling armies on territory = Brazil from 2 to 4
+
+Doubling armies on territory = Ukraine from 2 to 4
+
+Doubling armies on territory = Afghanistan from 1 to 2
+
+Doubling armies on territory = India from 1 to 2
+
+Doubling armies on territory = Southern Europe from 1 to 2
+
+Doubling armies on territory = Egypt from 1 to 2
+
+Doubling armies on territory = East Africa from 1 to 2
+
+Doubling armies on territory = Ural from 1 to 2
+
+Doubling armies on territory = Siberia from 1 to 2
+
+Doubling armies on territory = Mongolia from 1 to 2
+
+Doubling armies on territory = Siam from 2 to 4
+
+Doubling armies on territory = Central America from 1 to 2
+
+Doubling armies on territory = Peru from 1 to 2
+
+Doubling armies on territory = Ontario from 1 to 2
+
+Doubling armies on territory = Quebec from 1 to 2
+
+Doubling armies on territory = Western United States from 1 to 2
+
+Doubling armies on territory = North Africa from 1 to 2
+
+Doubling armies on territory = Alaska from 1 to 2
+
+Doubling armies on territory = Alberta from 1 to 2
+
+Doubling armies on territory = Greenland from 2 to 4
+
+Doubling armies on territory = Great Britain from 2 to 4
+
+Doubling armies on territory = Northern Europe from 2 to 4
+
+Doubling armies on territory = Yatusk from 1 to 2
+
+Doubling armies on territory = Irkutsk from 1 to 2
+
+Doubling armies on territory = Japan from 1 to 2
+
+Doubling armies on territory = Argentina from 1 to 2
+
+ ************ Attack phase : Player_3 Cheater ************ 
+
+Conquered territory = Scandinavia
+
+Conquered territory = Indonesia
+
+Conquered territory = Iceland
+
+Drawn a card: INFANTRY, country on it is: Mongolia
+
+ ************ Fortification phase : Player_3 Cheater ************ 
+
+Doubling armies on territory = Indonesia from 2 to 4
+
+================= Changing player(current player) turn =====================
+
+************** Turn start/Reinforcement of Player_1 : Aggressive ********************
+
+Occupied territories count = 1
+
+% of occupied = 2.0
+
+Round no. of player: 3
+
+territory bonus = 3.0
+
+Continent Bonus = 0
+
+No. of cards available = 1
+
+Is Card Trade Mandatory = false
+
+No of armies with player: 3
+
+----------- ReInforce of player : Player_1 Aggressive armies : 3 -------------
+
+Strongest territory : New Guinea
+
+Placed an army on territory : New Guinea
+
+----------- ReInforce of player : Player_1 Aggressive armies : 2 -------------
+
+Strongest territory : New Guinea
+
+Placed an army on territory : New Guinea
+
+----------- ReInforce of player : Player_1 Aggressive armies : 1 -------------
+
+Strongest territory : New Guinea
+
+Placed an army on territory : New Guinea
+
+ ************ Attack phase : Player_1 Aggressive ************ 
+
+Attacking territory = New Guinea no. of armies = 4
+
+Defending territory = Indonesia, no of armies = 2 belongs to Player_3 Cheater
+
+---------- Battle started --------
+
+Attacking no. of dice = 1
+
+Defending no. of dice = 2
+
+Attacker lost 1
+
+Attacking no. of dice = 2
+
+Defending no. of dice = 1
+
+Attacker lost 1
+
+Attacking no. of dice = 1
+
+Defending no. of dice = 1
+
+Attacker lost 1
+
+Attacker lost the battle 
+
+Player_1 can attack = false
+
+Player_1 can fortify = false
+
+================= Changing player(current player) turn =====================
+
+************** Turn start/Reinforcement of Player_2 : Random ********************
+
+Occupied territories count = 2
+
+% of occupied = 4.0
+
+Round no. of player: 3
+
+territory bonus = 3.0
+
+Continent Bonus = 0
+
+No. of cards available = 1
+
+Is Card Trade Mandatory = false
+
+No of armies with player: 3
+
+----------- ReInforce of player : Player_2 Random armies : 3 -------------
+
+Randomly selected territory : Eastern Australia
+
+Placed an army on territory : Eastern Australia
+
+----------- ReInforce of player : Player_2 Random armies : 2 -------------
+
+Randomly selected territory : Eastern Australia
+
+Placed an army on territory : Eastern Australia
+
+----------- ReInforce of player : Player_2 Random armies : 1 -------------
+
+Randomly selected territory : Western Australia
+
+Placed an army on territory : Western Australia
+
+ ************ Attack phase : Player_2 Random ************ 
+
+Decides to attack
+
+Attacking territory = Western Australia, no of armies = 4
+
+Defending territory = New Guinea, no of armies = 1 belongs to Player_1 Aggressive
+
+---------- Battle started --------
+
+Attacking no. of dice = 2
+
+Defending no. of dice = 1
+
+Defender lost 1
+
+Capturing a country New Guinea
+
+Moving 3 armies to territory New Guinea
+
+Drawn a card: WILD, country on it is: 
+
+Player_1 eliminated from the game 
+
+1 cards added to current player Player_2
+
+Player_2 can attack = true
+
+ ************ Attack phase : Player_2 Random ************ 
+
+Decides not to attack
+
+Can't attack, 
+
+ ************ Fortification phase : Player_2 Random ************ 
+
+Moving armies from territory = New Guinea, no of armies = 3
+
+Moving armies to territory = Western Australia, no of armies = 1
+
+Moving 1 armies from Western Australia to New Guinea
+
+================= Changing player(current player) turn =====================
+
+************** Turn start/Reinforcement of Player_3 : Cheater ********************
+
+Occupied territories count = 39
+
+% of occupied = 92.0
+
+Round no. of player: 3
+
+territory bonus = 13.0
+
+Continent Bonus = 22
+
+No. of cards available = 2
+
+Is Card Trade Mandatory = false
+
+No of armies with player: 35
+
+----------- ReInforce of player : Player_3 Cheater armies : 35 -------------
+
+Doubling armies on territory = Middle East from 6 to 12
+
+Doubling armies on territory = China from 2 to 4
+
+Doubling armies on territory = Venezuala from 4 to 8
+
+Doubling armies on territory = Eastern United States from 6 to 12
+
+Doubling armies on territory = Congo from 6 to 12
+
+Doubling armies on territory = Northwest Territory from 6 to 12
+
+Doubling armies on territory = Madagascar from 4 to 8
+
+Doubling armies on territory = Western Europe from 6 to 12
+
+Doubling armies on territory = South Africa from 6 to 12
+
+Doubling armies on territory = Kamchatka from 6 to 12
+
+Doubling armies on territory = Brazil from 4 to 8
+
+Doubling armies on territory = Ukraine from 4 to 8
+
+Doubling armies on territory = Afghanistan from 2 to 4
+
+Doubling armies on territory = India from 2 to 4
+
+Doubling armies on territory = Southern Europe from 2 to 4
+
+Doubling armies on territory = Egypt from 2 to 4
+
+Doubling armies on territory = East Africa from 2 to 4
+
+Doubling armies on territory = Ural from 2 to 4
+
+Doubling armies on territory = Siberia from 2 to 4
+
+Doubling armies on territory = Mongolia from 2 to 4
+
+Doubling armies on territory = Siam from 4 to 8
+
+Doubling armies on territory = Central America from 2 to 4
+
+Doubling armies on territory = Peru from 2 to 4
+
+Doubling armies on territory = Ontario from 2 to 4
+
+Doubling armies on territory = Quebec from 2 to 4
+
+Doubling armies on territory = Western United States from 2 to 4
+
+Doubling armies on territory = North Africa from 2 to 4
+
+Doubling armies on territory = Alaska from 2 to 4
+
+Doubling armies on territory = Alberta from 2 to 4
+
+Doubling armies on territory = Greenland from 4 to 8
+
+Doubling armies on territory = Great Britain from 4 to 8
+
+Doubling armies on territory = Northern Europe from 4 to 8
+
+Doubling armies on territory = Yatusk from 2 to 4
+
+Doubling armies on territory = Irkutsk from 2 to 4
+
+Doubling armies on territory = Japan from 2 to 4
+
+Doubling armies on territory = Argentina from 2 to 4
+
+Doubling armies on territory = Scandinavia from 1 to 2
+
+Doubling armies on territory = Indonesia from 2 to 4
+
+Doubling armies on territory = Iceland from 1 to 2
+
+ ************ Attack phase : Player_3 Cheater ************ 
+
+Conquered territory = New Guinea
+
+Conquered territory = Western Australia
+
+Drawn a card: ARTILLERY, country on it is: Siam
+
+ ************ Fortification phase : Player_3 Cheater ************ 
+
+Doubling armies on territory = New Guinea from 2 to 4
+
+Doubling armies on territory = Western Australia from 2 to 4
+
+================= Changing player(current player) turn =====================
+
+************** Turn start/Reinforcement of Player_1 : Aggressive ********************
+
+Occupied territories count = 0
+
+% of occupied = 0.0
+
+Round no. of player: 4
+
+================= Changing player(current player) turn =====================
+
+************** Turn start/Reinforcement of Player_2 : Random ********************
+
+Occupied territories count = 1
+
+% of occupied = 2.0
+
+Round no. of player: 4
+
+territory bonus = 3.0
+
+Continent Bonus = 0
+
+No. of cards available = 3
+
+Is Card Trade Mandatory = false
+
+No of armies with player: 3
+
+----------- ReInforce of player : Player_2 Random armies : 3 -------------
+
+Randomly selected territory : Eastern Australia
+
+Placed an army on territory : Eastern Australia
+
+----------- ReInforce of player : Player_2 Random armies : 2 -------------
+
+Randomly selected territory : Eastern Australia
+
+Placed an army on territory : Eastern Australia
+
+----------- ReInforce of player : Player_2 Random armies : 1 -------------
+
+Randomly selected territory : Eastern Australia
+
+Placed an army on territory : Eastern Australia
+
+ ************ Attack phase : Player_2 Random ************ 
+
+Decides to attack
+
+Attacking territory = Eastern Australia, no of armies = 7
+
+Defending territory = New Guinea, no of armies = 2 belongs to Player_3 Cheater
+
+---------- Battle started --------
+
+Attacking no. of dice = 2
+
+Defending no. of dice = 2
+
+Both attacker and defender lost an army
+
+Attacking no. of dice = 1
+
+Defending no. of dice = 1
+
+Attacker lost 1
+
+Attacking no. of dice = 3
+
+Defending no. of dice = 1
+
+Attacker lost 1
+
+Attacking no. of dice = 2
+
+Defending no. of dice = 1
+
+Attacker lost 1
+
+Attacking no. of dice = 3
+
+Defending no. of dice = 1
+
+Attacker lost 1
+
+Attacking no. of dice = 1
+
+Defending no. of dice = 1
+
+Attacker lost 1
+
+Attacker lost the battle 
+
+Player_2 can attack = false
+
+Player_2 can fortify = false
+
+================= Changing player(current player) turn =====================
+
+************** Turn start/Reinforcement of Player_3 : Cheater ********************
+
+Occupied territories count = 41
+
+% of occupied = 97.0
+
+Round no. of player: 4
+
+territory bonus = 13.0
+
+Continent Bonus = 22
+
+No. of cards available = 3
+
+Is Card Trade Mandatory = false
+
+No of armies with player: 35
+
+----------- ReInforce of player : Player_3 Cheater armies : 35 -------------
+
+Doubling armies on territory = Middle East from 12 to 24
+
+Doubling armies on territory = China from 4 to 8
+
+Doubling armies on territory = Venezuala from 8 to 16
+
+Doubling armies on territory = Eastern United States from 12 to 24
+
+Doubling armies on territory = Congo from 12 to 24
+
+Doubling armies on territory = Northwest Territory from 12 to 24
+
+Doubling armies on territory = Madagascar from 8 to 16
+
+Doubling armies on territory = Western Europe from 12 to 24
+
+Doubling armies on territory = South Africa from 12 to 24
+
+Doubling armies on territory = Kamchatka from 12 to 24
+
+Doubling armies on territory = Brazil from 8 to 16
+
+Doubling armies on territory = Ukraine from 8 to 16
+
+Doubling armies on territory = Afghanistan from 4 to 8
+
+Doubling armies on territory = India from 4 to 8
+
+Doubling armies on territory = Southern Europe from 4 to 8
+
+Doubling armies on territory = Egypt from 4 to 8
+
+Doubling armies on territory = East Africa from 4 to 8
+
+Doubling armies on territory = Ural from 4 to 8
+
+Doubling armies on territory = Siberia from 4 to 8
+
+Doubling armies on territory = Mongolia from 4 to 8
+
+Doubling armies on territory = Siam from 8 to 16
+
+Doubling armies on territory = Central America from 4 to 8
+
+Doubling armies on territory = Peru from 4 to 8
+
+Doubling armies on territory = Ontario from 4 to 8
+
+Doubling armies on territory = Quebec from 4 to 8
+
+Doubling armies on territory = Western United States from 4 to 8
+
+Doubling armies on territory = North Africa from 4 to 8
+
+Doubling armies on territory = Alaska from 4 to 8
+
+Doubling armies on territory = Alberta from 4 to 8
+
+Doubling armies on territory = Greenland from 8 to 16
+
+Doubling armies on territory = Great Britain from 8 to 16
+
+Doubling armies on territory = Northern Europe from 8 to 16
+
+Doubling armies on territory = Yatusk from 4 to 8
+
+Doubling armies on territory = Irkutsk from 4 to 8
+
+Doubling armies on territory = Japan from 4 to 8
+
+Doubling armies on territory = Argentina from 4 to 8
+
+Doubling armies on territory = Scandinavia from 2 to 4
+
+Doubling armies on territory = Indonesia from 4 to 8
+
+Doubling armies on territory = Iceland from 2 to 4
+
+Doubling armies on territory = New Guinea from 1 to 2
+
+Doubling armies on territory = Western Australia from 2 to 4
+
+ ************ Attack phase : Player_3 Cheater ************ 
+
+Conquered territory = Eastern Australia
+
+ ************ End phase ************* 
+
+Player_3 : Cheater won the game
+
+Mouse clicked current status = 5, End phase
+
