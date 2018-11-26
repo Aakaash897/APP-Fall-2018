@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 
 import col.cs.risk.helper.MapException;
 import col.cs.risk.helper.Utility;
@@ -16,8 +17,8 @@ import col.cs.risk.model.GameModel;
 import col.cs.risk.view.ConstructNewMapView;
 import col.cs.risk.view.HomePageViewLoader;
 import col.cs.risk.view.MapConstructionView;
-import col.cs.risk.view.StartGameType;
-import col.cs.risk.view.tournamentView;
+import col.cs.risk.view.GameModeSettingsView;
+import col.cs.risk.view.TournamentSettingsView;
 
 /**
  * StartGameController It handles the starting of the game Loads the home page
@@ -37,14 +38,11 @@ public class StartGameController {
 	/** Map construction/modification Page View */
 	private MapConstructionView mapConstructionView;
 	
-	/** Choice of Game Type Page */
-	private StartGameType startGameType;
-	
-	/** Tournament View Object */
-	private tournamentView tournament;
-
 	/** Construct New map Page View */
 	private ConstructNewMapView constructNewMapView;
+	
+	/** Player Settings Controller instance */
+	private PlayerSettingsController playerSettingsController;
 
 	/**
 	 * Starts the game page(Loads the home page) with multiple options
@@ -139,7 +137,6 @@ public class StartGameController {
 	public void startGameButtonActionPerformed(ActionEvent event) {
 		homePageViewLoader.setVisible(false);
 		Utility.writeLog("Start Game button pressed");
-		//setPlayers();
 		chooseMode();
 		System.out.println(" Start Game button pressed ");
 	}
@@ -149,24 +146,38 @@ public class StartGameController {
 	public void chooseMode()
 	{
 		homePageViewLoader.setVisible(false);
-		new StartGameType(this).setVisible(true);
-		
+		new GameModeSettingsView(this).setVisible(true);
 	}
 
 	/**
 	 * Initialize the player settings controller
 	 */
-	public void setPlayers() {
-		//startGameType.setVisible(false);
-		new PlayerSettingsController(this);
+	public void singleModePlayerSettings() {
+		GameModel.isTournamentMode = false;
+		playerSettingsController = new PlayerSettingsController(this);
 	}
 	
 	
 	public void tournamentMode()
 	{
 		homePageViewLoader.setVisible(false);
-		new tournamentView(this).setVisible(true);
+		new TournamentSettingsView(this).setVisible(true);
 	}
+	
+	public void tournamentModeOKButtonActionPerformed(int noOfPlayers, HashMap<Integer, String> playersStrategiesMap) {
+		if(playerSettingsController == null) {
+			playerSettingsController = new PlayerSettingsController();
+		}
+		playerSettingsController.setNoOfPlayers(noOfPlayers);
+		playerSettingsController.setPlayers();
+		
+		HashMap<String,String> playersStrategies = new HashMap<>();
+		for(int i=0;i<noOfPlayers;i++) {
+			playersStrategies.put(GameModel.getPlayers().get(i).getName(), playersStrategiesMap.get(i+1));
+		}
+		playerSettingsController.playerStrategyTypeSaveActionPerformed(playersStrategies);
+	}
+	
 
 	/**
 	 * Action performed on pressing construct button on home page
@@ -307,7 +318,7 @@ public class StartGameController {
 						GameModel.isBaseMapModified = true;
 						GameModel.fileName = Constants.DEFAULT_MODIFIED_MAP_FILE_NAME;
 						GameModel.imageSelected = Constants.DEFAULT_MODIFIED_MAP_IMAGE_FILE_NAME;
-						setPlayers();
+						singleModePlayerSettings();
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

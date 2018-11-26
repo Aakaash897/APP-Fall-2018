@@ -127,6 +127,16 @@ public class GameModel {
 
 	/** No of card set traded at any point of game */
 	private int cardTradeCount = Constants.ZERO;
+	
+	public static boolean isTournamentMode = false;
+	
+	public static int tournamentNoOfMaps = 1;
+	
+	public static Vector<String> tournamentMapList = new Vector<>();
+	
+	public static int tournamentNoOfGame = 1;
+	
+	public static int tournamentNoOfTurns = 10;
 
 	/**
 	 * Instance block to fill player and army details

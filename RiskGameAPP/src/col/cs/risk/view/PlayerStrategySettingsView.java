@@ -99,7 +99,7 @@ public class PlayerStrategySettingsView extends JFrame implements ActionListener
 		}
 
 		int y1 = 0;
-		if(noOfPlayers == 2)
+		if(noOfPlayers >= 2)
 		{
 			StrategyComboBox1 = new JComboBox<String>();
 			StrategyComboBox1.addItem(Constants.HUMAN);
@@ -139,45 +139,8 @@ public class PlayerStrategySettingsView extends JFrame implements ActionListener
 			});
 
 		}
-		if(noOfPlayers == 3)
+		if(noOfPlayers >= 3)
 		{
-			StrategyComboBox1 = new JComboBox<String>();
-			StrategyComboBox1.addItem(Constants.HUMAN);
-			StrategyComboBox1.addItem(Constants.AGGRESSIVE);
-			StrategyComboBox1.addItem(Constants.BENEVOLENT);
-			StrategyComboBox1.addItem(Constants.RANDOM);
-			StrategyComboBox1.addItem(Constants.CHEATER);
-			StrategyComboBox1.setVisible(true);
-			StrategyComboBox1.setBounds(300,100+y1,200,20);
-			y1 = y1+100;
-			getContentPane().add(StrategyComboBox1);
-			StrategyComboBox1.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent evt) {
-					playerType = (String) StrategyComboBox1.getSelectedItem();
-					playersStrategiesMap.put(GameModel.players.get(0).getName(), playerType);
-					System.out.println(playersStrategiesMap.toString());
-
-				}
-
-			});
-			StrategyComboBox2 = new JComboBox<String>();
-			StrategyComboBox2.addItem(Constants.HUMAN);
-			StrategyComboBox2.addItem(Constants.AGGRESSIVE);
-			StrategyComboBox2.addItem(Constants.BENEVOLENT);
-			StrategyComboBox2.addItem(Constants.RANDOM);
-			StrategyComboBox2.addItem(Constants.CHEATER);
-			StrategyComboBox2.setVisible(true);
-			StrategyComboBox2.setBounds(300,100+y1,200,20);
-			getContentPane().add(StrategyComboBox2);
-			StrategyComboBox2.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent evt) {
-					playerType = (String) StrategyComboBox2.getSelectedItem();
-					playersStrategiesMap.put(GameModel.players.get(1).getName(), playerType);
-					System.out.println(playersStrategiesMap.toString());
-
-				}
-
-			});
 			y1 = y1+100;
 			StrategyComboBox3 = new JComboBox<String>();
 			StrategyComboBox3.addItem(Constants.HUMAN);
@@ -200,64 +163,8 @@ public class PlayerStrategySettingsView extends JFrame implements ActionListener
 
 		}
 
-		if(noOfPlayers == 4)
+		if(noOfPlayers >= 4)
 		{
-			StrategyComboBox1 = new JComboBox<String>();
-			StrategyComboBox1.addItem(Constants.HUMAN);
-			StrategyComboBox1.addItem(Constants.AGGRESSIVE);
-			StrategyComboBox1.addItem(Constants.BENEVOLENT);
-			StrategyComboBox1.addItem(Constants.RANDOM);
-			StrategyComboBox1.addItem(Constants.CHEATER);
-			StrategyComboBox1.setVisible(true);
-			StrategyComboBox1.setBounds(300,100+y1,200,20);
-			y1 = y1+100;
-			getContentPane().add(StrategyComboBox1);
-			StrategyComboBox1.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent evt) {
-					playerType = (String) StrategyComboBox1.getSelectedItem();
-					playersStrategiesMap.put(GameModel.players.get(0).getName(), playerType);
-					System.out.println(playersStrategiesMap.toString());
-
-				}
-
-			});
-			StrategyComboBox2 = new JComboBox<String>();
-			StrategyComboBox2.addItem(Constants.HUMAN);
-			StrategyComboBox2.addItem(Constants.AGGRESSIVE);
-			StrategyComboBox2.addItem(Constants.BENEVOLENT);
-			StrategyComboBox2.addItem(Constants.RANDOM);
-			StrategyComboBox2.addItem(Constants.CHEATER);
-			StrategyComboBox2.setVisible(true);
-			StrategyComboBox2.setBounds(300,100+y1,200,20);
-			getContentPane().add(StrategyComboBox2);
-			StrategyComboBox2.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent evt) {
-					playerType = (String) StrategyComboBox2.getSelectedItem();
-					playersStrategiesMap.put(GameModel.players.get(1).getName(), playerType);
-					System.out.println(playersStrategiesMap.toString());
-
-				}
-
-			});
-			y1 = y1+100;
-			StrategyComboBox3 = new JComboBox<String>();
-			StrategyComboBox3.addItem(Constants.HUMAN);
-			StrategyComboBox3.addItem(Constants.AGGRESSIVE);
-			StrategyComboBox3.addItem(Constants.BENEVOLENT);
-			StrategyComboBox3.addItem(Constants.RANDOM);
-			StrategyComboBox3.addItem(Constants.CHEATER);
-			StrategyComboBox3.setVisible(true);
-			StrategyComboBox3.setBounds(300,100+y1,200,20);
-			getContentPane().add(StrategyComboBox3);
-			StrategyComboBox3.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent evt) {
-					playerType = (String) StrategyComboBox3.getSelectedItem();
-					playersStrategiesMap.put(GameModel.players.get(2).getName(), playerType);
-					System.out.println(playersStrategiesMap.toString());
-
-				}
-
-			});
 			y1 = y1+100;
 			StrategyComboBox4 = new JComboBox<String>();
 			StrategyComboBox4.addItem(Constants.HUMAN);
@@ -280,83 +187,8 @@ public class PlayerStrategySettingsView extends JFrame implements ActionListener
 
 		}
 
-		if(noOfPlayers == 5)
+		if(noOfPlayers >= 5)
 		{
-			StrategyComboBox1 = new JComboBox<String>();
-			StrategyComboBox1.addItem(Constants.HUMAN);
-			StrategyComboBox1.addItem(Constants.AGGRESSIVE);
-			StrategyComboBox1.addItem(Constants.BENEVOLENT);
-			StrategyComboBox1.addItem(Constants.RANDOM);
-			StrategyComboBox1.addItem(Constants.CHEATER);
-			StrategyComboBox1.setVisible(true);
-			StrategyComboBox1.setBounds(300,100+y1,200,20);
-			y1 = y1+100;
-			getContentPane().add(StrategyComboBox1);
-			StrategyComboBox1.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent evt) {
-					playerType = (String) StrategyComboBox1.getSelectedItem();
-					playersStrategiesMap.put(GameModel.players.get(0).getName(), playerType);
-					System.out.println(playersStrategiesMap.toString());
-
-				}
-
-			});
-			StrategyComboBox2 = new JComboBox<String>();
-			StrategyComboBox2.addItem(Constants.HUMAN);
-			StrategyComboBox2.addItem(Constants.AGGRESSIVE);
-			StrategyComboBox2.addItem(Constants.BENEVOLENT);
-			StrategyComboBox2.addItem(Constants.RANDOM);
-			StrategyComboBox2.addItem(Constants.CHEATER);
-			StrategyComboBox2.setVisible(true);
-			StrategyComboBox2.setBounds(300,100+y1,200,20);
-			getContentPane().add(StrategyComboBox2);
-			StrategyComboBox2.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent evt) {
-					playerType = (String) StrategyComboBox2.getSelectedItem();
-					playersStrategiesMap.put(GameModel.players.get(1).getName(), playerType);
-					System.out.println(playersStrategiesMap.toString());
-
-				}
-
-			});
-			y1 = y1+100;
-			StrategyComboBox3 = new JComboBox<String>();
-			StrategyComboBox3.addItem(Constants.HUMAN);
-			StrategyComboBox3.addItem(Constants.AGGRESSIVE);
-			StrategyComboBox3.addItem(Constants.BENEVOLENT);
-			StrategyComboBox3.addItem(Constants.RANDOM);
-			StrategyComboBox3.addItem(Constants.CHEATER);
-			StrategyComboBox3.setVisible(true);
-			StrategyComboBox3.setBounds(300,100+y1,200,20);
-			getContentPane().add(StrategyComboBox3);
-			StrategyComboBox3.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent evt) {
-					playerType = (String) StrategyComboBox3.getSelectedItem();
-					playersStrategiesMap.put(GameModel.players.get(2).getName(), playerType);
-					System.out.println(playersStrategiesMap.toString());
-
-				}
-
-			});
-			y1 = y1+100;
-			StrategyComboBox4 = new JComboBox<String>();
-			StrategyComboBox4.addItem(Constants.HUMAN);
-			StrategyComboBox4.addItem(Constants.AGGRESSIVE);
-			StrategyComboBox4.addItem(Constants.BENEVOLENT);
-			StrategyComboBox4.addItem(Constants.RANDOM);
-			StrategyComboBox4.addItem(Constants.CHEATER);
-			StrategyComboBox4.setVisible(true);
-			StrategyComboBox4.setBounds(300,100+y1,200,20);
-			getContentPane().add(StrategyComboBox4);
-			StrategyComboBox4.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent evt) {
-					playerType = (String) StrategyComboBox4.getSelectedItem();
-					playersStrategiesMap.put(GameModel.players.get(3).getName(), playerType);
-					System.out.println(playersStrategiesMap.toString());
-
-				}
-
-			});
 			y1 = y1+100;
 			StrategyComboBox5 = new JComboBox<String>();
 			StrategyComboBox5.addItem(Constants.HUMAN);
@@ -378,102 +210,8 @@ public class PlayerStrategySettingsView extends JFrame implements ActionListener
 			});
 
 		}
-		if(noOfPlayers == 6)
+		if(noOfPlayers >= 6)
 		{
-			StrategyComboBox1 = new JComboBox<String>();
-			StrategyComboBox1.addItem(Constants.HUMAN);
-			StrategyComboBox1.addItem(Constants.AGGRESSIVE);
-			StrategyComboBox1.addItem(Constants.BENEVOLENT);
-			StrategyComboBox1.addItem(Constants.RANDOM);
-			StrategyComboBox1.addItem(Constants.CHEATER);
-			StrategyComboBox1.setVisible(true);
-			StrategyComboBox1.setBounds(300,100+y1,200,20);
-			y1 = y1+100;
-			getContentPane().add(StrategyComboBox1);
-			StrategyComboBox1.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent evt) {
-					playerType = (String) StrategyComboBox1.getSelectedItem();
-					playersStrategiesMap.put(GameModel.players.get(0).getName(), playerType);
-					System.out.println(playersStrategiesMap.toString());
-
-				}
-
-			});
-			StrategyComboBox2 = new JComboBox<String>();
-			StrategyComboBox2.addItem(Constants.HUMAN);
-			StrategyComboBox2.addItem(Constants.AGGRESSIVE);
-			StrategyComboBox2.addItem(Constants.BENEVOLENT);
-			StrategyComboBox2.addItem(Constants.RANDOM);
-			StrategyComboBox2.addItem(Constants.CHEATER);
-			StrategyComboBox2.setVisible(true);
-			StrategyComboBox2.setBounds(300,100+y1,200,20);
-			getContentPane().add(StrategyComboBox2);
-			StrategyComboBox2.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent evt) {
-					playerType = (String) StrategyComboBox2.getSelectedItem();
-					playersStrategiesMap.put(GameModel.players.get(1).getName(), playerType);
-					System.out.println(playersStrategiesMap.toString());
-
-				}
-
-			});
-			y1 = y1+100;
-			StrategyComboBox3 = new JComboBox<String>();
-			StrategyComboBox3.addItem(Constants.HUMAN);
-			StrategyComboBox3.addItem(Constants.AGGRESSIVE);
-			StrategyComboBox3.addItem(Constants.BENEVOLENT);
-			StrategyComboBox3.addItem(Constants.RANDOM);
-			StrategyComboBox3.addItem(Constants.CHEATER);
-			StrategyComboBox3.setVisible(true);
-			StrategyComboBox3.setBounds(300,100+y1,200,20);
-			getContentPane().add(StrategyComboBox3);
-			StrategyComboBox3.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent evt) {
-					playerType = (String) StrategyComboBox3.getSelectedItem();
-					playersStrategiesMap.put(GameModel.players.get(2).getName(), playerType);
-					System.out.println(playersStrategiesMap.toString());
-
-				}
-
-			});
-			y1 = y1+100;
-			StrategyComboBox4 = new JComboBox<String>();
-			StrategyComboBox4.addItem(Constants.HUMAN);
-			StrategyComboBox4.addItem(Constants.AGGRESSIVE);
-			StrategyComboBox4.addItem(Constants.BENEVOLENT);
-			StrategyComboBox4.addItem(Constants.RANDOM);
-			StrategyComboBox4.addItem(Constants.CHEATER);
-			StrategyComboBox4.setVisible(true);
-			StrategyComboBox4.setBounds(300,100+y1,200,20);
-			getContentPane().add(StrategyComboBox4);
-			StrategyComboBox4.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent evt) {
-					playerType = (String) StrategyComboBox4.getSelectedItem();
-					playersStrategiesMap.put(GameModel.players.get(3).getName(), playerType);
-					System.out.println(playersStrategiesMap.toString());
-
-				}
-
-			});
-			y1 = y1+100;
-			StrategyComboBox5 = new JComboBox<String>();
-			StrategyComboBox5.addItem(Constants.HUMAN);
-			StrategyComboBox5.addItem(Constants.AGGRESSIVE);
-			StrategyComboBox5.addItem(Constants.BENEVOLENT);
-			StrategyComboBox5.addItem(Constants.RANDOM);
-			StrategyComboBox5.addItem(Constants.CHEATER);
-			StrategyComboBox5.setVisible(true);
-			StrategyComboBox5.setBounds(300,100+y1,200,20);
-			getContentPane().add(StrategyComboBox5);
-			StrategyComboBox5.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent evt) {
-					playerType = (String) StrategyComboBox5.getSelectedItem();
-					playersStrategiesMap.put(GameModel.players.get(4).getName(), playerType);
-					System.out.println(playersStrategiesMap.toString());
-
-				}
-
-			});
 			y1 = y1+100;
 			StrategyComboBox6 = new JComboBox<String>();
 			StrategyComboBox6.addItem(Constants.HUMAN);

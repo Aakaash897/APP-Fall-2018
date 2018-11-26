@@ -51,6 +51,9 @@ public class PlayerSettingsController {
 		new PlayerSettingsView(this).setVisible(true);
 	}
 
+	public PlayerSettingsController() {
+	}
+
 	/**
 	 * Action performed on pressing finish button on settings screen
 	 * 

@@ -3,88 +3,96 @@ package col.cs.risk.view;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.HashMap;
+import java.util.stream.Collectors;
 
 import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import col.cs.risk.controller.StartGameController;
+import col.cs.risk.model.Constants;
+import col.cs.risk.model.GameModel;
 
 
 
-public class tournamentView extends JFrame {
-	
+public class TournamentSettingsView extends JFrame {
+
 	private JPanel Panel;
-	
-	int numMap,numPlayer;
-	
+
+	int numOfMaps=1; 
+
+	int numOfPlayers=2;
+
+	int noOfGames = 1;
+
+	int noOfTurns=10;
+
+	HashMap<Integer, String> playersStrategiesMap = new HashMap<>();
+
 	/** Game controller */
 	private StartGameController startGameController;
-	
-	
-	public tournamentView(StartGameController gameController) {
-		
+
+	public TournamentSettingsView(StartGameController gameController) {
 		this();
 		this.startGameController = gameController;
 		initComponents();
 		setLocationRelativeTo(null);
 	}
-	
-	public tournamentView() {
+
+	public TournamentSettingsView() {
 		setTitle("Tounament Mode Choice");
 	}
 
 	private void initComponents() {
-		
+
 		Panel = new javax.swing.JPanel();
 		Panel.setForeground(Color.BLACK);
-		String[] behaviour = { "Cheater", "Random", "Benevolent", "Aggressive" };
-		JComboBox playerOneBehavior = new JComboBox(behaviour);
-		JComboBox playerTwoBehavior = new JComboBox(behaviour);
-		JComboBox playerThreeBehavior = new JComboBox(behaviour);
-		JComboBox playerFourBehavior = new JComboBox(behaviour);
+		String[] behaviour = {Constants.AGGRESSIVE, Constants.BENEVOLENT, Constants.RANDOM, Constants.CHEATER};
+		JComboBox<String> playerOneBehavior = new JComboBox<String>(behaviour);
+		JComboBox<String> playerTwoBehavior = new JComboBox<String>(behaviour);
+		JComboBox<String> playerThreeBehavior = new JComboBox<String>(behaviour);
+		JComboBox<String> playerFourBehavior = new JComboBox<String>(behaviour);
 		Integer[] numberOfMaps = { 1, 2, 3, 4, 5 };
-		JComboBox numberOfMapsCombo = new JComboBox(numberOfMaps);
+		JComboBox<Integer> numberOfMapsCombo = new JComboBox<Integer>(numberOfMaps);
 		Integer[] numberOfStrategies = { 2, 3, 4 };
-		JComboBox playerNumCombo = new JComboBox(numberOfStrategies);
+		JComboBox<Integer> playerNumCombo = new JComboBox<Integer>(numberOfStrategies);
 		Integer[] numberOfGames = { 1, 2, 3, 4, 5 };
-		JComboBox gameNumCombo = new JComboBox(numberOfGames);
+		JComboBox<Integer> gameNumCombo = new JComboBox<Integer>(numberOfGames);
 		JComboBox turnNumCombobox = new JComboBox();
-		for (int i = 10; i <= 40; i++) {
+		for (int i = 10; i <= 50; i++) {
 			turnNumCombobox.addItem(new Integer(i));
 		}
-		
+
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent event) {
+				exitForm(event);
+			}
+		});
+
 		Panel.setBackground(new java.awt.Color(1, 1, 1));
 		Panel.setName("jPanel1");
-		
-		JButton okButton = new JButton("Ok");
-		okButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("OK Pressed");
-				setVisible(false);
-				
-			}
 
-		});
-		
-		JLabel descriptionLabel = new JLabel("Choose Proper Values To Proceed ");
+		JLabel descriptionLabel = new JLabel("Choose tournament option values to proceed ");
 		descriptionLabel.setForeground(Color.WHITE);
 
-		JLabel mapLabel = new JLabel("Map");
+		JLabel mapLabel = new JLabel("Number of maps");
 		mapLabel.setForeground(Color.WHITE);
 
-		JLabel strategiesLabel = new JLabel("Player Strategies");
+		JLabel strategiesLabel = new JLabel("Number of player strategies");
 		strategiesLabel.setForeground(Color.WHITE);
 
-		JLabel gameLabel = new JLabel("Game");
+		JLabel gameLabel = new JLabel("Number of games");
 		gameLabel.setForeground(Color.WHITE);
 
-		JLabel numberOfTurnsLabel = new JLabel("Number of Allowed turns");
+		JLabel numberOfTurnsLabel = new JLabel("Number of turns allowed");
 		numberOfTurnsLabel.setForeground(Color.WHITE);
 
 		JLabel playerOne = new JLabel("Player 1");
@@ -98,8 +106,7 @@ public class tournamentView extends JFrame {
 
 		JLabel playerFour = new JLabel("Player 4");
 		playerFour.setForeground(Color.WHITE);
-		
-		
+
 		playerOneBehavior.setVisible(false);
 		playerOne.setVisible(false);
 		playerTwoBehavior.setVisible(false);
@@ -108,19 +115,60 @@ public class tournamentView extends JFrame {
 		playerThree.setVisible(false);
 		playerFour.setVisible(false);
 		playerFourBehavior.setVisible(false);
-		
+
+		JButton okButton = new JButton("Ok");
+		okButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("OK Pressed");
+				setVisible(false);
+				//needs to set map list
+				//GameModel.tournamentMapList
+				System.out.println(" playersStrategiesMap key = "+playersStrategiesMap.keySet().stream().map(x->x.toString()).collect(Collectors.toList()));
+				System.out.println(" playersStrategiesMap val = "+playersStrategiesMap.values().stream().map(x->x.toString()).collect(Collectors.toList()));
+
+				GameModel.isTournamentMode = true;
+				GameModel.tournamentNoOfMaps = numOfMaps;
+				GameModel.tournamentNoOfGame = noOfGames;
+				GameModel.tournamentNoOfTurns = noOfTurns;
+				startGameController.tournamentModeOKButtonActionPerformed(numOfPlayers, playersStrategiesMap);
+				dispose();
+			}
+
+		});
+
 		numberOfMapsCombo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				numMap = (int) numberOfMapsCombo.getSelectedItem();
+				numOfMaps = (int) numberOfMapsCombo.getSelectedItem();
+				System.out.println("numOfMaps = "+numOfMaps);
+			}
+		});
+
+		turnNumCombobox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				noOfTurns = (int) turnNumCombobox.getSelectedIndex();
+				System.out.println("noOfTurns = "+noOfTurns);
+			}
+		});
+
+		gameNumCombo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				noOfGames = (int) gameNumCombo.getSelectedIndex();
+				System.out.println("noOfGames = "+noOfGames);
 			}
 		});
 		
+		playersStrategiesMap.put(1, Constants.AGGRESSIVE);
+		playersStrategiesMap.put(2, Constants.AGGRESSIVE);
+
 		playerNumCombo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				numPlayer = (int) playerNumCombo.getSelectedItem();
+				numOfPlayers = (int) playerNumCombo.getSelectedItem();
+				System.out.println("numOfPlayers = "+numOfPlayers);
 
-				if (numPlayer == 2) {
-
+				if (numOfPlayers == 2) {
+					playersStrategiesMap.clear();
+					playersStrategiesMap.put(1, Constants.AGGRESSIVE);
+					playersStrategiesMap.put(2, Constants.AGGRESSIVE);
 					playerOneBehavior.setVisible(true);
 					playerOne.setVisible(true);
 					playerTwoBehavior.setVisible(true);
@@ -131,8 +179,11 @@ public class tournamentView extends JFrame {
 					playerFourBehavior.setVisible(false);
 
 				}
-				if (numPlayer == 3) {
-
+				if (numOfPlayers == 3) {
+					playersStrategiesMap.clear();
+					playersStrategiesMap.put(1, Constants.AGGRESSIVE);
+					playersStrategiesMap.put(2, Constants.AGGRESSIVE);
+					playersStrategiesMap.put(3, Constants.AGGRESSIVE);
 					playerOneBehavior.setVisible(true);
 					playerOne.setVisible(true);
 					playerTwoBehavior.setVisible(true);
@@ -142,7 +193,12 @@ public class tournamentView extends JFrame {
 					playerFour.setVisible(false);
 					playerFourBehavior.setVisible(false);
 				}
-				if (numPlayer == 4) {
+				if (numOfPlayers == 4) {
+					playersStrategiesMap.clear();
+					playersStrategiesMap.put(1, Constants.AGGRESSIVE);
+					playersStrategiesMap.put(2, Constants.AGGRESSIVE);
+					playersStrategiesMap.put(3, Constants.AGGRESSIVE);
+					playersStrategiesMap.put(4, Constants.AGGRESSIVE);
 					playerOneBehavior.setVisible(true);
 					playerOne.setVisible(true);
 					playerTwoBehavior.setVisible(true);
@@ -151,37 +207,39 @@ public class tournamentView extends JFrame {
 					playerThree.setVisible(true);
 					playerFour.setVisible(true);
 					playerFourBehavior.setVisible(true);
-					}
-
 				}
-			});
+			}
+		});
 		playerOneBehavior.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-			
-					System.out.println(playerOneBehavior.getSelectedItem());
+				System.out.println(playerOneBehavior.getSelectedItem());
+				playersStrategiesMap.put(1, (String) playerOneBehavior.getSelectedItem());
 			}
 		});
 		playerTwoBehavior.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-			
-					System.out.println( playerTwoBehavior.getSelectedItem());
+
+				System.out.println( playerTwoBehavior.getSelectedItem());
+				playersStrategiesMap.put(2, (String) playerTwoBehavior.getSelectedItem());
 			}
 		});
 		playerThreeBehavior.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				
-					System.out.println( playerThreeBehavior.getSelectedItem());
+
+				System.out.println( playerThreeBehavior.getSelectedItem());
+				playersStrategiesMap.put(3, (String) playerThreeBehavior.getSelectedItem());
 			}
 		});
 		playerFourBehavior.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				
-					System.out.println( playerFourBehavior.getSelectedItem());
+
+				System.out.println( playerFourBehavior.getSelectedItem());
+				playersStrategiesMap.put(4, (String) playerFourBehavior.getSelectedItem());
 			}
 		});
-		
-		
-		
+
+
+
 		javax.swing.GroupLayout gl_modePanel = new javax.swing.GroupLayout(Panel);
 		gl_modePanel.setHorizontalGroup(
 				gl_modePanel.createParallelGroup(Alignment.LEADING)
@@ -210,8 +268,8 @@ public class tournamentView extends JFrame {
 														.addGroup(gl_modePanel.createSequentialGroup()
 																.addGroup(gl_modePanel.createParallelGroup(Alignment.LEADING)
 																		.addComponent(mapLabel)
-																		.addComponent(strategiesLabel, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)
-																		.addComponent(gameLabel, GroupLayout.PREFERRED_SIZE, 63, GroupLayout.PREFERRED_SIZE)
+																		.addComponent(strategiesLabel, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
+																		.addComponent(gameLabel, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
 																		.addComponent(numberOfTurnsLabel, GroupLayout.PREFERRED_SIZE, 176, GroupLayout.PREFERRED_SIZE))
 																.addGap(69)
 																.addGroup(gl_modePanel.createParallelGroup(Alignment.LEADING)
@@ -258,9 +316,10 @@ public class tournamentView extends JFrame {
 								.addComponent(strategiesLabel)
 								.addComponent(playerNumCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 						.addPreferredGap(ComponentPlacement.UNRELATED)
+						.addGap(18)
 						.addGroup(gl_modePanel.createParallelGroup(Alignment.BASELINE)
 								.addComponent(gameLabel)
-								.addComponent(playerNumCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+								.addComponent(gameNumCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 						.addGap(24)
 						.addGroup(gl_modePanel.createParallelGroup(Alignment.BASELINE)
 								.addComponent(numberOfTurnsLabel)
@@ -283,11 +342,7 @@ public class tournamentView extends JFrame {
 								.addComponent(playerFourBehavior, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 						.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addComponent(okButton)
-						.addGap(21))
-				.addGroup(gl_modePanel.createSequentialGroup()
-						.addContainerGap(155, Short.MAX_VALUE)
-						.addComponent(gameNumCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addGap(226))
+						.addGap(200).addContainerGap())
 				);
 		Panel.setLayout(gl_modePanel);
 
@@ -295,5 +350,12 @@ public class tournamentView extends JFrame {
 
 		pack();
 	}
+
+	private void exitForm(java.awt.event.WindowEvent event) {
+		setVisible(false);
+		startGameController.chooseMode();
+		dispose();
 	}
+
+}
 

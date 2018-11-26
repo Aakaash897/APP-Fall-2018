@@ -58,7 +58,7 @@ public class LoadExistingMapController {
 		loadingExistingMapView.openFileChooser();
 		if (Utility.baseMapString != null) {
 			startGameController.setHomePageVisiblility(false);
-			startGameController.setPlayers();
+			startGameController.singleModePlayerSettings();
 		}
 	}
 
@@ -87,7 +87,7 @@ public class LoadExistingMapController {
 		String fileName = Constants.DEFAULT_MODIFIED_MAP_FILE_NAME;
 		GameModel.fileName = fileName;
 		Utility.writeToFile(fileName, result);
-		startGameController.setPlayers();
+		startGameController.singleModePlayerSettings();
 	}
 
 	/**
