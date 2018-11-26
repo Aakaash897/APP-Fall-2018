@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -36,7 +37,7 @@ import col.cs.risk.view.PlayerDominationView;
  * @author Team25
  *
  */
-public class GameModel {
+public class GameModel implements Serializable {
 
 	/** Default map string */
 	private StringBuilder baseMapString;
@@ -143,7 +144,7 @@ public class GameModel {
 	 */
 	{
 		playerArmyMap = new HashMap<>();
-		playerArmyMap.put(2, 40);
+		playerArmyMap.put(2, 25);
 		playerArmyMap.put(3, 35);
 		playerArmyMap.put(4, 30);
 		playerArmyMap.put(5, 25);

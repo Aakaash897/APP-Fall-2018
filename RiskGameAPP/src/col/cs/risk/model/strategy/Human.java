@@ -1,12 +1,14 @@
 package col.cs.risk.model.strategy;
 
+import java.io.Serializable;
+
 import col.cs.risk.helper.Utility;
 import col.cs.risk.model.Constants;
 import col.cs.risk.model.GameModel;
 import col.cs.risk.model.PlayerModel;
 import col.cs.risk.model.TerritoryModel;
 
-public class Human implements IStrategy {
+public class Human implements IStrategy, Serializable {
 
 	/** Player Model */
 	PlayerModel playerModel;

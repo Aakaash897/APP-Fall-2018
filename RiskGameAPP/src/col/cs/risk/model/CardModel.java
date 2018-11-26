@@ -1,5 +1,7 @@
 package col.cs.risk.model;
 
+import java.io.Serializable;
+
 /**
  * This class keeps record of the Card Details as well as maintains getter and
  * setter methods for selecting the card type and the methods for printing the
@@ -8,7 +10,7 @@ package col.cs.risk.model;
  * @author Team25
  *
  */
-public class CardModel {
+public class CardModel implements Serializable {
 
 	/** Card id */
 	private int id;

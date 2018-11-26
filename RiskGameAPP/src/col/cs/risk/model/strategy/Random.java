@@ -1,5 +1,6 @@
 package col.cs.risk.model.strategy;
 
+import java.io.Serializable;
 import java.util.Vector;
 
 import col.cs.risk.helper.Utility;
@@ -8,7 +9,7 @@ import col.cs.risk.model.GameModel;
 import col.cs.risk.model.PlayerModel;
 import col.cs.risk.model.TerritoryModel;
 
-public class Random implements IStrategy {
+public class Random implements IStrategy, Serializable {
 
 	/** Player Model */
 	PlayerModel playerModel;

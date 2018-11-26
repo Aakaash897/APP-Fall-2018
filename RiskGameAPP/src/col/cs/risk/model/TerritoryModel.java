@@ -1,5 +1,6 @@
 package col.cs.risk.model;
 
+import java.io.Serializable;
 import java.util.Vector;
 import java.util.stream.Collectors;
 
@@ -11,7 +12,7 @@ import java.util.stream.Collectors;
  * @author Team25
  *
  */
-public class TerritoryModel {
+public class TerritoryModel implements Serializable {
 
 	/** territory id */
 	private int id;

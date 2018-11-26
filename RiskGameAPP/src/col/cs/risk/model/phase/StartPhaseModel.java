@@ -1,5 +1,6 @@
 package col.cs.risk.model.phase;
 
+import java.io.Serializable;
 import java.util.Observable;
 
 import col.cs.risk.model.Constants;
@@ -12,7 +13,7 @@ import col.cs.risk.model.GameModel;
  * @author Team25
  *
  */
-public class StartPhaseModel extends Observable implements GamePhase {
+public class StartPhaseModel extends Observable implements GamePhase, Serializable {
 
 	/** Game model */
 	private GameModel gameModel;

@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.FileWriter;
 
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
@@ -25,6 +27,7 @@ import org.netbeans.lib.awtextra.AbsoluteLayout;
 import col.cs.risk.controller.GameController;
 import col.cs.risk.helper.Utility;
 import col.cs.risk.model.Constants;
+import col.cs.risk.model.GameModel;
 
 /**
  * This class handles the display of map and also shows the player details this
@@ -130,7 +133,14 @@ public class MapView extends JFrame implements MouseListener {
 		saveButton.setFont(resourceMap.getFont("saveButton.font"));
 		saveButton.setText(Constants.SAVE);
 		saveButton.setName(Constants.SAVE);
-		gameController.getMapSubPanelPlayer().add(saveButton,new AbsoluteConstraints(535, 30, 90, 30));
+		saveButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				gameController.saveGame();
+			}
+		});
+		gameController.getMapSubPanelPlayer().add(saveButton,new AbsoluteConstraints(435, 30, 90, 30));
 		
 		attackButton.setVisible(false);
 		attackButton.setFont(resourceMap.getFont("attackButton.font"));

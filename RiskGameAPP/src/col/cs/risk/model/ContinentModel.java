@@ -1,5 +1,6 @@
 package col.cs.risk.model;
 
+import java.io.Serializable;
 import java.util.Vector;
 import java.util.stream.Collectors;
 

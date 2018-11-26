@@ -66,6 +66,13 @@ public class Utility {
 	public static String getMapPath(String filename) {
 		return "resources/risk/map/" + filename;
 	}
+	
+	/**
+	 * 
+	 */
+	public static String getSaveGamePath(String filename) {
+		return "resources/risk/games/" + filename;
+	}
 
 	/**
 	 * Gets the path of the Application
