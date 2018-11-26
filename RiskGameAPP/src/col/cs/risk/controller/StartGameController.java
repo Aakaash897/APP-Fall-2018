@@ -17,6 +17,7 @@ import col.cs.risk.view.ConstructNewMapView;
 import col.cs.risk.view.HomePageViewLoader;
 import col.cs.risk.view.MapConstructionView;
 import col.cs.risk.view.StartGameType;
+import col.cs.risk.view.tournamentView;
 
 /**
  * StartGameController It handles the starting of the game Loads the home page
@@ -38,6 +39,9 @@ public class StartGameController {
 	
 	/** Choice of Game Type Page */
 	private StartGameType startGameType;
+	
+	/** Tournament View Object */
+	private tournamentView tournament;
 
 	/** Construct New map Page View */
 	private ConstructNewMapView constructNewMapView;
@@ -155,6 +159,13 @@ public class StartGameController {
 	public void setPlayers() {
 		//startGameType.setVisible(false);
 		new PlayerSettingsController(this);
+	}
+	
+	
+	public void tournamentMode()
+	{
+		homePageViewLoader.setVisible(false);
+		new tournamentView(this).setVisible(true);
 	}
 
 	/**

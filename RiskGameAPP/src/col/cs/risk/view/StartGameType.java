@@ -75,7 +75,7 @@ public class StartGameType extends JFrame {
 		public void actionPerformed(ActionEvent event) {
 			
 			System.out.println("Tournament Mode Selected");
-			//startController.startGameButtonActionPerformed(event);
+			startGameController.tournamentMode();
 		}
 	});
 	
