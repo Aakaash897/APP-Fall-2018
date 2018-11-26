@@ -94,7 +94,7 @@ public class HomePageViewLoader extends JFrame {
 		startJPanel.setName("startJPanel");
 
 		startGameButton.setName("startGameButton");
-		startGameButton.setText("Start Default Game");
+		startGameButton.setText("Start Game");
 		startGameButton.addActionListener(new ActionListener() {
 
 			@Override

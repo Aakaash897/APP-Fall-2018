@@ -16,6 +16,7 @@ import col.cs.risk.model.GameModel;
 import col.cs.risk.view.ConstructNewMapView;
 import col.cs.risk.view.HomePageViewLoader;
 import col.cs.risk.view.MapConstructionView;
+import col.cs.risk.view.StartGameType;
 
 /**
  * StartGameController It handles the starting of the game Loads the home page
@@ -34,6 +35,9 @@ public class StartGameController {
 
 	/** Map construction/modification Page View */
 	private MapConstructionView mapConstructionView;
+	
+	/** Choice of Game Type Page */
+	private StartGameType startGameType;
 
 	/** Construct New map Page View */
 	private ConstructNewMapView constructNewMapView;
@@ -130,15 +134,26 @@ public class StartGameController {
 	 */
 	public void startGameButtonActionPerformed(ActionEvent event) {
 		homePageViewLoader.setVisible(false);
-		Utility.writeLog("Start Default Game button pressed");
-		setPlayers();
-		System.out.println(" Start Default Game button pressed ");
+		Utility.writeLog("Start Game button pressed");
+		//setPlayers();
+		chooseMode();
+		System.out.println(" Start Game button pressed ");
+	}
+	
+		
+	
+	public void chooseMode()
+	{
+		homePageViewLoader.setVisible(false);
+		new StartGameType(this).setVisible(true);
+		
 	}
 
 	/**
 	 * Initialize the player settings controller
 	 */
 	public void setPlayers() {
+		//startGameType.setVisible(false);
 		new PlayerSettingsController(this);
 	}
 
