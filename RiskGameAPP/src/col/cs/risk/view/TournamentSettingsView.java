@@ -78,7 +78,7 @@ public class TournamentSettingsView extends JFrame {
 		JComboBox<Integer> playerNumCombo = new JComboBox<Integer>(numberOfStrategies);
 		Integer[] numberOfGames = { 1, 2, 3, 4, 5 };
 		JComboBox<Integer> gameNumCombo = new JComboBox<Integer>(numberOfGames);
-		JComboBox turnNumCombobox = new JComboBox();
+		JComboBox<Integer> turnNumCombobox = new JComboBox<Integer>();
 		for (int i = 10; i <= 50; i++) {
 			turnNumCombobox.addItem(new Integer(i));
 		}
@@ -192,7 +192,7 @@ public class TournamentSettingsView extends JFrame {
 
 		numberOfMapsCombo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				numOfMaps = (int) numberOfMapsCombo.getSelectedItem();
+				numOfMaps = (Integer) numberOfMapsCombo.getSelectedItem();
 				System.out.println("numOfMaps = "+numOfMaps);
 				
 				if (numOfMaps == 1 )
@@ -372,14 +372,14 @@ public class TournamentSettingsView extends JFrame {
 
 		turnNumCombobox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				noOfTurns = (int) turnNumCombobox.getSelectedIndex();
+				noOfTurns = (Integer) turnNumCombobox.getSelectedItem();
 				System.out.println("noOfTurns = "+noOfTurns);
 			}
 		});
 
 		gameNumCombo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				noOfGames = (int) gameNumCombo.getSelectedIndex();
+				noOfGames = (Integer) gameNumCombo.getSelectedItem();
 				System.out.println("noOfGames = "+noOfGames);
 			}
 		});
@@ -395,7 +395,7 @@ public class TournamentSettingsView extends JFrame {
 
 		playerNumCombo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				numOfPlayers = (int) playerNumCombo.getSelectedItem();
+				numOfPlayers = (Integer) playerNumCombo.getSelectedItem();
 				System.out.println("numOfPlayers = "+numOfPlayers);
 
 				if (numOfPlayers == 2) {

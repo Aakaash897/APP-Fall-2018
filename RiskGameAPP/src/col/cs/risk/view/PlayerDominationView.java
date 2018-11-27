@@ -55,6 +55,18 @@ public class PlayerDominationView implements Observer {
 		}
 		return playerDominationView;
 	}
+	
+	public static boolean isInitialized() {
+		return playerDominationView != null ? true : false;
+	}
+	
+	public static void clear() {
+		if(playerDominationView != null) {
+			playerDominationView.playerFrame.setVisible(false);
+			playerDominationView.playerFrame.dispose();
+		}
+		playerDominationView = null;
+	}
 
 	/**
 	 * function that helps to maintain the frame size of the player domination view

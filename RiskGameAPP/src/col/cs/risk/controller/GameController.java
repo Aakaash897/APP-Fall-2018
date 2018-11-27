@@ -3,15 +3,12 @@ package col.cs.risk.controller;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import javax.swing.JTextField;
 
 import col.cs.risk.helper.MapException;
+import col.cs.risk.helper.Report;
 import col.cs.risk.helper.Utility;
 import col.cs.risk.model.CardExchangeModel;
 import col.cs.risk.model.CardModel;
@@ -75,6 +72,28 @@ public class GameController {
 
 	private boolean isAutoRunning = false;
 
+	public void clear() {
+		if(mapView != null) {
+			mapView.setVisible(false);
+			mapView.dispose();
+		}
+		deInitializePhaseView();
+		gameModel.clear();
+		mapMainPanel = null;
+		mapSubPanelPlayer = null;
+		mapView = null;
+		currentRoundCompletedPlayersCount = 0;
+		noOfRoundsCompleted = 0;
+		isMaxNumberOfRoundsSet = false;
+		MAXIMUM_NO_OF_ROUNDS_ALLOWED = Constants.TEN;
+		if(cardTradeView != null) {
+			cardTradeView.dispose();
+		}
+		cardTradeView = null;
+		isGameOver = false;
+		isAutoRunning = false;
+	}
+
 	/**
 	 * Default constructor
 	 */
@@ -88,6 +107,12 @@ public class GameController {
 	public void initialize() {
 		try {
 			Utility.writeLog("********************* Game start up phase ***************************");
+			if(GameModel.isTournamentMode) {
+				isMaxNumberOfRoundsSet = true;
+				MAXIMUM_NO_OF_ROUNDS_ALLOWED = GameModel.tournamentNoOfTurns;
+			} else {
+				isMaxNumberOfRoundsSet = false;
+			}
 			gameModel.initialize();
 			initComponents();
 			new MapView(this).setVisible(true);
@@ -118,15 +143,47 @@ public class GameController {
 		}
 	}
 
+	public void startNewGame() {
+		gameModel.clear();
+		clear();
+		boolean isTournamentFinished = true;
+		for(Report report:GameModel.reports) {
+			if(!report.isThisMapFinished()) {
+				if(report.getNextGameNumber() <= GameModel.tournamentNoOfGame) {
+					GameModel.isBaseMapModified = true;
+					GameModel.fileName = report.getMapFileName();
+					GameModel.currentReport = report;
+					GameModel.currentGameNumber = report.getCurrentGameNo();
+					isTournamentFinished = false;
+					break;
+				}
+			}
+		}
+		if(!isTournamentFinished) {
+			Utility.writeLog("\n\n\n*********************** New Game **********************");
+			Utility.writeLog("Map file = "+GameModel.fileName+", Game no: "+GameModel.currentGameNumber);
+			this.gameModel = new GameModel();
+			gameModel.setState(Constants.NEW_GAME);
+			initialize();
+		} else {
+			Utility.writeLog("\n\n************************ Report **********************\n");
+			for(Report report:GameModel.reports) {
+				Utility.writeLog(report.toString());
+			}
+			System.exit(0);
+			//show report
+		}
+
+	}
+
 	public void automaticHandleStrategies() {
-		while (!(gameModel.getCurrentPlayer().getStrategy() instanceof Human) && !isGameOver) {
+		while(gameModel != null && gameModel.getCurrentPlayer() != null && 
+				!(gameModel.getCurrentPlayer().getStrategy() instanceof Human) && !isGameOver) {
 			gameModel.notifyPhaseChange();
 			isAutoRunning = true;
 			System.out.println("\n\n--------------------------");
-			System.out.println(
-					" gameModel.getState() = " + gameModel.getState() + " as string = " + gameModel.getStateAsString());
-			System.out.println(" player = " + gameModel.getCurrentPlayer().getName() + " as "
-					+ gameModel.getCurrentPlayer().getStrategy().getStrategyString());
+			System.out.println(" gameModel.getState() = "+gameModel.getState()+" as string = "+gameModel.getStateAsString());
+			System.out.println(" player = "+gameModel.getCurrentPlayer().getName()+" as "+gameModel.getCurrentPlayer().getStrategy().getStrategyString());
 			String str = "";
 			switch (gameModel.getState()) {
 			case Constants.INITIAL_RE_ENFORCEMENT_PHASE:
@@ -147,24 +204,21 @@ public class GameController {
 				}
 				break;
 			case Constants.CARD_TRADE:
-				Utility.writeLog(" ************ " + gameModel.getStateAsStringInDepth() + " of "
-						+ gameModel.getCurrentPlayer().getName() + " "
-						+ gameModel.getCurrentPlayer().getStrategy().getStrategyString() + " ************ ");
-				if (gameModel.getCurrentPlayer().isCardTradeMandatory()) {
+				Utility.writeLog(" ************ "+gameModel.getStateAsStringInDepth()+ " of "+
+						gameModel.getCurrentPlayer().getName()+" "+gameModel.getCurrentPlayer().getStrategy().getStrategyString()+" ************ ");
+				if(gameModel.getCurrentPlayer().isCardTradeMandatory()) {
 					handleAutomaticCardTrade();
 				} else {
 					handleReinforcement1();
 				}
 				break;
 			case Constants.START_TURN:
-				Utility.writeLog("************** Turn start/Reinforcement of " + gameModel.getCurrentPlayer().getName()
-						+ " : " + gameModel.getCurrentPlayer().getStrategy().getStrategyString()
-						+ " ********************");
-				Utility.writeLog(
-						"Occupied territories count = " + gameModel.getCurrentPlayer().getOccupiedTerritories().size());
-				Utility.writeLog("% of occupied = "
-						+ gameModel.getCurrentPlayer().calculatePercentage(gameModel.getCurrentPlayer(), gameModel));
-				Utility.writeLog("Round no. of player: " + noOfRoundsCompleted);
+				Utility.writeLog("************** Turn start/Reinforcement of "+gameModel.getCurrentPlayer().getName()+" : "
+						+gameModel.getCurrentPlayer().getStrategy().getStrategyString()+" ********************");
+				Utility.writeLog("Occupied territories count = "+gameModel.getCurrentPlayer().getOccupiedTerritories().size());
+				Utility.writeLog("% of occupied = "+gameModel.getCurrentPlayer().calculatePercentage(
+						gameModel.getCurrentPlayer(), gameModel));
+				Utility.writeLog("Round no. of player: "+noOfRoundsCompleted);
 
 				handleStartTurn();
 				break;
@@ -194,12 +248,12 @@ public class GameController {
 				if (isGameOver) {
 					break;
 				} else {
-					if (gameModel.isWon()) {
-						gameOver(Utility.replacePartInMessage(Constants.WINNER, Constants.CHAR_A,
-								(gameModel.getCurrentPlayer().getName() + " : "
-										+ gameModel.getCurrentPlayer().getStrategy().getStrategyString())));
+					if(gameModel.isWon()) {
+						gameOver(Utility.replacePartInMessage(Constants.WINNER, 
+								Constants.CHAR_A, (gameModel.getCurrentPlayer().getName()+" : "+
+										gameModel.getCurrentPlayer().getStrategy().getStrategyString())), true);
 					} else {
-						gameOver(Constants.GAME_OVER_MESSAGE);
+						gameOver(Constants.GAME_OVER_MESSAGE, false);
 					}
 				}
 				isGameOver = true;
@@ -217,7 +271,8 @@ public class GameController {
 		}
 		isAutoRunning = false;
 
-		if ((gameModel.getCurrentPlayer().getStrategy() instanceof Human) && !isGameOver) {
+		if(gameModel != null && gameModel.getCurrentPlayer() != null && 
+				(gameModel.getCurrentPlayer().getStrategy() instanceof Human) && !isGameOver) {
 			if (gameModel.getState() == Constants.START_TURN) {
 				gameModel.setSelectedTerritory(null);
 				handleStartTurn();
@@ -294,8 +349,8 @@ public class GameController {
 			artilleryCount = 1;
 		}
 
-		gameModel.getCurrentPlayer().cardTradeActionPerformed(gameModel, infantryCount, cavelryCount, artilleryCount,
-				wildCount);
+		gameModel.getCurrentPlayer().cardTradeActionPerformed(gameModel,
+				infantryCount, cavelryCount, artilleryCount, wildCount);
 		handleReinforcement1();
 
 	}
@@ -336,6 +391,31 @@ public class GameController {
 		phaseView.showMonitor();
 	}
 
+	private void deInitializePhaseView() {
+		if(AttackPhaseModel.isInitialized() || ReEnforcementPhaseModel.isInitialized()) {
+			StartPhaseModel startPhaseModel = StartPhaseModel.getInstance();
+			ReEnforcementPhaseModel reInforcementPhaseModel = ReEnforcementPhaseModel.getInstance();
+			AttackPhaseModel attackPhaseModel = AttackPhaseModel.getInstance();
+			FortificationPhaseModel fortificationPhaseModel = FortificationPhaseModel.getInstance();
+			EndPhaseModel endPhaseModel = EndPhaseModel.getInstance();
+
+			PhaseView phaseView = PhaseView.getInstance();
+
+			startPhaseModel.deleteObserver(phaseView);
+			reInforcementPhaseModel.deleteObserver(phaseView);
+			attackPhaseModel.deleteObserver(phaseView);
+			fortificationPhaseModel.deleteObserver(phaseView);
+			endPhaseModel.deleteObserver(phaseView);
+			
+			phaseView.dispose();
+		}
+		StartPhaseModel.clear();
+		ReEnforcementPhaseModel.clear();
+		AttackPhaseModel.clear();
+		FortificationPhaseModel.clear();
+		EndPhaseModel.clear();
+	}
+
 	/**
 	 * Initialize card exchange view, used as observer pattern
 	 */
@@ -368,9 +448,8 @@ public class GameController {
 			}
 			fortifyButtonActionPerformed(null);
 		} else {
-			if (gameModel.getCurrentPlayer().isHuman()) {
-				Utility.showMessagePopUp(Constants.CANNOT_ATTACK_MESSAGE + Constants.FORTIFY_MESSAGE,
-						Constants.INFORMATION);
+			if(gameModel.getCurrentPlayer().isHuman()) {
+				Utility.showMessagePopUp(Constants.CANNOT_ATTACK_MESSAGE+Constants.FORTIFY_MESSAGE, Constants.INFORMATION);
 			}
 			mapView.getStatusLabel().setText(Constants.CANNOT_ATTACK_MESSAGE + Constants.SELECT_THE_ACTION_MESSAGE);
 			validatePlayerTurn();
@@ -414,9 +493,8 @@ public class GameController {
 			} else {
 				gameModel.setNoOfArmiesToMove(armies);
 				if (gameModel.moveArmies()) {
-					Utility.writeLog(
-							"Moving " + armies + " armies from " + gameModel.getMoveArmiesToTerritory().getName()
-									+ " to " + gameModel.getMoveArmiesFromTerritory().getName());
+					Utility.writeLog("Moving "+armies+" armies from "+gameModel.getMoveArmiesToTerritory().getName()+
+							" to "+gameModel.getMoveArmiesFromTerritory().getName());
 					gameModel.setNoOfArmiesToMove(Constants.ZERO);
 					gameModel.setMoveArmiesFromTerritory(null);
 					gameModel.setMoveArmiesToTerritory(null);
@@ -480,7 +558,7 @@ public class GameController {
 			noOfRoundsCompleted++;
 			currentRoundCompletedPlayersCount = Constants.ZERO;
 			if (isMaxNumberOfRoundsSet && noOfRoundsCompleted >= MAXIMUM_NO_OF_ROUNDS_ALLOWED) {
-				gameOver(Constants.GAME_OVER_MESSAGE);
+				gameOver(Constants.GAME_OVER_MESSAGE, false);
 			} else {
 				changeTurn();
 			}
@@ -493,16 +571,15 @@ public class GameController {
 	 * Changing the current player
 	 */
 	private void changeTurn() {
-		Utility.writeLog("================= Changing player(current player) turn =====================");
+		Utility.writeLog("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Changing player(current player) turn %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
 		gameModel.getCurrentPlayer().setCardAssigned(false);
 		gameModel.nextPlayer();
-		Utility.writeLog("************** Turn start/Reinforcement of " + gameModel.getCurrentPlayer().getName() + " : "
-				+ gameModel.getCurrentPlayer().getStrategy().getStrategyString() + " ********************");
-		Utility.writeLog(
-				"Occupied territories count = " + gameModel.getCurrentPlayer().getOccupiedTerritories().size());
-		Utility.writeLog("% of occupied = "
-				+ gameModel.getCurrentPlayer().calculatePercentage(gameModel.getCurrentPlayer(), gameModel));
-		Utility.writeLog("Round no. of player: " + (noOfRoundsCompleted + 1));
+		Utility.writeLog("************** Turn start/Reinforcement of "+gameModel.getCurrentPlayer().getName()+" : "
+				+gameModel.getCurrentPlayer().getStrategy().getStrategyString()+" ********************");
+		Utility.writeLog("Occupied territories count = "+gameModel.getCurrentPlayer().getOccupiedTerritories().size());
+		Utility.writeLog("% of occupied = "+gameModel.getCurrentPlayer().calculatePercentage(
+				gameModel.getCurrentPlayer(), gameModel));
+		Utility.writeLog("Round no. of player: "+(noOfRoundsCompleted+1));
 		gameModel.getCurrentPlayer().setCardAssigned(false);
 		System.out.println(" noOfRoundsCompleted = " + noOfRoundsCompleted);
 		if (isFirstRound()) {
@@ -528,8 +605,8 @@ public class GameController {
 	 * 
 	 * @param message to display
 	 */
-	public void gameOver(String message) {
-		if (!isGameOver) {
+	public void gameOver(String message, boolean isWin) {
+		if(!isGameOver) {
 			gameModel.setState(Constants.END_PHASE);
 			gameModel.notifyPhaseChanging(message);
 			mapView.getStatusLabel().setText(message);
@@ -542,7 +619,17 @@ public class GameController {
 			isGameOver = true;
 			Utility.writeLog(" ************ " + gameModel.getStateAsStringInDepth() + " ************* ");
 			Utility.writeLog(message);
-			Utility.showMessagePopUp(message, Constants.INFORMATION);
+			if(GameModel.isTournamentMode) {
+				if(isWin) {
+					GameModel.currentReport.addFinishedGame(GameModel.currentReport.getCurrentGameNo(), gameModel.getCurrentPlayer().getName()+" - "+
+							gameModel.getCurrentPlayer().getStrategy().getStrategyString());
+				} else {
+					GameModel.currentReport.addFinishedGame(GameModel.currentReport.getCurrentGameNo(),"No Winner");
+				}
+				startNewGame();
+			} else {
+				Utility.showMessagePopUp(message, Constants.INFORMATION);
+			}
 		}
 	}
 
@@ -552,8 +639,11 @@ public class GameController {
 	public static void showGUI() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				new GameController().initialize();
-				;
+				if(GameModel.isTournamentMode) {
+					new GameController().startNewGame();
+				} else {
+					new GameController().initialize();
+				}
 			}
 		});
 	}
@@ -567,8 +657,7 @@ public class GameController {
 	public void mouseClicked(MouseEvent event) {
 		System.out.println("\n\n\n------------------");
 		System.out.println("Mouse clicked status = " + gameModel.getState() + ", " + gameModel.getStateAsString());
-		Utility.writeLog(
-				"Mouse clicked current status = " + gameModel.getState() + ", " + gameModel.getStateAsStringInDepth());
+		Utility.writeLog("Mouse clicked current status = " + gameModel.getState() + ", " + gameModel.getStateAsStringInDepth());
 		int x_coordinate = event.getX();
 		int y_coordinate = event.getY();
 		switch (gameModel.getState()) {

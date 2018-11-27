@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 
 import col.cs.risk.helper.MapException;
+import col.cs.risk.helper.Report;
 import col.cs.risk.helper.Utility;
 import col.cs.risk.model.Constants;
 import col.cs.risk.model.GameModel;
@@ -175,7 +176,35 @@ public class StartGameController {
 		for(int i=0;i<noOfPlayers;i++) {
 			playersStrategies.put(GameModel.getPlayers().get(i).getName(), playersStrategiesMap.get(i+1));
 		}
+		addDummyMapFiles();
+		setTournamentOptions();
 		playerSettingsController.playerStrategyTypeSaveActionPerformed(playersStrategies);
+	}
+	
+	public void addDummyMapFiles() {
+		GameModel.tournamentMapList.clear();
+		if(GameModel.tournamentNoOfMaps >= 1) {
+			GameModel.tournamentMapList.add(Constants.DEFAULT_MAP_FILE_NAME);
+		} 
+		if(GameModel.tournamentNoOfMaps >= 2) {
+			GameModel.tournamentMapList.add("3D Cliff.map");
+		}
+		if(GameModel.tournamentNoOfMaps >= 3) {
+			GameModel.tournamentMapList.add("Texas.map");
+		}
+		if(GameModel.tournamentNoOfMaps >= 4) {
+			GameModel.tournamentMapList.add("Mexico.map");
+		}
+		if(GameModel.tournamentNoOfMaps >= 5) {
+			GameModel.tournamentMapList.add(Constants.DEFAULT_MAP_FILE_NAME);
+		}
+	}
+	
+	public void setTournamentOptions() {
+		GameModel.reports.clear();
+		for(int i=0;i<GameModel.tournamentNoOfMaps;i++) {
+			GameModel.reports.addElement(new Report(GameModel.tournamentMapList.get(i), GameModel.tournamentNoOfGame));
+		}
 	}
 	
 
