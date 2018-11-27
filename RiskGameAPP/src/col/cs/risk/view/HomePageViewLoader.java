@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.beans.Transient;
 
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
@@ -142,6 +143,7 @@ public class HomePageViewLoader extends JFrame {
 	/**
 	 * Loads the Game home page
 	 */
+
 	private void loadHomePage() {
 
 		GroupLayout groupLayout = new GroupLayout(startJPanel);

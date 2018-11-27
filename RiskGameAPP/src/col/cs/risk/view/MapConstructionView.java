@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.beans.Transient;
 
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
@@ -71,6 +72,7 @@ public class MapConstructionView extends JFrame {
 	/**
 	 * Initialize the components and also loads the Map construction screen
 	 */
+	
 	private void initComponents() {
 		constructJPanel = new JPanel();
 		settings = new JLabel();

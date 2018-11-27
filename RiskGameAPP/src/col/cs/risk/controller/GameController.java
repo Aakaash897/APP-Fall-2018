@@ -967,7 +967,7 @@ public class GameController {
 	}
 
 	public void saveGame() {
-		/*try {	
+		try {	
 			FileOutputStream fileStream = new FileOutputStream(new File(Utility.getSaveGamePath(Constants.DEFAULT_SAVED_GAME_FILE_NAME)));   
 	        ObjectOutputStream objectStream = new ObjectOutputStream(fileStream);   
 
@@ -977,7 +977,7 @@ public class GameController {
 	        fileStream.close();
 		} catch (Exception e) {
 			e.printStackTrace();
-		}*/
+		}
 	}
 
 }

@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+import java.beans.Transient;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -63,6 +64,7 @@ public class PlayerSettingsView extends JFrame {
 	 * Initialize components relating to the playerSettingsview which allows the
 	 * user to choose from the options on the screen
 	 */
+	
 	private void initComponents() {
 		playerPanel = new JPanel();
 		finish = new JButton();

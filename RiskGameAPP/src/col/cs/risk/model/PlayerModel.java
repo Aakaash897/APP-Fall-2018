@@ -23,7 +23,7 @@ import col.cs.risk.view.RolledDiceView;
  * @author Team25
  *
  */
-public class PlayerModel extends Observable {
+public class PlayerModel extends Observable implements Serializable {
 
 	/** player number */
 	private int id;

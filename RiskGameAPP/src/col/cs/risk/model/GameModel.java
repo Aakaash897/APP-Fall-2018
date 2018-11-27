@@ -79,10 +79,10 @@ public class GameModel implements Serializable {
 	public static String imageSelected = "World.bmp";
 
 	/** Map panel */
-	private JPanel mainMapPanel;
+	private transient JPanel mainMapPanel;
 
 	/** Player panel */
-	private JPanel subMapPanel;
+	private transient JPanel subMapPanel;
 
 	/** Territory from which armies to move */
 	private TerritoryModel moveArmiesFromTerritory;
@@ -97,7 +97,7 @@ public class GameModel implements Serializable {
 	private Vector<TerritoryModel> unOccupiedTerritories;
 
 	/** Phase view monitor */
-	private PhaseView phaseView;
+	private transient PhaseView phaseView;
 
 	/** Start phase model instance */
 	private StartPhaseModel startPhaseModel;
@@ -144,7 +144,7 @@ public class GameModel implements Serializable {
 	 */
 	{
 		playerArmyMap = new HashMap<>();
-		playerArmyMap.put(2, 25);
+		playerArmyMap.put(2, 40);
 		playerArmyMap.put(3, 35);
 		playerArmyMap.put(4, 30);
 		playerArmyMap.put(5, 25);

@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
  * @author Team25
  * 
  */
-public class ContinentModel {
+public class ContinentModel implements Serializable {
 
 	/** continent id */
 	private int id;
