@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.HashMap;
+import java.util.Vector;
 import java.util.stream.Collectors;
 
 import javax.swing.GroupLayout;
@@ -14,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
@@ -36,6 +38,8 @@ public class TournamentSettingsView extends JFrame {
 	int noOfTurns=10;
 
 	HashMap<Integer, String> playersStrategiesMap = new HashMap<>();
+	
+	Vector<String> mapChoiceForTournament = new Vector<>();
 
 	/** Game controller */
 	private StartGameController startGameController;
@@ -62,6 +66,14 @@ public class TournamentSettingsView extends JFrame {
 		JComboBox<String> playerFourBehavior = new JComboBox<String>(behaviour);
 		Integer[] numberOfMaps = { 1, 2, 3, 4, 5 };
 		JComboBox<Integer> numberOfMapsCombo = new JComboBox<Integer>(numberOfMaps);
+		String[] mapSelection = {Constants.CLIFF,Constants.ICELAND,Constants.INDIA,Constants.TEXAS,Constants.MEXICO,Constants.WORLD};
+		JComboBox<String> mapOne = new JComboBox<String>(mapSelection);
+		JComboBox<String> mapTwo = new JComboBox<String>(mapSelection);
+		JComboBox<String> mapThree = new JComboBox<String>(mapSelection);
+		JComboBox<String> mapFour = new JComboBox<String>(mapSelection);
+		JComboBox<String> mapFive = new JComboBox<String>(mapSelection);
+		JComboBox<String> mapSix = new JComboBox<String>(mapSelection);
+		
 		Integer[] numberOfStrategies = { 2, 3, 4 };
 		JComboBox<Integer> playerNumCombo = new JComboBox<Integer>(numberOfStrategies);
 		Integer[] numberOfGames = { 1, 2, 3, 4, 5 };
@@ -85,6 +97,24 @@ public class TournamentSettingsView extends JFrame {
 
 		JLabel mapLabel = new JLabel("Number of maps");
 		mapLabel.setForeground(Color.WHITE);
+		
+		JLabel mapOneLabel = new JLabel("Map 1");
+		mapOneLabel.setForeground(Color.WHITE);
+
+		JLabel mapTwoLabel = new JLabel("Map 2");
+		mapTwoLabel.setForeground(Color.WHITE);
+
+		JLabel mapThreeLabel = new JLabel("Map 3");
+		mapThreeLabel.setForeground(Color.WHITE);
+
+		JLabel mapFourLabel = new JLabel("Map 4");
+		mapFourLabel.setForeground(Color.WHITE);
+		
+		JLabel mapFiveLabel = new JLabel("Map 5");
+		mapFiveLabel.setForeground(Color.WHITE);
+
+		JLabel mapSixLabel = new JLabel("Map 6");
+		mapSixLabel.setForeground(Color.WHITE);
 
 		JLabel strategiesLabel = new JLabel("Number of player strategies");
 		strategiesLabel.setForeground(Color.WHITE);
@@ -106,6 +136,21 @@ public class TournamentSettingsView extends JFrame {
 
 		JLabel playerFour = new JLabel("Player 4");
 		playerFour.setForeground(Color.WHITE);
+		
+		mapOne.setVisible(false);
+		mapOneLabel.setVisible(false);
+		mapTwo.setVisible(false);
+		mapTwoLabel.setVisible(false);
+		mapThree.setVisible(false);
+		mapThreeLabel.setVisible(false);
+		mapFour.setVisible(false);
+		mapFourLabel.setVisible(false);
+		mapFive.setVisible(false);
+		mapFiveLabel.setVisible(false);
+		mapSix.setVisible(false);
+		mapSixLabel.setVisible(false);
+		
+		
 
 		playerOneBehavior.setVisible(false);
 		playerOne.setVisible(false);
@@ -119,10 +164,16 @@ public class TournamentSettingsView extends JFrame {
 		JButton okButton = new JButton("Ok");
 		okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(numOfMaps>noOfGames)
+				{
+					JOptionPane.showMessageDialog(Panel, "Number of Maps CANNOT be higer than Number of Games Being Played");
+					System.out.println("Number of Maps CANNOT be higer than Number of Games Being Played");
+				}
+				else {
 				System.out.println("OK Pressed");
 				setVisible(false);
-				//needs to set map list
-				//GameModel.tournamentMapList
+				
+				GameModel.tournamentMapList=mapChoiceForTournament;
 				System.out.println(" playersStrategiesMap key = "+playersStrategiesMap.keySet().stream().map(x->x.toString()).collect(Collectors.toList()));
 				System.out.println(" playersStrategiesMap val = "+playersStrategiesMap.values().stream().map(x->x.toString()).collect(Collectors.toList()));
 
@@ -132,16 +183,192 @@ public class TournamentSettingsView extends JFrame {
 				GameModel.tournamentNoOfTurns = noOfTurns;
 				startGameController.tournamentModeOKButtonActionPerformed(numOfPlayers, playersStrategiesMap);
 				dispose();
+				}
 			}
 
 		});
+		
+		mapChoiceForTournament.add(Constants.WORLD);
 
 		numberOfMapsCombo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				numOfMaps = (int) numberOfMapsCombo.getSelectedItem();
 				System.out.println("numOfMaps = "+numOfMaps);
+				
+				if (numOfMaps == 1 )
+				{
+					mapChoiceForTournament.clear();
+					mapChoiceForTournament.add(Constants.CLIFF);
+					mapOne.setVisible(true);
+					mapOneLabel.setVisible(true);
+					mapTwo.setVisible(false);
+					mapTwoLabel.setVisible(false);
+					mapThree.setVisible(false);
+					mapThreeLabel.setVisible(false);
+					mapFour.setVisible(false);
+					mapFourLabel.setVisible(false);
+					mapFive.setVisible(false);
+					mapFiveLabel.setVisible(false);
+					mapSix.setVisible(false);
+					mapSixLabel.setVisible(false);
+					
+				}
+				
+				if (numOfMaps == 2 )
+				{
+					mapChoiceForTournament.clear();
+					mapChoiceForTournament.add(Constants.CLIFF);
+					mapChoiceForTournament.add(Constants.ICELAND);
+					mapOne.setVisible(true);
+					mapOneLabel.setVisible(true);
+					mapTwo.setVisible(true);
+					mapTwoLabel.setVisible(true);
+					mapThree.setVisible(false);
+					mapThreeLabel.setVisible(false);
+					mapFour.setVisible(false);
+					mapFourLabel.setVisible(false);
+					mapFive.setVisible(false);
+					mapFiveLabel.setVisible(false);
+					mapSix.setVisible(false);
+					mapSixLabel.setVisible(false);
+					
+				}
+				
+				if (numOfMaps == 3 )
+				{
+					mapChoiceForTournament.clear();
+					mapChoiceForTournament.add(Constants.CLIFF);
+					mapChoiceForTournament.add(Constants.ICELAND);
+					mapChoiceForTournament.add(Constants.INDIA);
+					mapOne.setVisible(true);
+					mapOneLabel.setVisible(true);
+					mapTwo.setVisible(true);
+					mapTwoLabel.setVisible(true);
+					mapThree.setVisible(true);
+					mapThreeLabel.setVisible(true);
+					mapFour.setVisible(false);
+					mapFourLabel.setVisible(false);
+					mapFive.setVisible(false);
+					mapFiveLabel.setVisible(false);
+					mapSix.setVisible(false);
+					mapSixLabel.setVisible(false);
+					
+				}
+				
+				if (numOfMaps == 4 )
+				{
+					mapChoiceForTournament.clear();
+					mapChoiceForTournament.add(Constants.CLIFF);
+					mapChoiceForTournament.add(Constants.ICELAND);
+					mapChoiceForTournament.add(Constants.INDIA);
+					mapChoiceForTournament.add(Constants.MEXICO);
+					mapOne.setVisible(true);
+					mapOneLabel.setVisible(true);
+					mapTwo.setVisible(true);
+					mapTwoLabel.setVisible(true);
+					mapThree.setVisible(true);
+					mapThreeLabel.setVisible(true);
+					mapFour.setVisible(true);
+					mapFourLabel.setVisible(true);
+					mapFive.setVisible(false);
+					mapFiveLabel.setVisible(false);
+					mapSix.setVisible(false);
+					mapSixLabel.setVisible(false);
+					
+				}
+				
+				if (numOfMaps == 5 )
+				{
+					mapChoiceForTournament.clear();
+					mapChoiceForTournament.add(Constants.CLIFF);
+					mapChoiceForTournament.add(Constants.ICELAND);
+					mapChoiceForTournament.add(Constants.INDIA);
+					mapChoiceForTournament.add(Constants.MEXICO);
+					mapChoiceForTournament.add(Constants.TEXAS);
+					mapOne.setVisible(true);
+					mapOneLabel.setVisible(true);
+					mapTwo.setVisible(true);
+					mapTwoLabel.setVisible(true);
+					mapThree.setVisible(true);
+					mapThreeLabel.setVisible(true);
+					mapFour.setVisible(true);
+					mapFourLabel.setVisible(true);
+					mapFive.setVisible(true);
+					mapFiveLabel.setVisible(true);
+					mapSix.setVisible(false);
+					mapSixLabel.setVisible(false);
+					
+				}
+				
+				if (numOfMaps == 6 )
+				{
+					mapChoiceForTournament.clear();
+					mapChoiceForTournament.add(Constants.CLIFF);
+					mapChoiceForTournament.add(Constants.ICELAND);
+					mapChoiceForTournament.add(Constants.INDIA);
+					mapChoiceForTournament.add(Constants.MEXICO);
+					mapChoiceForTournament.add(Constants.TEXAS);
+					mapChoiceForTournament.add(Constants.WORLD);
+					mapOne.setVisible(true);
+					mapOneLabel.setVisible(true);
+					mapTwo.setVisible(true);
+					mapTwoLabel.setVisible(true);
+					mapThree.setVisible(true);
+					mapThreeLabel.setVisible(true);
+					mapFour.setVisible(true);
+					mapFourLabel.setVisible(true);
+					mapFive.setVisible(true);
+					mapFiveLabel.setVisible(true);
+					mapSix.setVisible(true);
+					mapSixLabel.setVisible(true);
+					
+				}
+				
+				
 			}
 		});
+		mapOne.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				System.out.println(mapOne.getSelectedItem());
+				mapChoiceForTournament.add(1, (String) mapOne.getSelectedItem());
+			}
+		});
+		mapTwo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+
+				System.out.println( mapTwo.getSelectedItem());
+				mapChoiceForTournament.add(2, (String) mapTwo.getSelectedItem());
+			}
+		});
+		mapThree.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+
+				System.out.println( mapThree.getSelectedItem());
+				mapChoiceForTournament.add(3, (String) mapThree.getSelectedItem());
+			}
+		});
+		mapFour.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+
+				System.out.println( mapFour.getSelectedItem());
+				mapChoiceForTournament.add(4, (String) mapFour.getSelectedItem());
+			}
+		});
+		mapFive.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+
+				System.out.println( mapFive.getSelectedItem());
+				mapChoiceForTournament.add(5, (String) mapFive.getSelectedItem());
+			}
+		});
+		mapSix.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+
+				System.out.println( mapSix.getSelectedItem());
+				mapChoiceForTournament.add(6, (String) mapSix.getSelectedItem());
+			}
+		});
+		
 
 		turnNumCombobox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -159,6 +386,12 @@ public class TournamentSettingsView extends JFrame {
 		
 		playersStrategiesMap.put(1, Constants.AGGRESSIVE);
 		playersStrategiesMap.put(2, Constants.AGGRESSIVE);
+		
+		
+		
+		
+		
+		
 
 		playerNumCombo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
@@ -251,6 +484,30 @@ public class TournamentSettingsView extends JFrame {
 						.addGap(88)
 						.addGroup(gl_modePanel.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_modePanel.createSequentialGroup()
+										.addComponent(mapSixLabel, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)
+										.addContainerGap())
+								.addGroup(gl_modePanel.createParallelGroup(Alignment.LEADING)
+										.addGroup(gl_modePanel.createSequentialGroup()
+												.addComponent(mapFiveLabel, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)
+												.addContainerGap())
+										.addGroup(gl_modePanel.createParallelGroup(Alignment.LEADING)
+												.addGroup(gl_modePanel.createSequentialGroup()
+														.addComponent(mapFourLabel, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)
+														.addContainerGap())
+												.addGroup(gl_modePanel.createParallelGroup(Alignment.LEADING)
+														.addGroup(gl_modePanel.createSequentialGroup()
+																.addComponent(mapThreeLabel, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)
+																.addContainerGap())
+														.addGroup(gl_modePanel.createParallelGroup(Alignment.LEADING)
+																.addGroup(gl_modePanel.createSequentialGroup()
+																		.addComponent(mapTwoLabel, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)
+																		.addContainerGap())
+																.addGroup(gl_modePanel.createParallelGroup(Alignment.LEADING)
+																		.addGroup(gl_modePanel.createSequentialGroup()
+																				.addComponent(mapOneLabel, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)
+																				.addContainerGap())
+						.addGroup(gl_modePanel.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_modePanel.createSequentialGroup()
 										.addComponent(playerFour, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)
 										.addContainerGap())
 								.addGroup(gl_modePanel.createParallelGroup(Alignment.LEADING)
@@ -293,6 +550,17 @@ public class TournamentSettingsView extends JFrame {
 																										.addGap(72))))
 																				.addGroup(gl_modePanel.createSequentialGroup()
 																						.addGroup(gl_modePanel.createParallelGroup(Alignment.TRAILING)
+																								.addComponent(mapOne, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+																								.addComponent(mapTwo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+																								.addComponent(mapThree, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+																								.addComponent(mapFour, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+																								.addComponent(mapFive, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+																								.addComponent(mapSix, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+																								.addGroup(gl_modePanel.createSequentialGroup()
+																										.addComponent(numberOfMapsCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+																										.addGap(45)))
+																				.addGroup(gl_modePanel.createSequentialGroup()
+																						.addGroup(gl_modePanel.createParallelGroup(Alignment.TRAILING)
 																								.addComponent(playerOneBehavior, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 																								.addComponent(playerTwoBehavior, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 																								.addComponent(playerThreeBehavior, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -300,7 +568,7 @@ public class TournamentSettingsView extends JFrame {
 																								.addGroup(gl_modePanel.createSequentialGroup()
 																										.addComponent(playerNumCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 																										.addGap(45)))
-																						.addGap(372))))))))))
+																						.addGap(372)))))))))))))))))
 				);
 		gl_modePanel.setVerticalGroup(
 				gl_modePanel.createParallelGroup(Alignment.TRAILING)
@@ -324,6 +592,32 @@ public class TournamentSettingsView extends JFrame {
 						.addGroup(gl_modePanel.createParallelGroup(Alignment.BASELINE)
 								.addComponent(numberOfTurnsLabel)
 								.addComponent(turnNumCombobox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						
+						.addGap(18)
+						.addGroup(gl_modePanel.createParallelGroup(Alignment.BASELINE)
+								.addComponent(mapOneLabel)
+								.addComponent(mapOne, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGap(18)
+						.addGroup(gl_modePanel.createParallelGroup(Alignment.BASELINE)
+								.addComponent(mapTwoLabel)
+								.addComponent(mapTwo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addPreferredGap(ComponentPlacement.UNRELATED)
+						.addGroup(gl_modePanel.createParallelGroup(Alignment.BASELINE)
+								.addComponent(mapThreeLabel)
+								.addComponent(mapThree, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addPreferredGap(ComponentPlacement.UNRELATED)
+						.addGroup(gl_modePanel.createParallelGroup(Alignment.BASELINE)
+								.addComponent(mapFourLabel)
+								.addComponent(mapFour, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addPreferredGap(ComponentPlacement.UNRELATED)
+						.addGroup(gl_modePanel.createParallelGroup(Alignment.BASELINE)
+								.addComponent(mapFiveLabel)
+								.addComponent(mapFive, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addPreferredGap(ComponentPlacement.UNRELATED)
+						.addGroup(gl_modePanel.createParallelGroup(Alignment.BASELINE)
+								.addComponent(mapSixLabel)
+								.addComponent(mapSix, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+																
 						.addGap(18)
 						.addGroup(gl_modePanel.createParallelGroup(Alignment.BASELINE)
 								.addComponent(playerOne)
