@@ -33,6 +33,14 @@ public class ReEnforcementPhaseModel extends Observable implements GamePhase, Se
 		}
 		return reEnforcementPhaseModel;
 	}
+	
+	public static boolean isInitialized() {
+		return reEnforcementPhaseModel != null ? true : false;
+	}
+	
+	public static void clear() {
+		reEnforcementPhaseModel = null;
+	}
 
 	/**
 	 * @return the gameModel

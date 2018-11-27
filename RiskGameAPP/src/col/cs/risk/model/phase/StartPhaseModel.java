@@ -34,6 +34,14 @@ public class StartPhaseModel extends Observable implements GamePhase, Serializab
 		}
 		return startPhaseModel;
 	}
+	
+	public static boolean isInitialized() {
+		return startPhaseModel != null ? true : false;
+	}
+	
+	public static void clear() {
+		startPhaseModel = null;
+	}
 
 	/**
 	 * @return the gameModel

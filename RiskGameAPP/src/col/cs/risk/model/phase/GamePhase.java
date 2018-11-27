@@ -40,5 +40,5 @@ public interface GamePhase {
 
 	/** Get content to display on phase view */
 	public String getContent();
-
+	
 }

@@ -34,6 +34,14 @@ public class AttackPhaseModel extends Observable implements GamePhase, Serializa
 		}
 		return attackPhaseModel;
 	}
+	
+	public static boolean isInitialized() {
+		return attackPhaseModel != null ? true : false;
+	}
+	
+	public static void clear() {
+		attackPhaseModel = null;
+	}
 
 	@Override
 	public void isChanged(boolean isStart) {

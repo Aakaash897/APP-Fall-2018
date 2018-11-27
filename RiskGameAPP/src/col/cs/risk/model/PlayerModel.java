@@ -120,6 +120,23 @@ public class PlayerModel extends Observable {
 		this.occupiedTerritories = occupiedTerritories;
 	}
 
+	public void clearHistory() {
+		armies = 0;
+		occupiedTerritories.clear();
+		attackingNoOfDice = 0;
+		defendingNoOfDice = 0;
+		attackingDiceList.clear();
+		defendingDiceList.clear();
+		rolledDiceView = null;
+		attackingTerritory = null;
+		defendingTerritory = null;
+		gameController = null;
+		isAutomatic = false;
+		isCardAssigned = false;
+		isCardTradeMandatory = false;
+		cards.clear();
+	}
+	
 	/**
 	 * @return the id
 	 */
@@ -637,7 +654,7 @@ public class PlayerModel extends Observable {
 
 		if (gameModel.isWon()) {
 			gameController.gameOver(Utility.replacePartInMessage(Constants.WINNER, Constants.CHAR_A, 
-					(getName()+getStrategy().getStrategyString())));
+					(getName()+getStrategy().getStrategyString())), true);
 		} else {
 			gameController.handleAttack();
 		}

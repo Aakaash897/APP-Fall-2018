@@ -35,6 +35,14 @@ public class EndPhaseModel extends Observable implements GamePhase, Serializable
 		}
 		return endPhaseModel;
 	}
+	
+	public static boolean isInitialized() {
+		return endPhaseModel != null ? true : false;
+	}
+	
+	public static void clear() {
+		endPhaseModel = null;
+	}
 
 	/**
 	 * @return the gameModel
