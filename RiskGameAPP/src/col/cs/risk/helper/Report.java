@@ -6,15 +6,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-import col.cs.risk.model.Constants;
-
 public class Report {
 
 	private String mapFilename;
 
 	private int noOfGames;
 
-	//private HashMap<String, String> gameWinnerMap = new HashMap<>();
 	private HashMap<Integer, String> gameWinnerMap = new HashMap<>();
 
 	private int currentGameNo = 0;
@@ -81,8 +78,8 @@ public class Report {
 		StringBuilder strBuilder = new StringBuilder();
 		strBuilder.append(mapFilename);
 		strBuilder.append("\n-----------------------\n");
-		 Set<Integer> games = gameWinnerMap.keySet();
-		 List<Integer> list = new ArrayList<>(games);
+		Set<Integer> games = gameWinnerMap.keySet();
+		List<Integer> list = new ArrayList<>(games);
 		Collections.sort(list);
 		for(Integer game:games) {
 			strBuilder.append("Game ");
@@ -91,11 +88,19 @@ public class Report {
 			strBuilder.append(gameWinnerMap.get(game));
 			strBuilder.append("\n");
 		}
-
-		/*strBuilder.append(gameWinnerMap.keySet().stream().map(x->x.toString()).collect(Collectors.toList()));
-		strBuilder.append("\n");
-		strBuilder.append(gameWinnerMap.values().stream().map(x->x.toString()).collect(Collectors.toList()));*/
 		strBuilder.append("\n-----------------------\n");
+		return strBuilder.toString();
+	}
+
+	public String getGamesResult() {
+		StringBuilder strBuilder = new StringBuilder();
+		Set<Integer> games = gameWinnerMap.keySet();
+		List<Integer> list = new ArrayList<>(games);
+		Collections.sort(list);
+		for(Integer game:games) {
+			strBuilder.append("\t | \t");
+			strBuilder.append(gameWinnerMap.get(game));
+		}
 		return strBuilder.toString();
 	}
 }

@@ -134,7 +134,6 @@ public class GameController {
 			rolledDiceView = new RolledDiceView(this);
 			isGameOver = false;
 			isAutoRunning = false;
-			// isMaxNumberOfRoundsSet = false;
 			Utility.writeLog("******************* Initial Reinforcement phase ************************");
 			automaticHandleStrategies();
 		} catch (MapException ex) {
@@ -170,11 +169,28 @@ public class GameController {
 			initialize();
 		} else {
 			Utility.writeLog("\n\n************************ Report **********************\n");
+			StringBuilder strBuilder = new StringBuilder();
+			strBuilder.append("Map/Game_No");
+			for(int i=1;i<=GameModel.tournamentNoOfGame;i++) {
+				strBuilder.append("\t | \t");
+				strBuilder.append("Game ");
+				strBuilder.append(i);
+			}
+			strBuilder.append("\n");
+			strBuilder.append("-------------------------------------------------------------------------------------\n");
 			for(Report report:GameModel.reports) {
 				Utility.writeLog(report.toString());
+				strBuilder.append(report.getMapFileName());
+				strBuilder.append(report.getGamesResult());
+				strBuilder.append("\n");
+				strBuilder.append("-------------------------------------------------------------------------------------\n");
 			}
-			System.exit(0);
-			//show report
+			System.out.println("\n");
+			System.out.println(strBuilder.toString());
+			Utility.showMessagePopUp(strBuilder.toString(), "Report");
+			gameModel.clearAll();
+			gameModel = null;
+			StartGameController.main(null);
 		}
 
 	}
@@ -267,10 +283,12 @@ public class GameController {
 			if (!str.isEmpty()) {
 				mapView.getStatusLabel().setText(str);
 			}
-			if (!isGameOver) {
-				gameModel.notifyPhaseChanging();
+			if(gameModel!=null) {
+				if (!isGameOver) {
+					gameModel.notifyPhaseChanging();
+				}
+				gameModel.notifyPhaseChange();
 			}
-			gameModel.notifyPhaseChange();
 		}
 		isAutoRunning = false;
 
@@ -627,7 +645,7 @@ public class GameController {
 					GameModel.currentReport.addFinishedGame(GameModel.currentReport.getCurrentGameNo(), gameModel.getCurrentPlayer().getName()+" - "+
 							gameModel.getCurrentPlayer().getStrategy().getStrategyString());
 				} else {
-					GameModel.currentReport.addFinishedGame(GameModel.currentReport.getCurrentGameNo(),"No Winner");
+					GameModel.currentReport.addFinishedGame(GameModel.currentReport.getCurrentGameNo(),"Draw");
 				}
 				startNewGame();
 			} else {

@@ -174,28 +174,8 @@ public class StartGameController {
 		for (int i = 0; i < noOfPlayers; i++) {
 			playersStrategies.put(GameModel.getPlayers().get(i).getName(), playersStrategiesMap.get(i + 1));
 		}
-		addDummyMapFiles();
 		setTournamentOptions();
 		playerSettingsController.playerStrategyTypeSaveActionPerformed(playersStrategies);
-	}
-
-	public void addDummyMapFiles() {
-		GameModel.tournamentMapList.clear();
-		if (GameModel.tournamentNoOfMaps >= 1) {
-			GameModel.tournamentMapList.add(Constants.DEFAULT_MAP_FILE_NAME);
-		}
-		if (GameModel.tournamentNoOfMaps >= 2) {
-			GameModel.tournamentMapList.add("3D Cliff.map");
-		}
-		if (GameModel.tournamentNoOfMaps >= 3) {
-			GameModel.tournamentMapList.add("Texas.map");
-		}
-		if (GameModel.tournamentNoOfMaps >= 4) {
-			GameModel.tournamentMapList.add("Mexico.map");
-		}
-		if (GameModel.tournamentNoOfMaps >= 5) {
-			GameModel.tournamentMapList.add(Constants.DEFAULT_MAP_FILE_NAME);
-		}
 	}
 
 	public void setTournamentOptions() {

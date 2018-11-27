@@ -175,7 +175,6 @@ public class GameModel implements Serializable {
 	
 	public void clear() {
 		deInitializePlayerDominationView();
-		//phaseView.dispose();
 		baseMapString = null;
 		modifiedMapString = null;
 		mapFileStream = null;
@@ -204,6 +203,20 @@ public class GameModel implements Serializable {
 		for(PlayerModel player:players) {
 			player.clearHistory();
 		}
+	}
+	
+	public void clearAll() {
+		players.clear();
+		playerArmyMap.clear();
+		cardArmyMap.clear();
+		isTournamentMode = false;
+		tournamentNoOfMaps = 1;
+		tournamentMapList.clear();
+		tournamentNoOfGame = 1;
+		tournamentNoOfTurns = 10;
+		currentGameNumber = 0;
+		reports.clear();
+		currentReport = null;
 	}
 
 	/**
