@@ -46,6 +46,9 @@ public class HomePageViewLoader extends JFrame {
 	/** load existing map button */
 	private JButton loadExistingMapButton;
 
+	/** load Saved game button */
+	private JButton loadSavedGameButton;
+	
 	/** exit button */
 	private JButton exitButton;
 
@@ -82,6 +85,7 @@ public class HomePageViewLoader extends JFrame {
 		startGameButton = new JButton();
 		constructMapButton = new JButton();
 		loadExistingMapButton = new JButton();
+		loadSavedGameButton = new JButton();
 		exitButton = new JButton();
 		gameImage = new JLabel();
 
@@ -124,6 +128,17 @@ public class HomePageViewLoader extends JFrame {
 			}
 		});
 
+		loadSavedGameButton.setName("loadSavedGameButton");
+		loadSavedGameButton.setText("Load Saved Game");
+		loadSavedGameButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				startController.loadSavedGameButtonActionPerformed(e);
+				
+			}
+		});
+		
 		exitButton.setName("exitButton");
 		exitButton.setText("Exit");
 		exitButton.addActionListener(new ActionListener() {
@@ -159,12 +174,14 @@ public class HomePageViewLoader extends JFrame {
 										.addComponent(startGameButton, GroupLayout.DEFAULT_SIZE, 100, 500).addGap(50)
 										.addComponent(constructMapButton, GroupLayout.DEFAULT_SIZE, 100, 500).addGap(50)
 										.addComponent(loadExistingMapButton, GroupLayout.DEFAULT_SIZE, 100, 500)
+										.addGap(50).addComponent(loadSavedGameButton, GroupLayout.DEFAULT_SIZE, 100, 500)
 										.addGap(50).addComponent(exitButton, GroupLayout.DEFAULT_SIZE, 100, 500)
 										.addGap(50))
 								.addContainerGap()))));
 		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
 				.createSequentialGroup().addContainerGap().addComponent(gameImage)
 				.addPreferredGap(ComponentPlacement.RELATED, 40, Short.MAX_VALUE).addComponent(startGameButton)
+				.addPreferredGap(ComponentPlacement.RELATED, 8, Short.MAX_VALUE).addComponent(loadSavedGameButton)
 				.addPreferredGap(ComponentPlacement.RELATED, 8, Short.MAX_VALUE).addComponent(constructMapButton)
 				.addPreferredGap(ComponentPlacement.RELATED, 8, Short.MAX_VALUE).addComponent(loadExistingMapButton)
 				.addPreferredGap(ComponentPlacement.RELATED, 8, Short.MAX_VALUE).addComponent(exitButton)

@@ -4,10 +4,13 @@ import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.util.HashMap;
 
 import col.cs.risk.helper.MapException;
@@ -38,10 +41,10 @@ public class StartGameController {
 
 	/** Map construction/modification Page View */
 	private MapConstructionView mapConstructionView;
-	
+
 	/** Construct New map Page View */
 	private ConstructNewMapView constructNewMapView;
-	
+
 	/** Player Settings Controller instance */
 	private PlayerSettingsController playerSettingsController;
 
@@ -141,11 +144,8 @@ public class StartGameController {
 		chooseMode();
 		System.out.println(" Start Game button pressed ");
 	}
-	
-		
-	
-	public void chooseMode()
-	{
+
+	public void chooseMode() {
 		homePageViewLoader.setVisible(false);
 		new GameModeSettingsView(this).setVisible(true);
 	}
@@ -157,56 +157,53 @@ public class StartGameController {
 		GameModel.isTournamentMode = false;
 		playerSettingsController = new PlayerSettingsController(this);
 	}
-	
-	
-	public void tournamentMode()
-	{
+
+	public void tournamentMode() {
 		homePageViewLoader.setVisible(false);
 		new TournamentSettingsView(this).setVisible(true);
 	}
-	
+
 	public void tournamentModeOKButtonActionPerformed(int noOfPlayers, HashMap<Integer, String> playersStrategiesMap) {
-		if(playerSettingsController == null) {
+		if (playerSettingsController == null) {
 			playerSettingsController = new PlayerSettingsController();
 		}
 		playerSettingsController.setNoOfPlayers(noOfPlayers);
 		playerSettingsController.setPlayers();
-		
-		HashMap<String,String> playersStrategies = new HashMap<>();
-		for(int i=0;i<noOfPlayers;i++) {
-			playersStrategies.put(GameModel.getPlayers().get(i).getName(), playersStrategiesMap.get(i+1));
+
+		HashMap<String, String> playersStrategies = new HashMap<>();
+		for (int i = 0; i < noOfPlayers; i++) {
+			playersStrategies.put(GameModel.getPlayers().get(i).getName(), playersStrategiesMap.get(i + 1));
 		}
 		addDummyMapFiles();
 		setTournamentOptions();
 		playerSettingsController.playerStrategyTypeSaveActionPerformed(playersStrategies);
 	}
-	
+
 	public void addDummyMapFiles() {
 		GameModel.tournamentMapList.clear();
-		if(GameModel.tournamentNoOfMaps >= 1) {
+		if (GameModel.tournamentNoOfMaps >= 1) {
 			GameModel.tournamentMapList.add(Constants.DEFAULT_MAP_FILE_NAME);
-		} 
-		if(GameModel.tournamentNoOfMaps >= 2) {
+		}
+		if (GameModel.tournamentNoOfMaps >= 2) {
 			GameModel.tournamentMapList.add("3D Cliff.map");
 		}
-		if(GameModel.tournamentNoOfMaps >= 3) {
+		if (GameModel.tournamentNoOfMaps >= 3) {
 			GameModel.tournamentMapList.add("Texas.map");
 		}
-		if(GameModel.tournamentNoOfMaps >= 4) {
+		if (GameModel.tournamentNoOfMaps >= 4) {
 			GameModel.tournamentMapList.add("Mexico.map");
 		}
-		if(GameModel.tournamentNoOfMaps >= 5) {
+		if (GameModel.tournamentNoOfMaps >= 5) {
 			GameModel.tournamentMapList.add(Constants.DEFAULT_MAP_FILE_NAME);
 		}
 	}
-	
+
 	public void setTournamentOptions() {
 		GameModel.reports.clear();
-		for(int i=0;i<GameModel.tournamentNoOfMaps;i++) {
+		for (int i = 0; i < GameModel.tournamentNoOfMaps; i++) {
 			GameModel.reports.addElement(new Report(GameModel.tournamentMapList.get(i), GameModel.tournamentNoOfGame));
 		}
 	}
-	
 
 	/**
 	 * Action performed on pressing construct button on home page
@@ -378,5 +375,27 @@ public class StartGameController {
 	 */
 	public void exitNewMapConstructionView() {
 		mapConstructionView.setVisible(true);
+	}
+
+	public void loadSavedGameButtonActionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		// read object from file
+		try {
+			FileInputStream fis = new FileInputStream(Utility.getSaveGamePath("savedGame.sav"));
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			GameModel result = (GameModel) ois.readObject();
+			ois.close();
+			System.out.println("One:" + result.getCurrentPlayer().getName());
+		} catch (FileNotFoundException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		} catch (IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
 	}
 }
