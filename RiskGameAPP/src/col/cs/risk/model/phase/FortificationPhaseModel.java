@@ -35,6 +35,14 @@ public class FortificationPhaseModel extends Observable implements GamePhase, Se
 		}
 		return fortificationPhaseModel;
 	}
+	
+	public static boolean isInitialized() {
+		return fortificationPhaseModel != null ? true : false;
+	}
+	
+	public static void clear() {
+		fortificationPhaseModel = null;
+	}
 
 	/**
 	 * @return the gameModel

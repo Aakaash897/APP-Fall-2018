@@ -101,6 +101,12 @@ public class Constants {
 	public static final String ARMY_TYPE_ARTILLERY = "ARTILLERY";
 	public static final String ARMY_TYPE_WILD = "WILD";
 	public static final String INFORMATION = "Information";
+	public static final String CLIFF="3D Cliff.map";
+	public static final String ICELAND = "Iceland.map";
+	public static final String INDIA = "India.map";
+	public static final String MEXICO = "Mexico.map";
+	public static final String TEXAS = "Texas.map";
+	public static final String WORLD = "World.map";
 	public static final String HUMAN = "Human";
 	public static final String AGGRESSIVE = "Aggressive";
 	public static final String BENEVOLENT = "Benevolent";

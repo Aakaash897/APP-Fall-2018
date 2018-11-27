@@ -83,4 +83,9 @@ public class PhaseView implements Observer {
 		}
 		phaseFrame.repaint();
 	}
+	
+	public void dispose() {
+		phaseFrame.dispose();
+		phaseInfoMonitor = null;
+	}
 }

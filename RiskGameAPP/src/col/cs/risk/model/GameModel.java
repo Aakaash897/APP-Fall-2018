@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 import javax.swing.JPanel;
 
 import col.cs.risk.helper.MapException;
+import col.cs.risk.helper.Report;
 import col.cs.risk.helper.Utility;
 import col.cs.risk.model.phase.AttackPhaseModel;
 import col.cs.risk.model.phase.EndPhaseModel;
@@ -94,7 +95,7 @@ public class GameModel implements Serializable {
 	private int noOfArmiesToMove;
 
 	/** list of unOccupied territories */
-	private Vector<TerritoryModel> unOccupiedTerritories;
+	private Vector<TerritoryModel> unOccupiedTerritories = new Vector<>();
 
 	/** Phase view monitor */
 	private transient PhaseView phaseView;
@@ -138,7 +139,13 @@ public class GameModel implements Serializable {
 	public static int tournamentNoOfGame = 1;
 	
 	public static int tournamentNoOfTurns = 10;
-
+	
+	public static int currentGameNumber;
+	
+	public static Vector<Report> reports = new Vector<>();
+	
+	public static Report currentReport;
+	
 	/**
 	 * Instance block to fill player and army details
 	 */
@@ -164,6 +171,39 @@ public class GameModel implements Serializable {
 	 */
 	public GameModel() {
 
+	}
+	
+	public void clear() {
+		deInitializePlayerDominationView();
+		//phaseView.dispose();
+		baseMapString = null;
+		modifiedMapString = null;
+		mapFileStream = null;
+		state = Constants.NEW_GAME;
+		continents.clear();
+		territories.clear();
+		currentPlayer = null;
+		isBaseMapModified = false;
+		imageSelected = "World.bmp";
+		mainMapPanel = null;
+		subMapPanel = null;
+		moveArmiesFromTerritory = null;
+		moveArmiesToTerritory = null;
+		noOfArmiesToMove = 0;
+		unOccupiedTerritories.clear();
+		phaseView = null;
+		startPhaseModel = null;
+		reInforcementPhaseModel = null;
+		attackPhaseModel = null;
+		fortificationPhaseModel = null;
+		endPhaseModel = null;
+		selectedTerritory = null;
+		previousState = Constants.NEW_GAME;
+		cardsDeck.clear();
+		cardTradeCount = Constants.ZERO;
+		for(PlayerModel player:players) {
+			player.clearHistory();
+		}
 	}
 
 	/**
@@ -209,6 +249,19 @@ public class GameModel implements Serializable {
 		for (PlayerModel player : players)
 			player.addObserver(playerDominationView);
 		playerDominationView.showMonitor();
+		
+	}
+	
+	/**
+	 * Initialize player domination view.
+	 */
+	private void deInitializePlayerDominationView() {
+		if(PlayerDominationView.isInitialized()) {
+			PlayerDominationView playerDominationView = PlayerDominationView.getInstance();
+			for (PlayerModel player : players)
+				player.deleteObserver(playerDominationView);
+		}
+		PlayerDominationView.clear();
 	}
 
 	/**
