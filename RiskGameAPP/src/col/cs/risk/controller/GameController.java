@@ -45,27 +45,44 @@ import col.cs.risk.view.RolledDiceView;
  */
 public class GameController {
 
-	/** Game model instance */
+	/**
+	 * Game model instance
+	 */
 	private GameModel gameModel;
 
-	/** Game map panel */
+	/**
+	 * Game map panel
+	 */
 	private MapPanelController mapMainPanel;
 
-	/** Game player panel */
+	/**
+	 * Game player panel
+	 */
 	private PlayerPanelController mapSubPanelPlayer;
 
-	/** Game panel */
+	/**
+	 * Game panel
+	 */
 	private MapView mapView;
 
-	/** No of players completed the current round */
+	/**
+	 * No of players completed the current round
+	 */
 	private int currentRoundCompletedPlayersCount;
 
-	/** No of rounds/turns completed */
+	/**
+	 * No of rounds/turns completed
+	 */
 	public int noOfRoundsCompleted;
 
+	/**
+	 * Variable to check if maximum rounds set or not
+	 */
 	public boolean isMaxNumberOfRoundsSet = true;
 
-	/** Maximum number of rounds allowed per game */
+	/**
+	 * Maximum number of rounds allowed per game
+	 */
 	private static int MAXIMUM_NO_OF_ROUNDS_ALLOWED = Constants.TEN;
 
 	/**
@@ -73,17 +90,31 @@ public class GameController {
 	 */
 	private CardTradeView cardTradeView;
 
-	/** view for displaying rolled dices list */
+	/**
+	 * view for displaying rolled dices list
+	 */
 	private RolledDiceView rolledDiceView;
 
+	/**
+	 * Check if game is over
+	 */
 	private boolean isGameOver = false;
 
+	/**
+	 * Variable to check if automatic is set to run or not
+	 */
 	private boolean isAutoRunning = false;
 
+	/**
+	 * Flag variable to check if saved game is loaded
+	 */
 	public static boolean isLoadSavedGame = false;
 
+	/**
+	 * Used to reset everything
+	 */
 	public void clear() {
-		if(mapView != null) {
+		if (mapView != null) {
 			mapView.setVisible(false);
 			mapView.dispose();
 		}
@@ -96,7 +127,7 @@ public class GameController {
 		noOfRoundsCompleted = 0;
 		isMaxNumberOfRoundsSet = false;
 		MAXIMUM_NO_OF_ROUNDS_ALLOWED = Constants.TEN;
-		if(cardTradeView != null) {
+		if (cardTradeView != null) {
 			cardTradeView.dispose();
 		}
 		cardTradeView = null;
@@ -108,7 +139,7 @@ public class GameController {
 	 * Default constructor
 	 */
 	public GameController() {
-		if(!isLoadSavedGame) {
+		if (!isLoadSavedGame) {
 			this.gameModel = new GameModel();
 		}
 	}
@@ -119,13 +150,13 @@ public class GameController {
 	public void initialize() {
 		try {
 			Utility.writeLog("********************* Game start up phase ***************************");
-			if(GameModel.isTournamentMode) {
+			if (GameModel.isTournamentMode) {
 				isMaxNumberOfRoundsSet = true;
 				MAXIMUM_NO_OF_ROUNDS_ALLOWED = GameModel.tournamentNoOfTurns;
 			} else {
 				isMaxNumberOfRoundsSet = false;
 			}
-			if(!isLoadSavedGame) {
+			if (!isLoadSavedGame) {
 				gameModel.initialize();
 			} else {
 				initializeSavedGame();
@@ -145,7 +176,7 @@ public class GameController {
 			mapMainPanel.repaint();
 			initializeCardExchangeView();
 			rolledDiceView = new RolledDiceView(this);
-			if(isLoadSavedGame) {
+			if (isLoadSavedGame) {
 				setStatusMessageOnSavedGameLoad();
 			}
 			isGameOver = false;
@@ -162,31 +193,38 @@ public class GameController {
 		}
 	}
 
+	/**
+	 * Method called for initializing the saved game
+	 * @throws MapException
+	 */
 	private void initializeSavedGame() throws MapException {
 		Utility.writeLog("------------- Loading saved game ----------------- ");
 		this.gameModel = loadSavedGame();
 		GameModel.players = gameModel.playersUsedWhileSavingLoading;
-		Utility.writeLog("Current player: "+gameModel.getCurrentPlayer().getName()+" : "+
-				gameModel.getCurrentPlayer().getStrategy().getStrategyString());
-		Utility.writeLog("No of armies: "+gameModel.getCurrentPlayer().getArmies());
+		Utility.writeLog("Current player: " + gameModel.getCurrentPlayer().getName() + " : "
+				+ gameModel.getCurrentPlayer().getStrategy().getStrategyString());
+		Utility.writeLog("No of armies: " + gameModel.getCurrentPlayer().getArmies());
 		for (PlayerModel player : GameModel.players) {
 			Utility.writeLog(player.getName() + " : " + player.getStrategy().getStrategyString()
 					+ " - Occupied territories - " + player.getOccupiedTerritories().size() + " : "
 					+ player.getOccupiedTerritories().stream().map(x -> x.getName()).collect(Collectors.toList()));
 		}
-		if(gameModel == null) {
+		if (gameModel == null) {
 			throw new MapException("Error while loading saved game");
 		}
 		gameModel.initializePlayerDominationView();
 	}
 
+	/**
+	 * Used for starting a new game, various checks and initialization
+	 */
 	public void startNewGame() {
 		gameModel.clear();
 		clear();
 		boolean isTournamentFinished = true;
-		for(Report report:GameModel.reports) {
-			if(!report.isThisMapFinished()) {
-				if(report.getNextGameNumber() <= GameModel.tournamentNoOfGame) {
+		for (Report report : GameModel.reports) {
+			if (!report.isThisMapFinished()) {
+				if (report.getNextGameNumber() <= GameModel.tournamentNoOfGame) {
 					GameModel.isBaseMapModified = true;
 					GameModel.fileName = report.getMapFileName();
 					GameModel.currentReport = report;
@@ -196,9 +234,9 @@ public class GameController {
 				}
 			}
 		}
-		if(!isTournamentFinished) {
+		if (!isTournamentFinished) {
 			Utility.writeLog("\n\n\n*********************** New Game **********************");
-			Utility.writeLog("Map file = "+GameModel.fileName+", Game no: "+GameModel.currentGameNumber);
+			Utility.writeLog("Map file = " + GameModel.fileName + ", Game no: " + GameModel.currentGameNumber);
 			this.gameModel = new GameModel();
 			gameModel.setState(Constants.NEW_GAME);
 			initialize();
@@ -206,19 +244,21 @@ public class GameController {
 			Utility.writeLog("\n\n************************ Report **********************\n");
 			StringBuilder strBuilder = new StringBuilder();
 			strBuilder.append("Map/Game_No");
-			for(int i=1;i<=GameModel.tournamentNoOfGame;i++) {
+			for (int i = 1; i <= GameModel.tournamentNoOfGame; i++) {
 				strBuilder.append("\t | \t");
 				strBuilder.append("Game ");
 				strBuilder.append(i);
 			}
 			strBuilder.append("\n");
-			strBuilder.append("-------------------------------------------------------------------------------------\n");
-			for(Report report:GameModel.reports) {
+			strBuilder
+					.append("-------------------------------------------------------------------------------------\n");
+			for (Report report : GameModel.reports) {
 				Utility.writeLog(report.toString());
 				strBuilder.append(report.getMapFileName());
 				strBuilder.append(report.getGamesResult());
 				strBuilder.append("\n");
-				strBuilder.append("-------------------------------------------------------------------------------------\n");
+				strBuilder.append(
+						"-------------------------------------------------------------------------------------\n");
 			}
 			System.out.println("\n");
 			System.out.println(strBuilder.toString());
@@ -230,14 +270,19 @@ public class GameController {
 
 	}
 
+	/**
+	 * Handling of all the strategies in the game
+	 */
 	public void automaticHandleStrategies() {
-		while(gameModel != null && gameModel.getCurrentPlayer() != null && 
-				!(gameModel.getCurrentPlayer().getStrategy() instanceof Human) && !isGameOver) {
+		while (gameModel != null && gameModel.getCurrentPlayer() != null
+				&& !(gameModel.getCurrentPlayer().getStrategy() instanceof Human) && !isGameOver) {
 			gameModel.notifyPhaseChange();
 			isAutoRunning = true;
 			System.out.println("\n\n--------------------------");
-			System.out.println(" gameModel.getState() = "+gameModel.getState()+" as string = "+gameModel.getStateAsString());
-			System.out.println(" player = "+gameModel.getCurrentPlayer().getName()+" as "+gameModel.getCurrentPlayer().getStrategy().getStrategyString());
+			System.out.println(
+					" gameModel.getState() = " + gameModel.getState() + " as string = " + gameModel.getStateAsString());
+			System.out.println(" player = " + gameModel.getCurrentPlayer().getName() + " as "
+					+ gameModel.getCurrentPlayer().getStrategy().getStrategyString());
 			String str = "";
 			switch (gameModel.getState()) {
 			case Constants.INITIAL_RE_ENFORCEMENT_PHASE:
@@ -258,21 +303,24 @@ public class GameController {
 				}
 				break;
 			case Constants.CARD_TRADE:
-				Utility.writeLog(" ************ "+gameModel.getStateAsStringInDepth()+ " of "+
-						gameModel.getCurrentPlayer().getName()+" "+gameModel.getCurrentPlayer().getStrategy().getStrategyString()+" ************ ");
-				if(gameModel.getCurrentPlayer().isCardTradeMandatory()) {
+				Utility.writeLog(" ************ " + gameModel.getStateAsStringInDepth() + " of "
+						+ gameModel.getCurrentPlayer().getName() + " "
+						+ gameModel.getCurrentPlayer().getStrategy().getStrategyString() + " ************ ");
+				if (gameModel.getCurrentPlayer().isCardTradeMandatory()) {
 					handleAutomaticCardTrade();
 				} else {
 					handleReinforcement1();
 				}
 				break;
 			case Constants.START_TURN:
-				Utility.writeLog("************** Turn start/Reinforcement of "+gameModel.getCurrentPlayer().getName()+" : "
-						+gameModel.getCurrentPlayer().getStrategy().getStrategyString()+" ********************");
-				Utility.writeLog("Occupied territories count = "+gameModel.getCurrentPlayer().getOccupiedTerritories().size());
-				Utility.writeLog("% of occupied = "+gameModel.getCurrentPlayer().calculatePercentage(
-						gameModel.getCurrentPlayer(), gameModel));
-				Utility.writeLog("Round no. of player: "+noOfRoundsCompleted);
+				Utility.writeLog("************** Turn start/Reinforcement of " + gameModel.getCurrentPlayer().getName()
+						+ " : " + gameModel.getCurrentPlayer().getStrategy().getStrategyString()
+						+ " ********************");
+				Utility.writeLog(
+						"Occupied territories count = " + gameModel.getCurrentPlayer().getOccupiedTerritories().size());
+				Utility.writeLog("% of occupied = "
+						+ gameModel.getCurrentPlayer().calculatePercentage(gameModel.getCurrentPlayer(), gameModel));
+				Utility.writeLog("Round no. of player: " + noOfRoundsCompleted);
 
 				handleStartTurn();
 				break;
@@ -302,10 +350,12 @@ public class GameController {
 				if (isGameOver) {
 					break;
 				} else {
-					if(gameModel.isWon()) {
-						gameOver(Utility.replacePartInMessage(Constants.WINNER, 
-								Constants.CHAR_A, (gameModel.getCurrentPlayer().getName()+" : "+
-										gameModel.getCurrentPlayer().getStrategy().getStrategyString())), true);
+					if (gameModel.isWon()) {
+						gameOver(
+								Utility.replacePartInMessage(Constants.WINNER, Constants.CHAR_A,
+										(gameModel.getCurrentPlayer().getName() + " : "
+												+ gameModel.getCurrentPlayer().getStrategy().getStrategyString())),
+								true);
 					} else {
 						gameOver(Constants.GAME_OVER_MESSAGE, false);
 					}
@@ -318,7 +368,7 @@ public class GameController {
 			if (!str.isEmpty()) {
 				mapView.getStatusLabel().setText(str);
 			}
-			if(gameModel!=null) {
+			if (gameModel != null) {
 				if (!isGameOver) {
 					gameModel.notifyPhaseChanging();
 				}
@@ -327,8 +377,8 @@ public class GameController {
 		}
 		isAutoRunning = false;
 
-		if(gameModel != null && gameModel.getCurrentPlayer() != null && 
-				(gameModel.getCurrentPlayer().getStrategy() instanceof Human) && !isGameOver) {
+		if (gameModel != null && gameModel.getCurrentPlayer() != null
+				&& (gameModel.getCurrentPlayer().getStrategy() instanceof Human) && !isGameOver) {
 			if (gameModel.getState() == Constants.START_TURN) {
 				gameModel.setSelectedTerritory(null);
 				handleStartTurn();
@@ -337,6 +387,10 @@ public class GameController {
 		}
 	}
 
+	/**
+	 * Function to verify if the player is human or not and based on that
+	 * handling the strategies
+	 */
 	public void checkAndRunAuto() {
 		System.out.println("GameController.checkAndRunAuto() isAutoRunning = " + isAutoRunning);
 		System.out.println("gameModel.getCurrentPlayer().isHuman() = " + gameModel.getCurrentPlayer().isHuman());
@@ -405,8 +459,8 @@ public class GameController {
 			artilleryCount = 1;
 		}
 
-		gameModel.getCurrentPlayer().cardTradeActionPerformed(gameModel,
-				infantryCount, cavelryCount, artilleryCount, wildCount);
+		gameModel.getCurrentPlayer().cardTradeActionPerformed(gameModel, infantryCount, cavelryCount, artilleryCount,
+				wildCount);
 		handleReinforcement1();
 
 	}
@@ -448,7 +502,7 @@ public class GameController {
 	}
 
 	private void deInitializePhaseView() {
-		if(AttackPhaseModel.isInitialized() || ReEnforcementPhaseModel.isInitialized()) {
+		if (AttackPhaseModel.isInitialized() || ReEnforcementPhaseModel.isInitialized()) {
 			StartPhaseModel startPhaseModel = StartPhaseModel.getInstance();
 			ReEnforcementPhaseModel reInforcementPhaseModel = ReEnforcementPhaseModel.getInstance();
 			AttackPhaseModel attackPhaseModel = AttackPhaseModel.getInstance();
@@ -504,8 +558,9 @@ public class GameController {
 			}
 			fortifyButtonActionPerformed(null);
 		} else {
-			if(gameModel.getCurrentPlayer().isHuman()) {
-				Utility.showMessagePopUp(Constants.CANNOT_ATTACK_MESSAGE+Constants.FORTIFY_MESSAGE, Constants.INFORMATION);
+			if (gameModel.getCurrentPlayer().isHuman()) {
+				Utility.showMessagePopUp(Constants.CANNOT_ATTACK_MESSAGE + Constants.FORTIFY_MESSAGE,
+						Constants.INFORMATION);
 			}
 			mapView.getStatusLabel().setText(Constants.CANNOT_ATTACK_MESSAGE + Constants.SELECT_THE_ACTION_MESSAGE);
 			validatePlayerTurn();
@@ -549,8 +604,9 @@ public class GameController {
 			} else {
 				gameModel.setNoOfArmiesToMove(armies);
 				if (gameModel.moveArmies()) {
-					Utility.writeLog("Moving "+armies+" armies from "+gameModel.getMoveArmiesToTerritory().getName()+
-							" to "+gameModel.getMoveArmiesFromTerritory().getName());
+					Utility.writeLog(
+							"Moving " + armies + " armies from " + gameModel.getMoveArmiesToTerritory().getName()
+									+ " to " + gameModel.getMoveArmiesFromTerritory().getName());
 					gameModel.setNoOfArmiesToMove(Constants.ZERO);
 					gameModel.setMoveArmiesFromTerritory(null);
 					gameModel.setMoveArmiesToTerritory(null);
@@ -627,15 +683,17 @@ public class GameController {
 	 * Changing the current player
 	 */
 	private void changeTurn() {
-		Utility.writeLog("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Changing player(current player) turn %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+		Utility.writeLog(
+				"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Changing player(current player) turn %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
 		gameModel.getCurrentPlayer().setCardAssigned(false);
 		gameModel.nextPlayer();
-		Utility.writeLog("************** Turn start/Reinforcement of "+gameModel.getCurrentPlayer().getName()+" : "
-				+gameModel.getCurrentPlayer().getStrategy().getStrategyString()+" ********************");
-		Utility.writeLog("Occupied territories count = "+gameModel.getCurrentPlayer().getOccupiedTerritories().size());
-		Utility.writeLog("% of occupied = "+gameModel.getCurrentPlayer().calculatePercentage(
-				gameModel.getCurrentPlayer(), gameModel));
-		Utility.writeLog("Round no. of player: "+(noOfRoundsCompleted+1));
+		Utility.writeLog("************** Turn start/Reinforcement of " + gameModel.getCurrentPlayer().getName() + " : "
+				+ gameModel.getCurrentPlayer().getStrategy().getStrategyString() + " ********************");
+		Utility.writeLog(
+				"Occupied territories count = " + gameModel.getCurrentPlayer().getOccupiedTerritories().size());
+		Utility.writeLog("% of occupied = "
+				+ gameModel.getCurrentPlayer().calculatePercentage(gameModel.getCurrentPlayer(), gameModel));
+		Utility.writeLog("Round no. of player: " + (noOfRoundsCompleted + 1));
 		gameModel.getCurrentPlayer().setCardAssigned(false);
 		System.out.println(" noOfRoundsCompleted = " + noOfRoundsCompleted);
 		if (isFirstRound()) {
@@ -662,7 +720,7 @@ public class GameController {
 	 * @param message to display
 	 */
 	public void gameOver(String message, boolean isWin) {
-		if(!isGameOver) {
+		if (!isGameOver) {
 			gameModel.setState(Constants.END_PHASE);
 			gameModel.notifyPhaseChanging(message);
 			mapView.getStatusLabel().setText(message);
@@ -675,12 +733,13 @@ public class GameController {
 			isGameOver = true;
 			Utility.writeLog(" ************ " + gameModel.getStateAsStringInDepth() + " ************* ");
 			Utility.writeLog(message);
-			if(GameModel.isTournamentMode) {
-				if(isWin) {
-					GameModel.currentReport.addFinishedGame(GameModel.currentReport.getCurrentGameNo(), gameModel.getCurrentPlayer().getName()+" - "+
-							gameModel.getCurrentPlayer().getStrategy().getStrategyString());
+			if (GameModel.isTournamentMode) {
+				if (isWin) {
+					GameModel.currentReport.addFinishedGame(GameModel.currentReport.getCurrentGameNo(),
+							gameModel.getCurrentPlayer().getName() + " - "
+									+ gameModel.getCurrentPlayer().getStrategy().getStrategyString());
 				} else {
-					GameModel.currentReport.addFinishedGame(GameModel.currentReport.getCurrentGameNo(),"Draw");
+					GameModel.currentReport.addFinishedGame(GameModel.currentReport.getCurrentGameNo(), "Draw");
 				}
 				startNewGame();
 			} else {
@@ -695,7 +754,7 @@ public class GameController {
 	public static void showGUI() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				if(GameModel.isTournamentMode) {
+				if (GameModel.isTournamentMode) {
 					new GameController().startNewGame();
 				} else {
 					new GameController().initialize();
@@ -703,7 +762,7 @@ public class GameController {
 			}
 		});
 	}
-	
+
 	public void setStatusMessageOnSavedGameLoad() {
 		switch (gameModel.getState()) {
 		case Constants.INITIAL_RE_ENFORCEMENT_PHASE:
@@ -728,7 +787,8 @@ public class GameController {
 	public void mouseClicked(MouseEvent event) {
 		System.out.println("\n\n\n------------------");
 		System.out.println("Mouse clicked status = " + gameModel.getState() + ", " + gameModel.getStateAsString());
-		Utility.writeLog("Mouse clicked current status = " + gameModel.getState() + ", " + gameModel.getStateAsStringInDepth());
+		Utility.writeLog(
+				"Mouse clicked current status = " + gameModel.getState() + ", " + gameModel.getStateAsStringInDepth());
 		int x_coordinate = event.getX();
 		int y_coordinate = event.getY();
 		switch (gameModel.getState()) {
@@ -988,9 +1048,9 @@ public class GameController {
 				numberOfDice = mapView.showOptionPopup(
 						gameModel.getCurrentPlayer().getName() + " : "
 								+ gameModel.getCurrentPlayer().getStrategy().getStrategyString(),
-								numberOfDice < Constants.THREE ? numberOfDice - 1 : Constants.THREE, Constants.ATTACK_IMAGE,
-										gameModel.getCurrentPlayer().getName() + " : "
-												+ gameModel.getCurrentPlayer().getStrategy().getStrategyString());
+						numberOfDice < Constants.THREE ? numberOfDice - 1 : Constants.THREE, Constants.ATTACK_IMAGE,
+						gameModel.getCurrentPlayer().getName() + " : "
+								+ gameModel.getCurrentPlayer().getStrategy().getStrategyString());
 			}
 			gameModel.getCurrentPlayer().setAttackingNoOfDice(numberOfDice);
 			Utility.writeLog("Attacking no. of dice = " + numberOfDice);
@@ -1004,11 +1064,11 @@ public class GameController {
 						numberOfDice = mapView.showOptionPopup(
 								gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel().getName() + " : "
 										+ gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel()
-										.getStrategy().getStrategyString(),
-										numberOfDice < Constants.TWO ? numberOfDice : Constants.TWO, Constants.DEFEND_IMAGE,
-												gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel().getName() + " : "
-														+ gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel()
-														.getStrategy().getStrategyString());
+												.getStrategy().getStrategyString(),
+								numberOfDice < Constants.TWO ? numberOfDice : Constants.TWO, Constants.DEFEND_IMAGE,
+								gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel().getName() + " : "
+										+ gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel()
+												.getStrategy().getStrategyString());
 					} else {
 						numberOfDice = numberOfDice < Constants.TWO ? numberOfDice
 								: (Utility.getRandomNumber(Constants.TWO) + 1);
@@ -1021,11 +1081,11 @@ public class GameController {
 						numberOfDice = mapView.showOptionPopup(
 								gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel().getName() + " : "
 										+ gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel()
-										.getStrategy().getStrategyString(),
-										numberOfDice < Constants.TWO ? numberOfDice : Constants.TWO, Constants.DEFEND_IMAGE,
-												gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel().getName() + " : "
-														+ gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel()
-														.getStrategy().getStrategyString());
+												.getStrategy().getStrategyString(),
+								numberOfDice < Constants.TWO ? numberOfDice : Constants.TWO, Constants.DEFEND_IMAGE,
+								gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel().getName() + " : "
+										+ gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel()
+												.getStrategy().getStrategyString());
 					}
 				}
 				gameModel.getCurrentPlayer().setDefendingNoOfDice(numberOfDice);
@@ -1127,14 +1187,15 @@ public class GameController {
 	}
 
 	public void saveGame() {
-		try {	
+		try {
 			gameModel.playersUsedWhileSavingLoading = GameModel.players;
-			FileOutputStream fileStream = new FileOutputStream(Utility.getSaveGamePath(Constants.DEFAULT_SAVED_GAME_FILE_NAME));   
-			ObjectOutputStream objectStream = new ObjectOutputStream(fileStream);   
+			FileOutputStream fileStream = new FileOutputStream(
+					Utility.getSaveGamePath(Constants.DEFAULT_SAVED_GAME_FILE_NAME));
+			ObjectOutputStream objectStream = new ObjectOutputStream(fileStream);
 
 			objectStream.writeObject(gameModel);
 
-			objectStream.close();   
+			objectStream.close();
 			fileStream.close();
 			Utility.writeLog("Game saved");
 			System.out.println(" Game saved ");
@@ -1150,7 +1211,7 @@ public class GameController {
 
 	public GameModel loadSavedGame() {
 		try {
- 			FileInputStream fis = new FileInputStream(Utility.getSaveGamePath(Constants.DEFAULT_SAVED_GAME_FILE_NAME));
+			FileInputStream fis = new FileInputStream(Utility.getSaveGamePath(Constants.DEFAULT_SAVED_GAME_FILE_NAME));
 			ObjectInputStream ois = new ObjectInputStream(fis);
 			GameModel result = (GameModel) ois.readObject();
 			ois.close();
