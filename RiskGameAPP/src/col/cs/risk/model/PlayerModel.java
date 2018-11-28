@@ -56,7 +56,7 @@ public class PlayerModel extends Observable implements Serializable {
 	private HashMap<Integer, Integer> defendingDiceList = new HashMap<>();
 
 	/** view for displaying rolled dices list */
-	private RolledDiceView rolledDiceView;
+	transient private RolledDiceView rolledDiceView;
 
 	/** Attacking Territory */
 	private TerritoryModel attackingTerritory;
@@ -65,7 +65,7 @@ public class PlayerModel extends Observable implements Serializable {
 	private TerritoryModel defendingTerritory;
 
 	/** Game controller instance */
-	private GameController gameController;
+	transient private GameController gameController;
 
 	/** is auto out mode on */
 	private boolean isAutomatic;

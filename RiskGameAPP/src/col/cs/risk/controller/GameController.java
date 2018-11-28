@@ -3,10 +3,14 @@ package col.cs.risk.controller;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
-import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import javax.swing.JTextField;
 
@@ -17,6 +21,7 @@ import col.cs.risk.model.CardExchangeModel;
 import col.cs.risk.model.CardModel;
 import col.cs.risk.model.Constants;
 import col.cs.risk.model.GameModel;
+import col.cs.risk.model.PlayerModel;
 import col.cs.risk.model.phase.AttackPhaseModel;
 import col.cs.risk.model.phase.EndPhaseModel;
 import col.cs.risk.model.phase.FortificationPhaseModel;
@@ -75,6 +80,8 @@ public class GameController {
 
 	private boolean isAutoRunning = false;
 
+	public static boolean isLoadSavedGame = false;
+
 	public void clear() {
 		if(mapView != null) {
 			mapView.setVisible(false);
@@ -101,7 +108,9 @@ public class GameController {
 	 * Default constructor
 	 */
 	public GameController() {
-		this.gameModel = new GameModel();
+		if(!isLoadSavedGame) {
+			this.gameModel = new GameModel();
+		}
 	}
 
 	/**
@@ -116,7 +125,11 @@ public class GameController {
 			} else {
 				isMaxNumberOfRoundsSet = false;
 			}
-			gameModel.initialize();
+			if(!isLoadSavedGame) {
+				gameModel.initialize();
+			} else {
+				initializeSavedGame();
+			}
 			initComponents();
 			new MapView(this).setVisible(true);
 			initializePhaseView();
@@ -132,8 +145,12 @@ public class GameController {
 			mapMainPanel.repaint();
 			initializeCardExchangeView();
 			rolledDiceView = new RolledDiceView(this);
+			if(isLoadSavedGame) {
+				setStatusMessageOnSavedGameLoad();
+			}
 			isGameOver = false;
 			isAutoRunning = false;
+			isLoadSavedGame = false;
 			Utility.writeLog("******************* Initial Reinforcement phase ************************");
 			automaticHandleStrategies();
 		} catch (MapException ex) {
@@ -143,6 +160,24 @@ public class GameController {
 			ex.printStackTrace();
 			System.out.println("Exception: " + ex.getMessage());
 		}
+	}
+
+	private void initializeSavedGame() throws MapException {
+		Utility.writeLog("------------- Loading saved game ----------------- ");
+		this.gameModel = loadSavedGame();
+		GameModel.players = gameModel.playersUsedWhileSavingLoading;
+		Utility.writeLog("Current player: "+gameModel.getCurrentPlayer().getName()+" : "+
+				gameModel.getCurrentPlayer().getStrategy().getStrategyString());
+		Utility.writeLog("No of armies: "+gameModel.getCurrentPlayer().getArmies());
+		for (PlayerModel player : GameModel.players) {
+			Utility.writeLog(player.getName() + " : " + player.getStrategy().getStrategyString()
+					+ " - Occupied territories - " + player.getOccupiedTerritories().size() + " : "
+					+ player.getOccupiedTerritories().stream().map(x -> x.getName()).collect(Collectors.toList()));
+		}
+		if(gameModel == null) {
+			throw new MapException("Error while loading saved game");
+		}
+		gameModel.initializePlayerDominationView();
 	}
 
 	public void startNewGame() {
@@ -427,7 +462,7 @@ public class GameController {
 			attackPhaseModel.deleteObserver(phaseView);
 			fortificationPhaseModel.deleteObserver(phaseView);
 			endPhaseModel.deleteObserver(phaseView);
-			
+
 			phaseView.dispose();
 		}
 		StartPhaseModel.clear();
@@ -667,6 +702,21 @@ public class GameController {
 				}
 			}
 		});
+	}
+	
+	public void setStatusMessageOnSavedGameLoad() {
+		switch (gameModel.getState()) {
+		case Constants.INITIAL_RE_ENFORCEMENT_PHASE:
+		case Constants.RE_ENFORCEMENT_PHASE:
+			mapView.getStatusLabel().setText(Constants.RE_ENFORCEMENT_MESSAGE);
+			break;
+		case Constants.FORTIFICATION_PHASE:
+			mapView.getStatusLabel().setText(Constants.FORTIFICATION_PHASE_MESSAGE);
+			break;
+		case Constants.ATTACK_PHASE:
+			mapView.getStatusLabel().setText(Constants.ATTACK_PHASE_MESSAGE);
+			break;
+		}
 	}
 
 	/**
@@ -938,9 +988,9 @@ public class GameController {
 				numberOfDice = mapView.showOptionPopup(
 						gameModel.getCurrentPlayer().getName() + " : "
 								+ gameModel.getCurrentPlayer().getStrategy().getStrategyString(),
-						numberOfDice < Constants.THREE ? numberOfDice - 1 : Constants.THREE, Constants.ATTACK_IMAGE,
-						gameModel.getCurrentPlayer().getName() + " : "
-								+ gameModel.getCurrentPlayer().getStrategy().getStrategyString());
+								numberOfDice < Constants.THREE ? numberOfDice - 1 : Constants.THREE, Constants.ATTACK_IMAGE,
+										gameModel.getCurrentPlayer().getName() + " : "
+												+ gameModel.getCurrentPlayer().getStrategy().getStrategyString());
 			}
 			gameModel.getCurrentPlayer().setAttackingNoOfDice(numberOfDice);
 			Utility.writeLog("Attacking no. of dice = " + numberOfDice);
@@ -954,11 +1004,11 @@ public class GameController {
 						numberOfDice = mapView.showOptionPopup(
 								gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel().getName() + " : "
 										+ gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel()
-												.getStrategy().getStrategyString(),
-								numberOfDice < Constants.TWO ? numberOfDice : Constants.TWO, Constants.DEFEND_IMAGE,
-								gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel().getName() + " : "
-										+ gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel()
-												.getStrategy().getStrategyString());
+										.getStrategy().getStrategyString(),
+										numberOfDice < Constants.TWO ? numberOfDice : Constants.TWO, Constants.DEFEND_IMAGE,
+												gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel().getName() + " : "
+														+ gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel()
+														.getStrategy().getStrategyString());
 					} else {
 						numberOfDice = numberOfDice < Constants.TWO ? numberOfDice
 								: (Utility.getRandomNumber(Constants.TWO) + 1);
@@ -971,11 +1021,11 @@ public class GameController {
 						numberOfDice = mapView.showOptionPopup(
 								gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel().getName() + " : "
 										+ gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel()
-												.getStrategy().getStrategyString(),
-								numberOfDice < Constants.TWO ? numberOfDice : Constants.TWO, Constants.DEFEND_IMAGE,
-								gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel().getName() + " : "
-										+ gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel()
-												.getStrategy().getStrategyString());
+										.getStrategy().getStrategyString(),
+										numberOfDice < Constants.TWO ? numberOfDice : Constants.TWO, Constants.DEFEND_IMAGE,
+												gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel().getName() + " : "
+														+ gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel()
+														.getStrategy().getStrategyString());
 					}
 				}
 				gameModel.getCurrentPlayer().setDefendingNoOfDice(numberOfDice);
@@ -1078,16 +1128,41 @@ public class GameController {
 
 	public void saveGame() {
 		try {	
-			FileOutputStream fileStream = new FileOutputStream(new File(Utility.getSaveGamePath(Constants.DEFAULT_SAVED_GAME_FILE_NAME)));   
-	        ObjectOutputStream objectStream = new ObjectOutputStream(fileStream);   
+			gameModel.playersUsedWhileSavingLoading = GameModel.players;
+			FileOutputStream fileStream = new FileOutputStream(Utility.getSaveGamePath(Constants.DEFAULT_SAVED_GAME_FILE_NAME));   
+			ObjectOutputStream objectStream = new ObjectOutputStream(fileStream);   
 
-	        objectStream.writeObject(gameModel);
-	        
-	        objectStream.close();   
-	        fileStream.close();
+			objectStream.writeObject(gameModel);
+
+			objectStream.close();   
+			fileStream.close();
+			Utility.writeLog("Game saved");
+			System.out.println(" Game saved ");
+			gameModel.clear();
+			clear();
+			gameModel.clearAll();
+			gameModel = null;
+			StartGameController.main(null);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public GameModel loadSavedGame() {
+		try {
+ 			FileInputStream fis = new FileInputStream(Utility.getSaveGamePath(Constants.DEFAULT_SAVED_GAME_FILE_NAME));
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			GameModel result = (GameModel) ois.readObject();
+			ois.close();
+			return result;
+		} catch (FileNotFoundException e2) {
+			e2.printStackTrace();
+		} catch (IOException e2) {
+			e2.printStackTrace();
+		} catch (ClassNotFoundException e1) {
+			e1.printStackTrace();
+		}
+		return null;
 	}
 
 }

@@ -14,6 +14,11 @@ import java.util.stream.Collectors;
  */
 public class TerritoryModel implements Serializable {
 
+	/**
+	 * serial version id
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/** territory id */
 	private int id;
 

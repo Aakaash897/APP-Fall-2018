@@ -72,6 +72,9 @@ public class GameModel implements Serializable {
 
 	/** list of players */
 	public static Vector<PlayerModel> players = new Vector<>();
+	
+	/** list of players */
+	public Vector<PlayerModel> playersUsedWhileSavingLoading = new Vector<>();
 
 	/** current player */
 	private PlayerModel currentPlayer;
@@ -260,7 +263,7 @@ public class GameModel implements Serializable {
 	/**
 	 * Initialize player domination view.
 	 */
-	private void initializePlayerDominationView() {
+	public void initializePlayerDominationView() {
 		PlayerDominationView playerDominationView = PlayerDominationView.getInstance();
 		playerDominationView.setGameModel(this);
 		for (PlayerModel player : players)

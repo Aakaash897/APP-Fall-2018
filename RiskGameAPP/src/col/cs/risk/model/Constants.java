@@ -93,7 +93,7 @@ public class Constants {
 	public static final String DEFAULT_MAP_FILE_NAME = "World.map";
 	public static final String DEFAULT_MODIFIED_MAP_FILE_NAME = "currMap.map";
 	public static final String DEFAULT_MODIFIED_MAP_IMAGE_FILE_NAME = "currMap.png";
-	public static final String DEFAULT_SAVED_GAME_FILE_NAME = "savedGame.sav";
+	public static final String DEFAULT_SAVED_GAME_FILE_NAME = "savedGame.ser";
 	public static final String ATTACK_IMAGE = "attack.gif";
 	public static final String DEFEND_IMAGE = "shield.gif";
 	public static final String ARMY_TYPE_INFANTRY = "INFANTRY";

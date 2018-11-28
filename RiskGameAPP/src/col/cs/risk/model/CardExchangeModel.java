@@ -1,6 +1,5 @@
 package col.cs.risk.model;
 
-import java.io.Serializable;
 import java.util.Observable;
 
 import col.cs.risk.controller.GameController;

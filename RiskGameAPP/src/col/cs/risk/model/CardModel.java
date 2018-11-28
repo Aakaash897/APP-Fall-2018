@@ -12,6 +12,11 @@ import java.io.Serializable;
  */
 public class CardModel implements Serializable {
 
+	/**
+	 * serial version id
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/** Card id */
 	private int id;
 	

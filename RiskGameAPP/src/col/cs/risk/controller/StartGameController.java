@@ -4,13 +4,10 @@ import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
 import java.util.HashMap;
 
 import col.cs.risk.helper.MapException;
@@ -19,9 +16,9 @@ import col.cs.risk.helper.Utility;
 import col.cs.risk.model.Constants;
 import col.cs.risk.model.GameModel;
 import col.cs.risk.view.ConstructNewMapView;
+import col.cs.risk.view.GameModeSettingsView;
 import col.cs.risk.view.HomePageViewLoader;
 import col.cs.risk.view.MapConstructionView;
-import col.cs.risk.view.GameModeSettingsView;
 import col.cs.risk.view.TournamentSettingsView;
 
 /**
@@ -357,25 +354,14 @@ public class StartGameController {
 		mapConstructionView.setVisible(true);
 	}
 
+	/**
+	 * Load saved game action performed
+	 * @param e
+	 */
 	public void loadSavedGameButtonActionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		// read object from file
-		try {
-			FileInputStream fis = new FileInputStream(Utility.getSaveGamePath("savedGame.sav"));
-			ObjectInputStream ois = new ObjectInputStream(fis);
-			GameModel result = (GameModel) ois.readObject();
-			ois.close();
-			System.out.println("One:" + result.getCurrentPlayer().getName());
-		} catch (FileNotFoundException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		} catch (IOException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		} catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
+		setHomePageVisiblility(false);
+		GameController.isLoadSavedGame = true;
+		GameController.showGUI();
+		System.out.println(" Loading saved game ");
 	}
 }

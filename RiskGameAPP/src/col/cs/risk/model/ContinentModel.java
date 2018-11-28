@@ -14,6 +14,11 @@ import java.util.stream.Collectors;
  */
 public class ContinentModel implements Serializable {
 
+	/**
+	 * serial version id
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/** continent id */
 	private int id;
 
