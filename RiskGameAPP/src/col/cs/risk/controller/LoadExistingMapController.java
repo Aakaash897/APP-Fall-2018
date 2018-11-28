@@ -14,10 +14,14 @@ import col.cs.risk.view.LoadExistingMapView;
  */
 public class LoadExistingMapController {
 
-	/** Load Existing Map View */
+	/**
+	 * Load Existing Map View
+	 */
 	private LoadExistingMapView loadingExistingMapView;
 
-	/** StartGameController instance */
+	/**
+	 * StartGameController instance
+	 */
 	public StartGameController startGameController;
 
 	/**

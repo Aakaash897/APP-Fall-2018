@@ -28,16 +28,24 @@ import col.cs.risk.model.TerritoryModel;
  */
 public class MapPanelController extends JPanel {
 
-	/** Serial id */
+	/**
+	 * Serial id
+	 */
 	private static final long serialVersionUID = -8886545109650518679L;
 
-	/** Map Image */
+	/**
+	 * Map Image
+	 */
 	private Image mapImage;
 
-	/** Default map image filename */
+	/**
+	 * Default map image filename
+	 */
 	private String mapImageName = "World.bmp";
 
-	/** Game Model instance */
+	/**
+	 * Game Model instance
+	 */
 	private GameModel gameModel;
 
 	/**
