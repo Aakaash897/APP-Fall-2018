@@ -399,6 +399,9 @@ public class GameController {
 		}
 	}
 
+	/**
+	 * Logic to handle automatic trading of the cards
+	 */
 	private void handleAutomaticCardTrade() {
 		ArrayList<CardModel> infantry = new ArrayList<>();
 		ArrayList<CardModel> cavalry = new ArrayList<>();
@@ -501,6 +504,9 @@ public class GameController {
 		phaseView.showMonitor();
 	}
 
+	/**
+	 * Deinitializing the phase view
+	 */
 	private void deInitializePhaseView() {
 		if (AttackPhaseModel.isInitialized() || ReEnforcementPhaseModel.isInitialized()) {
 			StartPhaseModel startPhaseModel = StartPhaseModel.getInstance();
@@ -763,6 +769,9 @@ public class GameController {
 		});
 	}
 
+	/**
+	 * Used for setting the status messages when a saved game is loaded
+	 */
 	public void setStatusMessageOnSavedGameLoad() {
 		switch (gameModel.getState()) {
 		case Constants.INITIAL_RE_ENFORCEMENT_PHASE:
@@ -1186,6 +1195,9 @@ public class GameController {
 		this.cardTradeView = cardTradeView;
 	}
 
+	/**
+	 * Save the game by saving the models state in a file
+	 */
 	public void saveGame() {
 		try {
 			gameModel.playersUsedWhileSavingLoading = GameModel.players;
@@ -1209,6 +1221,10 @@ public class GameController {
 		}
 	}
 
+	/**
+	 * Loading a saved game from the file
+	 * @return Saved game model
+	 */
 	public GameModel loadSavedGame() {
 		try {
 			FileInputStream fis = new FileInputStream(Utility.getSaveGamePath(Constants.DEFAULT_SAVED_GAME_FILE_NAME));
