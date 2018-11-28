@@ -66,7 +66,7 @@ public class Utility {
 	public static String getMapPath(String filename) {
 		return "resources/risk/map/" + filename;
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -138,7 +138,8 @@ public class Utility {
 	/**
 	 * Generates the random number includes 0 but not num
 	 * 
-	 * @param num it must be >= 1 
+	 * @param num
+	 *            it must be >= 1
 	 * @return returns the random number between 0 and num parameter
 	 */
 	public static int getRandomNumber(int num) {
@@ -299,7 +300,7 @@ public class Utility {
 		}
 		return true;
 	}
-	
+
 	public boolean isCompleteConnectedMap(String result) throws MapException {
 		try {
 			InputStream is = new ByteArrayInputStream(result.getBytes());
@@ -368,7 +369,7 @@ public class Utility {
 	public static Color getColor(int id) {
 		return playerColor.get(id);
 	}
-	
+
 	/**
 	 * Write log.
 	 *
@@ -379,7 +380,7 @@ public class Utility {
 	 */
 	public static void writeLog(String text, boolean... append) {
 		boolean isAppend = true;
-		if(append != null && append.length > 0) {
+		if (append != null && append.length > 0) {
 			isAppend = append[0];
 		}
 		try (FileWriter fw = new FileWriter("resources/risk/log/log.txt", isAppend); // append contents to file
@@ -393,5 +394,11 @@ public class Utility {
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
+	}
+
+	public static int showErrorMessagePopUp(String nO_SAVED_GAME_FOUND) {
+		// TODO Auto-generated method stub
+		JOptionPane.showMessageDialog(null, nO_SAVED_GAME_FOUND, "Error", JOptionPane.ERROR_MESSAGE);
+		return 1;
 	}
 }

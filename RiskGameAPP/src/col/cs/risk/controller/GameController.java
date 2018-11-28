@@ -734,7 +734,8 @@ public class GameController {
 	/**
 	 * Handles game over functionality
 	 * 
-	 * @param message to display
+	 * @param message
+	 *            to display
 	 */
 	public void gameOver(String message, boolean isWin) {
 		if (!isGameOver) {
@@ -1144,7 +1145,8 @@ public class GameController {
 	}
 
 	/**
-	 * @param mapMainPanel the mapMainPanel to set
+	 * @param mapMainPanel
+	 *            the mapMainPanel to set
 	 */
 	public void setMapMainPanel(MapPanelController mapMainPanel) {
 		this.mapMainPanel = mapMainPanel;
@@ -1158,7 +1160,8 @@ public class GameController {
 	}
 
 	/**
-	 * @param mapSubPanelPlayer the mapSubPanelPlayer to set
+	 * @param mapSubPanelPlayer
+	 *            the mapSubPanelPlayer to set
 	 */
 	public void setMapSubPanelPlayer(PlayerPanelController mapSubPanelPlayer) {
 		this.mapSubPanelPlayer = mapSubPanelPlayer;
@@ -1172,7 +1175,8 @@ public class GameController {
 	}
 
 	/**
-	 * @param mapView the mapView to set
+	 * @param mapView
+	 *            the mapView to set
 	 */
 	public void setMapView(MapView mapView) {
 		this.mapView = mapView;
@@ -1186,7 +1190,8 @@ public class GameController {
 	}
 
 	/**
-	 * @param gameModel the gameModel to set
+	 * @param gameModel
+	 *            the gameModel to set
 	 */
 	public void setGameModel(GameModel gameModel) {
 		this.gameModel = gameModel;
@@ -1200,7 +1205,8 @@ public class GameController {
 	}
 
 	/**
-	 * @param cardTradeView the cardTradeView to set
+	 * @param cardTradeView
+	 *            the cardTradeView to set
 	 */
 	public void setCardTradeView(CardTradeView cardTradeView) {
 		this.cardTradeView = cardTradeView;
@@ -1248,8 +1254,10 @@ public class GameController {
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		} finally {
-			System.out.println("No saved game present.");
-			new StartGameController();
+			int resultOfPopUp = Utility.showErrorMessagePopUp(Constants.NO_SAVED_GAME_FOUND);
+			if (resultOfPopUp == 1) {
+				new StartGameController();
+			}
 		}
 		return result;
 	}
