@@ -148,6 +148,7 @@ public class GameController {
 	 * Initialize the Game controller
 	 */
 	public void initialize() {
+		boolean isSavedGamePresent = true;
 		try {
 			Utility.writeLog("********************* Game start up phase ***************************");
 			if (GameModel.isTournamentMode) {
@@ -159,31 +160,33 @@ public class GameController {
 			if (!isLoadSavedGame) {
 				gameModel.initialize();
 			} else {
-				initializeSavedGame();
+				isSavedGamePresent = initializeSavedGame();
 			}
-			initComponents();
-			new MapView(this).setVisible(true);
-			initializePhaseView();
-			gameModel.setMainMapPanel(mapMainPanel);
-			gameModel.setSubMapPanel(mapSubPanelPlayer);
-			mapView.setTitle("Risk Conquest Game");
-			mapView.setLocationRelativeTo(null);
-			mapView.setResizable(false);
-			if (gameModel.getState() == Constants.INITIAL_RE_ENFORCEMENT_PHASE) {
-				mapView.getStatusLabel().setText(Constants.RE_ENFORCEMENT_MESSAGE);
+			if (isSavedGamePresent) {
+				initComponents();
+				new MapView(this).setVisible(true);
+				initializePhaseView();
+				gameModel.setMainMapPanel(mapMainPanel);
+				gameModel.setSubMapPanel(mapSubPanelPlayer);
+				mapView.setTitle("Risk Conquest Game");
+				mapView.setLocationRelativeTo(null);
+				mapView.setResizable(false);
+				if (gameModel.getState() == Constants.INITIAL_RE_ENFORCEMENT_PHASE) {
+					mapView.getStatusLabel().setText(Constants.RE_ENFORCEMENT_MESSAGE);
+				}
+				gameModel.notifyPhaseChanging();
+				mapMainPanel.repaint();
+				initializeCardExchangeView();
+				rolledDiceView = new RolledDiceView(this);
+				if (isLoadSavedGame) {
+					setStatusMessageOnSavedGameLoad();
+				}
+				isGameOver = false;
+				isAutoRunning = false;
+				isLoadSavedGame = false;
+				Utility.writeLog("******************* Initial Reinforcement phase ************************");
+				automaticHandleStrategies();
 			}
-			gameModel.notifyPhaseChanging();
-			mapMainPanel.repaint();
-			initializeCardExchangeView();
-			rolledDiceView = new RolledDiceView(this);
-			if (isLoadSavedGame) {
-				setStatusMessageOnSavedGameLoad();
-			}
-			isGameOver = false;
-			isAutoRunning = false;
-			isLoadSavedGame = false;
-			Utility.writeLog("******************* Initial Reinforcement phase ************************");
-			automaticHandleStrategies();
 		} catch (MapException ex) {
 			System.out.println(ex.getMessage());
 			ex.clearHistory();
@@ -195,24 +198,31 @@ public class GameController {
 
 	/**
 	 * Method called for initializing the saved game
+	 * 
+	 * @return
+	 * 
 	 * @throws MapException
 	 */
-	private void initializeSavedGame() throws MapException {
+	private boolean initializeSavedGame() throws MapException {
 		Utility.writeLog("------------- Loading saved game ----------------- ");
 		this.gameModel = loadSavedGame();
-		GameModel.players = gameModel.playersUsedWhileSavingLoading;
-		Utility.writeLog("Current player: " + gameModel.getCurrentPlayer().getName() + " : "
-				+ gameModel.getCurrentPlayer().getStrategy().getStrategyString());
-		Utility.writeLog("No of armies: " + gameModel.getCurrentPlayer().getArmies());
-		for (PlayerModel player : GameModel.players) {
-			Utility.writeLog(player.getName() + " : " + player.getStrategy().getStrategyString()
-					+ " - Occupied territories - " + player.getOccupiedTerritories().size() + " : "
-					+ player.getOccupiedTerritories().stream().map(x -> x.getName()).collect(Collectors.toList()));
+		if (this.gameModel != null) {
+			GameModel.players = gameModel.playersUsedWhileSavingLoading;
+			Utility.writeLog("Current player: " + gameModel.getCurrentPlayer().getName() + " : "
+					+ gameModel.getCurrentPlayer().getStrategy().getStrategyString());
+			Utility.writeLog("No of armies: " + gameModel.getCurrentPlayer().getArmies());
+			for (PlayerModel player : GameModel.players) {
+				Utility.writeLog(player.getName() + " : " + player.getStrategy().getStrategyString()
+						+ " - Occupied territories - " + player.getOccupiedTerritories().size() + " : "
+						+ player.getOccupiedTerritories().stream().map(x -> x.getName()).collect(Collectors.toList()));
+			}
+			if (gameModel == null) {
+				throw new MapException("Error while loading saved game");
+			}
+			gameModel.initializePlayerDominationView();
+			return true;
 		}
-		if (gameModel == null) {
-			throw new MapException("Error while loading saved game");
-		}
-		gameModel.initializePlayerDominationView();
+		return false;
 	}
 
 	/**
@@ -388,8 +398,8 @@ public class GameController {
 	}
 
 	/**
-	 * Function to verify if the player is human or not and based on that
-	 * handling the strategies
+	 * Function to verify if the player is human or not and based on that handling
+	 * the strategies
 	 */
 	public void checkAndRunAuto() {
 		System.out.println("GameController.checkAndRunAuto() isAutoRunning = " + isAutoRunning);
@@ -1223,23 +1233,22 @@ public class GameController {
 
 	/**
 	 * Loading a saved game from the file
+	 * 
 	 * @return Saved game model
 	 */
 	public GameModel loadSavedGame() {
+		GameModel result = null;
 		try {
 			FileInputStream fis = new FileInputStream(Utility.getSaveGamePath(Constants.DEFAULT_SAVED_GAME_FILE_NAME));
 			ObjectInputStream ois = new ObjectInputStream(fis);
-			GameModel result = (GameModel) ois.readObject();
+			result = (GameModel) ois.readObject();
 			ois.close();
-			return result;
-		} catch (FileNotFoundException e2) {
-			e2.printStackTrace();
-		} catch (IOException e2) {
-			e2.printStackTrace();
-		} catch (ClassNotFoundException e1) {
-			e1.printStackTrace();
+		} catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			System.out.println("No saved game present.");
 		}
-		return null;
+		return result;
 	}
 
 }
