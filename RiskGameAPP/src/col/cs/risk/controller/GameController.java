@@ -3,6 +3,7 @@ package col.cs.risk.controller;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -1210,6 +1211,7 @@ public class GameController {
 	 */
 	public void saveGame() {
 		try {
+			new File(Utility.getSaveGamePath("")).mkdirs();
 			gameModel.playersUsedWhileSavingLoading = GameModel.players;
 			FileOutputStream fileStream = new FileOutputStream(
 					Utility.getSaveGamePath(Constants.DEFAULT_SAVED_GAME_FILE_NAME));
