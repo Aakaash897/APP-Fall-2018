@@ -1247,6 +1247,7 @@ public class GameController {
 			e.printStackTrace();
 		} finally {
 			System.out.println("No saved game present.");
+			new StartGameController();
 		}
 		return result;
 	}

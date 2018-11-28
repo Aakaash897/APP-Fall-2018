@@ -1,6 +1,8 @@
 package test.col.cs.risk.controller;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Vector;
@@ -159,5 +161,16 @@ public class GameControllerTest {
 		// any 3 (not wild)
 		cardTradeView.setSelectedItem(3, 0, 0, 0);
 		assertTrue(gameController.isValidNoOfCardsTraded());
+	}
+	
+	/**
+	 * Test to check the load saved game functionality
+	 */
+	@Test
+	public void testLoadSavedGame() {
+		//assertNotNull(gameController.loadSavedGame());
+		
+		Constants.DEFAULT_SAVED_GAME_FILE_NAME = "nullFile";
+		assertNull(gameController.loadSavedGame());
 	}
 }
