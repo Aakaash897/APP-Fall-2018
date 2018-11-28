@@ -19,10 +19,14 @@ import col.cs.risk.model.PlayerModel;
  */
 public class PlayerPanelController extends JPanel {
 
-	/** Serial version id */
+	/**
+	 * Serial version id
+	 */
 	private static final long serialVersionUID = 7867550198028350235L;
 
-	/** Game model instance */
+	/**
+	 * Game model instance
+	 */
 	private GameModel gameModel;
 
 	/**

@@ -28,19 +28,29 @@ import col.cs.risk.view.PlayerStrategySettingsView;
  */
 public class PlayerSettingsController {
 
-	/** no of players */
+	/**
+	 * No of players
+	 */
 	public int noOfPlayers = 3;
 
-	/** selected map either World, India, Europe etc */
+	/**
+	 * Selected map either World, India, Europe etc
+	 */
 	public static String selectedMap;
 
-	/** player settings view instance */
+	/**
+	 * Player settings view instance
+	 */
 	public PlayerSettingsView playerSettingsView;
 
-	/** Start game Controller instance */
+	/**
+	 * Start game Controller instance
+	 */
 	private StartGameController startGameController;
 	
-	/** Player strategy map */
+	/**
+	 * Player strategy map
+	 */
 	HashMap<String, String> playerStrategy = new HashMap<>();
 
 	/**
@@ -220,6 +230,9 @@ public class PlayerSettingsController {
 		this.startGameController = startGameController;
 	}
 	
+	/**
+	 * @param visible
+	 */
 	public void setPlayerSettingsVisible(boolean visible) {
 		playerSettingsView.setVisible(visible);
 	}

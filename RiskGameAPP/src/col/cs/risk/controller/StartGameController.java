@@ -30,19 +30,29 @@ import col.cs.risk.view.TournamentSettingsView;
  */
 public class StartGameController {
 
-	/** Game home Page View */
+	/**
+	 * Game home Page View
+	 */
 	private HomePageViewLoader homePageViewLoader;
 
-	/** Load Existing Map View */
+	/**
+	 * Load Existing Map View
+	 */
 	private LoadExistingMapController loadExistingMapController;
 
-	/** Map construction/modification Page View */
+	/**
+	 * Map construction/modification Page View
+	 */
 	private MapConstructionView mapConstructionView;
 
-	/** Construct New map Page View */
+	/**
+	 * Construct New map Page View
+	 */
 	private ConstructNewMapView constructNewMapView;
 
-	/** Player Settings Controller instance */
+	/**
+	 * Player Settings Controller instance
+	 */
 	private PlayerSettingsController playerSettingsController;
 
 	/**
@@ -142,6 +152,9 @@ public class StartGameController {
 		System.out.println(" Start Game button pressed ");
 	}
 
+	/**
+	 * Function to implement the choice of the mode
+	 */
 	public void chooseMode() {
 		homePageViewLoader.setVisible(false);
 		new GameModeSettingsView(this).setVisible(true);
