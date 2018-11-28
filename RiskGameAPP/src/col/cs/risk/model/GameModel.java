@@ -40,6 +40,9 @@ import col.cs.risk.view.PlayerDominationView;
  */
 public class GameModel implements Serializable {
 
+	/** Serial Version UID */
+	private static final long serialVersionUID = 9202051895187225175L;
+
 	/** Default map string */
 	private StringBuilder baseMapString;
 
@@ -129,23 +132,23 @@ public class GameModel implements Serializable {
 
 	/** No of card set traded at any point of game */
 	private int cardTradeCount = Constants.ZERO;
-	
+
 	public static boolean isTournamentMode = false;
-	
+
 	public static int tournamentNoOfMaps = 1;
-	
+
 	public static Vector<String> tournamentMapList = new Vector<>();
-	
+
 	public static int tournamentNoOfGame = 1;
-	
+
 	public static int tournamentNoOfTurns = 10;
-	
+
 	public static int currentGameNumber;
-	
+
 	public static Vector<Report> reports = new Vector<>();
-	
+
 	public static Report currentReport;
-	
+
 	/**
 	 * Instance block to fill player and army details
 	 */
@@ -172,7 +175,7 @@ public class GameModel implements Serializable {
 	public GameModel() {
 
 	}
-	
+
 	public void clear() {
 		deInitializePlayerDominationView();
 		baseMapString = null;
@@ -200,11 +203,11 @@ public class GameModel implements Serializable {
 		previousState = Constants.NEW_GAME;
 		cardsDeck.clear();
 		cardTradeCount = Constants.ZERO;
-		for(PlayerModel player:players) {
+		for (PlayerModel player : players) {
 			player.clearHistory();
 		}
 	}
-	
+
 	public void clearAll() {
 		players.clear();
 		playerArmyMap.clear();
@@ -221,6 +224,7 @@ public class GameModel implements Serializable {
 
 	/**
 	 * Initialize with parameters for initial verification and setup
+	 * 
 	 * @throws MapException
 	 */
 	public void initialize() throws MapException {
@@ -262,14 +266,14 @@ public class GameModel implements Serializable {
 		for (PlayerModel player : players)
 			player.addObserver(playerDominationView);
 		playerDominationView.showMonitor();
-		
+
 	}
-	
+
 	/**
 	 * Initialize player domination view.
 	 */
 	private void deInitializePlayerDominationView() {
-		if(PlayerDominationView.isInitialized()) {
+		if (PlayerDominationView.isInitialized()) {
 			PlayerDominationView playerDominationView = PlayerDominationView.getInstance();
 			for (PlayerModel player : players)
 				player.deleteObserver(playerDominationView);
@@ -548,14 +552,17 @@ public class GameModel implements Serializable {
 
 	private boolean isCompleteConnectionExistWithinContinent() throws MapException {
 		for (ContinentModel continent : continents) {
-			if(continent.getTerritories().size() > 1) {
+			if (continent.getTerritories().size() > 1) {
 				HashSet<Integer> territoryIds = new HashSet<>();
 				territoryIds = isTerritoryValidInContinent(continent, continent.getTerritories().get(0), territoryIds);
 				if (territoryIds.size() < continent.getTerritories().size()) {
-					System.out.println("continent = "+continent.getName());
-					System.out.println(" countries = "+continent.getTerritories().stream().map(x -> x.getName()).collect(Collectors.toList()));
-					System.out.println(" countries ids = "+continent.getTerritories().stream().map(x -> x.getId()).collect(Collectors.toList()));
-					System.out.println(" territoryIds = "+territoryIds.stream().map(x -> x.toString()).collect(Collectors.toList()));
+					System.out.println("continent = " + continent.getName());
+					System.out.println(" countries = "
+							+ continent.getTerritories().stream().map(x -> x.getName()).collect(Collectors.toList()));
+					System.out.println(" countries ids = "
+							+ continent.getTerritories().stream().map(x -> x.getId()).collect(Collectors.toList()));
+					System.out.println(" territoryIds = "
+							+ territoryIds.stream().map(x -> x.toString()).collect(Collectors.toList()));
 					throw new MapException(Constants.NOT_COMPLETE_CONTINENT_CONNECTED_MAP_MESSAGE);
 				}
 			}
@@ -565,8 +572,7 @@ public class GameModel implements Serializable {
 
 	public HashSet<Integer> isTerritoryValidInContinent(ContinentModel continent, TerritoryModel territoryModel,
 			HashSet<Integer> territoryIds) {
-		if (!isFinished(territoryIds, continent) 
-				&& continent.getTerritories().contains(territoryModel)
+		if (!isFinished(territoryIds, continent) && continent.getTerritories().contains(territoryModel)
 				&& !territoryIds.contains(territoryModel.getId())) {
 			territoryIds.add(territoryModel.getId());
 			for (TerritoryModel territory : territoryModel.getAdjacentTerritories()) {
@@ -678,7 +684,7 @@ public class GameModel implements Serializable {
 		int armies = playerArmyMap.get(players.size());
 		for (PlayerModel playerModel : players) {
 			playerModel.addArmies(armies);
-			Utility.writeLog(playerModel.getName()+" armies: "+armies);
+			Utility.writeLog(playerModel.getName() + " armies: " + armies);
 		}
 	}
 
@@ -695,10 +701,10 @@ public class GameModel implements Serializable {
 			nextPlayer();
 		}
 		Utility.writeLog("Randomly assigned initial territories: ");
-		for(PlayerModel player:players) {
-			Utility.writeLog(player.getName()+" : "+player.getStrategy().getStrategyString()+" - Occupied territories - "+
-					player.getOccupiedTerritories().size()+" : "+
-					player.getOccupiedTerritories().stream().map(x -> x.getName()).collect(Collectors.toList()));
+		for (PlayerModel player : players) {
+			Utility.writeLog(player.getName() + " : " + player.getStrategy().getStrategyString()
+					+ " - Occupied territories - " + player.getOccupiedTerritories().size() + " : "
+					+ player.getOccupiedTerritories().stream().map(x -> x.getName()).collect(Collectors.toList()));
 		}
 	}
 
@@ -867,12 +873,13 @@ public class GameModel implements Serializable {
 	public void gamePhasePlayerTurnSetup1(TerritoryModel territoryModel) {
 		if (territoryModel != null) {
 			System.out.println("selected territory name = " + territoryModel.getName() + " occupied by = "
-					+ territoryModel.getPlayerModel().getName()+" as "+territoryModel.getPlayerModel().getStrategy().getStrategyString());
+					+ territoryModel.getPlayerModel().getName() + " as "
+					+ territoryModel.getPlayerModel().getStrategy().getStrategyString());
 			switch (getState()) {
 			case Constants.INITIAL_RE_ENFORCEMENT_PHASE:
 				if (territoryModel.getPlayerModel().getId() == currentPlayer.getId()) {
 					addArmyOnOccupiedTerritory(territoryModel, currentPlayer);
-					Utility.writeLog("Placed an army on territory : "+territoryModel.getName());
+					Utility.writeLog("Placed an army on territory : " + territoryModel.getName());
 					nextPlayer();
 					notifyPhaseChanging();
 					selectedTerritory = null;
@@ -890,7 +897,7 @@ public class GameModel implements Serializable {
 			case Constants.RE_ENFORCEMENT_PHASE:
 				if (territoryModel.getPlayerModel().getId() == currentPlayer.getId()) {
 					addArmyOnOccupiedTerritory(territoryModel, currentPlayer);
-					Utility.writeLog("Placed an army on territory : "+territoryModel.getName());
+					Utility.writeLog("Placed an army on territory : " + territoryModel.getName());
 					notifyPhaseChanging();
 					if (currentPlayer.getArmies() == Constants.ZERO) {
 						setState(Constants.ACTIVE_TURN);
@@ -955,7 +962,7 @@ public class GameModel implements Serializable {
 				bonus += continentModel.getScore();
 			}
 		}
-		Utility.writeLog("Continent Bonus = "+bonus);
+		Utility.writeLog("Continent Bonus = " + bonus);
 		return bonus;
 	}
 
@@ -1024,7 +1031,7 @@ public class GameModel implements Serializable {
 		}
 		return stateString;
 	}
-	
+
 	/**
 	 * To get current state in a string format
 	 * 

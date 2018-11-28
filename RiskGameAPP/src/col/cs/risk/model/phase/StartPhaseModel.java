@@ -15,6 +15,9 @@ import col.cs.risk.model.GameModel;
  */
 public class StartPhaseModel extends Observable implements GamePhase, Serializable {
 
+	/** Serial Version UID */
+	private static final long serialVersionUID = 7804832568833730674L;
+
 	/** Game model */
 	private GameModel gameModel;
 

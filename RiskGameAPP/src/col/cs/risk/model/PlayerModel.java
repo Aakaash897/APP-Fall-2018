@@ -24,7 +24,10 @@ import col.cs.risk.view.RolledDiceView;
  *
  */
 public class PlayerModel extends Observable implements Serializable {
-
+	
+	/** Serial Version UID */
+	private static final long serialVersionUID = 2568492390372953616L;
+	
 	/** player number */
 	private int id;
 
