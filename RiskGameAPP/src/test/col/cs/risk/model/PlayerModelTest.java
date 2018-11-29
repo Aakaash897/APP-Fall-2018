@@ -43,6 +43,11 @@ public class PlayerModelTest {
 	 * Game model instance
 	 */
 	GameModel gameModel;
+	
+	/**
+	 * Card model instance
+	 */
+	GameModel cardModel;
 
 	/**
 	 * Initialization before every test case
@@ -564,6 +569,30 @@ public class PlayerModelTest {
 		gameModel.setCardTradeCount(Constants.SIX);
 		playerModel.cardTradeActionPerformed(gameModel, 1, 1, 0, 1);
 		assertEquals(Constants.THIRTY, playerModel.getArmies());
+	}
+	
+	/**
+	 * Test case to Checks whether card trade is must for the current turn
+	 * 
+	 * @returns true if trading mandatory
+	 */
+	@Test
+	public void testIsCardTradeRequired() {
+		TerritoryModel territory = new TerritoryModel(201, "tname1", 10, 20, new ContinentModel(301, "cname1", 3));
+		territory.setPlayerModel(playerModel);
+		CardModel card1 = new CardModel(1, Constants.ARMY_TYPE_INFANTRY, territory);
+		CardModel card2 = new CardModel(2, Constants.ARMY_TYPE_ARTILLERY, territory);
+		CardModel card3 = new CardModel(3, Constants.ARMY_TYPE_CAVALRY, territory);
+		CardModel card4 = new CardModel(4, Constants.ARMY_TYPE_WILD, territory);
+		CardModel card5 = new CardModel(5, Constants.ARMY_TYPE_WILD, territory);
+		Vector<CardModel> cards = new Vector<>();
+		cards.addElement(card1);
+		cards.addElement(card2);
+		cards.addElement(card3);
+		cards.addElement(card4);
+		cards.addElement(card5);
+		playerModel.addCards(cards);
+		assertEquals(true,playerModel.isCardTradeRequired());
 	}
 	
 }
