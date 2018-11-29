@@ -72,7 +72,7 @@ public class GameModel implements Serializable {
 
 	/** list of players */
 	public static Vector<PlayerModel> players = new Vector<>();
-	
+
 	/** list of players */
 	public Vector<PlayerModel> playersUsedWhileSavingLoading = new Vector<>();
 
@@ -136,20 +136,28 @@ public class GameModel implements Serializable {
 	/** No of card set traded at any point of game */
 	private int cardTradeCount = Constants.ZERO;
 
+	/** to check if it is normal mode or tournament mode */
 	public static boolean isTournamentMode = false;
 
+	/** tournament no of maps */
 	public static int tournamentNoOfMaps = 1;
 
+	/** tournament map list of type string */
 	public static Vector<String> tournamentMapList = new Vector<>();
 
+	/** tournament no of games */
 	public static int tournamentNoOfGame = 1;
 
+	/** tournament no of turns */
 	public static int tournamentNoOfTurns = 10;
 
+	/** Current Game Number for tournament mode */
 	public static int currentGameNumber;
 
+	/** list of reports of Report Type object */
 	public static Vector<Report> reports = new Vector<>();
 
+	/** Current report Object */
 	public static Report currentReport;
 
 	/**
@@ -179,6 +187,10 @@ public class GameModel implements Serializable {
 
 	}
 
+	/**
+	 * clear all the values as well as Deinitialize all the variables, all the
+	 * views, all the lists
+	 */
 	public void clear() {
 		deInitializePlayerDominationView();
 		baseMapString = null;
@@ -211,6 +223,10 @@ public class GameModel implements Serializable {
 		}
 	}
 
+	/**
+	 * clear all the lists,hashmaps,reset tournament related values as well as the
+	 * reports
+	 */
 	public void clearAll() {
 		players.clear();
 		playerArmyMap.clear();
@@ -553,6 +569,12 @@ public class GameModel implements Serializable {
 		}
 	}
 
+	/**
+	 * API to check for complete connection exsits within the continent
+	 * 
+	 * @return true if connected
+	 * @throws MapException
+	 */
 	private boolean isCompleteConnectionExistWithinContinent() throws MapException {
 		for (ContinentModel continent : continents) {
 			if (continent.getTerritories().size() > 1) {
@@ -573,6 +595,19 @@ public class GameModel implements Serializable {
 		return true;
 	}
 
+	/**
+	 * API to check if the territory is valid in continent
+	 * 
+	 * @param continentModel
+	 *            of continent model object
+	 * @param territoryModel
+	 *            territory model object
+	 * @param territoryIds
+	 *            hashset of territory IDs of integer type
+	 * 
+	 * @return true if connected
+	 * @throws MapException
+	 */
 	public HashSet<Integer> isTerritoryValidInContinent(ContinentModel continent, TerritoryModel territoryModel,
 			HashSet<Integer> territoryIds) {
 		if (!isFinished(territoryIds, continent) && continent.getTerritories().contains(territoryModel)
@@ -645,6 +680,15 @@ public class GameModel implements Serializable {
 		}
 	}
 
+	/**
+	 * Is traversal trough all territories done and the continents done
+	 * 
+	 * @param territoryIds
+	 *            It is an set that stores the territories id's
+	 * @param continentModel
+	 *            it is the object of continent model type
+	 * @return true if all territories and continents are traversed
+	 */
 	private boolean isFinished(HashSet<Integer> territoryIds, ContinentModel continentModel) {
 		if (continentModel.getTerritories().size() == territoryIds.size()
 				|| territoryIds.size() > continentModel.getTerritories().size()) {
@@ -671,6 +715,18 @@ public class GameModel implements Serializable {
 		return territoryIds;
 	}
 
+	/**
+	 * If the territory is not processed and check corrosponding continent model
+	 * contains the territory it will process and to list of traversed territories
+	 * 
+	 * @param territoryIds
+	 *            It is an set that stores the territories id's
+	 * @param territory
+	 *            It is an instance of TerritoryModel that holds territories details
+	 * @param continentMoel
+	 *            it is an instance of continent model that holds continent details
+	 * @return set of processed territories
+	 */
 	private HashSet<Integer> processTerritory(HashSet<Integer> territoryIds, TerritoryModel territory,
 			ContinentModel continentModel) {
 		if (!territoryIds.contains(territory.getId()) && continentModel.getTerritories().contains(territory)) {
@@ -873,6 +929,13 @@ public class GameModel implements Serializable {
 		gamePhasePlayerTurnSetup1(territoryModel);
 	}
 
+	/**
+	 * Game phase setup done for each player at two phases i..e intial reinforcement
+	 * and reinforcrment phase
+	 * 
+	 * @param territoryModel
+	 *            it is an instance that holds the territory details
+	 */
 	public void gamePhasePlayerTurnSetup1(TerritoryModel territoryModel) {
 		if (territoryModel != null) {
 			System.out.println("selected territory name = " + territoryModel.getName() + " occupied by = "
@@ -925,6 +988,13 @@ public class GameModel implements Serializable {
 		return gamePhaseActivePlayerActions1(territoryModel);
 	}
 
+	/**
+	 * API to handle the active the player actions according to game phase
+	 * 
+	 * @param terrtoryModel
+	 *            It is the instance that holds the territory details
+	 * @return action according to phase
+	 */
 	private String gamePhaseActivePlayerActions1(TerritoryModel territoryModel) {
 		String str = "";
 		if (territoryModel != null) {
