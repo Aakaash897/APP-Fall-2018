@@ -370,4 +370,35 @@ public class GameModelTest {
 		}
 
 	}
+	
+	/**
+	 * Test case for complete connection within Continent of game map
+	 */
+	@Test
+	public void testIsCompleteConnectionExistWithinContinent() {
+		ContinentModel continent = new ContinentModel(1, "C1", 2);
+		TerritoryModel territory1 = new TerritoryModel(1, "T1", 10, 10, continent);
+		TerritoryModel territory2 = new TerritoryModel(2, "T2", 10, 20, continent);
+		TerritoryModel territory3 = new TerritoryModel(3, "T3", 20, 10, continent);
+		TerritoryModel territory4 = new TerritoryModel(4, "T4", 20, 20, continent);
+
+		territory1.addAdjacentTerritory(territory2);
+		territory2.addAdjacentTerritory(territory3);
+		territory3.addAdjacentTerritory(territory4);
+		territory4.addAdjacentTerritory(territory1);
+
+		Vector<TerritoryModel> territories = new Vector<>();
+		territories.add(territory1);
+		territories.add(territory2);
+		territories.add(territory3);
+		territories.add(territory4);
+		gameModel.setTerritories(territories);
+		continent.setTerritories(territories);
+
+		try {
+			assertEquals(gameModel.isCompleteConnectionExistWithinContinent(),true);
+		} catch (MapException ex) {
+			assertEquals(Constants.NOT_COMPLETE_CONNECTED_MAP_MESSAGE, ex.getMessage());
+		}
+	}
 }
