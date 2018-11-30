@@ -37,10 +37,17 @@ public class ReEnforcementPhaseModel extends Observable implements GamePhase, Se
 		return reEnforcementPhaseModel;
 	}
 	
+	/**
+	 * Checks whether the instance variable initialized
+	 * @returns true if initialized
+	 */
 	public static boolean isInitialized() {
 		return reEnforcementPhaseModel != null ? true : false;
 	}
 	
+	/**
+	 * De-initializes the instance variable
+	 */
 	public static void clear() {
 		reEnforcementPhaseModel = null;
 	}
@@ -52,11 +59,17 @@ public class ReEnforcementPhaseModel extends Observable implements GamePhase, Se
 		return gameModel;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setGameModel(GameModel gameModel) {
 		this.gameModel = gameModel;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void isChanged(boolean isStart) {
 		if (isStart) {
@@ -66,6 +79,9 @@ public class ReEnforcementPhaseModel extends Observable implements GamePhase, Se
 		notifyObservers(this);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getTitle() {
 		return Constants.REINFORCEMENT_PHASE_MESSAGE;
@@ -81,6 +97,8 @@ public class ReEnforcementPhaseModel extends Observable implements GamePhase, Se
 		stringBuilder.append("\n************* " + getTitle() + " *************\n\n");
 		stringBuilder.append("Current player: ");
 		stringBuilder.append(gameModel.getCurrentPlayer().getName());
+		stringBuilder.append(" - ");
+		stringBuilder.append(gameModel.getCurrentPlayer().getStrategy().getStrategyString());
 		stringBuilder.append("\nNo. of armies available with player: ");
 		stringBuilder.append(gameModel.getCurrentPlayer().getArmies());
 		stringBuilder.append("\n\n");
@@ -88,6 +106,9 @@ public class ReEnforcementPhaseModel extends Observable implements GamePhase, Se
 		return stringBuilder.toString();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getContent() {
 		if (stringBuilder == null) {
@@ -106,6 +127,9 @@ public class ReEnforcementPhaseModel extends Observable implements GamePhase, Se
 		return stringBuilder.toString();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setMessage(String message) {
 		// TODO Auto-generated method stub

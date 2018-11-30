@@ -81,4 +81,13 @@ public class CardExchangeModel extends Observable {
 	public void setCurrentPlayer(PlayerModel currentPlayer) {
 		this.currentPlayer = currentPlayer;
 	}
+	
+	/**
+	 * De-initialize the object
+	 */
+	public static void clear() {
+		if(cardExchangeModel != null) {
+			cardExchangeModel = null;
+		}
+	}
 }

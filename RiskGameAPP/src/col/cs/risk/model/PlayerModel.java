@@ -399,6 +399,15 @@ public class PlayerModel extends Observable implements Serializable {
 		return isMultihop;
 	}
 
+	/**
+	 * Checks whether multiple hop possible(is territory adjacent to adjacent)
+	 * @param gameModel
+	 * @param selectedTerritoryModel
+	 * @param adjacentTerritoryModel
+	 * @param territoryIds
+	 * @param isMultihop
+	 * @return
+	 */
 	public boolean isMultipleHop(GameModel gameModel, TerritoryModel selectedTerritoryModel, 
 			TerritoryModel adjacentTerritoryModel, HashSet<Integer> territoryIds, boolean isMultihop) {
 		if(!territoryIds.contains(adjacentTerritoryModel.getId()) && 
@@ -499,28 +508,33 @@ public class PlayerModel extends Observable implements Serializable {
 				if (attackList.get(Constants.ONE) > defendList.get(Constants.ZERO)) {
 					defendingTerritory.looseArmy();
 					updateFightStatusDisplayMessage(false, defendingTerritory.getPlayerModel().getName(),
-							Constants.TWO);
+							Constants.TWO, defendingTerritory.getPlayerModel().getStrategy().getStrategyString());
 				} else {
 					attackingTerritory.looseArmy();
-					updateFightStatusDisplayMessage(true, "", Constants.ZERO);
+					updateFightStatusDisplayMessage(true, "", Constants.ZERO, 
+							defendingTerritory.getPlayerModel().getStrategy().getStrategyString());
 				}
 			} else {
 				attackingTerritory.looseArmy();
 				if (attackList.get(Constants.ONE) > defendList.get(Constants.ZERO)) {
 					defendingTerritory.looseArmy();
-					updateFightStatusDisplayMessage(true, "", Constants.ZERO);
+					updateFightStatusDisplayMessage(true, "", Constants.ZERO, 
+							defendingTerritory.getPlayerModel().getStrategy().getStrategyString());
 				} else {
 					attackingTerritory.looseArmy();
-					updateFightStatusDisplayMessage(false, getName(), Constants.TWO);
+					updateFightStatusDisplayMessage(false, getName(), Constants.TWO, 
+							defendingTerritory.getPlayerModel().getStrategy().getStrategyString());
 				}
 			}
 		} else if (attackList.size() == Constants.THREE && defendList.size() == Constants.ONE) {
 			if (attackList.get(Constants.TWO) > defendList.get(Constants.ZERO)) {
 				defendingTerritory.looseArmy();
-				updateFightStatusDisplayMessage(false, defendingTerritory.getPlayerModel().getName(), Constants.ONE);
+				updateFightStatusDisplayMessage(false, defendingTerritory.getPlayerModel().getName(), 
+						Constants.ONE, defendingTerritory.getPlayerModel().getStrategy().getStrategyString());
 			} else {
 				attackingTerritory.looseArmy();
-				updateFightStatusDisplayMessage(false, getName(), Constants.ONE);
+				updateFightStatusDisplayMessage(false, getName(), Constants.ONE, 
+						defendingTerritory.getPlayerModel().getStrategy().getStrategyString());
 			}
 
 		} else if (attackList.size() == Constants.TWO && defendList.size() == Constants.TWO) {
@@ -529,45 +543,54 @@ public class PlayerModel extends Observable implements Serializable {
 				if (attackList.get(Constants.ZERO) > defendList.get(Constants.ZERO)) {
 					defendingTerritory.looseArmy();
 					updateFightStatusDisplayMessage(false, defendingTerritory.getPlayerModel().getName(),
-							Constants.TWO);
+							Constants.TWO, defendingTerritory.getPlayerModel().getStrategy().getStrategyString());
 				} else {
 					attackingTerritory.looseArmy();
-					updateFightStatusDisplayMessage(true, "", Constants.ZERO);
+					updateFightStatusDisplayMessage(true, "", Constants.ZERO, 
+							defendingTerritory.getPlayerModel().getStrategy().getStrategyString());
 				}
 			} else {
 				attackingTerritory.looseArmy();
 				if (attackList.get(Constants.ZERO) > defendList.get(Constants.ZERO)) {
 					defendingTerritory.looseArmy();
-					updateFightStatusDisplayMessage(true, "", Constants.ZERO);
+					updateFightStatusDisplayMessage(true, "", Constants.ZERO, 
+							defendingTerritory.getPlayerModel().getStrategy().getStrategyString());
 				} else {
 					attackingTerritory.looseArmy();
-					updateFightStatusDisplayMessage(false, getName(), Constants.TWO);
+					updateFightStatusDisplayMessage(false, getName(), Constants.TWO, 
+							defendingTerritory.getPlayerModel().getStrategy().getStrategyString());
 				}
 			}
 		} else if (attackList.size() == Constants.TWO && defendList.size() == Constants.ONE) {
 			if (attackList.get(Constants.ONE) > defendList.get(Constants.ZERO)) {
 				defendingTerritory.looseArmy();
-				updateFightStatusDisplayMessage(false, defendingTerritory.getPlayerModel().getName(), Constants.ONE);
+				updateFightStatusDisplayMessage(false, defendingTerritory.getPlayerModel().getName(), 
+						Constants.ONE, defendingTerritory.getPlayerModel().getStrategy().getStrategyString());
 			} else {
 				attackingTerritory.looseArmy();
-				updateFightStatusDisplayMessage(false, getName(), Constants.ONE);
+				updateFightStatusDisplayMessage(false, getName(), Constants.ONE, 
+						defendingTerritory.getPlayerModel().getStrategy().getStrategyString());
 			}
 
 		} else if (attackList.size() == Constants.ONE && defendList.size() == Constants.TWO) {
 			if (attackList.get(Constants.ZERO) > defendList.get(Constants.ONE)) {
 				defendingTerritory.looseArmy();
-				updateFightStatusDisplayMessage(false, defendingTerritory.getPlayerModel().getName(), Constants.ONE);
+				updateFightStatusDisplayMessage(false, defendingTerritory.getPlayerModel().getName(), 
+						Constants.ONE, defendingTerritory.getPlayerModel().getStrategy().getStrategyString());
 			} else {
 				attackingTerritory.looseArmy();
-				updateFightStatusDisplayMessage(false, getName(), Constants.ONE);
+				updateFightStatusDisplayMessage(false, getName(), Constants.ONE, 
+						defendingTerritory.getPlayerModel().getStrategy().getStrategyString());
 			}
 		} else if (attackList.size() == Constants.ONE && defendList.size() == Constants.ONE) {
 			if (attackList.get(Constants.ZERO) > defendList.get(Constants.ZERO)) {
 				defendingTerritory.looseArmy();
-				updateFightStatusDisplayMessage(false, defendingTerritory.getPlayerModel().getName(), Constants.ONE);
+				updateFightStatusDisplayMessage(false, defendingTerritory.getPlayerModel().getName(), 
+						Constants.ONE, defendingTerritory.getPlayerModel().getStrategy().getStrategyString());
 			} else {
 				attackingTerritory.looseArmy();
-				updateFightStatusDisplayMessage(false, getName(), Constants.ONE);
+				updateFightStatusDisplayMessage(false, getName(), Constants.ONE, 
+						defendingTerritory.getPlayerModel().getStrategy().getStrategyString());
 			}
 		}
 		if (defendingTerritory.getArmies() <= 0 || attackingTerritory.getArmies() <= 1) {
@@ -584,13 +607,14 @@ public class PlayerModel extends Observable implements Serializable {
 	 * @param player
 	 * @param noOfArmies
 	 */
-	private void updateFightStatusDisplayMessage(boolean isboth, String player, int noOfArmies) {
+	private void updateFightStatusDisplayMessage(boolean isboth, String player, int noOfArmies, 
+			String strategy) {
 		String message;
 		if (isboth) {
 			message = Constants.BOTH_LOST_ARMIES_MESSAGE;
 			Utility.writeLog("Both attacker and defender lost an army");
 		} else {
-			message = Utility.replacePartInMessage(Constants.LOST_ARMIES_MESSAGE, "A", player);
+			message = Utility.replacePartInMessage(Constants.LOST_ARMIES_MESSAGE, "A", (player+"("+strategy+")"));
 			message = Utility.replacePartInMessage(message, "B", Integer.toString(noOfArmies));
 			if(getName().equals(player)) {
 				Utility.writeLog("Attacker lost "+noOfArmies);
@@ -630,6 +654,8 @@ public class PlayerModel extends Observable implements Serializable {
 			} else {
 				noOfArmiesToMove = attackingTerritory.getArmies() - 1;
 			}
+			gameModel.setNoOfArmiesToMove(noOfArmiesToMove);
+			gameModel.notifyPhaseChanging(Constants.MOVING_ARMIES);
 			Utility.writeLog("Moving "+noOfArmiesToMove+" armies to territory "+defendingTerritory.getName());
 			PlayerModel lostPlayer = defendingTerritory.getPlayerModel();
 			lostPlayer.removeOccupiedTerritory(defendingTerritory);
@@ -647,6 +673,7 @@ public class PlayerModel extends Observable implements Serializable {
 				addCards(lostPlayer.getCards());
 				lostPlayer.removeCards(lostPlayer.getCards());
 			}
+			gameModel.setNoOfArmiesToMove(0);
 		} else if (attackingTerritory.getArmies() == 1) {
 			Utility.writeLog("Attacker lost the battle ");
 			gameModel.setState(Constants.LOST_BATTLE);
@@ -664,6 +691,11 @@ public class PlayerModel extends Observable implements Serializable {
 		gameModel.notifyPhaseChange();
 	}
 	
+	/**
+	 * Tells the winning status
+	 * @param gameModel
+	 * @return
+	 */
 	public boolean winningStatus(GameModel gameModel) {
 		if (gameModel.isWon()) {
 			gameModel.setState(Constants.END_PHASE);
@@ -898,6 +930,10 @@ public class PlayerModel extends Observable implements Serializable {
 		Utility.writeLog("Armies added to player due to card trade = "+armies);
 	}
 	
+	/**
+	 * Checks whether the current player is Human
+	 * @returns true if human
+	 */
 	public boolean isHuman() {
 		boolean isHuman = false;
 		if(getStrategy().getStrategyString() == Constants.HUMAN) {
@@ -1011,24 +1047,48 @@ public class PlayerModel extends Observable implements Serializable {
 		return isOwned;
 	}
 	
+	/**
+	 * Reinforcement of player
+	 * @param gameModel
+	 */
 	public void reinforce(GameModel gameModel) {
 		Utility.writeLog("----------- ReInforce of player : "+getName()+" "+getStrategy().getStrategyString()+" armies : "+getArmies()+" -------------");
 		strategy.reInforce(gameModel);
 	}
 	
+	/**
+	 * Initial reinforcement of player
+	 * @param gameModel
+	 */
 	public void initialReinforce(GameModel gameModel) {
 		Utility.writeLog("----------- InitialReInforce of player : "+getName()+" "+getStrategy().getStrategyString()+" armies : "+getArmies()+" -------------");
 		strategy.initialReInforce(gameModel);
 	}
 	
+	/**
+	 * Attack phase implementation of player
+	 * @param gameModel
+	 * @param territoryModel
+	 * @return
+	 */
 	public String attack(GameModel gameModel, TerritoryModel... territoryModel) {
 		return strategy.attack(gameModel, territoryModel);
 	}
 	
+	/**
+	 * Fortification of player
+	 * @param gameModel
+	 * @param territoryModel
+	 * @return
+	 */
 	public String fortify(GameModel gameModel, TerritoryModel... territoryModel) {
 		return strategy.fortify(gameModel, territoryModel);
 	}
 	
+	/**
+	 * Automatically moving armies during fortification
+	 * @param gameModel
+	 */
 	public void autoFortifyArmies(GameModel gameModel) {
 		strategy.autoFortifyArmies(gameModel);
 	}
