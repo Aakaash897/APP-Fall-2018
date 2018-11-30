@@ -23,6 +23,15 @@ import col.cs.risk.controller.StartGameController;
 import col.cs.risk.model.Constants;
 import col.cs.risk.model.GameModel;
 
+/**
+ * This class represents the view for the tournament page.
+ * This includes all the UI modules such as the dropdown box, buttons and the
+ * overall JPanel.
+ * ActionListeners Have been implemented to provide a more dynamic and rich UI.
+ * 
+ * @author Team25
+ *
+ */
 
 
 public class TournamentSettingsView extends JFrame {
