@@ -16,6 +16,9 @@ import col.cs.risk.model.ContinentModel;
 import col.cs.risk.model.GameModel;
 import col.cs.risk.model.PlayerModel;
 import col.cs.risk.model.TerritoryModel;
+import col.cs.risk.model.strategy.Aggressive;
+import col.cs.risk.model.strategy.Human;
+import col.cs.risk.model.strategy.Random;
 
 /**
  * Test cases for Game Model methods regarding the map attributes such as the
@@ -340,8 +343,12 @@ public class GameModelTest {
 		for (int i = 0; i < 3; i++) {
 			players.add(new PlayerModel(i, "Player_" + (i + 1)));
 		}
+		players.get(0).setStrategy(new Human());
+		players.get(1).setStrategy(new Random());
+		players.get(2).setStrategy(new Aggressive());
+		
 		GameModel.players = players;
-
+		
 		try {
 			GameModel newGameModel = new GameModel();
 			newGameModel.initialize();

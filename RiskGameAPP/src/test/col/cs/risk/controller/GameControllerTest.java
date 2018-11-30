@@ -1,7 +1,7 @@
 package test.col.cs.risk.controller;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -14,6 +14,7 @@ import org.junit.Test;
 import col.cs.risk.controller.GameController;
 import col.cs.risk.controller.MapPanelController;
 import col.cs.risk.controller.PlayerPanelController;
+import col.cs.risk.helper.Report;
 import col.cs.risk.helper.Utility;
 import col.cs.risk.model.CardModel;
 import col.cs.risk.model.Constants;
@@ -21,6 +22,8 @@ import col.cs.risk.model.ContinentModel;
 import col.cs.risk.model.GameModel;
 import col.cs.risk.model.PlayerModel;
 import col.cs.risk.model.TerritoryModel;
+import col.cs.risk.model.strategy.Benevolent;
+import col.cs.risk.model.strategy.Cheater;
 import col.cs.risk.view.CardTradeView;
 import col.cs.risk.view.MapView;
 
@@ -172,5 +175,55 @@ public class GameControllerTest {
 		
 		Constants.DEFAULT_SAVED_GAME_FILE_NAME = "nullFile";
 		assertNull(gameController.loadSavedGame());
+	}
+	
+	/**
+	 * Test case for game saving and loading
+	 */
+	@Test
+	public void testGameSaveAndLoad() {
+		PlayerModel playerModel2 = new PlayerModel(102, "player2");
+		PlayerModel playerModel3 = new PlayerModel(103, "player3");
+		
+		Vector<PlayerModel> players = new Vector<>();
+		players.add(playerModel);
+		players.add(playerModel2);
+		players.add(playerModel3);
+		gameModel.players = players;
+		gameModel.setState(Constants.RE_ENFORCEMENT_PHASE);
+		
+		gameController.saveGame();
+		GameModel savedResult = gameController.loadSavedGame();
+		
+		assertEquals(Constants.RE_ENFORCEMENT_PHASE, savedResult.getState());
+		assertEquals(playerModel.getName(), savedResult.getCurrentPlayer().getName());
+		assertEquals(players.size(), savedResult.players.size());
+	}
+	
+	/**
+	 * Test case to test tournament mode
+	 */
+	@Test
+	public void testTournamentMode() {
+		
+		PlayerModel playerModel1 = new PlayerModel(0, "player2");
+		PlayerModel playerModel2 = new PlayerModel(1, "player3");
+		
+		playerModel1.setStrategy(new Cheater(playerModel1));
+		playerModel2.setStrategy(new Benevolent(playerModel2));
+		
+		Vector<PlayerModel> players = new Vector<>();
+		players.add(playerModel1);
+		players.add(playerModel2);
+		GameModel.players = players;
+		GameModel.isTournamentMode = true;
+		GameModel.tournamentMapList.addElement(Constants.DEFAULT_MAP_FILE_NAME);
+		GameModel.reports.addElement(new Report(Constants.DEFAULT_MAP_FILE_NAME, GameModel.tournamentNoOfGame));
+		Utility.timerToClose = true;
+		
+		gameController.startNewGame();
+		
+		String winner = playerModel1.getName()+" - "+playerModel1.getStrategy().getStrategyString();
+		assertEquals(winner, gameController.testWinner);
 	}
 }

@@ -109,6 +109,9 @@ public class GameController {
 	 * Flag variable to check if saved game is loaded
 	 */
 	public static boolean isLoadSavedGame = false;
+	
+	/** Holds winner */
+	public String testWinner;
 
 	/**
 	 * Used to reset everything
@@ -768,6 +771,8 @@ public class GameController {
 				} else {
 					GameModel.currentReport.addFinishedGame(GameModel.currentReport.getCurrentGameNo(), "Draw");
 				}
+				testWinner = gameModel.getCurrentPlayer().getName() + " - "
+						+ gameModel.getCurrentPlayer().getStrategy().getStrategyString();
 				startNewGame();
 			} else {
 				Utility.showMessagePopUp(message, Constants.INFORMATION);
