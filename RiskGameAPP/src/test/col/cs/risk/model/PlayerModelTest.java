@@ -22,6 +22,8 @@ import col.cs.risk.model.ContinentModel;
 import col.cs.risk.model.GameModel;
 import col.cs.risk.model.PlayerModel;
 import col.cs.risk.model.TerritoryModel;
+import col.cs.risk.model.strategy.Human;
+import col.cs.risk.model.strategy.IStrategy;
 import col.cs.risk.view.MapView;
 
 /**
@@ -55,6 +57,7 @@ public class PlayerModelTest {
 	@Before
 	public void before() {
 		playerModel = new PlayerModel(101, "player1");
+		playerModel.setStrategy(new Human(playerModel));
 		gameModel = new GameModel();
 		gameModel.setCurrentPlayer(playerModel);
 	}
@@ -327,6 +330,7 @@ public class PlayerModelTest {
 	public void testSettingAttackingTerritory() {
 		TerritoryModel tmodel1 = new TerritoryModel(201, "tname1", 10, 20, new ContinentModel(301, "cname1", 3));
 		PlayerModel playerModel = new PlayerModel(1, "P1");
+		playerModel.setStrategy(new Human(playerModel));
 		tmodel1.setPlayerModel(playerModel);
 		gameModel.setCurrentPlayer(playerModel);
 		gameModel.setState(Constants.ATTACK_PHASE);
@@ -360,10 +364,13 @@ public class PlayerModelTest {
 		TerritoryModel tmodel1 = new TerritoryModel(201, "tname1", 10, 20, new ContinentModel(301, "cname1", 3));
 		TerritoryModel tmodel2 = new TerritoryModel(202, "tname2", 30, 40, new ContinentModel(301, "cname1", 3));
 		PlayerModel playerModel = new PlayerModel(1, "P1");
+		playerModel.setStrategy(new Human(playerModel));
 		tmodel1.setPlayerModel(playerModel);
 		tmodel1.addAdjacentTerritory(tmodel2);
 		tmodel2.addAdjacentTerritory(tmodel1);
-		tmodel2.setPlayerModel(new PlayerModel(10, "P10"));
+		PlayerModel playerModelOther = new PlayerModel(10, "P10");
+		playerModelOther.setStrategy(new Human(playerModelOther));
+		tmodel2.setPlayerModel(playerModelOther);
 		gameModel.setCurrentPlayer(playerModel);
 		gameModel.setState(Constants.ATTACK_PHASE);
 		tmodel1.setArmies(2);
@@ -403,6 +410,7 @@ public class PlayerModelTest {
 		tmodel5.addAdjacentTerritory(tmodel4);
 		
 		PlayerModel playerModelOther = new PlayerModel(1, "player2");
+		playerModelOther.setStrategy(new Human(playerModelOther));
 		attackingTerritoryModel.setPlayerModel(playerModel);
 		defendingTerritoryModel.setPlayerModel(playerModelOther);
 		
@@ -504,6 +512,7 @@ public class PlayerModelTest {
 
 		// Fortification phase but selected territory doesn't belong to player
 		PlayerModel playerModelOther = new PlayerModel(102, "player2");
+		playerModelOther.setStrategy(new Human(playerModelOther));
 		model1.setPlayerModel(playerModelOther);
 		tmodel3.setPlayerModel(playerModelOther);
 		gameModel.setState(Constants.FORTIFICATION_PHASE);

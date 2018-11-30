@@ -39,10 +39,17 @@ public class FortificationPhaseModel extends Observable implements GamePhase, Se
 		return fortificationPhaseModel;
 	}
 	
+	/**
+	 * Checks whether the instance variable initialized
+	 * @returns true if initialized
+	 */
 	public static boolean isInitialized() {
 		return fortificationPhaseModel != null ? true : false;
 	}
 	
+	/**
+	 * De-initializes the instance variable
+	 */
 	public static void clear() {
 		fortificationPhaseModel = null;
 	}
@@ -54,11 +61,17 @@ public class FortificationPhaseModel extends Observable implements GamePhase, Se
 		return gameModel;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setGameModel(GameModel gameModel) {
 		this.gameModel = gameModel;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void isChanged(boolean isStart) {
 		if (isStart) {
@@ -68,6 +81,9 @@ public class FortificationPhaseModel extends Observable implements GamePhase, Se
 		notifyObservers(this);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getTitle() {
 		return Constants.FORTIFICATION_PHASE_MESSAGE;
@@ -83,11 +99,16 @@ public class FortificationPhaseModel extends Observable implements GamePhase, Se
 		stringBuilder.append("\n************* " + getTitle() + " *************\n\n");
 		stringBuilder.append("Current player: ");
 		stringBuilder.append(gameModel.getCurrentPlayer().getName());
+		stringBuilder.append(" - ");
+		stringBuilder.append(gameModel.getCurrentPlayer().getStrategy().getStrategyString());
 		stringBuilder.append("\n\n");
 		stringBuilder.append("Information:\n\n");
 		return stringBuilder.toString();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getContent() {
 		if (stringBuilder == null) {
@@ -122,6 +143,9 @@ public class FortificationPhaseModel extends Observable implements GamePhase, Se
 		return stringBuilder.toString();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setMessage(String message) {
 		// TODO Auto-generated method stub

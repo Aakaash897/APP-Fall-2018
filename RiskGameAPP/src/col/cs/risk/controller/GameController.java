@@ -109,6 +109,9 @@ public class GameController {
 	 * Flag variable to check if saved game is loaded
 	 */
 	public static boolean isLoadSavedGame = false;
+	
+	/** Holds winner */
+	public String testWinner;
 
 	/**
 	 * Used to reset everything
@@ -128,7 +131,7 @@ public class GameController {
 		isMaxNumberOfRoundsSet = false;
 		MAXIMUM_NO_OF_ROUNDS_ALLOWED = Constants.TEN;
 		if (cardTradeView != null) {
-			cardTradeView.dispose();
+			deInitializeCardExchangeView();
 		}
 		cardTradeView = null;
 		isGameOver = false;
@@ -334,6 +337,9 @@ public class GameController {
 				break;
 			case Constants.ATTACK_PHASE:
 			case Constants.ATTACKING_PHASE:
+				if (mapView.getSaveButton().isVisible()) {
+					mapView.getSaveButton().setVisible(false);
+				}
 				str = gameModel.getCurrentPlayer().attack(gameModel);
 				break;
 			case Constants.ATTACK_FIGHT_PHASE:
@@ -343,6 +349,9 @@ public class GameController {
 				break;
 			case Constants.FORTIFICATION_PHASE:
 			case Constants.FORTIFYING_PHASE:
+				if (mapView.getSaveButton().isVisible()) {
+					mapView.getSaveButton().setVisible(false);
+				}
 				str = gameModel.getCurrentPlayer().fortify(gameModel);
 				break;
 			case Constants.FORTIFY_PHASE:
@@ -374,9 +383,6 @@ public class GameController {
 				mapView.getStatusLabel().setText(str);
 			}
 			if (gameModel != null) {
-				if (!isGameOver) {
-					gameModel.notifyPhaseChanging();
-				}
 				gameModel.notifyPhaseChange();
 			}
 		}
@@ -510,7 +516,7 @@ public class GameController {
 	}
 
 	/**
-	 * Deinitializing the phase view
+	 * De-initializing the phase view
 	 */
 	private void deInitializePhaseView() {
 		if (AttackPhaseModel.isInitialized() || ReEnforcementPhaseModel.isInitialized()) {
@@ -546,6 +552,17 @@ public class GameController {
 		cardExchangeModel.addObserver(cardTradeView);
 		cardTradeView.initializeComponents();
 	}
+	
+	/**
+	 * DeInitialize card exchange view, used as observer pattern
+	 */
+	private void deInitializeCardExchangeView() {
+		CardExchangeModel cardExchangeModel = CardExchangeModel.getInstance();
+		cardTradeView = new CardTradeView(this);
+		cardExchangeModel.deleteObserver(cardTradeView);
+		CardExchangeModel.clear();
+		cardTradeView.dispose();
+	}
 
 	/**
 	 * Action performed on attack button press
@@ -559,7 +576,7 @@ public class GameController {
 		gameModel.setState(Constants.ATTACK_PHASE);
 		gameModel.notifyPhaseChanging();
 		mapView.getCardButton().setVisible(false);
-		mapView.getSaveButton().setVisible(false);
+		mapView.getSaveButton().setVisible(true);
 		mapView.getAttackButton().setVisible(false);
 		if (gameModel.getCurrentPlayer().canAttack()) {
 			mapView.getStatusLabel().setText(Constants.ATTACK_COUNTRY_SELECT_MESSAGE);
@@ -596,7 +613,7 @@ public class GameController {
 		mapView.getCardButton().setVisible(false);
 		mapView.getAttackButton().setVisible(false);
 		mapView.getFortifyButton().setVisible(false);
-		mapView.getSaveButton().setVisible(false);
+		mapView.getSaveButton().setVisible(true);
 		mapView.getEndButton().setVisible(true);
 		gameModel.notifyPhaseChange();
 	}
@@ -637,7 +654,7 @@ public class GameController {
 	 * @param event
 	 */
 	public void cardButtonActionPerformed(ActionEvent event) {
-		Utility.writeLog("Card button pressed");
+		Utility.writeLog("Card button pressed ");
 		CardExchangeModel.getInstance().checkCardsTradeOption(this, true);
 	}
 
@@ -668,6 +685,7 @@ public class GameController {
 			gameModel.setMoveArmiesFromTerritory(null);
 			gameModel.setMoveArmiesToTerritory(null);
 			validatePlayerTurn();
+			mapView.getSaveButton().setVisible(true);
 			break;
 		}
 	}
@@ -753,6 +771,8 @@ public class GameController {
 				} else {
 					GameModel.currentReport.addFinishedGame(GameModel.currentReport.getCurrentGameNo(), "Draw");
 				}
+				testWinner = gameModel.getCurrentPlayer().getName() + " - "
+						+ gameModel.getCurrentPlayer().getStrategy().getStrategyString();
 				startNewGame();
 			} else {
 				Utility.showMessagePopUp(message, Constants.INFORMATION);
@@ -782,13 +802,25 @@ public class GameController {
 		switch (gameModel.getState()) {
 		case Constants.INITIAL_RE_ENFORCEMENT_PHASE:
 		case Constants.RE_ENFORCEMENT_PHASE:
-			mapView.getStatusLabel().setText(Constants.RE_ENFORCEMENT_MESSAGE);
+			if(gameModel.getCurrentPlayer().getArmies() > Constants.ZERO) {
+				mapView.getStatusLabel().setText(Constants.RE_ENFORCEMENT_MESSAGE);
+			} else {
+				gameModel.setSelectedTerritory(null);
+				handleActiveTurn();
+			}
 			break;
 		case Constants.FORTIFICATION_PHASE:
-			mapView.getStatusLabel().setText(Constants.FORTIFICATION_PHASE_MESSAGE);
+			mapView.getStatusLabel().setText(Constants.MOVE_FROM);
+			mapView.getEndButton().setVisible(true);
 			break;
 		case Constants.ATTACK_PHASE:
-			mapView.getStatusLabel().setText(Constants.ATTACK_PHASE_MESSAGE);
+			mapView.getStatusLabel().setText(Constants.ATTACK_COUNTRY_SELECT_MESSAGE);
+			mapView.getFortifyButton().setVisible(true);
+			mapView.getEndButton().setVisible(true);
+			break;
+		case Constants.ACTIVE_TURN:
+			gameModel.setSelectedTerritory(null);
+			handleActiveTurn();
 			break;
 		}
 	}
@@ -808,6 +840,9 @@ public class GameController {
 		int y_coordinate = event.getY();
 		switch (gameModel.getState()) {
 		case Constants.INITIAL_RE_ENFORCEMENT_PHASE:
+			if (!mapView.getSaveButton().isVisible()) {
+				mapView.getSaveButton().setVisible(true);
+			}
 			if (gameModel.getCurrentPlayer().getArmies() > Constants.ZERO) {
 				gameModel.getTerritoryFromMapLocation(x_coordinate, y_coordinate);
 				gameModel.getCurrentPlayer().initialReinforce(gameModel);
@@ -817,8 +852,8 @@ public class GameController {
 			if (mapView.getCardButton().isVisible()) {
 				mapView.getCardButton().setVisible(false);
 			}
-			if (mapView.getSaveButton().isVisible()) {
-				mapView.getSaveButton().setVisible(false);
+			if (!mapView.getSaveButton().isVisible()) {
+				mapView.getSaveButton().setVisible(true);
 			}
 			if (gameModel.getCurrentPlayer().getArmies() > Constants.ZERO) {
 				gameModel.getTerritoryFromMapLocation(x_coordinate, y_coordinate);
@@ -838,6 +873,9 @@ public class GameController {
 				mapView.getEndButton().setVisible(true);
 				mapView.getSaveButton().setVisible(false);
 			}
+			if (gameModel.getState() == Constants.FORTIFYING_PHASE) {
+				mapView.getSaveButton().setVisible(false);
+			}
 			break;
 		case Constants.ATTACK_PHASE:
 		case Constants.ATTACKING_PHASE:
@@ -845,9 +883,13 @@ public class GameController {
 			if (!str.isEmpty()) {
 				mapView.getStatusLabel().setText(str);
 			}
+			if (gameModel.getState() == Constants.ATTACKING_PHASE) {
+				mapView.getSaveButton().setVisible(false);
+			}
 			break;
 		}
 		if (gameModel.getState() == Constants.ATTACK_FIGHT_PHASE) {
+			mapView.getSaveButton().setVisible(false);
 			gameModel.setSelectedTerritory(null);
 			updateAutomaticMode();
 			gameModel.getCurrentPlayer().startBattle(gameModel, this);
@@ -889,7 +931,7 @@ public class GameController {
 			mapView.getFortifyButton().setVisible(true);
 			mapView.getEndButton().setVisible(true);
 			mapView.getAttackButton().setVisible(false);
-			mapView.getSaveButton().setVisible(false);
+			mapView.getSaveButton().setVisible(true);
 			mapView.getUserEntered().setVisible(false);
 		} else if (gameModel.getCurrentPlayer().canFortify()) {
 			if (gameModel.getCurrentPlayer().isHuman()) {
@@ -989,7 +1031,7 @@ public class GameController {
 				mapView.getAttackButton().setVisible(false);
 				mapView.getFortifyButton().setVisible(false);
 				mapView.getEndButton().setVisible(false);
-				mapView.getSaveButton().setVisible(false);
+				mapView.getSaveButton().setVisible(true);
 				mapView.getUserEntered().setVisible(false);
 			}
 			gameModel.notifyPhaseChanging();
@@ -1010,7 +1052,7 @@ public class GameController {
 		int wildCount = cardTradeView.getWildCardSelectedItem();
 
 		int count = infantryCount + cavarlyCount + artilleryCount + wildCount;
-
+		
 		if (count == Constants.THREE) {
 			if (infantryCount == Constants.THREE || cavarlyCount == Constants.THREE
 					|| artilleryCount == Constants.THREE) {
@@ -1068,6 +1110,7 @@ public class GameController {
 												+ gameModel.getCurrentPlayer().getStrategy().getStrategyString());
 			}
 			gameModel.getCurrentPlayer().setAttackingNoOfDice(numberOfDice);
+			gameModel.notifyPhaseChanging(Constants.ATTACK_DICE_SELECTION);
 			Utility.writeLog("Attacking no. of dice = " + numberOfDice);
 
 			numberOfDice = gameModel.getCurrentPlayer().getDefendingTerritory().getArmies();
@@ -1104,6 +1147,7 @@ public class GameController {
 					}
 				}
 				gameModel.getCurrentPlayer().setDefendingNoOfDice(numberOfDice);
+				gameModel.notifyPhaseChanging(Constants.DEFEND_DICE_SELECTION);
 				Utility.writeLog("Defending no. of dice = " + numberOfDice);
 			}
 		}
@@ -1117,6 +1161,7 @@ public class GameController {
 			Utility.showMessagePopUp(Constants.CLICK_OK_TO_ROLL_DICE, "Roll Dice");
 		}
 		gameModel.getCurrentPlayer().rollAndSetDiceList();
+		gameModel.notifyPhaseChanging(Constants.SHOW_DICE_SELECTION);
 		if (gameModel.getCurrentPlayer().isHuman()) {
 			rolledDiceView.showRolledDiceList(gameModel);
 		} else {

@@ -39,10 +39,17 @@ public class EndPhaseModel extends Observable implements GamePhase, Serializable
 		return endPhaseModel;
 	}
 	
+	/**
+	 * Checks whether the instance variable initialized
+	 * @returns true if initialized
+	 */
 	public static boolean isInitialized() {
 		return endPhaseModel != null ? true : false;
 	}
 	
+	/**
+	 * De-initializes the instance variable
+	 */
 	public static void clear() {
 		endPhaseModel = null;
 	}
@@ -54,11 +61,17 @@ public class EndPhaseModel extends Observable implements GamePhase, Serializable
 		return gameModel;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setGameModel(GameModel gameModel) {
 		this.gameModel = gameModel;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void isChanged(boolean isStart) {
 		if (isStart) {
@@ -68,6 +81,9 @@ public class EndPhaseModel extends Observable implements GamePhase, Serializable
 		notifyObservers(this);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getTitle() {
 		return Constants.END_PHASE_MESSAGE;
@@ -83,11 +99,16 @@ public class EndPhaseModel extends Observable implements GamePhase, Serializable
 		stringBuilder.append("\n************* " + getTitle() + " *************\n\n");
 		stringBuilder.append("Current player: ");
 		stringBuilder.append(gameModel.getCurrentPlayer().getName());
+		stringBuilder.append(" - ");
+		stringBuilder.append(gameModel.getCurrentPlayer().getStrategy().getStrategyString());
 		stringBuilder.append("\n\n");
 		stringBuilder.append("Information:\n\n");
 		return stringBuilder.toString();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getContent() {
 		if (stringBuilder == null) {
@@ -101,6 +122,9 @@ public class EndPhaseModel extends Observable implements GamePhase, Serializable
 		return stringBuilder.toString();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setMessage(String message) {
 		this.message = message;

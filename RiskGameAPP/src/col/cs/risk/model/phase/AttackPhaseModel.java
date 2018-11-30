@@ -25,7 +25,11 @@ public class AttackPhaseModel extends Observable implements GamePhase, Serializa
 	/** instance of this class */
 	private static AttackPhaseModel attackPhaseModel;
 
+	/** String to update on view */
 	private StringBuilder stringBuilder;
+	
+	/** for the player info */
+	private String message;
 
 	/**
 	 * 
@@ -38,14 +42,24 @@ public class AttackPhaseModel extends Observable implements GamePhase, Serializa
 		return attackPhaseModel;
 	}
 	
+	/**
+	 * Checks whether the instance variable initialized
+	 * @returns true if initialized
+	 */
 	public static boolean isInitialized() {
 		return attackPhaseModel != null ? true : false;
 	}
 	
+	/**
+	 * De initializes the instance variable
+	 */
 	public static void clear() {
 		attackPhaseModel = null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void isChanged(boolean isStart) {
 		if (isStart) {
@@ -55,11 +69,17 @@ public class AttackPhaseModel extends Observable implements GamePhase, Serializa
 		notifyObservers(this);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getTitle() {
 		return Constants.ATTACK_PHASE_MESSAGE;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setGameModel(GameModel gameModel) {
 		this.gameModel = gameModel;
@@ -75,11 +95,16 @@ public class AttackPhaseModel extends Observable implements GamePhase, Serializa
 		stringBuilder.append("\n************* " + getTitle() + " *************\n\n");
 		stringBuilder.append("Current player: ");
 		stringBuilder.append(gameModel.getCurrentPlayer().getName());
+		stringBuilder.append(" - ");
+		stringBuilder.append(gameModel.getCurrentPlayer().getStrategy().getStrategyString());
 		stringBuilder.append("\n\n");
 		stringBuilder.append("Information:\n\n");
 		return stringBuilder.toString();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getContent() {
 		if (stringBuilder == null) {
@@ -98,18 +123,49 @@ public class AttackPhaseModel extends Observable implements GamePhase, Serializa
 			if (gameModel.getCurrentPlayer().getDefendingTerritory() != null) {
 				stringBuilder.append("Defending territory: ");
 				stringBuilder.append(gameModel.getCurrentPlayer().getDefendingTerritory().getName());
-				stringBuilder.append(" \n");
+				stringBuilder.append(" ( ");
+				stringBuilder.append(gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel().getName());
+				stringBuilder.append(" - ");
+				stringBuilder.append(gameModel.getCurrentPlayer().getDefendingTerritory().
+						getPlayerModel().getStrategy().getStrategyString());
+				stringBuilder.append(" ) \n");
 			}
 			break;
 		case Constants.ATTACK_FIGHT_PHASE:
-			if (gameModel.getCurrentPlayer().getGameController() != null) {
+			if(Constants.ATTACK_DICE_SELECTION.equals(message)) {
+				message = "";
+				stringBuilder.append("Attacking no of dice: "+gameModel.getCurrentPlayer().getAttackingNoOfDice());
+				stringBuilder.append("\n");
+			} else if(Constants.DEFEND_DICE_SELECTION.equals(message)) {
+				message = "";
+				stringBuilder.append("Defending no of dice: "+gameModel.getCurrentPlayer().getDefendingNoOfDice());
+				stringBuilder.append("\n");
+			} else if(Constants.SHOW_DICE_SELECTION.equals(message)) {
+				message = "";
+				for (Integer i:gameModel.getCurrentPlayer().getAttackingDiceList().keySet()) {
+					stringBuilder.append("Attacking dice no: "+i+",  & rolled phase is: "+
+							gameModel.getCurrentPlayer().getAttackingDiceList().get(i));
+					stringBuilder.append("\n");
+				}
+				stringBuilder.append("\n");
+				for (Integer i:gameModel.getCurrentPlayer().getDefendingDiceList().keySet()) {
+					stringBuilder.append("Defending dice no: "+i+",  & rolled phase is: "+
+							gameModel.getCurrentPlayer().getDefendingDiceList().get(i));
+					stringBuilder.append("\n");
+				}
+			} else if (gameModel.getCurrentPlayer().getGameController() != null) {
 				stringBuilder.append(
 						gameModel.getCurrentPlayer().getGameController().getMapView().getStatusLabel().getText());
 				stringBuilder.append("\n");
 			}
 			break;
 		case Constants.CAPTURE:
-			if (gameModel.getCurrentPlayer().getGameController() != null) {
+			if(Constants.MOVING_ARMIES.equals(message)) {
+				message = "";
+				stringBuilder.append("Moving "+gameModel.getNoOfArmiesToMove());
+				stringBuilder.append(" armies to newly captured territory\n");
+				stringBuilder.append("----------------------------------\n");
+			} else if (gameModel.getCurrentPlayer().getGameController() != null) {
 				stringBuilder.append("Capturing defending territory\n");
 			}
 			break;
@@ -125,8 +181,11 @@ public class AttackPhaseModel extends Observable implements GamePhase, Serializa
 		return stringBuilder.toString();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setMessage(String message) {
-		// TODO Auto-generated method stub
+		this.message = message;
 	}
 }

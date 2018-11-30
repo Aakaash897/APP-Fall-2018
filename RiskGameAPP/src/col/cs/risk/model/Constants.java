@@ -25,6 +25,10 @@ public class Constants {
 	public static final int LOST_BATTLE = 14;
 	public static final int CARD_TRADE = 15;
 	public static final int CHANGE_TURN = 16;
+	public static final String ATTACK_DICE_SELECTION = "Attack dice selection";
+	public static final String DEFEND_DICE_SELECTION = "Defend dice selection";
+	public static final String SHOW_DICE_SELECTION = "Show dice selection";
+	public static final String MOVING_ARMIES = "Moving armies";
 	public static final String RE_ENFORCEMENT_MESSAGE = "Place an army on a territory you occupy";
 	public static final String MOVE_FROM = "Select a country of yours to move armies from";
 	public static final String MIN_TWO_ARMY_MESSAGE = "Your occupied country should have minimum 2 army";
