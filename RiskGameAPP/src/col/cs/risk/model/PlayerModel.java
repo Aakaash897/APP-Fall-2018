@@ -122,7 +122,9 @@ public class PlayerModel extends Observable implements Serializable {
 		this(id, name, strategy);
 		this.occupiedTerritories = occupiedTerritories;
 	}
-
+        /**
+	* clearHistory method resets all the Variables
+	*/
 	public void clearHistory() {
 		armies = 0;
 		occupiedTerritories.clear();
