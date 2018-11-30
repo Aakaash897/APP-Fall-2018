@@ -36,18 +36,25 @@ import col.cs.risk.model.GameModel;
 
 public class TournamentSettingsView extends JFrame {
 
+	/** Panel Variable */
 	private JPanel Panel;
 
+	/** Number of Maps */
 	int numOfMaps=1; 
 
+	/** Number of Players */
 	int numOfPlayers=2;
 
+	/** Minimum Number of Games */
 	int noOfGames = 1;
 
+	/** Minimum Number of Turns to be played */
 	int noOfTurns=10;
 
+	/** Hashmap for Strategy Type */
 	HashMap<Integer, String> playersStrategiesMap = new HashMap<>();
 	
+	/** Vector for the Map Choice */
 	Vector<String> mapChoiceForTournament = new Vector<>();
 
 	/** Game controller */
@@ -64,11 +71,18 @@ public class TournamentSettingsView extends JFrame {
 		setTitle("Tounament Mode Choice");
 	}
 
+	/**
+	 * Function to Inititalize the Panel and other UI components
+	 * such as buttons and ComboBox.
+	 * 
+	 */
 	private void initComponents() {
 
 		Panel = new javax.swing.JPanel();
 		Panel.setForeground(Color.BLACK);
 		String[] behaviour = {Constants.AGGRESSIVE, Constants.BENEVOLENT, Constants.RANDOM, Constants.CHEATER};
+		
+		/* ComboBox for Players */
 		JComboBox<String> playerOneBehavior = new JComboBox<String>(behaviour);
 		JComboBox<String> playerTwoBehavior = new JComboBox<String>(behaviour);
 		JComboBox<String> playerThreeBehavior = new JComboBox<String>(behaviour);
@@ -76,6 +90,8 @@ public class TournamentSettingsView extends JFrame {
 		
 		Integer[] numberOfMaps = { 1, 2, 3, 4, 5 };
 		JComboBox<Integer> numberOfMapsCombo = new JComboBox<Integer>(numberOfMaps);
+		
+		/* ComboBox for Map Selection */
 		String[] mapSelection = {Constants.WORLD,Constants.CLIFF,Constants.ICELAND,Constants.TEXAS,Constants.MEXICO};
 		JComboBox<String> mapOne = new JComboBox<String>(mapSelection);
 		JComboBox<String> mapTwo = new JComboBox<String>(mapSelection);
@@ -87,13 +103,16 @@ public class TournamentSettingsView extends JFrame {
 		mapFour.setSelectedItem(Constants.TEXAS);
 		mapFive.setSelectedItem(Constants.MEXICO);
 		
+		/* ComboBox for Player Strategies */
 		Integer[] numberOfStrategies = { 2, 3, 4 };
 		JComboBox<Integer> playerNumCombo = new JComboBox<Integer>(numberOfStrategies);
+		
+		/* ComboBox for Number of Games */
 		Integer[] numberOfGames = { 1, 2, 3, 4, 5 };
-		JComboBox<Integer> gameNumCombo = new JComboBox<Integer>(numberOfGames);
-		JComboBox<Integer> turnNumCombobox = new JComboBox<Integer>();
+		JComboBox<Integer> gameNumberCombo = new JComboBox<Integer>(numberOfGames);
+		JComboBox<Integer> turnNumberCombobox = new JComboBox<Integer>();
 		for (int i = 10; i <= 50; i++) {
-			turnNumCombobox.addItem(new Integer(i));
+			turnNumberCombobox.addItem(new Integer(i));
 		}
 
 		addWindowListener(new WindowAdapter() {
@@ -147,6 +166,7 @@ public class TournamentSettingsView extends JFrame {
 		JLabel playerFour = new JLabel("Player 4");
 		playerFour.setForeground(Color.WHITE);
 		
+		/* All labels sets to false Initially */
 		mapOne.setVisible(false);
 		mapOneLabel.setVisible(false);
 		mapTwo.setVisible(false);
@@ -158,7 +178,7 @@ public class TournamentSettingsView extends JFrame {
 		mapFive.setVisible(false);
 		mapFiveLabel.setVisible(false);
 		
-
+		/* All labels sets to false Initially */
 		playerOneBehavior.setVisible(false);
 		playerOne.setVisible(false);
 		playerTwoBehavior.setVisible(false);
@@ -168,6 +188,7 @@ public class TournamentSettingsView extends JFrame {
 		playerFour.setVisible(false);
 		playerFourBehavior.setVisible(false);
 
+		/* Action Listener for OK button */
 		JButton okButton = new JButton("Ok");
 		okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -175,10 +196,12 @@ public class TournamentSettingsView extends JFrame {
 				System.out.println("OK Pressed");
 				setVisible(false);
 				
+				/* Setting of the MapList and Strategy Plan */
 				GameModel.tournamentMapList = mapChoiceForTournament;
 				System.out.println(" playersStrategiesMap key = "+playersStrategiesMap.keySet().stream().map(x->x.toString()).collect(Collectors.toList()));
 				System.out.println(" playersStrategiesMap val = "+playersStrategiesMap.values().stream().map(x->x.toString()).collect(Collectors.toList()));
 
+				/* Setting variables for GameModel Class */
 				GameModel.isTournamentMode = true;
 				GameModel.tournamentNoOfMaps = numOfMaps;
 				GameModel.tournamentNoOfGame = noOfGames;
@@ -192,6 +215,7 @@ public class TournamentSettingsView extends JFrame {
 		
 		mapChoiceForTournament.add(Constants.WORLD);
 
+		/* Action Listener for displaying and choosing of maps based on the number of maps choice */
 		numberOfMapsCombo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				numOfMaps = (Integer) numberOfMapsCombo.getSelectedItem();
@@ -329,16 +353,16 @@ public class TournamentSettingsView extends JFrame {
 			}
 		});
 
-		turnNumCombobox.addActionListener(new ActionListener() {
+		turnNumberCombobox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				noOfTurns = (Integer) turnNumCombobox.getSelectedItem();
+				noOfTurns = (Integer) turnNumberCombobox.getSelectedItem();
 				System.out.println("noOfTurns = "+noOfTurns);
 			}
 		});
 
-		gameNumCombo.addActionListener(new ActionListener() {
+		gameNumberCombo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				noOfGames = (Integer) gameNumCombo.getSelectedItem();
+				noOfGames = (Integer) gameNumberCombo.getSelectedItem();
 				System.out.println("noOfGames = "+noOfGames);
 			}
 		});
@@ -346,6 +370,7 @@ public class TournamentSettingsView extends JFrame {
 		playersStrategiesMap.put(1, Constants.AGGRESSIVE);
 		playersStrategiesMap.put(2, Constants.AGGRESSIVE);
 		
+		/* Action Listener displaying the player list with strategy based on number of players */
 		playerNumCombo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				numOfPlayers = (Integer) playerNumCombo.getSelectedItem();
@@ -396,12 +421,14 @@ public class TournamentSettingsView extends JFrame {
 				}
 			}
 		});
+		/* Action Listener for Player One */
 		playerOneBehavior.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				System.out.println(playerOneBehavior.getSelectedItem());
 				playersStrategiesMap.put(1, (String) playerOneBehavior.getSelectedItem());
 			}
 		});
+		/* Action Listener for Player Two */
 		playerTwoBehavior.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 
@@ -409,6 +436,7 @@ public class TournamentSettingsView extends JFrame {
 				playersStrategiesMap.put(2, (String) playerTwoBehavior.getSelectedItem());
 			}
 		});
+		/* Action Listener for Player Three */
 		playerThreeBehavior.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 
@@ -416,6 +444,7 @@ public class TournamentSettingsView extends JFrame {
 				playersStrategiesMap.put(3, (String) playerThreeBehavior.getSelectedItem());
 			}
 		});
+		/* Action Listener for Player Four */
 		playerFourBehavior.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 
@@ -425,7 +454,7 @@ public class TournamentSettingsView extends JFrame {
 		});
 
 
-
+		/* Adding the design elements to the entire group layout */
 		javax.swing.GroupLayout gl_modePanel = new javax.swing.GroupLayout(Panel);
 		gl_modePanel.setHorizontalGroup(
 				gl_modePanel.createParallelGroup(Alignment.LEADING)
@@ -481,11 +510,11 @@ public class TournamentSettingsView extends JFrame {
 																.addGap(69)
 																.addGroup(gl_modePanel.createParallelGroup(Alignment.LEADING)
 																		.addGroup(gl_modePanel.createSequentialGroup()
-																				.addComponent(gameNumCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+																				.addComponent(gameNumberCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 																				.addContainerGap())
 																		.addGroup(gl_modePanel.createParallelGroup(Alignment.LEADING)
 																				.addGroup(gl_modePanel.createSequentialGroup()
-																						.addComponent(turnNumCombobox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+																						.addComponent(turnNumberCombobox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 																						.addContainerGap())
 																				.addGroup(gl_modePanel.createParallelGroup(Alignment.LEADING)
 																						.addGroup(gl_modePanel.createSequentialGroup()
@@ -536,11 +565,11 @@ public class TournamentSettingsView extends JFrame {
 						.addGap(18)
 						.addGroup(gl_modePanel.createParallelGroup(Alignment.BASELINE)
 								.addComponent(gameLabel)
-								.addComponent(gameNumCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+								.addComponent(gameNumberCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 						.addGap(24)
 						.addGroup(gl_modePanel.createParallelGroup(Alignment.BASELINE)
 								.addComponent(numberOfTurnsLabel)
-								.addComponent(turnNumCombobox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+								.addComponent(turnNumberCombobox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 						
 						.addGap(18)
 						.addGroup(gl_modePanel.createParallelGroup(Alignment.BASELINE)
@@ -591,6 +620,11 @@ public class TournamentSettingsView extends JFrame {
 		pack();
 	}
 
+	/**
+	 * Function transfers the control back to the Controller Class
+	 * 
+	 * @param event Event Instance
+	 */
 	private void exitForm(java.awt.event.WindowEvent event) {
 		setVisible(false);
 		startGameController.chooseMode();
