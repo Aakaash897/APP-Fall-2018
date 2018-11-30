@@ -162,12 +162,7 @@ public class TournamentSettingsView extends JFrame {
 		JButton okButton = new JButton("Ok");
 		okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(numOfMaps>noOfGames)
-				{
-					JOptionPane.showMessageDialog(Panel, "Number of Maps CANNOT be higer than Number of Games Being Played");
-					System.out.println("Number of Maps CANNOT be higer than Number of Games Being Played");
-				}
-				else {
+				
 				System.out.println("OK Pressed");
 				setVisible(false);
 				
@@ -181,7 +176,7 @@ public class TournamentSettingsView extends JFrame {
 				GameModel.tournamentNoOfTurns = noOfTurns;
 				startGameController.tournamentModeOKButtonActionPerformed(numOfPlayers, playersStrategiesMap);
 				dispose();
-				}
+				
 			}
 
 		});
