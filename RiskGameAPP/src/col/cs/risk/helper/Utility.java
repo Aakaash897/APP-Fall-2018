@@ -68,6 +68,9 @@ public class Utility {
 	}
 
 	/**
+	 * Returns the saved game Path
+	 * 
+	 * @return filename path
 	 * 
 	 */
 	public static String getSaveGamePath(String filename) {
@@ -291,7 +294,7 @@ public class Utility {
 	/**
 	 * Checks for complete connection of map
 	 * @param result
-	 * @return
+	 * @return true if the connection of complete map exists 
 	 * @throws MapException
 	 */
 	public boolean isCompleteConnectedMap(String result) throws MapException {
