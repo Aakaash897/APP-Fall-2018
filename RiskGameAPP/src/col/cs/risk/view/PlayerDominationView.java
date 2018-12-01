@@ -14,6 +14,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 
+import col.cs.risk.helper.Utility;
 import col.cs.risk.model.GameModel;
 import col.cs.risk.model.PlayerModel;
 
@@ -55,11 +56,18 @@ public class PlayerDominationView implements Observer {
 		}
 		return playerDominationView;
 	}
-	
+
+	/**
+	 * Checks whether object initialized
+	 * @return
+	 */
 	public static boolean isInitialized() {
 		return playerDominationView != null ? true : false;
 	}
-	
+
+	/**
+	 * Clears all objects
+	 */
 	public static void clear() {
 		if(playerDominationView != null) {
 			playerDominationView.playerFrame.setVisible(false);
@@ -94,9 +102,14 @@ public class PlayerDominationView implements Observer {
 		playerFrame.add(playerDominationViewPanel);
 		playerFrame.setResizable(true);
 		playerFrame.pack();
-		playerFrame.setVisible(true);
+		if(Utility.canShow) {
+			playerFrame.setVisible(true);
+		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void update(Observable object, Object arg) {
 		if (object != null) {

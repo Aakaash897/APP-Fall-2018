@@ -30,6 +30,14 @@ public class CardExchangeModel extends Observable {
 		}
 		return cardExchangeModel;
 	}
+	
+	/**
+	 * Checks whether the instance variable initialized
+	 * @returns true if initialized
+	 */
+	public static boolean isInitialized() {
+		return cardExchangeModel != null ? true : false;
+	}
 
 	/**
 	 * Notifies observers waiting for state change

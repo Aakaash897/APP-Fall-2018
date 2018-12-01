@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import col.cs.risk.controller.StartGameController;
+import col.cs.risk.helper.Utility;
 
 /**
  * This class Start Game Controller test the basic cases related to map file
@@ -48,6 +49,7 @@ public class StartGameControllerTest {
 	 */
 	@Before
 	public void before() {
+		Utility.canShow = false;
 		startGameController = new StartGameController();
 		empty = "";
 		alphabets = "abc\ndef";
@@ -60,6 +62,7 @@ public class StartGameControllerTest {
 	 */
 	@After
 	public void after() {
+		Utility.canShow = true;
 		startGameController = null;
 		empty = null;
 		alphabets = null;

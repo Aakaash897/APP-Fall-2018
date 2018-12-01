@@ -9,8 +9,18 @@ import col.cs.risk.model.GameModel;
 import col.cs.risk.model.PlayerModel;
 import col.cs.risk.model.TerritoryModel;
 
+/**
+ * Computer player Benevolent (as strategy) functionalities
+ * @author Team 25
+ *
+ */
 public class Benevolent implements IStrategy, Serializable {
 
+	/**
+	 * serial version id
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	/** Player Model */
 	PlayerModel playerModel;
 
@@ -18,7 +28,7 @@ public class Benevolent implements IStrategy, Serializable {
 	public Benevolent() {
 
 	}
-	
+	/** Weakest territory */
 	private TerritoryModel weakestTerritory;
 	
 	/**
@@ -29,6 +39,9 @@ public class Benevolent implements IStrategy, Serializable {
 		this.playerModel = playerModel;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void initialReInforce(GameModel gameModel) {
 		TerritoryModel model = getWeakestTerritory();
@@ -37,6 +50,9 @@ public class Benevolent implements IStrategy, Serializable {
 		gameModel.gamePhasePlayerTurnSetup1(model);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void reInforce(GameModel gameModel) {
 		initialReInforce(gameModel);
@@ -84,7 +100,7 @@ public class Benevolent implements IStrategy, Serializable {
 			}
 			break;
 		case Constants.FORTIFYING_PHASE:
-			territoryModel = weakestTerritory; //getWeakestTerritory();
+			territoryModel = weakestTerritory; 
 			if (territoryModel != null) {
 				Utility.writeLog("Moving armies to territory = "+territoryModel.getName()+", no of armies = "+territoryModel.getArmies());
 				gameModel.setMoveArmiesToTerritory(territoryModel);
@@ -105,6 +121,10 @@ public class Benevolent implements IStrategy, Serializable {
 		return str;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void autoFortifyArmies(GameModel gameModel) {
 		if(gameModel.getMoveArmiesFromTerritory() != null && 
 				gameModel.getMoveArmiesFromTerritory().getArmies() > 1 &&
@@ -120,11 +140,18 @@ public class Benevolent implements IStrategy, Serializable {
 		gameModel.setState(Constants.CHANGE_TURN);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getStrategyString() {
 		return Constants.BENEVOLENT;
 	}
 
+	/**
+	 * Returns the weakest territory among all occupied territory
+	 * @returns weakest territory
+	 */
 	private TerritoryModel getWeakestTerritory() {
 		TerritoryModel weakest = playerModel.getOccupiedTerritories().get(0);
 		Vector<TerritoryModel> territories = new Vector<>();
@@ -143,24 +170,14 @@ public class Benevolent implements IStrategy, Serializable {
 		return weakest;
 	}
 
+	/**
+	 * Returns strongest adjacent to weakest territory
+	 * @param gameModel
+	 * @return Strongest adjacent
+	 */
 	private TerritoryModel getWeakestTerritoryStrongestAdjacent(GameModel gameModel) {
-		//gameModel.setMoveArmiesFromTerritory(getWeakestTerritory());
 		weakestTerritory = getWeakestTerritory();
 		TerritoryModel strongestTerritory = null;
-		//Vector<TerritoryModel> territories = playerModel.getOccupiedTerritories();
-		/*for(TerritoryModel territory:territories) {
-			if(gameModel.getMoveArmiesFromTerritory().getId() != territory.getId() &&
-					(gameModel.getMoveArmiesFromTerritory().getAdjacentTerritories().contains(territory) 
-							|| playerModel.isFortificationPossibleByMultipleHop(gameModel, territory))) {
-				if(strongestTerritory == null) {
-					strongestTerritory = territory;
-					break;
-				} else if(territory.getArmies() > strongestTerritory.getArmies()) {
-					strongestTerritory = territory;
-					break;
-				}
-			}
-		}*/
 		for(TerritoryModel territory:playerModel.getOccupiedTerritories()) {
 			if(weakestTerritory.getId() != territory.getId() && territory.getArmies() > 1 &&
 					weakestTerritory.getAdjacentTerritories().contains(territory)) {
@@ -188,6 +205,4 @@ public class Benevolent implements IStrategy, Serializable {
 		gameModel.setMoveArmiesFromTerritory(null);
 		return strongestTerritory;
 	}
-
-
 }
