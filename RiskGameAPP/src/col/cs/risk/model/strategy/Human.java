@@ -8,7 +8,17 @@ import col.cs.risk.model.GameModel;
 import col.cs.risk.model.PlayerModel;
 import col.cs.risk.model.TerritoryModel;
 
+/**
+ * Computer player Human (as strategy) functionalities
+ * @author Team25
+ *
+ */
 public class Human implements IStrategy, Serializable {
+	
+	/**
+	 * serial version id
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/** Player Model */
 	PlayerModel playerModel;

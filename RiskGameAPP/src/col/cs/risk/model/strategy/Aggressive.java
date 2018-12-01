@@ -9,6 +9,13 @@ import col.cs.risk.model.GameModel;
 import col.cs.risk.model.PlayerModel;
 import col.cs.risk.model.TerritoryModel;
 
+
+/**
+ * Computer player Aggressive (as strategy) functionalities
+ * 
+ * @author Team25
+ *
+ */
 public class Aggressive implements IStrategy, Serializable {
 
 	/** Player Model */
