@@ -60,7 +60,7 @@ public class StartGameController {
 	 */
 	public StartGameController() {
 		Utility.writeLog("*********************** The Risk Game starts **********************", false);
-		if(Utility.canShow) {
+		if (Utility.canShow) {
 			new HomePageViewLoader(this).setVisible(true);
 		}
 		new LoadExistingMapController(this);
@@ -119,8 +119,7 @@ public class StartGameController {
 	}
 
 	/**
-	 * @param homePageViewLoader
-	 *            the homePageViewLoader to set
+	 * @param homePageViewLoader the homePageViewLoader to set
 	 */
 	public void setHomePageViewLoader(HomePageViewLoader homePageViewLoader) {
 		this.homePageViewLoader = homePageViewLoader;
@@ -199,7 +198,7 @@ public class StartGameController {
 	}
 
 	/**
-	 * For setting the options of tournament
+	 * For the options of tournament
 	 */
 	public void setTournamentOptions() {
 		GameModel.reports.clear();
@@ -267,8 +266,7 @@ public class StartGameController {
 	}
 
 	/**
-	 * @param mapConstructionView
-	 *            the mapConstructionView to set
+	 * @param mapConstructionView the mapConstructionView to set
 	 */
 	public void setMapConstructionView(MapConstructionView mapConstructionView) {
 		this.mapConstructionView = mapConstructionView;
@@ -282,8 +280,7 @@ public class StartGameController {
 	}
 
 	/**
-	 * @param constructNewMapView
-	 *            the constructNewMapView to set
+	 * @param constructNewMapView the constructNewMapView to set
 	 */
 	public void setConstructNewMapView(ConstructNewMapView constructNewMapView) {
 		this.constructNewMapView = constructNewMapView;
@@ -306,12 +303,9 @@ public class StartGameController {
 	/**
 	 * Action performed on create button pressed on new map construction page
 	 * 
-	 * @param line
-	 *            Map section
-	 * @param line1
-	 *            Continent section
-	 * @param line2
-	 *            Country section
+	 * @param line  Map section
+	 * @param line1 Continent section
+	 * @param line2 Country section
 	 */
 	public void actionPerformedOnMapCreateButton(String line, String line1, String line2) {
 		StringBuilder mapString = new StringBuilder();
@@ -363,7 +357,7 @@ public class StartGameController {
 	 * @param visible
 	 */
 	public void setHomePageVisiblility(boolean visible) {
-		if(Utility.canShow) {
+		if (Utility.canShow) {
 			homePageViewLoader.setVisible(visible);
 		}
 	}
@@ -384,6 +378,7 @@ public class StartGameController {
 
 	/**
 	 * Load saved game action performed
+	 * 
 	 * @param e
 	 */
 	public void loadSavedGameButtonActionPerformed(ActionEvent e) {
