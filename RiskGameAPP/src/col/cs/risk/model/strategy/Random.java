@@ -11,6 +11,7 @@ import col.cs.risk.model.TerritoryModel;
 
 /**
  * Computer player Random (as strategy) functionalities
+ * 
  * @author Team 25
  *
  */
@@ -190,6 +191,7 @@ public class Random implements IStrategy, Serializable {
 
 	/**
 	 * Gets a territory randomly
+	 * 
 	 * @returns territory
 	 */
 	private TerritoryModel getRandomTerritory() {
@@ -199,6 +201,7 @@ public class Random implements IStrategy, Serializable {
 
 	/**
 	 * Gets a own territory randomly to attack from
+	 * 
 	 * @returns territory
 	 */
 	private TerritoryModel getRandomTerritoryToAttackFrom() {
@@ -229,6 +232,7 @@ public class Random implements IStrategy, Serializable {
 
 	/**
 	 * Gets others territory randomly to attack
+	 * 
 	 * @returns territory
 	 */
 	private TerritoryModel getNeighbourToAttack() {
@@ -248,6 +252,7 @@ public class Random implements IStrategy, Serializable {
 	
 	/**
 	 * Gets a territory randomly to fortify(move armies) from
+	 * 
 	 * @returns territory
 	 */
 	private TerritoryModel getRandomTerritoryToFortifyFrom() {
@@ -268,7 +273,7 @@ public class Random implements IStrategy, Serializable {
 	/**
 	 * Gets a territory randomly to move armies to
 	 * @param gameModel
-	 * @return
+	 * @return territory model instance
 	 */
 	private TerritoryModel getRandomTerritoryToMoveArmiesTo(GameModel gameModel) {
 		Vector<TerritoryModel> territories = new Vector<>();

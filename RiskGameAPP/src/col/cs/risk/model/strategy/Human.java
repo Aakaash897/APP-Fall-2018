@@ -125,21 +125,33 @@ public class Human implements IStrategy, Serializable {
 		return str;
 	}
 
+	/** 
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getStrategyString() {
 		return Constants.HUMAN;
 	}
 
+	/** 
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void initialReInforce(GameModel gameModel) {
 		gameModel.gamePhasePlayerTurnSetup1(gameModel.getSelectedTerritory());
 	}
 
+	/** 
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void reInforce(GameModel gameModel) {
 		gameModel.gamePhasePlayerTurnSetup1(gameModel.getSelectedTerritory());
 	}
 
+	/** 
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void autoFortifyArmies(GameModel gameModel) {
 		//do nothing
