@@ -201,7 +201,7 @@ public class TournamentSettingsView extends JFrame {
 				System.out.println(" playersStrategiesMap key = "+playersStrategiesMap.keySet().stream().map(x->x.toString()).collect(Collectors.toList()));
 				System.out.println(" playersStrategiesMap val = "+playersStrategiesMap.values().stream().map(x->x.toString()).collect(Collectors.toList()));
 
-				/* Setting variables for GameModel Class */
+				/* Setting variables for GameModel  */
 				GameModel.isTournamentMode = true;
 				GameModel.tournamentNoOfMaps = numOfMaps;
 				GameModel.tournamentNoOfGame = noOfGames;

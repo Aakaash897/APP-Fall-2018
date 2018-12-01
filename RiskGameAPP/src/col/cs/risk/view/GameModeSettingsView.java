@@ -21,10 +21,13 @@ import col.cs.risk.controller.StartGameController;
 
 public class GameModeSettingsView extends JFrame {
 
+	/** SingleMode JButton */
 	private JButton singleMode;
-
+	
+	/** Tournament Mode JButton */
 	private JButton tournamentMode;
-
+	
+	/** Panel Instance */
 	private JPanel startJPanel;
 
 	/** Game controller */
@@ -34,6 +37,12 @@ public class GameModeSettingsView extends JFrame {
 		setTitle("Mode Choice");
 	}
 
+	/**
+	 * Assigns the StartGameController object and Calls the initComponents 
+	 * function to initialize all the components
+	 * 
+	 * @param gameController instance of the StartGameCOntroler Class
+	 */
 	public GameModeSettingsView(StartGameController gameController) {
 		this();
 		this.startGameController = gameController;
@@ -41,6 +50,11 @@ public class GameModeSettingsView extends JFrame {
 		initComponents();
 	}
 
+	/**
+	 * Function to initialize components required for the view/UI. This includes
+	 * the Background color and other components such as the buttons and Panel
+	 * 
+	 */
 	public void initComponents() {
 
 		singleMode = new JButton();
@@ -57,6 +71,8 @@ public class GameModeSettingsView extends JFrame {
 
 		singleMode.setName("singlemode");
 		singleMode.setText("Single Mode");
+		
+		/* Action Performed for Button Selection */
 		singleMode.addActionListener(new ActionListener() {
 
 			@Override
@@ -68,6 +84,8 @@ public class GameModeSettingsView extends JFrame {
 
 		tournamentMode.setName("tournamentmode");
 		tournamentMode.setText("Tournament Mode");
+		
+		/* Action Performed for Button Selection */
 		tournamentMode.addActionListener(new ActionListener() {
 
 			@Override
@@ -83,6 +101,11 @@ public class GameModeSettingsView extends JFrame {
 
 	}
 
+	/**
+	 * Combines all the components in the JFrames/JPanel and adds it
+	 * to the group layout along with alignment and color attributes.
+	 * 
+	 */
 	private void loadModePage() {
 
 	 GroupLayout groupLayout = new GroupLayout(startJPanel);
@@ -107,6 +130,12 @@ public class GameModeSettingsView extends JFrame {
 		pack();
 	}
 
+	
+	/**
+	 * Sets the Background color of the calling Panel
+	 * 
+	 * @param bgColor is the object for the Color Class
+	 */
 	@Override
 	public void setBackground(Color bgColor) {
 		synchronized (getTreeLock()) {
@@ -117,6 +146,11 @@ public class GameModeSettingsView extends JFrame {
 		}
 	}
 
+	/**
+	 * Function transfers the control back to the Controller Class
+	 * 
+	 * @param event Event Instance
+	 */
 	private void exitForm(java.awt.event.WindowEvent event) {
 		setVisible(false);
 		startGameController.setHomePageVisiblility(true);
