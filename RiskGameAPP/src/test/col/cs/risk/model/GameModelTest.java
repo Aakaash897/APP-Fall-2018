@@ -418,4 +418,15 @@ public class GameModelTest {
 			assertEquals(Constants.NOT_COMPLETE_CONNECTED_MAP_MESSAGE, ex.getMessage());
 		}
 	}
+	
+	/**
+	 * Test case to check whether all territories have adjacent territories in a map file
+	 */
+	@Test
+	public void testIsAllTerritoriesHaveAdjacents(){
+		
+		assertTrue(gameModel.isAllTerritoriesHaveAdjacents(mapString.toString()));
+		String invalidMapString = (mapString.toString()).replaceFirst("South America", "Hi");
+		assertTrue(gameModel.isAllTerritoriesHaveAdjacents(invalidMapString));
+	}
 }
