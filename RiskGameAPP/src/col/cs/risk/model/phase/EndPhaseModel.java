@@ -29,6 +29,8 @@ public class EndPhaseModel extends Observable implements GamePhase, Serializable
 	private String message;
 
 	/**
+	 * this method returns the instance of this class. if the instance of the class
+	 * is not created it creates and returns it otherwise returns it.
 	 * 
 	 * @return instance of FortificationPhaseModel
 	 */

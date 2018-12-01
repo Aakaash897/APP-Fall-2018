@@ -27,11 +27,13 @@ public class AttackPhaseModel extends Observable implements GamePhase, Serializa
 
 	/** String to update on view */
 	private StringBuilder stringBuilder;
-	
+
 	/** for the player info */
 	private String message;
 
 	/**
+	 * this method returns the instance of this class. if the instance of the class
+	 * is not created it creates and returns it otherwise returns it.
 	 * 
 	 * @returns instance of AttackPhaseModel
 	 */
@@ -41,15 +43,16 @@ public class AttackPhaseModel extends Observable implements GamePhase, Serializa
 		}
 		return attackPhaseModel;
 	}
-	
+
 	/**
 	 * Checks whether the instance variable initialized
+	 * 
 	 * @returns true if initialized
 	 */
 	public static boolean isInitialized() {
 		return attackPhaseModel != null ? true : false;
 	}
-	
+
 	/**
 	 * De initializes the instance variable
 	 */
@@ -126,31 +129,31 @@ public class AttackPhaseModel extends Observable implements GamePhase, Serializa
 				stringBuilder.append(" ( ");
 				stringBuilder.append(gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel().getName());
 				stringBuilder.append(" - ");
-				stringBuilder.append(gameModel.getCurrentPlayer().getDefendingTerritory().
-						getPlayerModel().getStrategy().getStrategyString());
+				stringBuilder.append(gameModel.getCurrentPlayer().getDefendingTerritory().getPlayerModel().getStrategy()
+						.getStrategyString());
 				stringBuilder.append(" ) \n");
 			}
 			break;
 		case Constants.ATTACK_FIGHT_PHASE:
-			if(Constants.ATTACK_DICE_SELECTION.equals(message)) {
+			if (Constants.ATTACK_DICE_SELECTION.equals(message)) {
 				message = "";
-				stringBuilder.append("Attacking no of dice: "+gameModel.getCurrentPlayer().getAttackingNoOfDice());
+				stringBuilder.append("Attacking no of dice: " + gameModel.getCurrentPlayer().getAttackingNoOfDice());
 				stringBuilder.append("\n");
-			} else if(Constants.DEFEND_DICE_SELECTION.equals(message)) {
+			} else if (Constants.DEFEND_DICE_SELECTION.equals(message)) {
 				message = "";
-				stringBuilder.append("Defending no of dice: "+gameModel.getCurrentPlayer().getDefendingNoOfDice());
+				stringBuilder.append("Defending no of dice: " + gameModel.getCurrentPlayer().getDefendingNoOfDice());
 				stringBuilder.append("\n");
-			} else if(Constants.SHOW_DICE_SELECTION.equals(message)) {
+			} else if (Constants.SHOW_DICE_SELECTION.equals(message)) {
 				message = "";
-				for (Integer i:gameModel.getCurrentPlayer().getAttackingDiceList().keySet()) {
-					stringBuilder.append("Attacking dice no: "+i+",  & rolled phase is: "+
-							gameModel.getCurrentPlayer().getAttackingDiceList().get(i));
+				for (Integer i : gameModel.getCurrentPlayer().getAttackingDiceList().keySet()) {
+					stringBuilder.append("Attacking dice no: " + i + ",  & rolled phase is: "
+							+ gameModel.getCurrentPlayer().getAttackingDiceList().get(i));
 					stringBuilder.append("\n");
 				}
 				stringBuilder.append("\n");
-				for (Integer i:gameModel.getCurrentPlayer().getDefendingDiceList().keySet()) {
-					stringBuilder.append("Defending dice no: "+i+",  & rolled phase is: "+
-							gameModel.getCurrentPlayer().getDefendingDiceList().get(i));
+				for (Integer i : gameModel.getCurrentPlayer().getDefendingDiceList().keySet()) {
+					stringBuilder.append("Defending dice no: " + i + ",  & rolled phase is: "
+							+ gameModel.getCurrentPlayer().getDefendingDiceList().get(i));
 					stringBuilder.append("\n");
 				}
 			} else if (gameModel.getCurrentPlayer().getGameController() != null) {
@@ -160,9 +163,9 @@ public class AttackPhaseModel extends Observable implements GamePhase, Serializa
 			}
 			break;
 		case Constants.CAPTURE:
-			if(Constants.MOVING_ARMIES.equals(message)) {
+			if (Constants.MOVING_ARMIES.equals(message)) {
 				message = "";
-				stringBuilder.append("Moving "+gameModel.getNoOfArmiesToMove());
+				stringBuilder.append("Moving " + gameModel.getNoOfArmiesToMove());
 				stringBuilder.append(" armies to newly captured territory\n");
 				stringBuilder.append("----------------------------------\n");
 			} else if (gameModel.getCurrentPlayer().getGameController() != null) {

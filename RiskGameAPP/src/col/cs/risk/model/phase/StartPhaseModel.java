@@ -28,6 +28,8 @@ public class StartPhaseModel extends Observable implements GamePhase, Serializab
 	private static StartPhaseModel startPhaseModel;
 
 	/**
+	 * this method returns the instance of this class. if the instance of the class
+	 * is not created it creates and returns it otherwise returns it.
 	 * 
 	 * @return instance of StartPhaseModel
 	 */
@@ -37,15 +39,16 @@ public class StartPhaseModel extends Observable implements GamePhase, Serializab
 		}
 		return startPhaseModel;
 	}
-	
+
 	/**
 	 * Checks whether the instance variable initialized
+	 * 
 	 * @returns true if initialized
 	 */
 	public static boolean isInitialized() {
 		return startPhaseModel != null ? true : false;
 	}
-	
+
 	/**
 	 * De-initializes the instance variable
 	 */
