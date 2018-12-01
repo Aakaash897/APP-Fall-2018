@@ -575,7 +575,7 @@ public class GameModel implements Serializable {
 	 * @return true if connected
 	 * @throws MapException
 	 */
-	private boolean isCompleteConnectionExistWithinContinent() throws MapException {
+	public boolean isCompleteConnectionExistWithinContinent() throws MapException {
 		for (ContinentModel continent : continents) {
 			if (continent.getTerritories().size() > 1) {
 				HashSet<Integer> territoryIds = new HashSet<>();

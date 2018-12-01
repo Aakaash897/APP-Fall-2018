@@ -168,11 +168,19 @@ public class StartGameController {
 		playerSettingsController = new PlayerSettingsController(this);
 	}
 
+	/**
+	 * Show the view of the tournament mode
+	 */
 	public void tournamentMode() {
 		homePageViewLoader.setVisible(false);
 		new TournamentSettingsView(this).setVisible(true);
 	}
 
+	/**
+	 * Save the tournament mode settings
+	 * @param noOfPlayers
+	 * @param playersStrategiesMap
+	 */
 	public void tournamentModeOKButtonActionPerformed(int noOfPlayers, HashMap<Integer, String> playersStrategiesMap) {
 		if (playerSettingsController == null) {
 			playerSettingsController = new PlayerSettingsController();
@@ -188,6 +196,9 @@ public class StartGameController {
 		playerSettingsController.playerStrategyTypeSaveActionPerformed(playersStrategies);
 	}
 
+	/**
+	 * For setting the options of tournament
+	 */
 	public void setTournamentOptions() {
 		GameModel.reports.clear();
 		for (int i = 0; i < GameModel.tournamentNoOfMaps; i++) {
