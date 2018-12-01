@@ -429,4 +429,35 @@ public class GameModelTest {
 		String invalidMapString = (mapString.toString()).replaceFirst("South America", "Hi");
 		assertTrue(gameModel.isAllTerritoriesHaveAdjacents(invalidMapString));
 	}
+	
+	/**
+	 * Test case to check whether territories in continent are valid
+	 */
+	@Test
+	public void testisTerritoryValidInContinent() {
+		ContinentModel continent = new ContinentModel(1, "C1", 2);
+		TerritoryModel territory1 = new TerritoryModel(1, "T1", 10, 20, continent);
+		TerritoryModel territory2 = new TerritoryModel(2, "T2", 50, 70, continent);
+		TerritoryModel territory3 = new TerritoryModel(3, "T3", 100, 100, continent);
+		TerritoryModel territory4 = new TerritoryModel(4, "T4", 20, 20, continent);
+		
+		territory1.addAdjacentTerritory(territory2);
+		territory2.addAdjacentTerritory(territory3);
+		territory3.addAdjacentTerritory(territory4);
+		territory4.addAdjacentTerritory(territory1);
+		
+		Vector<TerritoryModel> territories = new Vector<>();
+		territories.add(territory1);
+		territories.add(territory2);
+		territories.add(territory3);
+		territories.add(territory4);
+		HashSet<Integer> territoryId = new HashSet<>();
+		territoryId.add(1);
+		territoryId.add(2);
+		territoryId.add(3);
+		territoryId.add(4);
+		continent.setTerritories(territories);
+		assertEquals(gameModel.isTerritoryValidInContinent(continent, territory1, territoryId), territoryId);
+		
+	}
 }
