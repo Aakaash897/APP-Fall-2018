@@ -13,6 +13,7 @@ import org.junit.Test;
 import col.cs.risk.helper.MapException;
 import col.cs.risk.helper.Utility;
 import col.cs.risk.model.Constants;
+import col.cs.risk.model.CardModel;
 import col.cs.risk.model.ContinentModel;
 import col.cs.risk.model.GameModel;
 import col.cs.risk.model.PlayerModel;
@@ -39,6 +40,11 @@ public class GameModelTest {
 	 * Continent model instance
 	 */
 	ContinentModel continentModel;
+	
+         /**
+	 * Card model instance
+	 */
+	CardModel cardModel;
 
 	/**
 	 * Map file contents as String
@@ -459,5 +465,26 @@ public class GameModelTest {
 		continent.setTerritories(territories);
 		assertEquals(gameModel.isTerritoryValidInContinent(continent, territory1, territoryId), territoryId);
 		
+	}
+	
+	
+	/**
+	 * Test case to check it returns the card type according to the armies
+	 */
+	@Test
+	public void testGetCardTypeAsString() {
+		ContinentModel continent = new ContinentModel(1, "C1", 2);
+		TerritoryModel territory1 = new TerritoryModel(1, "T1", 10, 20, continent);
+		cardModel = new CardModel(100,0,territory1);
+		String ARMY_TYPE_INFANTRY = "INFANTRY";
+		System.out.println(cardModel.getCardTypeAsString(0));
+		System.out.println("hi");
+		assertEquals(cardModel.getCardTypeAsString(0),ARMY_TYPE_INFANTRY);	
+		String ARMY_TYPE_CAVALRY = "CAVALRY";
+		assertEquals(cardModel.getCardTypeAsString(1),ARMY_TYPE_CAVALRY);
+		String ARMY_TYPE_ARTILLERY = "ARTILLERY";
+		assertEquals(cardModel.getCardTypeAsString(2),ARMY_TYPE_ARTILLERY);
+		String ARMY_TYPE_WILD = "WILD";
+		assertEquals(cardModel.getCardTypeAsString(4),ARMY_TYPE_WILD);
 	}
 }
