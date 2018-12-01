@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import col.cs.risk.helper.MapException;
+import col.cs.risk.helper.Utility;
 import col.cs.risk.model.Constants;
 import col.cs.risk.model.ContinentModel;
 import col.cs.risk.model.GameModel;
@@ -58,6 +59,7 @@ public class GameModelTest {
 		mapString.append("[Territories]\nAlaska,70,126,North America,Northwest Territory\n");
 		mapString.append("Northwest Territory,148,127,North America,Alaska\n");
 		mapString.append("Venezuala,259,303,South America,Alaska\n");
+		Utility.canShow = false;
 	}
 
 	/**
@@ -67,6 +69,7 @@ public class GameModelTest {
 	public void after() {
 		gameModel = null;
 		mapString = null;
+		Utility.canShow = true;
 	}
 
 	/**
@@ -351,6 +354,7 @@ public class GameModelTest {
 		
 		try {
 			GameModel newGameModel = new GameModel();
+			
 			newGameModel.initialize();
 			
 			// game start phase
@@ -364,7 +368,7 @@ public class GameModelTest {
 			assertEquals(14, newGameModel.getCurrentPlayer().getOccupiedTerritories().size());
 			// 35 - 14(used to occupy counties)
 			assertEquals(21, newGameModel.getCurrentPlayer().getArmies());
-
+			
 		} catch (MapException e) {
 			e.printStackTrace();
 		}
@@ -398,6 +402,19 @@ public class GameModelTest {
 		try {
 			assertEquals(gameModel.isCompleteConnectionExistWithinContinent(),true);
 		} catch (MapException ex) {
+			ex.printStackTrace();
+		}
+		
+		ContinentModel continent1 = new ContinentModel(2, "C2", 2);
+		TerritoryModel territory11 = new TerritoryModel(11, "T11", 10, 10, continent1);
+		TerritoryModel territory22 = new TerritoryModel(22, "T22", 10, 20, continent1);
+		territory1.addAdjacentTerritory(territory11);
+		territory1.addAdjacentTerritory(territory22);
+		
+		try {
+			gameModel.isCompleteConnectionExistWithinContinent();
+		} catch (MapException ex) {
+			ex.printStackTrace();
 			assertEquals(Constants.NOT_COMPLETE_CONNECTED_MAP_MESSAGE, ex.getMessage());
 		}
 	}

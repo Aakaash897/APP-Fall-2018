@@ -9,8 +9,18 @@ import col.cs.risk.model.GameModel;
 import col.cs.risk.model.PlayerModel;
 import col.cs.risk.model.TerritoryModel;
 
+/**
+ * Computer player Random (as strategy) functionalities
+ * @author Team 25
+ *
+ */
 public class Random implements IStrategy, Serializable {
 
+	/**
+	 * serial version id
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	/** Player Model */
 	PlayerModel playerModel;
 
@@ -19,6 +29,9 @@ public class Random implements IStrategy, Serializable {
 
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void initialReInforce(GameModel gameModel) {
 		TerritoryModel model = getRandomTerritory();
@@ -27,6 +40,9 @@ public class Random implements IStrategy, Serializable {
 		gameModel.gamePhasePlayerTurnSetup1(model);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void reInforce(GameModel gameModel) {
 		initialReInforce(gameModel);
@@ -138,6 +154,10 @@ public class Random implements IStrategy, Serializable {
 		return str;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void autoFortifyArmies(GameModel gameModel) {
 		if(gameModel.getMoveArmiesFromTerritory() != null && 
 				gameModel.getMoveArmiesFromTerritory().getArmies() > 1 &&
@@ -160,16 +180,27 @@ public class Random implements IStrategy, Serializable {
 		gameModel.setState(Constants.CHANGE_TURN);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getStrategyString() {
 		return Constants.RANDOM;
 	}
 
+	/**
+	 * Gets a territory randomly
+	 * @returns territory
+	 */
 	private TerritoryModel getRandomTerritory() {
 		return playerModel.getOccupiedTerritories().get(
 				Utility.getRandomNumber(playerModel.getOccupiedTerritories().size()));
 	}
 
+	/**
+	 * Gets a own territory randomly to attack from
+	 * @returns territory
+	 */
 	private TerritoryModel getRandomTerritoryToAttackFrom() {
 		TerritoryModel model = null;
 		int randomAttack = Utility.getRandomNumber(Constants.TWO);
@@ -193,19 +224,13 @@ public class Random implements IStrategy, Serializable {
 		} else {
 			Utility.writeLog("Decides not to attack");
 		}
-
-		/*int noOfTries = Utility.getRandomNumber(territories.size());
-		TerritoryModel model = null;
-		for(int i=0;i<noOfTries;i++) {
-			int random = Utility.getRandomNumber(territories.size());
-			if(territories.get(random).getArmies() > 1) {
-				model = territories.get(random);
-				break;
-			}
-		}*/
 		return model;
 	}
 
+	/**
+	 * Gets others territory randomly to attack
+	 * @returns territory
+	 */
 	private TerritoryModel getNeighbourToAttack() {
 		TerritoryModel territoryModel = null;
 		Vector<TerritoryModel> territories = new Vector<>();
@@ -218,19 +243,13 @@ public class Random implements IStrategy, Serializable {
 		if(territories.size() > 1) {
 			territoryModel = territories.get(Utility.getRandomNumber(territories.size()));
 		}
-
-		/*Vector<TerritoryModel> territories = playerModel.getAttackingTerritory().getAdjacentTerritories();
-		int noOfTries = Utility.getRandomNumber(territories.size());
-		for(int i=0;i<noOfTries;i++) {
-			int random = Utility.getRandomNumber(territories.size());
-			if(territories.get(random).getPlayerModel().getId() != playerModel.getId()) {
-				territoryModel = territories.get(random);
-				break;
-			}
-		}*/
 		return territoryModel;
 	}
 	
+	/**
+	 * Gets a territory randomly to fortify(move armies) from
+	 * @returns territory
+	 */
 	private TerritoryModel getRandomTerritoryToFortifyFrom() {
 		TerritoryModel model = null;
 		Vector<TerritoryModel> territories = new Vector<>();
@@ -246,29 +265,13 @@ public class Random implements IStrategy, Serializable {
 		return model;
 	}
 
+	/**
+	 * Gets a territory randomly to move armies to
+	 * @param gameModel
+	 * @return
+	 */
 	private TerritoryModel getRandomTerritoryToMoveArmiesTo(GameModel gameModel) {
-		/*Vector<TerritoryModel> territories = playerModel.getOccupiedTerritories();
-		int noOfTries = Utility.getRandomNumber(territories.size());
-		TerritoryModel model = null;
-		for(int i=0;i<noOfTries;i++) {
-			int random = Utility.getRandomNumber(territories.size());
-			if(gameModel.getMoveArmiesFromTerritory().getId() != territories.get(random).getId() &&
-					(gameModel.getMoveArmiesFromTerritory().getAdjacentTerritories().contains(territories.get(random)) 
-							|| playerModel.isFortificationPossibleByMultipleHop(gameModel, territories.get(random)))) {
-				model = territories.get(random);
-			}
-		}*/
-
-		//TerritoryModel randomTerritoryModel = getRandomTerritoryToFortifyFrom();
 		Vector<TerritoryModel> territories = new Vector<>();
-		/*for(TerritoryModel territory:playerModel.getOccupiedTerritories()) {
-			if(gameModel.getMoveArmiesFromTerritory().getId() != territory.getId() &&
-					gameModel.getMoveArmiesFromTerritory().getAdjacentTerritories().contains(territory)) {
-				territories.add(territory);
-			}
-		}*/
-
-		//if(territories.size() == 0) {
 		for(TerritoryModel territory:playerModel.getOccupiedTerritories()) {
 			if(gameModel.getMoveArmiesFromTerritory().getId() != territory.getId() &&
 					(gameModel.getMoveArmiesFromTerritory().getAdjacentTerritories().contains(territory) 
@@ -278,7 +281,6 @@ public class Random implements IStrategy, Serializable {
 				}
 			}
 		}
-		//}
 		TerritoryModel model = null;
 		if(territories.size() > 1) {
 			model = territories.get(Utility.getRandomNumber(territories.size()));

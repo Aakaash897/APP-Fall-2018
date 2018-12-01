@@ -61,6 +61,7 @@ public class GameControllerTest {
 	 */
 	@Before
 	public void before() {
+		Utility.canShow = false;
 		gameController = new GameController();
 		gameModel = new GameModel();
 		gameController.setGameModel(gameModel);
@@ -82,6 +83,7 @@ public class GameControllerTest {
 	 */
 	@After
 	public void after() {
+		Utility.canShow = true;
 		gameController = null;
 		gameModel = null;
 		cardTradeView = null;
@@ -129,7 +131,6 @@ public class GameControllerTest {
 		cards.addElement(card7);
 		cards.addElement(card8);
 		playerModel.addCards(cards);
-		Utility.timerToClose = true;
 
 		// invalid set of cards
 		// 3 wild cards
@@ -167,17 +168,6 @@ public class GameControllerTest {
 	}
 	
 	/**
-	 * Test to check the load saved game functionality
-	 */
-	@Test
-	public void testLoadSavedGame() {
-		//assertNotNull(gameController.loadSavedGame());
-		
-		Constants.DEFAULT_SAVED_GAME_FILE_NAME = "nullFile";
-		assertNull(gameController.loadSavedGame());
-	}
-	
-	/**
 	 * Test case for game saving and loading
 	 */
 	@Test
@@ -189,7 +179,7 @@ public class GameControllerTest {
 		players.add(playerModel);
 		players.add(playerModel2);
 		players.add(playerModel3);
-		gameModel.players = players;
+		GameModel.players = players;
 		gameModel.setState(Constants.RE_ENFORCEMENT_PHASE);
 		
 		gameController.saveGame();
@@ -198,10 +188,13 @@ public class GameControllerTest {
 		assertEquals(Constants.RE_ENFORCEMENT_PHASE, savedResult.getState());
 		assertEquals(playerModel.getName(), savedResult.getCurrentPlayer().getName());
 		assertEquals(players.size(), savedResult.players.size());
+		
+		Constants.DEFAULT_SAVED_GAME_FILE_NAME = "nullFile";
+		assertNull(gameController.loadSavedGame());
 	}
 	
 	/**
-	 * Test case to test tournament mode
+	 * Test case to test tournament mode functionalities
 	 */
 	@Test
 	public void testTournamentMode() {
@@ -219,7 +212,6 @@ public class GameControllerTest {
 		GameModel.isTournamentMode = true;
 		GameModel.tournamentMapList.addElement(Constants.DEFAULT_MAP_FILE_NAME);
 		GameModel.reports.addElement(new Report(Constants.DEFAULT_MAP_FILE_NAME, GameModel.tournamentNoOfGame));
-		Utility.timerToClose = true;
 		
 		gameController.startNewGame();
 		

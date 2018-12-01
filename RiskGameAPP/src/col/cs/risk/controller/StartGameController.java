@@ -60,7 +60,9 @@ public class StartGameController {
 	 */
 	public StartGameController() {
 		Utility.writeLog("*********************** The Risk Game starts **********************", false);
-		new HomePageViewLoader(this).setVisible(true);
+		if(Utility.canShow) {
+			new HomePageViewLoader(this).setVisible(true);
+		}
 		new LoadExistingMapController(this);
 	}
 
@@ -350,7 +352,9 @@ public class StartGameController {
 	 * @param visible
 	 */
 	public void setHomePageVisiblility(boolean visible) {
-		homePageViewLoader.setVisible(visible);
+		if(Utility.canShow) {
+			homePageViewLoader.setVisible(visible);
+		}
 	}
 
 	/**

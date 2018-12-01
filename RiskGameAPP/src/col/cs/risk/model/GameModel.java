@@ -57,9 +57,15 @@ public class GameModel implements Serializable {
 
 	/** stores if map file modified */
 	public static boolean isBaseMapModified;
+	
+	/** stores if map file modified */
+	public boolean isBaseMapModifiedSavingLoading;
 
 	/** name of the modified file */
 	public static String fileName = Constants.DEFAULT_MAP_FILE_NAME;
+	
+	/** name of the modified file */
+	public String fileNameSavingLoading = Constants.DEFAULT_MAP_FILE_NAME;
 
 	/** current state of the game */
 	private int state;
@@ -84,6 +90,9 @@ public class GameModel implements Serializable {
 
 	/** String for Map Selected */
 	public static String imageSelected = "World.bmp";
+	
+	/** String for Map Selected */
+	public String imageSelectedSavingLoading = "World.bmp";
 
 	/** Map panel */
 	private transient JPanel mainMapPanel;
@@ -159,7 +168,7 @@ public class GameModel implements Serializable {
 
 	/** Current report Object */
 	public static Report currentReport;
-
+	
 	/**
 	 * Instance block to fill player and army details
 	 */
@@ -201,6 +210,7 @@ public class GameModel implements Serializable {
 		territories.clear();
 		currentPlayer = null;
 		isBaseMapModified = false;
+		fileName = Constants.DEFAULT_MAP_FILE_NAME;
 		imageSelected = "World.bmp";
 		mainMapPanel = null;
 		subMapPanel = null;
@@ -575,7 +585,7 @@ public class GameModel implements Serializable {
 	 * @return true if connected
 	 * @throws MapException
 	 */
-	private boolean isCompleteConnectionExistWithinContinent() throws MapException {
+	public boolean isCompleteConnectionExistWithinContinent() throws MapException {
 		for (ContinentModel continent : continents) {
 			if (continent.getTerritories().size() > 1) {
 				HashSet<Integer> territoryIds = new HashSet<>();

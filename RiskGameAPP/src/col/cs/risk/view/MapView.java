@@ -7,9 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.beans.Transient;
-import java.io.File;
-import java.io.FileWriter;
 
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
@@ -28,7 +25,6 @@ import org.netbeans.lib.awtextra.AbsoluteLayout;
 import col.cs.risk.controller.GameController;
 import col.cs.risk.helper.Utility;
 import col.cs.risk.model.Constants;
-import col.cs.risk.model.GameModel;
 
 /**
  * This class handles the display of map and also shows the player details this
@@ -44,10 +40,10 @@ public class MapView extends JFrame implements MouseListener {
 
 	/** status label */
 	private JLabel statusLabel;
-	
+
 	/** Save Button */
 	private JButton saveButton;
-	
+
 	/** attack button */
 	private JButton attackButton;
 
@@ -65,9 +61,6 @@ public class MapView extends JFrame implements MouseListener {
 
 	/** game controller instance */
 	GameController gameController;
-
-	/** timer to close the window */
-	public static boolean timerToClose = false;
 
 	/**
 	 * Default Constructor
@@ -135,14 +128,14 @@ public class MapView extends JFrame implements MouseListener {
 		saveButton.setText(Constants.SAVE);
 		saveButton.setName(Constants.SAVE);
 		saveButton.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				gameController.saveGame();
 			}
 		});
 		gameController.getMapSubPanelPlayer().add(saveButton,new AbsoluteConstraints(435, 30, 90, 30));
-		
+
 		attackButton.setVisible(false);
 		attackButton.setFont(resourceMap.getFont("attackButton.font"));
 		attackButton.setText(Constants.ATTACK_MESSAGE);
@@ -297,26 +290,13 @@ public class MapView extends JFrame implements MouseListener {
 		for (int i = 0; i < maximumNo; i++) {
 			options[i] = i + 1;
 		}
-		if (timerToClose) {
-			JOptionPane pane = new JOptionPane();
-			Thread t1 = new Thread(new Runnable() {
-				@SuppressWarnings("static-access")
-				public void run() {
-					try {
-						Thread.sleep(200);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					pane.getRootFrame().dispose();
-				}
-			});
-			t1.start();
-		}
-		Object value = JOptionPane.showInputDialog(null, "Select the no. of armies to move to the captured country",
-				"Move armies", JOptionPane.QUESTION_MESSAGE, null, options, options[options.length - 1]);
 		int selectedNoOfArmiesToMove = options[options.length - 1];
-		if (value != null) {
-			selectedNoOfArmiesToMove = (Integer) value;
+		if(Utility.canShow) {
+			Object value = JOptionPane.showInputDialog(null, "Select the no. of armies to move to the captured country",
+					"Move armies", JOptionPane.QUESTION_MESSAGE, null, options, options[options.length - 1]);
+			if (value != null) {
+				selectedNoOfArmiesToMove = (Integer) value;
+			}
 		}
 		return selectedNoOfArmiesToMove;
 	}
@@ -468,24 +448,36 @@ public class MapView extends JFrame implements MouseListener {
 		gameController.mouseClicked(event);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
 
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
 
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
 
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
