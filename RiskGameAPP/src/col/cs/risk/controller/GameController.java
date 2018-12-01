@@ -192,9 +192,11 @@ public class GameController {
 			automaticHandleStrategies();
 		} catch (MapException ex) {
 			System.out.println(ex.getMessage());
-			gameModel.clear();
-			gameModel.clearAll();
-			clear();
+			if(gameModel != null) {
+				gameModel.clear();
+				gameModel.clearAll();
+				clear();
+			}
 			ex.clearHistory();
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -221,7 +223,7 @@ public class GameController {
 		GameModel.isBaseMapModified = gameModel.isBaseMapModifiedSavingLoading;
 		GameModel.fileName = gameModel.fileNameSavingLoading;
 		GameModel.imageSelected = gameModel.imageSelectedSavingLoading;
-		
+
 		Utility.writeLog("Current player: " + gameModel.getCurrentPlayer().getName() + " : "
 				+ gameModel.getCurrentPlayer().getStrategy().getStrategyString());
 		Utility.writeLog("No of armies: " + gameModel.getCurrentPlayer().getArmies());
@@ -1279,7 +1281,7 @@ public class GameController {
 			gameModel.isBaseMapModifiedSavingLoading = GameModel.isBaseMapModified;
 			gameModel.fileNameSavingLoading = GameModel.fileName;
 			gameModel.imageSelectedSavingLoading = GameModel.imageSelected;
- 			
+
 			FileOutputStream fileStream = new FileOutputStream(
 					Utility.getSaveGamePath(Constants.DEFAULT_SAVED_GAME_FILE_NAME));
 			ObjectOutputStream objectStream = new ObjectOutputStream(fileStream);
