@@ -668,4 +668,35 @@ public class PlayerModelTest {
 		assertEquals(true,playerModel.isCardTradeRequired());
 	}
 	
+	
+	/**
+	 * Test case to Check whether player win the game
+	 */
+	@Test
+	public void testWinningStatus() {
+		PlayerModel playerModel1 = new PlayerModel(101, "player1");
+		PlayerModel playerModel2 = new PlayerModel(102, "player2");
+
+		ContinentModel continent = new ContinentModel(1, "C1", 2);
+		TerritoryModel territory1 = new TerritoryModel(1, "T1", 10, 20, continent);
+		TerritoryModel territory2 = new TerritoryModel(2, "T2", 50, 70, continent);
+		TerritoryModel territory3 = new TerritoryModel(3, "T3", 100, 100, continent);
+
+		territory1.setPlayerModel(playerModel1);
+		territory2.setPlayerModel(playerModel1);
+		territory3.setPlayerModel(playerModel2);
+
+		Vector<TerritoryModel> territorries = new Vector<>();
+		territorries.add(territory1);
+		territorries.add(territory2);
+		territorries.add(territory3);
+
+		gameModel.setTerritories(territorries);
+		gameModel.setCurrentPlayer(playerModel1);
+
+		assertFalse(playerModel.winningStatus(gameModel));
+
+		territory3.setPlayerModel(playerModel1);
+		assertTrue(playerModel.winningStatus(gameModel));
+	}
 }
