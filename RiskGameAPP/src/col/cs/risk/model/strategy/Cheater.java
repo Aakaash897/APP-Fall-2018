@@ -9,8 +9,18 @@ import col.cs.risk.model.GameModel;
 import col.cs.risk.model.PlayerModel;
 import col.cs.risk.model.TerritoryModel;
 
+/**
+ * Computer player Cheater (as strategy) functionalities
+ * @author Team 25
+ *
+ */
 public class Cheater implements IStrategy, Serializable {
 
+	/**
+	 * serial version id
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	/** Player Model */
 	PlayerModel playerModel;
 
@@ -27,6 +37,9 @@ public class Cheater implements IStrategy, Serializable {
 		this.playerModel = playerModel;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void initialReInforce(GameModel gameModel) {
 		TerritoryModel model = getRandomTerritory();
@@ -35,6 +48,9 @@ public class Cheater implements IStrategy, Serializable {
 		gameModel.gamePhasePlayerTurnSetup1(model);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void reInforce(GameModel gameModel) {
 		for(TerritoryModel territoryModel:playerModel.getOccupiedTerritories()) {
@@ -75,10 +91,8 @@ public class Cheater implements IStrategy, Serializable {
 			gameModel.notifyPhaseChanging();
 			gameModel.notifyPhaseChange();
 
-			//if(playerModel.winningStatus(gameModel)) {
 			if(gameModel.isWon()) {
 				gameModel.setState(Constants.END_PHASE);
-				//str = Utility.replacePartInMessage(Constants.WINNER, Constants.CHAR_A, playerModel.getName());
 			} else {
 				if(newTerritories.size() > 0) {
 					playerModel.assignCard(gameModel);
@@ -122,16 +136,26 @@ public class Cheater implements IStrategy, Serializable {
 		return "";
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getStrategyString() {
 		return Constants.CHEATER;
 	}
 
+	/**
+	 * Returns a territory randomly
+	 * @returns territory
+	 */
 	private TerritoryModel getRandomTerritory() {
 		return playerModel.getOccupiedTerritories().get(
 				Utility.getRandomNumber(playerModel.getOccupiedTerritories().size()));
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void autoFortifyArmies(GameModel gameModel) {
 		//do nothing

@@ -11,6 +11,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 
+import col.cs.risk.helper.Utility;
 import col.cs.risk.model.phase.GamePhase;
 
 /**
@@ -21,7 +22,6 @@ import col.cs.risk.model.phase.GamePhase;
  * @author Team25
  *
  */
-
 public class PhaseView implements Observer {
 
 	/** Phase View panel */
@@ -73,9 +73,14 @@ public class PhaseView implements Observer {
 		phaseFrame.add(phaseViewPanel);
 		phaseFrame.setResizable(true);
 		phaseFrame.pack();
-		phaseFrame.setVisible(true);
+		if(Utility.canShow) {
+			phaseFrame.setVisible(true);
+		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void update(Observable object, Object arg) {
 		if (object != null) {
@@ -83,7 +88,10 @@ public class PhaseView implements Observer {
 		}
 		phaseFrame.repaint();
 	}
-	
+
+	/**
+	 * Dispose all components
+	 */
 	public void dispose() {
 		phaseFrame.dispose();
 		phaseInfoMonitor = null;

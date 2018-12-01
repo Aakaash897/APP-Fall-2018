@@ -1,7 +1,6 @@
 package test.col.cs.risk.model;
 
 import static org.junit.Assert.assertEquals;
-
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -23,7 +22,6 @@ import col.cs.risk.model.GameModel;
 import col.cs.risk.model.PlayerModel;
 import col.cs.risk.model.TerritoryModel;
 import col.cs.risk.model.strategy.Human;
-import col.cs.risk.model.strategy.IStrategy;
 import col.cs.risk.view.MapView;
 
 /**
@@ -60,6 +58,7 @@ public class PlayerModelTest {
 		playerModel.setStrategy(new Human(playerModel));
 		gameModel = new GameModel();
 		gameModel.setCurrentPlayer(playerModel);
+		Utility.canShow = false;
 	}
 
 	/**
@@ -69,6 +68,7 @@ public class PlayerModelTest {
 	public void after() {
 		playerModel = null;
 		gameModel = null;
+		Utility.canShow = true;
 	}
 
 	/**
@@ -228,6 +228,72 @@ public class PlayerModelTest {
 		tmodel1.setArmies(1);
 		tmodel3.setArmies(1);
 		assertFalse(playerModel.canAttack());
+	}
+	
+	/**
+	 * Test case to verify the canFortify method
+	 */
+	@Test
+	public void testCanFortify() {
+		PlayerModel playerModelOther = new PlayerModel(102, "player2");
+		TerritoryModel tmodel1 = new TerritoryModel(201, "tname1", 10, 20, new ContinentModel(301, "cname1", 3));
+		TerritoryModel tmodel2 = new TerritoryModel(202, "tname2", 30, 40, new ContinentModel(302, "cname2", 5));
+		TerritoryModel tmodel3 = new TerritoryModel(203, "tname3", 30, 40, new ContinentModel(301, "cname1", 3));
+		TerritoryModel tmodel4 = new TerritoryModel(204, "tname4", 30, 40, new ContinentModel(302, "cname2", 5));
+		TerritoryModel tmodel5 = new TerritoryModel(205, "tname5", 30, 40, new ContinentModel(301, "cname1", 3));
+		TerritoryModel tmodel6 = new TerritoryModel(206, "tname6", 30, 40, new ContinentModel(301, "cname1", 3));
+
+		tmodel1.addAdjacentTerritory(tmodel2);
+		tmodel1.addAdjacentTerritory(tmodel6);
+
+		tmodel2.addAdjacentTerritory(tmodel1);
+		tmodel2.addAdjacentTerritory(tmodel3);
+
+		tmodel3.addAdjacentTerritory(tmodel2);
+		tmodel3.addAdjacentTerritory(tmodel4);
+
+		tmodel4.addAdjacentTerritory(tmodel3);
+		tmodel4.addAdjacentTerritory(tmodel5);
+
+		tmodel5.addAdjacentTerritory(tmodel4);
+		tmodel5.addAdjacentTerritory(tmodel6);
+
+		tmodel6.addAdjacentTerritory(tmodel5);
+		tmodel6.addAdjacentTerritory(tmodel1);
+
+		tmodel1.setArmies(4);
+		tmodel2.setArmies(2);
+		tmodel3.setArmies(6);
+		tmodel4.setArmies(8);
+		tmodel5.setArmies(4);
+		tmodel6.setArmies(10);
+
+		Vector<TerritoryModel> territories = new Vector<>();
+		territories.add(tmodel1);
+		territories.add(tmodel2);
+		territories.add(tmodel3);
+		tmodel1.setPlayerModel(playerModel);
+		tmodel2.setPlayerModel(playerModel);
+		tmodel3.setPlayerModel(playerModel);
+
+		Vector<TerritoryModel> territories1 = new Vector<>();
+		territories1.add(tmodel4);
+		territories1.add(tmodel5);
+		territories1.add(tmodel6);
+		tmodel4.setPlayerModel(playerModelOther);
+		tmodel5.setPlayerModel(playerModelOther);
+		tmodel6.setPlayerModel(playerModelOther);
+
+		playerModel.setOccupiedTerritories(territories);
+		playerModelOther.setOccupiedTerritories(territories1);
+		gameModel.setCurrentPlayer(playerModel);
+
+		assertTrue(playerModel.canFortify());
+
+		tmodel1.setArmies(1);
+		tmodel2.setArmies(1);
+		tmodel3.setArmies(1);
+		assertFalse(playerModel.canFortify());
 	}
 
 	/**
@@ -455,8 +521,6 @@ public class PlayerModelTest {
 		gameController.setMapSubPanelPlayer(mapSubPanelPlayer);
 		new MapView(gameController);
 		playerModel.setGameController(gameController);
-		MapView.timerToClose = true;
-		Utility.timerToClose = true;
 		
 		Vector<PlayerModel> players = new Vector<>();
 		players.add(playerModel);
@@ -491,7 +555,7 @@ public class PlayerModelTest {
 
 		// Won the battle and game 
 		playerModel.updateResult(gameModel);
-		assertEquals(Constants.END_PHASE, gameModel.getState());
+		assertEquals(Constants.NEW_GAME, gameModel.getState());
 	}
 
 	/**
@@ -604,4 +668,35 @@ public class PlayerModelTest {
 		assertEquals(true,playerModel.isCardTradeRequired());
 	}
 	
+	
+	/**
+	 * Test case to Check whether player win the game
+	 */
+	@Test
+	public void testWinningStatus() {
+		PlayerModel playerModel1 = new PlayerModel(101, "player1");
+		PlayerModel playerModel2 = new PlayerModel(102, "player2");
+
+		ContinentModel continent = new ContinentModel(1, "C1", 2);
+		TerritoryModel territory1 = new TerritoryModel(1, "T1", 10, 20, continent);
+		TerritoryModel territory2 = new TerritoryModel(2, "T2", 50, 70, continent);
+		TerritoryModel territory3 = new TerritoryModel(3, "T3", 100, 100, continent);
+
+		territory1.setPlayerModel(playerModel1);
+		territory2.setPlayerModel(playerModel1);
+		territory3.setPlayerModel(playerModel2);
+
+		Vector<TerritoryModel> territorries = new Vector<>();
+		territorries.add(territory1);
+		territorries.add(territory2);
+		territorries.add(territory3);
+
+		gameModel.setTerritories(territorries);
+		gameModel.setCurrentPlayer(playerModel1);
+
+		assertFalse(playerModel.winningStatus(gameModel));
+
+		territory3.setPlayerModel(playerModel1);
+		assertTrue(playerModel.winningStatus(gameModel));
+	}
 }

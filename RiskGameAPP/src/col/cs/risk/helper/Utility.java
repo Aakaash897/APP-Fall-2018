@@ -44,7 +44,7 @@ public class Utility {
 	public static StringBuilder baseMapString;
 
 	/** timer to close the window */
-	public static boolean timerToClose = false;
+	public static boolean canShow = true;
 
 	/** static block to initialize player color map */
 	static {
@@ -68,6 +68,9 @@ public class Utility {
 	}
 
 	/**
+	 * Returns the saved game Path
+	 * 
+	 * @return filename path
 	 * 
 	 */
 	public static String getSaveGamePath(String filename) {
@@ -201,22 +204,9 @@ public class Utility {
 	 * @param title
 	 */
 	public static void showMessagePopUp(String message, String title) {
-		if (timerToClose) {
-			JOptionPane pane = new JOptionPane();
-			Thread t1 = new Thread(new Runnable() {
-				@SuppressWarnings("static-access")
-				public void run() {
-					try {
-						Thread.sleep(200);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					pane.getRootFrame().dispose();
-				}
-			});
-			t1.start();
+		if (canShow) {
+			JOptionPane.showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
 		}
-		JOptionPane.showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
 	}
 
 	/**
@@ -301,6 +291,12 @@ public class Utility {
 		return true;
 	}
 
+	/**
+	 * Checks for complete connection of map
+	 * @param result
+	 * @return true if the connection of complete map exists 
+	 * @throws MapException
+	 */
 	public boolean isCompleteConnectedMap(String result) throws MapException {
 		try {
 			InputStream is = new ByteArrayInputStream(result.getBytes());
@@ -396,6 +392,11 @@ public class Utility {
 		}
 	}
 
+	/**
+	 * Show error message pop up
+	 * @param nO_SAVED_GAME_FOUND
+	 * @return
+	 */
 	public static int showErrorMessagePopUp(String nO_SAVED_GAME_FOUND) {
 		// TODO Auto-generated method stub
 		JOptionPane.showMessageDialog(null, nO_SAVED_GAME_FOUND, "Error", JOptionPane.ERROR_MESSAGE);

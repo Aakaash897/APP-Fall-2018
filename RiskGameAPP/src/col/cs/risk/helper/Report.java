@@ -36,7 +36,7 @@ public class Report implements Serializable {
 	private HashMap<Integer, Boolean> gamesList = new HashMap<>();
 
 	/**
-	 * Constructor
+	 * Constructor that intializes the main function init
 	 * @param filename
 	 * @param noOfGames
 	 */
@@ -56,8 +56,8 @@ public class Report implements Serializable {
 	}
 
 	/**
-	 * Is game completed on current map
-	 * @return
+	 * returns true if game completed on current map
+	 * @return isFinished boolean variable 
 	 */
 	public boolean isThisMapFinished() {
 		boolean isFinished = true;
@@ -71,8 +71,8 @@ public class Report implements Serializable {
 	}
 
 	/**
-	 * Get next game number
-	 * @return
+	 * returns next game number
+	 * @return currentGameNo
 	 */
 	public int getNextGameNumber() {
 		currentGameNo++;
@@ -90,6 +90,7 @@ public class Report implements Serializable {
 	}
 
 	/**
+	 * this returns the map file name
 	 * @return the mapFileName
 	 */
 	public String getMapFileName() {
@@ -104,6 +105,7 @@ public class Report implements Serializable {
 	}
 
 	/**
+	 * this returns the current game no being played
 	 * @return the currentGameNo
 	 */
 	public int getCurrentGameNo() {
@@ -149,6 +151,7 @@ public class Report implements Serializable {
 	}
 
 	/**
+	 * this returns the game winner map of hash map type
 	 * @return the gameWinnerMap
 	 */
 	public HashMap<Integer, String> getGameWinnerMap() {

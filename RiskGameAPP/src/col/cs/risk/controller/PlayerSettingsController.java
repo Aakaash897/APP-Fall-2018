@@ -54,13 +54,16 @@ public class PlayerSettingsController {
 	HashMap<String, String> playerStrategy = new HashMap<>();
 
 	/**
-	 * Default Constructor which also initializes player settings view
+	 * Default Constructor with a parameter, which also initializes player settings view
 	 */
 	public PlayerSettingsController(StartGameController startGameController) {
 		this.startGameController = startGameController;
 		new PlayerSettingsView(this).setVisible(true);
 	}
 
+	/**
+	 * Default constructor
+	 */
 	public PlayerSettingsController() {
 	}
 
@@ -235,6 +238,20 @@ public class PlayerSettingsController {
 	 */
 	public void setPlayerSettingsVisible(boolean visible) {
 		playerSettingsView.setVisible(visible);
+	}
+
+	/**
+	 * @return the playerStrategy
+	 */
+	public HashMap<String, String> getPlayerStrategyMap() {
+		return playerStrategy;
+	}
+
+	/**
+	 * @param playerStrategy the playerStrategy to set
+	 */
+	public void setPlayerStrategyMap(HashMap<String, String> playerStrategy) {
+		this.playerStrategy = playerStrategy;
 	}
 
 }

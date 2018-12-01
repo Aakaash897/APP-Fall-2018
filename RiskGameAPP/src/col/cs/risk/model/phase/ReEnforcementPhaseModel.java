@@ -10,7 +10,7 @@ import col.cs.risk.model.GameModel;
  * This class handles the entities for the reinforcement phase such as to show
  * the info according the actions done by the player in the reinforcement phase.
  * 
- * @author Team25
+ * @author Tea0m25
  */
 public class ReEnforcementPhaseModel extends Observable implements GamePhase, Serializable {
 
@@ -27,6 +27,8 @@ public class ReEnforcementPhaseModel extends Observable implements GamePhase, Se
 	private StringBuilder stringBuilder;
 
 	/**
+	 * this method returns the instance of this class. if the instance of the class
+	 * is not created it creates and returns it otherwise returns it.
 	 * 
 	 * @return s instance of ReEnforcementPhaseModel
 	 */

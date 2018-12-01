@@ -18,18 +18,22 @@ public class Aggressive implements IStrategy, Serializable {
 	public Aggressive() {
 
 	}
-	
+
+	/**
+	 * TerritoryModel instance 0
+	 */
 	private TerritoryModel strongest;
 
 	/**
 	 * Constructor with player model parameter
+	 * 
 	 * @param playerModel
 	 */
 	public Aggressive(PlayerModel playerModel) {
 		this.playerModel = playerModel;
 	}
 
-	/** 
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override
@@ -38,11 +42,13 @@ public class Aggressive implements IStrategy, Serializable {
 		TerritoryModel territoryModel;
 		switch (gameModel.getState()) {
 		case Constants.ATTACK_PHASE:
-			Utility.writeLog(" ************ "+gameModel.getStateAsStringInDepth()+" : "+playerModel.getName()+" "+getStrategyString()+" ************ ");
+			Utility.writeLog(" ************ " + gameModel.getStateAsStringInDepth() + " : " + playerModel.getName()
+					+ " " + getStrategyString() + " ************ ");
 			territoryModel = getStrongestTerritory();
 			gameModel.setSelectedTerritory(territoryModel);
 			if (territoryModel != null && territoryModel.getArmies() > 1) {
-				Utility.writeLog("Attacking territory = "+territoryModel.getName()+" no. of armies = "+territoryModel.getArmies());
+				Utility.writeLog("Attacking territory = " + territoryModel.getName() + " no. of armies = "
+						+ territoryModel.getArmies());
 				playerModel.setAttackingTerritory(territoryModel);
 				gameModel.notifyPhaseChanging();
 				gameModel.setState(Constants.ATTACKING_PHASE);
@@ -60,9 +66,9 @@ public class Aggressive implements IStrategy, Serializable {
 			territoryModel = getNeighbourToAttack();
 			gameModel.setSelectedTerritory(territoryModel);
 			if (territoryModel != null) {
-				Utility.writeLog("Defending territory = "+territoryModel.getName()+", no of armies = "+territoryModel.getArmies()
-						+" belongs to "+territoryModel.getPlayerModel().getName()+" "+
-						territoryModel.getPlayerModel().getStrategy().getStrategyString());
+				Utility.writeLog("Defending territory = " + territoryModel.getName() + ", no of armies = "
+						+ territoryModel.getArmies() + " belongs to " + territoryModel.getPlayerModel().getName() + " "
+						+ territoryModel.getPlayerModel().getStrategy().getStrategyString());
 				playerModel.setDefendingTerritory(territoryModel);
 				gameModel.notifyPhaseChanging();
 				gameModel.setState(Constants.ATTACK_FIGHT_PHASE);
@@ -83,7 +89,7 @@ public class Aggressive implements IStrategy, Serializable {
 		return str;
 	}
 
-	/** 
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override
@@ -92,10 +98,12 @@ public class Aggressive implements IStrategy, Serializable {
 		String str = "";
 		switch (gameModel.getState()) {
 		case Constants.FORTIFICATION_PHASE:
-			Utility.writeLog(" ************ "+gameModel.getStateAsStringInDepth()+" : "+playerModel.getName()+" "+getStrategyString()+" ************ ");
+			Utility.writeLog(" ************ " + gameModel.getStateAsStringInDepth() + " : " + playerModel.getName()
+					+ " " + getStrategyString() + " ************ ");
 			territoryModel = getStrongestTerritoryStrongestAdjacent(gameModel);
 			if (territoryModel != null && territoryModel.getArmies() > 1) {
-				Utility.writeLog("Moving armies from territory = "+territoryModel.getName()+", no of armies = "+territoryModel.getArmies());
+				Utility.writeLog("Moving armies from territory = " + territoryModel.getName() + ", no of armies = "
+						+ territoryModel.getArmies());
 				gameModel.setMoveArmiesFromTerritory(territoryModel);
 				gameModel.notifyPhaseChanging();
 				gameModel.setState(Constants.FORTIFYING_PHASE);
@@ -109,9 +117,10 @@ public class Aggressive implements IStrategy, Serializable {
 			}
 			break;
 		case Constants.FORTIFYING_PHASE:
-			territoryModel = strongest; //getStrongestTerritory();
+			territoryModel = strongest; // getStrongestTerritory();
 			if (territoryModel != null) {
-				Utility.writeLog("Moving armies to territory = "+territoryModel.getName()+", no of armies = "+territoryModel.getArmies());
+				Utility.writeLog("Moving armies to territory = " + territoryModel.getName() + ", no of armies = "
+						+ territoryModel.getArmies());
 				gameModel.setMoveArmiesToTerritory(territoryModel);
 				gameModel.notifyPhaseChanging();
 				gameModel.setState(Constants.FORTIFY_PHASE);
@@ -130,13 +139,18 @@ public class Aggressive implements IStrategy, Serializable {
 		return str;
 	}
 
+	/**
+	 * this method automatically move the armies from one territory to another
+	 * territory
+	 * 
+	 * @param gameModel
+	 */
 	public void autoFortifyArmies(GameModel gameModel) {
-		if(gameModel.getMoveArmiesFromTerritory() != null && 
-				gameModel.getMoveArmiesFromTerritory().getArmies() > 1 &&
-				gameModel.getMoveArmiesToTerritory() != null) {
-			int armiesToMove = gameModel.getMoveArmiesFromTerritory().getArmies()-1;
-			Utility.writeLog("Moving "+armiesToMove+" armies from "+gameModel.getMoveArmiesToTerritory().getName()+
-					" to "+gameModel.getMoveArmiesFromTerritory().getName());
+		if (gameModel.getMoveArmiesFromTerritory() != null && gameModel.getMoveArmiesFromTerritory().getArmies() > 1
+				&& gameModel.getMoveArmiesToTerritory() != null) {
+			int armiesToMove = gameModel.getMoveArmiesFromTerritory().getArmies() - 1;
+			Utility.writeLog("Moving " + armiesToMove + " armies from " + gameModel.getMoveArmiesToTerritory().getName()
+					+ " to " + gameModel.getMoveArmiesFromTerritory().getName());
 			gameModel.getMoveArmiesToTerritory().addArmies(armiesToMove);
 			gameModel.getMoveArmiesFromTerritory().looseArmies(armiesToMove);
 		}
@@ -148,7 +162,7 @@ public class Aggressive implements IStrategy, Serializable {
 	@Override
 	public void initialReInforce(GameModel gameModel) {
 		TerritoryModel model = getStrongestTerritory();
-		Utility.writeLog("Strongest territory : "+model.getName());
+		Utility.writeLog("Strongest territory : " + model.getName());
 		gameModel.setSelectedTerritory(model);
 		gameModel.gamePhasePlayerTurnSetup1(model);
 	}
@@ -158,25 +172,35 @@ public class Aggressive implements IStrategy, Serializable {
 		initialReInforce(gameModel);
 	}
 
+	/**
+	 * this method returns the strongest territory which has largest no of armies
+	 * 
+	 * @return strongestTerritory territoryModel instance
+	 */
 	private TerritoryModel getStrongestTerritory() {
 		TerritoryModel strongestTerritory = playerModel.getOccupiedTerritories().get(0);
 		Vector<TerritoryModel> territories = playerModel.getOccupiedTerritories();
-		for(TerritoryModel territoryModel:territories) {
-			if(territoryModel.getArmies() > strongestTerritory.getArmies()) {
+		for (TerritoryModel territoryModel : territories) {
+			if (territoryModel.getArmies() > strongestTerritory.getArmies()) {
 				strongestTerritory = territoryModel;
 			}
 		}
-		if(strongestTerritory.getArmies() == 1) {
-			strongestTerritory = playerModel.getOccupiedTerritories().get(
-					Utility.getRandomNumber(playerModel.getOccupiedTerritories().size()));
+		if (strongestTerritory.getArmies() == 1) {
+			strongestTerritory = playerModel.getOccupiedTerritories()
+					.get(Utility.getRandomNumber(playerModel.getOccupiedTerritories().size()));
 		}
 		return strongestTerritory;
 	}
 
+	/**
+	 * this method returns the neighbor territory to attack
+	 * 
+	 * @return territoryModel neighbor territory model instance
+	 */
 	private TerritoryModel getNeighbourToAttack() {
 		TerritoryModel territoryModel = null;
-		for(TerritoryModel territory:playerModel.getAttackingTerritory().getAdjacentTerritories()) {
-			if(territory.getPlayerModel().getId() != playerModel.getId()) {
+		for (TerritoryModel territory : playerModel.getAttackingTerritory().getAdjacentTerritories()) {
+			if (territory.getPlayerModel().getId() != playerModel.getId()) {
 				territoryModel = territory;
 				break;
 			}
@@ -184,13 +208,19 @@ public class Aggressive implements IStrategy, Serializable {
 		return territoryModel;
 	}
 
+	/**
+	 * this method returns the second strongest territory which has second largest
+	 * no of armies
+	 * 
+	 * @return strongestTerritory territoryModel instance
+	 */
 	private TerritoryModel getStrongestTerritoryStrongestAdjacent1(TerritoryModel territoryModel) {
 		TerritoryModel strongestTerritory = null;
-		for(TerritoryModel territory:territoryModel.getAdjacentTerritories()) {
-			if(territory.getPlayerModel().getId() == playerModel.getId()) {
-				if(strongestTerritory == null) {
+		for (TerritoryModel territory : territoryModel.getAdjacentTerritories()) {
+			if (territory.getPlayerModel().getId() == playerModel.getId()) {
+				if (strongestTerritory == null) {
 					strongestTerritory = territory;
-				} else if(strongestTerritory.getArmies() < territory.getArmies()) {
+				} else if (strongestTerritory.getArmies() < territory.getArmies()) {
 					strongestTerritory = territory;
 				}
 			}
@@ -198,19 +228,24 @@ public class Aggressive implements IStrategy, Serializable {
 		return strongestTerritory;
 	}
 
+	/**
+	 * this method returns adjacent territory to the strongest territory which has
+	 * largest no of armies
+	 * 
+	 * @return strongestTerritory territoryModel instance
+	 */
 	private TerritoryModel getStrongestTerritoryStrongestAdjacent(GameModel gameModel) {
 		strongest = getStrongestTerritory();
 		gameModel.setMoveArmiesFromTerritory(strongest);
 		TerritoryModel strongestTerritory = null;
 		Vector<TerritoryModel> territories = playerModel.getOccupiedTerritories();
-		for(TerritoryModel territory:territories) {
-			if(gameModel.getMoveArmiesFromTerritory().getId() != territory.getId() &&
-					territory.getArmies() > 1 &&
-					(gameModel.getMoveArmiesFromTerritory().getAdjacentTerritories().contains(territory) 
+		for (TerritoryModel territory : territories) {
+			if (gameModel.getMoveArmiesFromTerritory().getId() != territory.getId() && territory.getArmies() > 1
+					&& (gameModel.getMoveArmiesFromTerritory().getAdjacentTerritories().contains(territory)
 							|| playerModel.isFortificationPossibleByMultipleHop(gameModel, territory))) {
-				if(strongestTerritory == null) {
+				if (strongestTerritory == null) {
 					strongestTerritory = territory;
-				} else if(territory.getArmies() > strongestTerritory.getArmies()) {
+				} else if (territory.getArmies() > strongestTerritory.getArmies()) {
 					strongestTerritory = territory;
 				}
 			}
@@ -219,10 +254,12 @@ public class Aggressive implements IStrategy, Serializable {
 		return strongestTerritory;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getStrategyString() {
 		return Constants.AGGRESSIVE;
 	}
-
 
 }

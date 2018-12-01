@@ -34,31 +34,49 @@ public class RolledDiceView extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	/** Rolled Dice Screen */
+	/**
+	 * Rolled Dice Screen
+	 */
 	JPanel panel;
 
-	/** label for attacking dice1 */
+	/**
+	 * label for attacking dice1
+	 */
 	JLabel attackDiceLabel1;
 
-	/** label for attacking dice2 */
+	/**
+	 * label for attacking dice2
+	 */
 	JLabel attackDiceLabel2;
 
-	/** label for attacking dice3 */
+	/**
+	 * label for attacking dice3
+	 */
 	JLabel attackDiceLabel3;
 
-	/** label for defending dice1 */
+	/**
+	 * label for defending dice1
+	 */
 	JLabel defendDiceLabel1;
 
-	/** label for defending dice2 */
+	/**
+	 * label for defending dice2
+	 */
 	JLabel defendDiceLabel2;
 
-	/** Ok button */
+	/**
+	 * Ok button
+	 */
 	JButton okButton;
 
-	/** Game Controller Instance */
+	/**
+	 * Game Controller Instance
+	 */
 	GameController gameController;
 
-	/** Image icons for the both dices */
+	/**
+	 * Image icons for the both dices
+	 */
 	ImageIcon attackingImageIcon1 = new ImageIcon(Utility.getDicePath("dice_red_1.png"));
 	ImageIcon attackingImageIcon2 = new ImageIcon(Utility.getDicePath("dice_red_2.png"));
 	ImageIcon attackingImageIcon3 = new ImageIcon(Utility.getDicePath("dice_red_3.png"));
@@ -72,7 +90,9 @@ public class RolledDiceView extends JFrame {
 	ImageIcon defendingImageIcon5 = new ImageIcon(Utility.getDicePath("dice_white_5.png"));
 	ImageIcon defendingImageIcon6 = new ImageIcon(Utility.getDicePath("dice_white_6.png"));
 
-	/** Constructor */
+	/**
+	 * Constructor
+	 */
 	public RolledDiceView() {
 		setTitle("Rolled Dice");
 	}

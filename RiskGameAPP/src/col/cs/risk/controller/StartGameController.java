@@ -60,7 +60,9 @@ public class StartGameController {
 	 */
 	public StartGameController() {
 		Utility.writeLog("*********************** The Risk Game starts **********************", false);
-		new HomePageViewLoader(this).setVisible(true);
+		if (Utility.canShow) {
+			new HomePageViewLoader(this).setVisible(true);
+		}
 		new LoadExistingMapController(this);
 	}
 
@@ -117,8 +119,7 @@ public class StartGameController {
 	}
 
 	/**
-	 * @param homePageViewLoader
-	 *            the homePageViewLoader to set
+	 * @param homePageViewLoader the homePageViewLoader to set
 	 */
 	public void setHomePageViewLoader(HomePageViewLoader homePageViewLoader) {
 		this.homePageViewLoader = homePageViewLoader;
@@ -168,11 +169,19 @@ public class StartGameController {
 		playerSettingsController = new PlayerSettingsController(this);
 	}
 
+	/**
+	 * Show the view of the tournament mode
+	 */
 	public void tournamentMode() {
 		homePageViewLoader.setVisible(false);
 		new TournamentSettingsView(this).setVisible(true);
 	}
 
+	/**
+	 * Save the tournament mode settings
+	 * @param noOfPlayers
+	 * @param playersStrategiesMap
+	 */
 	public void tournamentModeOKButtonActionPerformed(int noOfPlayers, HashMap<Integer, String> playersStrategiesMap) {
 		if (playerSettingsController == null) {
 			playerSettingsController = new PlayerSettingsController();
@@ -188,6 +197,9 @@ public class StartGameController {
 		playerSettingsController.playerStrategyTypeSaveActionPerformed(playersStrategies);
 	}
 
+	/**
+	 * For the options of tournament
+	 */
 	public void setTournamentOptions() {
 		GameModel.reports.clear();
 		for (int i = 0; i < GameModel.tournamentNoOfMaps; i++) {
@@ -254,8 +266,7 @@ public class StartGameController {
 	}
 
 	/**
-	 * @param mapConstructionView
-	 *            the mapConstructionView to set
+	 * @param mapConstructionView the mapConstructionView to set
 	 */
 	public void setMapConstructionView(MapConstructionView mapConstructionView) {
 		this.mapConstructionView = mapConstructionView;
@@ -269,8 +280,7 @@ public class StartGameController {
 	}
 
 	/**
-	 * @param constructNewMapView
-	 *            the constructNewMapView to set
+	 * @param constructNewMapView the constructNewMapView to set
 	 */
 	public void setConstructNewMapView(ConstructNewMapView constructNewMapView) {
 		this.constructNewMapView = constructNewMapView;
@@ -293,12 +303,9 @@ public class StartGameController {
 	/**
 	 * Action performed on create button pressed on new map construction page
 	 * 
-	 * @param line
-	 *            Map section
-	 * @param line1
-	 *            Continent section
-	 * @param line2
-	 *            Country section
+	 * @param line  Map section
+	 * @param line1 Continent section
+	 * @param line2 Country section
 	 */
 	public void actionPerformedOnMapCreateButton(String line, String line1, String line2) {
 		StringBuilder mapString = new StringBuilder();
@@ -350,7 +357,9 @@ public class StartGameController {
 	 * @param visible
 	 */
 	public void setHomePageVisiblility(boolean visible) {
-		homePageViewLoader.setVisible(visible);
+		if (Utility.canShow) {
+			homePageViewLoader.setVisible(visible);
+		}
 	}
 
 	/**
@@ -369,6 +378,7 @@ public class StartGameController {
 
 	/**
 	 * Load saved game action performed
+	 * 
 	 * @param e
 	 */
 	public void loadSavedGameButtonActionPerformed(ActionEvent e) {

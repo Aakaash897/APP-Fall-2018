@@ -109,7 +109,7 @@ public class GameController {
 	 * Flag variable to check if saved game is loaded
 	 */
 	public static boolean isLoadSavedGame = false;
-	
+
 	/** Holds winner */
 	public String testWinner;
 
@@ -165,7 +165,10 @@ public class GameController {
 				initializeSavedGame();
 			}
 			initComponents();
-			new MapView(this).setVisible(true);
+			this.mapView = new MapView(this);
+			if(Utility.canShow) {
+				mapView.setVisible(true);
+			}
 			initializePhaseView();
 			gameModel.setMainMapPanel(mapMainPanel);
 			gameModel.setSubMapPanel(mapSubPanelPlayer);
@@ -189,6 +192,9 @@ public class GameController {
 			automaticHandleStrategies();
 		} catch (MapException ex) {
 			System.out.println(ex.getMessage());
+			gameModel.clear();
+			gameModel.clearAll();
+			clear();
 			ex.clearHistory();
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -212,6 +218,10 @@ public class GameController {
 		}
 
 		GameModel.players = gameModel.playersUsedWhileSavingLoading;
+		GameModel.isBaseMapModified = gameModel.isBaseMapModifiedSavingLoading;
+		GameModel.fileName = gameModel.fileNameSavingLoading;
+		GameModel.imageSelected = gameModel.imageSelectedSavingLoading;
+		
 		Utility.writeLog("Current player: " + gameModel.getCurrentPlayer().getName() + " : "
 				+ gameModel.getCurrentPlayer().getStrategy().getStrategyString());
 		Utility.writeLog("No of armies: " + gameModel.getCurrentPlayer().getArmies());
@@ -273,7 +283,7 @@ public class GameController {
 			Utility.showMessagePopUp(strBuilder.toString(), "Report");
 			gameModel.clearAll();
 			gameModel = null;
-			StartGameController.main(null);
+			new StartGameController();
 		}
 
 	}
@@ -552,16 +562,18 @@ public class GameController {
 		cardExchangeModel.addObserver(cardTradeView);
 		cardTradeView.initializeComponents();
 	}
-	
+
 	/**
 	 * DeInitialize card exchange view, used as observer pattern
 	 */
 	private void deInitializeCardExchangeView() {
-		CardExchangeModel cardExchangeModel = CardExchangeModel.getInstance();
-		cardTradeView = new CardTradeView(this);
-		cardExchangeModel.deleteObserver(cardTradeView);
-		CardExchangeModel.clear();
-		cardTradeView.dispose();
+		if(CardExchangeModel.isInitialized()) {
+			CardExchangeModel cardExchangeModel = CardExchangeModel.getInstance();
+			cardExchangeModel.deleteObserver(cardTradeView);
+			cardExchangeModel.deleteObservers();
+			CardExchangeModel.clear();
+			cardTradeView.dispose();
+		}
 	}
 
 	/**
@@ -776,6 +788,11 @@ public class GameController {
 				startNewGame();
 			} else {
 				Utility.showMessagePopUp(message, Constants.INFORMATION);
+				gameModel.clear();
+				clear();
+				gameModel.clearAll();
+				gameModel = null;
+				new StartGameController();
 			}
 		}
 	}
@@ -985,6 +1002,7 @@ public class GameController {
 		} else {
 			gameModel.setState(Constants.RE_ENFORCEMENT_PHASE);
 			gameModel.getCurrentPlayer().addTurnBonus(gameModel);
+			mapView.getSaveButton().setVisible(false);
 			gameModel.notifyPhaseChange();
 			CardExchangeModel.getInstance().checkCardsTradeOption(this, false);
 		}
@@ -1052,7 +1070,7 @@ public class GameController {
 		int wildCount = cardTradeView.getWildCardSelectedItem();
 
 		int count = infantryCount + cavarlyCount + artilleryCount + wildCount;
-		
+
 		if (count == Constants.THREE) {
 			if (infantryCount == Constants.THREE || cavarlyCount == Constants.THREE
 					|| artilleryCount == Constants.THREE) {
@@ -1258,6 +1276,10 @@ public class GameController {
 		try {
 			new File(Utility.getSaveGamePath("")).mkdirs();
 			gameModel.playersUsedWhileSavingLoading = GameModel.players;
+			gameModel.isBaseMapModifiedSavingLoading = GameModel.isBaseMapModified;
+			gameModel.fileNameSavingLoading = GameModel.fileName;
+			gameModel.imageSelectedSavingLoading = GameModel.imageSelected;
+ 			
 			FileOutputStream fileStream = new FileOutputStream(
 					Utility.getSaveGamePath(Constants.DEFAULT_SAVED_GAME_FILE_NAME));
 			ObjectOutputStream objectStream = new ObjectOutputStream(fileStream);
@@ -1272,7 +1294,7 @@ public class GameController {
 			clear();
 			gameModel.clearAll();
 			gameModel = null;
-			StartGameController.main(null);
+			new StartGameController();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
