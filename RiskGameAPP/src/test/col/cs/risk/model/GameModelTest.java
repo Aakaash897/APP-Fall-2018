@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.HashSet;
 import java.util.Vector;
 
 import org.junit.After;
@@ -463,7 +464,21 @@ public class GameModelTest {
 		territoryId.add(3);
 		territoryId.add(4);
 		continent.setTerritories(territories);
+		gameModel.getContinents().addElement(continent);
+		
 		assertEquals(gameModel.isTerritoryValidInContinent(continent, territory1, territoryId), territoryId);
+		try {
+			assertTrue(gameModel.isCompleteConnectionExistWithinContinent());
+		} catch (MapException e) {
+			e.printStackTrace();
+		}
+		
+		territory4.addAdjacentTerritory(territory3);
+		try {
+			gameModel.isCompleteConnectionExistWithinContinent();
+		} catch (MapException e) {
+			assertEquals(Constants.NOT_COMPLETE_CONTINENT_CONNECTED_MAP_MESSAGE,e.getMessage());
+		}
 		
 	}
 	
@@ -478,7 +493,6 @@ public class GameModelTest {
 		cardModel = new CardModel(100,0,territory1);
 		String ARMY_TYPE_INFANTRY = "INFANTRY";
 		System.out.println(cardModel.getCardTypeAsString(0));
-		System.out.println("hi");
 		assertEquals(cardModel.getCardTypeAsString(0),ARMY_TYPE_INFANTRY);	
 		String ARMY_TYPE_CAVALRY = "CAVALRY";
 		assertEquals(cardModel.getCardTypeAsString(1),ARMY_TYPE_CAVALRY);
